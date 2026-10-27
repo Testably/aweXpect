@@ -1260,6 +1260,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -1472,7 +1478,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -1688,7 +1695,8 @@ window.BENCHMARK_DATA = {
           5436.449506632487,
           9931.96853528704,
           7753.873177664621,
-          10489.977147028996
+          10489.977147028996,
+          5358.826784133911
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1893,6 +1901,7 @@ window.BENCHMARK_DATA = {
           2208,
           2080,
           2080,
+          1976,
           1976,
           1976,
           1976,
@@ -2133,7 +2142,8 @@ window.BENCHMARK_DATA = {
           170376.9839564732,
           318197.63424479164,
           240489.0412109375,
-          401642.30247395835
+          401642.30247395835,
+          194877.18960336538
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2354,7 +2364,8 @@ window.BENCHMARK_DATA = {
           590288,
           590290,
           590288,
-          590291
+          590291,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2578,7 +2589,8 @@ window.BENCHMARK_DATA = {
           10106.758884684245,
           18337.68241780599,
           13860.07842195951,
-          20991.482006835937
+          20991.482006835937,
+          10431.344758097332
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2590,6 +2602,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4031,6 +4044,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -4236,7 +4255,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -4445,7 +4465,8 @@ window.BENCHMARK_DATA = {
           110.4463562965393,
           216.0270635763804,
           169.61401162544885,
-          268.76230669021606
+          268.76230669021606,
+          114.64276261840548
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4641,6 +4662,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -4876,7 +4898,8 @@ window.BENCHMARK_DATA = {
           289.8684161626376,
           536.3040687243143,
           402.13750591278074,
-          565.7285221735636
+          565.7285221735636,
+          271.3984006245931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4888,6 +4911,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5307,7 +5331,8 @@ window.BENCHMARK_DATA = {
           221.41334177766527,
           373.98971198399863,
           298.39164349011014,
-          414.6178254127502
+          414.6178254127502,
+          238.0486925159182
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5319,6 +5344,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -11373,6 +11399,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -12348,7 +12380,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -13327,7 +13360,8 @@ window.BENCHMARK_DATA = {
           57.80904130293773,
           114.90431758562724,
           84.38855987787247,
-          120.85143076578775
+          120.85143076578775,
+          61.115884167807444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14293,6 +14327,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -15298,7 +15333,8 @@ window.BENCHMARK_DATA = {
           130.95945461591086,
           256.0135306971414,
           202.8349854628245,
-          256.9643646478653
+          256.9643646478653,
+          136.47668579419454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15491,6 +15527,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -16550,7 +16587,8 @@ window.BENCHMARK_DATA = {
           126.76694544156392,
           232.87921447413308,
           176.7052229131971,
-          260.82339305877684
+          260.82339305877684,
+          129.7329966838543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16562,6 +16600,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -18089,6 +18128,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -18301,7 +18346,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -18517,7 +18563,8 @@ window.BENCHMARK_DATA = {
           122.047316129391,
           220.2914048830668,
           162.91993345533098,
-          224.4891011397044
+          224.4891011397044,
+          120.88694395337787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18722,6 +18769,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -18962,7 +19010,8 @@ window.BENCHMARK_DATA = {
           294.0744322996873,
           550.6533463160197,
           422.52418184280396,
-          562.1018281936646
+          562.1018281936646,
+          277.5664177962712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18974,6 +19023,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -19407,7 +19457,8 @@ window.BENCHMARK_DATA = {
           178.91174415179663,
           356.0344429969788,
           255.40534613927204,
-          371.66222922007245
+          371.66222922007245,
+          197.08220030580247
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19419,6 +19470,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -25480,6 +25532,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -26455,7 +26513,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -27434,7 +27493,8 @@ window.BENCHMARK_DATA = {
           341.157199042184,
           633.2428075245449,
           492.1145007269723,
-          646.1703109741211
+          646.1703109741211,
+          354.46659870147704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28402,6 +28462,7 @@ window.BENCHMARK_DATA = {
           784,
           656,
           656,
+          600,
           600,
           600,
           600,
@@ -29405,7 +29466,8 @@ window.BENCHMARK_DATA = {
           710.0534218152364,
           1441.8103165944417,
           1116.4452398845128,
-          1500.8751750359168
+          1500.8751750359168,
+          753.7673233472384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29598,6 +29660,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -30657,7 +30720,8 @@ window.BENCHMARK_DATA = {
           352.56422265370685,
           656.0155530929566,
           489.4438332148961,
-          712.7167714436849
+          712.7167714436849,
+          403.42504018147787
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30669,6 +30733,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -36774,6 +36839,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -37749,7 +37820,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -38728,7 +38800,8 @@ window.BENCHMARK_DATA = {
           333.57434476216633,
           614.0643148422241,
           475.25627485911053,
-          618.9662200487577
+          618.9662200487577,
+          304.8892898956935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39696,6 +39769,7 @@ window.BENCHMARK_DATA = {
           832,
           704,
           704,
+          648,
           648,
           648,
           648,
@@ -40699,7 +40773,8 @@ window.BENCHMARK_DATA = {
           10729.47780936105,
           20422.429736328126,
           15587.342472621373,
-          28654.099338785807
+          28654.099338785807,
+          10208.97784096854
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41683,6 +41758,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -41951,7 +42027,8 @@ window.BENCHMARK_DATA = {
           420.57577956517537,
           788.6088750702994,
           586.9937456766764,
-          852.3491975148519
+          852.3491975148519,
+          465.1733773946762
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41963,6 +42040,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -43838,6 +43916,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -44108,7 +44192,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -44382,7 +44467,8 @@ window.BENCHMARK_DATA = {
           366.28569339116416,
           630.2533125559489,
           493.0234364827474,
-          749.8283603986105
+          749.8283603986105,
+          385.54454121222864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44645,6 +44731,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -44943,7 +45030,8 @@ window.BENCHMARK_DATA = {
           28662.464274088543,
           62104.76110839844,
           52077.55981914814,
-          85590.06118164063
+          85590.06118164063,
+          29188.59113769531
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45222,7 +45310,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46844,6 +46933,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -47114,7 +47209,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -47388,7 +47484,8 @@ window.BENCHMARK_DATA = {
           77.2019567489624,
           134.83956710497537,
           102.88470842043559,
-          148.4233966668447
+          148.4233966668447,
+          73.56455666224161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47651,6 +47748,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -47949,7 +48047,8 @@ window.BENCHMARK_DATA = {
           11061.16379723182,
           18243.686381022137,
           15322.773951212564,
-          32999.1159929548
+          32999.1159929548,
+          10477.307544163295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48228,7 +48327,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48496,7 +48596,8 @@ window.BENCHMARK_DATA = {
           137.03948152065277,
           231.78296375274658,
           182.82293866475422,
-          265.2003936767578
+          265.2003936767578,
+          128.52056963627155
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48508,6 +48609,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -50035,6 +50137,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -50247,7 +50355,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -50463,7 +50572,8 @@ window.BENCHMARK_DATA = {
           146.3600670337677,
           294.8680971349989,
           217.53670266696386,
-          312.3705617359706
+          312.3705617359706,
+          169.02705829938253
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50668,6 +50778,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -50908,7 +51019,8 @@ window.BENCHMARK_DATA = {
           193.46137849489847,
           389.6649667535509,
           303.72822955449425,
-          421.86007649557934
+          421.86007649557934,
+          225.30329511960346
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50920,6 +51032,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -51353,7 +51466,8 @@ window.BENCHMARK_DATA = {
           198.7376239470073,
           425.58670177459715,
           324.9826179186503,
-          421.3777366002401
+          421.3777366002401,
+          226.85828365484875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51365,6 +51479,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -52848,6 +52963,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -53060,7 +53181,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -53276,7 +53398,8 @@ window.BENCHMARK_DATA = {
           444.2314815839132,
           783.8349214553833,
           614.4947261810303,
-          815.2234243392944
+          815.2234243392944,
+          413.3240692956107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53481,6 +53604,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -53721,7 +53845,8 @@ window.BENCHMARK_DATA = {
           1119.5295276641846,
           1959.0110712687174,
           1547.188006401062,
-          2175.8355026245117
+          2175.8355026245117,
+          1090.631132712731
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53733,6 +53858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -54166,7 +54292,8 @@ window.BENCHMARK_DATA = {
           524.3020841158353,
           943.493412399292,
           728.3663393656412,
-          983.6891864776611
+          983.6891864776611,
+          494.6581190745036
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54178,6 +54305,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -55661,6 +55789,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -55873,7 +56007,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -56089,7 +56224,8 @@ window.BENCHMARK_DATA = {
           5818.616600036621,
           10839.077134268624,
           8552.321802411761,
-          11800.711340097281
+          11800.711340097281,
+          6136.009203774588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56294,6 +56430,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -56534,7 +56671,8 @@ window.BENCHMARK_DATA = {
           19151.54158455985,
           32753.861301967077,
           26754.854725138346,
-          42300.57576090495
+          42300.57576090495,
+          19312.276668003626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56754,6 +56892,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609
         ],
@@ -56979,7 +57118,8 @@ window.BENCHMARK_DATA = {
           5678.583704630534,
           10176.80433185284,
           7912.397975667318,
-          10566.767869131905
+          10566.767869131905,
+          5810.696180490347
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56991,6 +57131,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -58474,6 +58615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -58686,7 +58833,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -58902,7 +59050,8 @@ window.BENCHMARK_DATA = {
           5761.202978006999,
           10156.332363673619,
           7954.50883992513,
-          11387.493163045247
+          11387.493163045247,
+          5809.341846759503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59107,6 +59256,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -59347,7 +59497,8 @@ window.BENCHMARK_DATA = {
           27439.401489257812,
           48272.928349086214,
           37738.72832312951,
-          61176.094962565105
+          61176.094962565105,
+          27732.272364689754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59568,7 +59719,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59792,7 +59944,8 @@ window.BENCHMARK_DATA = {
           11482.547435760498,
           19846.76794215611,
           15526.232983398437,
-          20903.09815626878
+          20903.09815626878,
+          11401.662147521973
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59804,6 +59957,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
