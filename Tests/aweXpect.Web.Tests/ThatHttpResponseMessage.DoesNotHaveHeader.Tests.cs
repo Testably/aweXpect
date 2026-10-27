@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 
 namespace aweXpect.Tests;
 
@@ -55,6 +56,31 @@ public sealed partial class ThatHttpResponseMessage
 					              does not have {article} "{name}" header,
 					              but it was <null>
 					              """);
+			}
+
+			[Test]
+			public async Task WhenContentHeaderExists_ShouldFail()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveHeader("Content-Type");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a "Content-Type" header,
+					             but it did contain the "Content-Type" header: ["text/plain; charset=utf-8"]
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
 			}
 
 			[Test]

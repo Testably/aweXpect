@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -16,6 +14,9 @@ public static partial class ThatHttpRequestMessage
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> has the header with the given <paramref name="name" />.
 	/// </summary>
+	/// <remarks>
+	///     The headers of the content are included, e.g. <c>Content-Type</c> or <c>Content-Length</c>.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static HasHeaderValueResult<HttpRequestMessage, IThat<HttpRequestMessage?>> HasHeader(
 		this IThat<HttpRequestMessage?> subject,
@@ -27,13 +28,16 @@ public static partial class ThatHttpRequestMessage
 				.AddConstraint(name, static (name, it, grammars) =>
 					new HasHeaderConstraint(it, grammars, name)),
 			subject,
-			a => a.Headers.TryGetValues(name, out IEnumerable<string>? values) ? values.ToArray() : null);
+			a => a.Headers.GetHeaderValues(a.Content, name));
 	}
 
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the header with the given
 	///     <paramref name="name" />.
 	/// </summary>
+	/// <remarks>
+	///     The headers of the content are included, e.g. <c>Content-Type</c> or <c>Content-Length</c>.
+	/// </remarks>
 	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>> DoesNotHaveHeader(
 		this IThat<HttpRequestMessage?> subject,
@@ -54,7 +58,7 @@ public static partial class ThatHttpRequestMessage
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
 			IValueConstraint<HttpRequestMessage>
 	{
-		private IEnumerable<string>? _foundHeader;
+		private string[]? _foundHeader;
 
 		public ConstraintResult IsMetBy(HttpRequestMessage? actual)
 		{
@@ -66,7 +70,8 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			if (actual.Headers.TryGetValues(expected, out _foundHeader))
+			_foundHeader = actual.Headers.GetHeaderValues(actual.Content, expected);
+			if (_foundHeader != null)
 			{
 				Outcome = Outcome.Success;
 				return this;

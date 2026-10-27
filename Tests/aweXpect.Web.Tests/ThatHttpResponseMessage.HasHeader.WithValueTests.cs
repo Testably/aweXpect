@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 
 namespace aweXpect.Tests;
 
@@ -33,6 +34,49 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("Using cannot be combined with AsWildcard.");
+			}
+
+			[Test]
+			public async Task WhenContentHeaderHasADifferentValue_ShouldFail()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Type").WithValue("application/json");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a "Content-Type" header whose value is equal to "application/json",
+					             but it had header value "text/plain; charset=utf-8", which differs at index 0:
+					                ↓ (actual)
+					               "text/plain; charset=utf-8"
+					               "application/json"
+					                ↑ (expected)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
+			public async Task WhenContentHeaderHasTheValue_ShouldSucceed()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Type").WithValue("text/plain; charset=utf-8");
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
