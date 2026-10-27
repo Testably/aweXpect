@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1724.5944694519044,
           1196.208399112408,
           1998.5301905314127,
           1144.5054862682637,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1545.1311745276819,
           2041.1570022583007,
           2112.986998494466,
-          2078.9626052856447
+          2078.9626052856447,
+          2002.1438337472769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12949.609034220377,
           7724.693245442709,
           14742.2350189209,
           7176.637215169271,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           11581.982772827148,
           15669.244974772135,
           15961.13096110026,
-          15907.82141331264
+          15907.82141331264,
+          15612.746715291341
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1369.021137373788,
           958.7738654272897,
           1627.0530489408052,
           938.326703291673,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1252.6473203023274,
           1629.9370290120444,
           1741.379569871085,
-          1691.4222714560372
+          1691.4222714560372,
+          1666.2785999591533
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12060.471514892579,
           7279.337229410808,
           13581.928694588798,
           6760.275062561035,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10583.066922869,
           14156.253602164132,
           15167.919065348307,
-          14973.495389811198
+          14973.495389811198,
+          15029.327513631184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4202.853253682454,
           3183.9466888427733,
           5163.1312185014995,
           3051.8622027079264,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4073.4305463518417,
           5478.442045211792,
           5513.921094767253,
-          5573.049152119955
+          5573.049152119955,
+          5498.241242472331
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1669,7 +1669,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          36691.909431966145,
           20628.460139683313,
           40533.5778902494,
           19434.500352125902,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           31591.503173828125,
           48371.05629882812,
           48711.80868765024,
-          48473.97191975911
+          48473.97191975911,
+          48082.12121582031
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61926,
@@ -1803,6 +1802,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
       {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8207.670574733189,
           5346.278451102121,
           9605.55645106389,
           5083.516858237131,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7555.033297729492,
           9518.424818929036,
           9559.88588663737,
-          9519.79383305141
+          9519.79383305141,
+          9362.658601614145
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          251610.22986778847,
           145730.55865885416,
           287268.4398925781,
           141520.58675711494,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           225459.5381033761,
           290610.9993489583,
           305782.2564778646,
-          298104.2845052083
+          298104.2845052083,
+          309273.2155761719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521541,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
       {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2668.4881908710186,
           1689.857785797119,
           2874.9522822243825,
           1593.3387859344482,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2212.0648094177245,
           2857.54761832101,
           2966.47819035848,
-          2966.4180230360766
+          2966.4180230360766,
+          2822.092520305089
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2899,7 +2899,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296
         ],
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1931.3797105642466,
           1157.4721742776724,
           1999.9706717899867,
           1061.9097052982875,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1592.5073368889946,
           2003.5903765360515,
           1964.5523948669434,
-          2020.967291768392
+          2020.967291768392,
+          1989.1352724347796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2199.361501057943,
           1582.1521768569946,
           2732.7821927751816,
           1365.1781311035156,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2334.6731905255997,
           2926.689926692418,
           2886.198728688558,
-          2964.4125410226675
+          2964.4125410226675,
+          2878.1142407735188
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3488,7 +3488,6 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2776,
-          2776,
           2840,
           2840,
           2840,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2052.6422560555593,
           998.4822764078776,
           2032.941022491455,
           856.7953752108982,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1589.3227558135986,
           1816.8210629781088,
           1783.0299625396729,
-          1815.2466063866248
+          1815.2466063866248,
+          1685.4638674418131
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1867.7613380977086,
           1267.7250677744548,
           2150.017341359456,
           1131.88678755079,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1838.3382360018218,
           2293.2801010131834,
           2331.5834429423016,
-          2351.8820971171062
+          2351.8820971171062,
+          2416.109371772179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4096,7 +4096,6 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
-          2888,
           3016,
           3016,
           3016,
@@ -4113,6 +4112,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1497.8291790008545,
           665.3899513244629,
           1347.3144874572754,
           595.3509517033895,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           998.9570941925049,
           1136.8054129282634,
           1107.8757119496663,
-          1250.2372016906738
+          1250.2372016906738,
+          1145.5878542491369
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
-        "message": "refactor!: make every option an immutable value in one OptionsHolder (#2046)"
-      },
-      {
         "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
-      "7a6dec57",
       "0f3856d6",
       "cb617241",
       "7294afca",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "2ba23029",
       "630e8f0a",
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2599.516721089681,
           1717.9751029695783,
           2966.209689839681,
           1508.3880148569742,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2394.2550597557656,
           3042.4292755126953,
           3010.500703684489,
-          3131.058696201869
+          3131.058696201869,
+          3037.964632161458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4704,7 +4704,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
-          3744,
+          3872,
           3872,
           3872,
           3872,
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1689.7705350603376,
           737.0854228564671,
           1547.9981408800397,
           667.9071994145711,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1106.6964110056558,
           1289.2114197657659,
           1320.680685043335,
-          1357.6422740391322
+          1357.6422740391322,
+          1320.729950087411
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4876,11 +4876,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
@@ -4888,7 +4895,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           169196.58732722356,
-          166606.0400390625
+          166606.0400390625,
+          160665.34225260417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4900,6 +4908,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664
         ],
@@ -4917,7 +4926,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           198094.59946289062,
-          199580.6094970703
+          199580.6094970703,
+          192922.53414481026
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4929,6 +4939,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          266951,
           266951,
           266951
         ],
@@ -4956,11 +4967,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
         "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
+      },
+      {
+        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
+        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
       }
     ],
     "labels": [
       "76bf298b",
-      "26a49595"
+      "26a49595",
+      "6f944ab7"
     ],
     "datasets": [
       {
@@ -4968,7 +4986,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           2692.453815460205,
-          2897.014651997884
+          2897.014651997884,
+          2680.29673903329
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4980,6 +4999,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400
         ],
@@ -4997,7 +5017,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           1917.4742403666178,
-          1926.2845264434814
+          1926.2845264434814,
+          1793.1345399220784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5009,6 +5030,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656
         ],
