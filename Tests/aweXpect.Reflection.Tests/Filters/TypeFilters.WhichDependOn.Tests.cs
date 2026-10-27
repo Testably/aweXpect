@@ -172,8 +172,10 @@ public sealed partial class TypeFilters
 			[Test]
 			public async Task WhenTypeIsSpecifiedAtRuntime_ShouldFilterForTypesDependingOnIt()
 			{
+				Type target = typeof(TargetB);
+
 				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
-					.WhichDependOn(typeof(TargetB));
+					.WhichDependOn(target);
 
 				await That(types).IsEqualTo([typeof(OnlyLayer2),]).InAnyOrder();
 			}
@@ -182,7 +184,7 @@ public sealed partial class TypeFilters
 			public async Task WhenWidenedWithOrOn_ShouldMatchEither()
 			{
 				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
-					.WhichDependOn<TargetA>().OrOn(typeof(TargetB));
+					.WhichDependOn<TargetA>().OrOn<TargetB>();
 
 				await That(types).IsEqualTo([typeof(ViaField), typeof(OnlyLayer2),]).InAnyOrder();
 			}

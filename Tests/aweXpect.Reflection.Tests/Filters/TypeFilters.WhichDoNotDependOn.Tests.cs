@@ -78,8 +78,10 @@ public sealed partial class TypeFilters
 			[Test]
 			public async Task WhenTypeIsSpecifiedAtRuntime_ShouldFilterForTypesNotDependingOnIt()
 			{
+				Type target = typeof(TargetB);
+
 				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
-					.WhichDoNotDependOn(typeof(TargetB));
+					.WhichDoNotDependOn(target);
 
 				await That(types).IsEqualTo([typeof(ViaField), typeof(FrameworkConsumer),]).InAnyOrder();
 			}

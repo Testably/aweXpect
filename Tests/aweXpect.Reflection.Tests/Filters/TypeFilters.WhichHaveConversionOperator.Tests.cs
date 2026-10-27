@@ -59,7 +59,7 @@ public sealed partial class TypeFilters
 			public async Task WhenConversionIsOnlyInherited_ShouldIncludeType()
 			{
 				Filtered.Types types = In.Types<OperatorBaseClass, OperatorDerivedClass>()
-					.WhichHaveImplicitConversionOperator(typeof(OperatorBaseClass), typeof(int));
+					.WhichHaveImplicitConversionOperator<OperatorBaseClass, int>();
 
 				await That(types).IsEqualTo([typeof(OperatorBaseClass), typeof(OperatorDerivedClass),])
 					.InAnyOrder();
@@ -113,7 +113,7 @@ public sealed partial class TypeFilters
 			public async Task WhenConversionIsOnlyInherited_ShouldFilterOutType()
 			{
 				Filtered.Types types = In.Types<OperatorDerivedClass, ClassWithoutOperators>()
-					.WhichDoNotHaveImplicitConversionOperator(typeof(OperatorBaseClass), typeof(int));
+					.WhichDoNotHaveImplicitConversionOperator<OperatorBaseClass, int>();
 
 				await That(types).IsEqualTo([typeof(ClassWithoutOperators),]).InAnyOrder();
 			}
@@ -154,7 +154,7 @@ public sealed partial class TypeFilters
 			public async Task WhenConversionIsImplicit_ShouldFilterOutType()
 			{
 				Filtered.Types types = In.Type<Money>()
-					.WhichHaveExplicitConversionOperator(typeof(Money), typeof(decimal));
+					.WhichHaveExplicitConversionOperator<Money, decimal>();
 
 				await That(types).IsEmpty();
 			}
@@ -207,7 +207,7 @@ public sealed partial class TypeFilters
 			public async Task WhenConversionIsImplicit_ShouldKeepType()
 			{
 				Filtered.Types types = In.Type<Money>()
-					.WhichDoNotHaveExplicitConversionOperator(typeof(Money), typeof(decimal));
+					.WhichDoNotHaveExplicitConversionOperator<Money, decimal>();
 
 				await That(types).IsEqualTo([typeof(Money),]).InAnyOrder();
 			}

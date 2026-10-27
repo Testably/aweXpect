@@ -106,7 +106,7 @@ public static partial class TypeFilters
 		Type source, Type target)
 		=> new(@this, memberScope => ConversionOperatorFilter(false, source, target, memberScope.IsDirect(), false));
 
-	private static IFilter<Type> ConversionOperatorFilter(bool isImplicit, Type source, Type target, bool directly,
+	private static Filter.GenericFilter<Type> ConversionOperatorFilter(bool isImplicit, Type source, Type target, bool directly,
 		bool expected)
 		=> Filter.Suffix<Type>(
 			type => (type.GetConversionOperator(isImplicit, source, target, !directly) is not null) == expected,

@@ -57,8 +57,10 @@ public sealed partial class TypeFilters
 			[Test]
 			public async Task WhenOperandIsSpecifiedAtRuntime_ShouldFilterForTypesWithTheOperand()
 			{
+				Type operand = typeof(int);
+
 				Filtered.Types types = In.Types<Money, OperatorDerivedClass, ClassWithoutOperators>()
-					.WhichHaveOperator(Operator.Addition, typeof(int));
+					.WhichHaveOperator(Operator.Addition, operand);
 
 				await That(types).IsEqualTo([typeof(Money),]).InAnyOrder();
 				await That(types.GetDescription())
@@ -139,8 +141,10 @@ public sealed partial class TypeFilters
 			[Test]
 			public async Task WhenOperandIsSpecifiedAtRuntime_ShouldFilterOutTypesWithTheOperand()
 			{
+				Type operand = typeof(int);
+
 				Filtered.Types types = In.Types<Money, ClassWithoutOperators>()
-					.WhichDoNotHaveOperator(Operator.Addition, typeof(int));
+					.WhichDoNotHaveOperator(Operator.Addition, operand);
 
 				await That(types).IsEqualTo([typeof(ClassWithoutOperators),]).InAnyOrder();
 				await That(types.GetDescription())

@@ -75,7 +75,7 @@ public static partial class TypeFilters
 		Type operand)
 		=> new(@this, memberScope => OperatorFilter(@operator, operand, memberScope.IsDirect(), false));
 
-	private static IFilter<Type> OperatorFilter(Operator @operator, Type? operand, bool directly, bool expected)
+	private static Filter.GenericFilter<Type> OperatorFilter(Operator @operator, Type? operand, bool directly, bool expected)
 		=> Filter.Suffix<Type>(
 			type => (operand is null
 				? type.HasOperator(@operator, !directly)
