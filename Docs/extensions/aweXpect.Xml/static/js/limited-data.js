@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
-        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
-      },
-      {
         "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
         "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
+      },
+      {
+        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
+        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
       }
     ],
     "labels": [
-      "6b630d2b",
       "3378cc72",
       "90516b35",
       "ddec9e0e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
-      "2e0f7001"
+      "2e0f7001",
+      "fa3e0676"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          737.5256697972616,
           579.6192891938346,
           721.0687050138201,
           556.9036045755659,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           484.6863160814558,
           892.7094680241177,
           558.5206277211507,
-          914.548518385206
+          914.548518385206,
+          821.276523844401
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1152,
           1152,
           1152,
           1152,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          706.4235350063869,
           593.7331276673538,
           710.7634363174438,
           536.8590538161142,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           411.4539412180583,
           687.0703350067139,
           574.5839573996408,
-          752.0956639562335
+          752.0956639562335,
+          677.9159244390635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
-        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
-      },
-      {
         "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
         "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
+      },
+      {
+        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
+        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
       }
     ],
     "labels": [
-      "6b630d2b",
       "3378cc72",
       "90516b35",
       "ddec9e0e",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
-      "2e0f7001"
+      "2e0f7001",
+      "fa3e0676"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4749.574486796061,
           3466.810075124105,
           4485.6264572143555,
           3369.1946081433975,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2713.70579401652,
           4105.226925986154,
           3322.3321614583333,
-          4719.634000651042
+          4719.634000651042,
+          4364.461219787598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24320,
           24320,
           24321,
           24320,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24172,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5302.561442057292,
           4212.467302958171,
           5186.509382629394,
           3771.373131615775,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3171.290367126465,
           4752.00021307809,
           3923.565017191569,
-          5541.623286655971
+          5541.623286655971,
+          4863.353251902262
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
-        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
-      },
-      {
         "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
         "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
+      },
+      {
+        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
+        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
       }
     ],
     "labels": [
-      "6b630d2b",
       "3378cc72",
       "90516b35",
       "ddec9e0e",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
-      "2e0f7001"
+      "2e0f7001",
+      "fa3e0676"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2760.3796997070312,
           1966.9533726828438,
           2585.2072432381765,
           1889.9165905543737,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1479.986473083496,
           2350.903139659337,
           1950.4946624210902,
-          2629.016909154256
+          2629.016909154256,
+          2367.8149983542307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12856,
           12856,
-          12856,
           12780,
           12856,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3626.562834603446,
           2713.8504156385147,
           3345.572557721819,
           2628.119952901204,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2013.7089848836263,
           3239.4659388405935,
           2665.141414097377,
-          3840.422245319073
+          3840.422245319073,
+          3378.5948941548663
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
-        "message": "feat!: count the occurrences in the Containing operator of string properties (#2025)"
-      },
-      {
         "sha": "3378cc729842eccd04dbd22c1c005974e573d72a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:48:40 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
         "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
+      },
+      {
+        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
+        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
       }
     ],
     "labels": [
-      "6b630d2b",
       "3378cc72",
       "90516b35",
       "ddec9e0e",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
-      "2e0f7001"
+      "2e0f7001",
+      "fa3e0676"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14609.016122436524,
           11292.020663670131,
           13641.327713521321,
           10029.750903789814,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7689.950396728515,
           13121.56071879069,
           10673.236022949219,
-          14267.907149251301
+          14267.907149251301,
+          13138.657448323567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25568,
           25568,
-          25568,
           25494,
           25568,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          378302.3233468192,
           227062.4200358073,
           342623.75895182294,
           239298.7164776142,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           183401.78305664062,
           339471.9620535714,
           212926.37643229167,
-          371167.7600097656
+          371167.7600097656,
+          313904.3671123798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544246,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544178,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
