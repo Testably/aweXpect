@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
-      {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1644.8229169111985,
           1370.1396741231283,
           2041.8105615888323,
           1626.2337636947632,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1167.5245909009661,
           1528.3591998418171,
           1992.8010104252742,
-          1983.9704545338948
+          1983.9704545338948,
+          2022.9429598490397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -436,7 +436,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11129.93802533831,
           10805.116793823243,
           16185.91210530599,
           10654.639459228516,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           8173.189092782827,
           10286.743300301689,
           15688.73051234654,
-          14241.545103890556
+          14241.545103890556,
+          15613.3274470738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
-      {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1286.300115966797,
           1091.8530395507812,
           1715.7299590791974,
           1281.484151204427,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           932.9338413385244,
           1252.8774864196778,
           1633.6317869822185,
-          1577.676675062913
+          1577.676675062913,
+          1653.2868336268834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1044,7 +1044,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10092.238607788086,
           9847.225593058269,
           14841.715057373047,
           10078.870348103841,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7573.432151794434,
           9624.006561279297,
           14510.116868239184,
-          13074.250087483724
+          13074.250087483724,
+          14412.894830557016
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
-      {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3849.422198486328,
           3098.5948468526203,
           5156.224453226725,
           3856.1664188929967,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2938.944308417184,
           3992.430689493815,
           5377.160658700125,
-          5024.688140282264
+          5024.688140282264,
+          5444.528891499837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1652,7 +1652,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29840.649967447916,
           30406.433602469308,
           48341.91689453125,
           29604.76174316406,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           20318.531598772322,
           28921.10770089286,
           47925.998046875,
-          38961.839634486605
+          38961.839634486605,
+          46583.15764508928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61925,
           61926,
           61925,
@@ -1807,6 +1806,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
       {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7393.777962820871,
           6258.864602661133,
           9717.63136618478,
           7447.75219930013,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5219.561555989583,
           7259.411357879639,
           9356.479189359225,
-          9523.185396321614
+          9523.185396321614,
+          9480.182297842843
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2260,7 +2260,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          210438.40805288462,
           191201.1509440104,
           313009.56178385415,
           210369.08369954428,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           144057.04025065104,
           204646.28187779017,
           293824.86369441106,
-          276010.1675455729
+          276010.1675455729,
+          294855.1893717448
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521542,
           521594,
           521594,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
       {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2286.0152549743652,
           2126.0365430196125,
           2891.5522695268905,
           2324.492087437556,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1624.149617603847,
           2233.6704504830495,
           2826.7530822753906,
-          2827.68478339059
+          2827.68478339059,
+          2830.8420031229657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2868,9 +2868,9 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
-          1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1535.9708661397299,
           1475.7565314953144,
           2057.5816904703775,
           1573.0983747754779,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1134.0497041429792,
           1487.1400520324707,
           1913.2993995666504,
-          1995.1520678202312
+          1995.1520678202312,
+          1911.3879028956096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "e41a7134981ac9b7bf687ef8ed2341828c9fc0e2",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:05 2026 \u002B0200",
-        "message": "refactor!: rename the member predicates of the equivalency options to IgnoringMembers (#2024)"
-      },
-      {
         "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "e41a7134",
       "c65f55ef",
       "8a57efc7",
       "6b630d2b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1719.7090021769206,
           1454.482082775661,
           2083.7518471309118,
           1603.7095394770304,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1516.2643054081843,
           2115.2720480698804,
           2886.1521092928374,
-          2841.9240038945127
+          2841.9240038945127,
+          2771.6740882873537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2864,
           2864,
           2864,
           2864,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2840,
+          2840,
           2840
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1465.9098454793295,
           1702.1578440666199,
           1985.1931248982748,
           1362.0189651761737,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1028.66346244812,
           1362.6760102785552,
           1732.6620335212122,
-          1919.8194819132486
+          1919.8194819132486,
+          1735.6793715613228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3888,6 +3888,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -3930,7 +3936,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -3976,7 +3983,8 @@ window.BENCHMARK_DATA = {
           1260.5935675303142,
           1706.7921857100266,
           2272.108928135463,
-          2293.9124477093037
+          2293.9124477093037,
+          2239.381045750209
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4026,6 +4034,7 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
+          3016,
           3016,
           3016
         ],
@@ -4081,7 +4090,8 @@ window.BENCHMARK_DATA = {
           602.1614033835275,
           919.9076296732976,
           1111.2774925231934,
-          1246.264877764384
+          1246.264877764384,
+          1093.746534211295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4093,6 +4103,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4386,6 +4397,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -4428,7 +4445,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -4474,7 +4492,8 @@ window.BENCHMARK_DATA = {
           1685.7219298226494,
           2176.349072519938,
           3023.707836151123,
-          3109.3818367004396
+          3109.3818367004396,
+          3010.7014503479004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4524,6 +4543,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872
         ],
@@ -4579,7 +4599,8 @@ window.BENCHMARK_DATA = {
           756.3274247096135,
           1063.2200600941976,
           1256.6118648529052,
-          1399.5015284674507
+          1399.5015284674507,
+          1239.6238641005295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4591,6 +4612,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
