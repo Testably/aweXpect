@@ -1476,6 +1476,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -1724,7 +1730,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -1976,7 +1983,8 @@ window.BENCHMARK_DATA = {
           10797.171419270833,
           8337.447278849284,
           10033.143083699544,
-          10947.490519205729
+          10947.490519205729,
+          7867.481620788574
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2212,6 +2220,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2493,7 +2502,8 @@ window.BENCHMARK_DATA = {
           377037.46805245534,
           258839.38365885417,
           308547.10714285716,
-          381394.314453125
+          381394.314453125,
+          264405.5708984375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2750,7 +2760,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590290,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3010,7 +3021,8 @@ window.BENCHMARK_DATA = {
           19527.97801513672,
           14365.900360107422,
           17867.976224626815,
-          20169.049327305383
+          20169.049327305383,
+          14446.998148091634
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3022,6 +3034,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4715,6 +4728,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -4956,7 +4975,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -5201,7 +5221,8 @@ window.BENCHMARK_DATA = {
           277.1800822575887,
           176.67433484963007,
           214.4708914597829,
-          302.57346749305725
+          302.57346749305725,
+          166.3784828736232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5397,6 +5418,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5704,7 +5726,8 @@ window.BENCHMARK_DATA = {
           501.043662071228,
           427.3842896733965,
           512.701161316463,
-          581.812549718221
+          581.812549718221,
+          402.34365412394203
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5716,6 +5739,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6207,7 +6231,8 @@ window.BENCHMARK_DATA = {
           405.47855777006885,
           306.5516132967813,
           374.6817469596863,
-          443.58820667266843
+          443.58820667266843,
+          283.52613226572674
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6219,6 +6244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12525,6 +12551,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -13536,7 +13568,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -14551,7 +14584,8 @@ window.BENCHMARK_DATA = {
           103.9876344760259,
           81.41244277954101,
           101.36440924008687,
-          111.5105562210083
+          111.5105562210083,
+          80.03896193504333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15550,6 +15584,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16594,7 +16629,8 @@ window.BENCHMARK_DATA = {
           257.9795584042867,
           213.6471586068471,
           261.24670342036654,
-          289.69599668796246
+          289.69599668796246,
+          198.9348142941793
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16787,6 +16823,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17918,7 +17955,8 @@ window.BENCHMARK_DATA = {
           247.988765112559,
           193.0107086988596,
           242.3762935124911,
-          267.87051776250206
+          267.87051776250206,
+          175.46967777839075
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17930,6 +17968,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -19709,6 +19748,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -19957,7 +20002,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -20209,7 +20255,8 @@ window.BENCHMARK_DATA = {
           199.10492830617088,
           155.12040322167533,
           195.9067804472787,
-          209.7291624704997
+          209.7291624704997,
+          159.52876029695784
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20414,6 +20461,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -20726,7 +20774,8 @@ window.BENCHMARK_DATA = {
           516.2239767710367,
           419.80216755867,
           573.3022924831936,
-          533.3986874307905
+          533.3986874307905,
+          408.4974352836609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20738,6 +20787,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -21243,7 +21293,8 @@ window.BENCHMARK_DATA = {
           345.65732312202454,
           265.7454131444295,
           311.8888109842936,
-          345.6254704157511
+          345.6254704157511,
+          258.63408451080323
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21255,6 +21306,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -27568,6 +27620,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -28579,7 +28637,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -29594,7 +29653,8 @@ window.BENCHMARK_DATA = {
           696.3974880854289,
           550.0537992624136,
           699.7146144280067,
-          746.8616344451905
+          746.8616344451905,
+          524.7071509043376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30581,6 +30641,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -31637,7 +31698,8 @@ window.BENCHMARK_DATA = {
           1358.248839011559,
           1112.370181274414,
           1437.0269486745199,
-          1564.4947466169085
+          1564.4947466169085,
+          1098.8147351401192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31830,6 +31892,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -32961,7 +33024,8 @@ window.BENCHMARK_DATA = {
           657.417896270752,
           524.0990291595459,
           708.6212322528546,
-          705.8645281791687
+          705.8645281791687,
+          493.48600311279296
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32973,6 +33037,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -39330,6 +39395,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -40341,7 +40412,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -41356,7 +41428,8 @@ window.BENCHMARK_DATA = {
           726.0114056723459,
           536.8528134028116,
           701.8625321070353,
-          733.6918453489031
+          733.6918453489031,
+          525.7281795648428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42343,6 +42416,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -43399,7 +43473,8 @@ window.BENCHMARK_DATA = {
           27535.047585042317,
           16942.904802594865,
           20331.434744027945,
-          29458.440590994698
+          29458.440590994698,
+          15813.564115251813
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44419,6 +44494,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -44723,7 +44799,8 @@ window.BENCHMARK_DATA = {
           775.0309674580892,
           596.0126518885295,
           726.634489440918,
-          831.4107434409005
+          831.4107434409005,
+          579.5145050457546
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44735,6 +44812,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -46862,6 +46940,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -47168,7 +47252,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -47478,7 +47563,8 @@ window.BENCHMARK_DATA = {
           671.6447199503581,
           499.35006877354215,
           590.7652410098484,
-          631.1381454467773
+          631.1381454467773,
+          514.8077551523844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47772,6 +47858,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -48111,7 +48198,8 @@ window.BENCHMARK_DATA = {
           85204.76634114583,
           53155.42330496652,
           61965.07881986178,
-          82535.42764718192
+          82535.42764718192,
+          54027.839359537764
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48426,7 +48514,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50264,6 +50353,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -50570,7 +50665,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -50880,7 +50976,8 @@ window.BENCHMARK_DATA = {
           138.08560139792306,
           102.88214989219394,
           130.19412765900293,
-          156.42046100752694
+          156.42046100752694,
+          104.1650300536837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51174,6 +51271,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -51513,7 +51611,8 @@ window.BENCHMARK_DATA = {
           32816.33756103516,
           14967.481112888881,
           17911.2056187221,
-          33064.81743977864
+          33064.81743977864,
+          14647.232786996025
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51828,7 +51927,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52132,7 +52232,8 @@ window.BENCHMARK_DATA = {
           243.6513206408574,
           181.98277945177895,
           228.75333396026068,
-          282.2695587158203
+          282.2695587158203,
+          179.98832218987602
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52144,6 +52245,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -53923,6 +54025,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -54171,7 +54279,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -54423,7 +54532,8 @@ window.BENCHMARK_DATA = {
           305.78552825634296,
           227.79330703190394,
           296.65658937181746,
-          293.11595487594604
+          293.11595487594604,
+          224.02014156977336
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54628,6 +54738,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -54940,7 +55051,8 @@ window.BENCHMARK_DATA = {
           402.20171883900963,
           341.99655209268843,
           401.71559387842814,
-          382.6408241589864
+          382.6408241589864,
+          329.6401156584422
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54952,6 +55064,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -55457,7 +55570,8 @@ window.BENCHMARK_DATA = {
           411.66645469665525,
           333.0229768117269,
           409.00521818796796,
-          396.03660879135134
+          396.03660879135134,
+          358.2384912784283
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55469,6 +55583,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -57204,6 +57319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -57452,7 +57573,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -57704,7 +57826,8 @@ window.BENCHMARK_DATA = {
           716.1665360586984,
           573.2447851816813,
           678.5675033841815,
-          733.6035655566624
+          733.6035655566624,
+          537.9747178004338
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57940,6 +58063,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -58221,7 +58345,8 @@ window.BENCHMARK_DATA = {
           1905.741680908203,
           1696.1583558400473,
           1895.6658924102783,
-          2131.649586604192
+          2131.649586604192,
+          1507.6489452362061
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58233,6 +58358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -58738,7 +58864,8 @@ window.BENCHMARK_DATA = {
           931.1156113488333,
           748.6617605209351,
           907.6047374725342,
-          1015.3704358614408
+          1015.3704358614408,
+          713.9341252871922
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58750,6 +58877,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -60485,6 +60613,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -60733,7 +60867,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -60985,7 +61120,8 @@ window.BENCHMARK_DATA = {
           12045.49539082845,
           8400.398876735142,
           10931.542291494516,
-          11893.312091282436
+          11893.312091282436,
+          8359.513330312875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61224,6 +61360,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -61502,7 +61639,8 @@ window.BENCHMARK_DATA = {
           39399.19998372396,
           27020.535895714394,
           33974.177755502555,
-          41007.01089477539
+          41007.01089477539,
+          26590.641690767727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61741,6 +61879,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -62019,7 +62158,8 @@ window.BENCHMARK_DATA = {
           10648.43442099435,
           7810.123019627163,
           10071.962538582939,
-          10527.827033996582
+          10527.827033996582,
+          7847.732675405649
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62031,6 +62171,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -63766,6 +63907,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
@@ -64014,7 +64161,8 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
@@ -64266,7 +64414,8 @@ window.BENCHMARK_DATA = {
           11305.323656354632,
           8001.2331619262695,
           10227.767029982348,
-          11660.84493146624
+          11660.84493146624,
+          7988.275752766927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64505,6 +64654,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -64783,7 +64933,8 @@ window.BENCHMARK_DATA = {
           57443.390529087614,
           38349.635709322414,
           48219.166377476286,
-          59361.00076090495
+          59361.00076090495,
+          37850.909345354354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65012,6 +65163,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -65300,7 +65452,8 @@ window.BENCHMARK_DATA = {
           20962.097425188338,
           15294.972664969308,
           19660.803297932944,
-          21246.73762512207
+          21246.73762512207,
+          15383.336443219867
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -65312,6 +65465,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
