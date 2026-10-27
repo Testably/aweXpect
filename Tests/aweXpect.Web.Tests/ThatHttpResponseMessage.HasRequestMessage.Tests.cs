@@ -57,6 +57,70 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenRequestHasDifferentContentLength_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("bar")
+					.WithRequest(HttpMethod.Get, "https://www.awexpect.com")
+					.WithRequestContent("foo");
+
+				async Task Act()
+					=> await That(subject).HasRequestMessage(request
+						=> request.HasContent(content => content.HasLength().EqualTo(5)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request message which has a string content which has length equal to 5,
+					             but the string content had length 3
+
+					             HTTP-Request:
+					               GET https://www.awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               foo
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               bar
+					             """);
+			}
+
+			[Test]
+			public async Task WhenRequestHasDifferentHost_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("bar")
+					.WithRequest(HttpMethod.Get, "https://music.example.com");
+
+				async Task Act()
+					=> await That(subject).HasRequestMessage(request
+						=> request.HasRequestUri(uri => uri.HasHost().EqualTo("other.example.com")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request message which has a request URI which has host equal to "other.example.com",
+					             but the request URI had host "music.example.com", which differs at index 0:
+					                ↓ (actual)
+					               "music.example.com"
+					               "other.example.com"
+					                ↑ (expected)
+
+					             HTTP-Request:
+					               GET https://music.example.com/ HTTP/1.1
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               bar
+					             """);
+			}
+
+			[Test]
 			public async Task WhenRequestHasMatchingContent_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

@@ -66,6 +66,53 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentHasDifferentLength_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent("foo");
+
+				async Task Act()
+					=> await That(subject).HasContent(which => which.HasLength().EqualTo(5));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which has length equal to 5,
+					             but the string content had length 3
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               foo
+					             """);
+			}
+
+			[Test]
+			public async Task WhenContentHasExpectedLength_Negated_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent("foo");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it
+						=> it.HasContent(which => which.HasLength().EqualTo(3)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which does not have length equal to 3,
+					             but the string content had length 3
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               foo
+					             """);
+			}
+
+			[Test]
 			public async Task WhenContentIsNull_ShouldFail()
 			{
 				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
