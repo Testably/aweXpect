@@ -25,9 +25,8 @@ using (Customize.aweXpect.Json().DefaultJsonDocumentOptions.Set(new JsonDocument
 }
 ```
 
-To use other `JsonDocumentOptions` for a single expectation, pass them to
-[`IsValidJson(o => …)`](./01-strings.md#validation) or, wherever [`JsonOptions`](./02-matching.md#options) are
-accepted, with `WithDocumentOptions(…)`:
+To use other `JsonDocumentOptions` for a single expectation, pass them with `WithDocumentOptions(…)` wherever
+[`JsonOptions`](./02-matching.md#options) are accepted, also in [`IsValidJson(o => …)`](./01-strings.md#validation):
 
 ```csharp
 string track = """{"title": "Let It Be", /* 1970 */ "artist": "The Beatles"}""";

@@ -1,6 +1,7 @@
 ﻿using System;
 using aweXpect.Core;
 using aweXpect.Json;
+using aweXpect.Json.Options;
 using aweXpect.Options;
 using aweXpect.Results;
 

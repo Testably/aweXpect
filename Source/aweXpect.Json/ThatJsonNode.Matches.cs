@@ -5,6 +5,7 @@ using System.Text.Json.Nodes;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Json;
+using aweXpect.Json.Options;
 using aweXpect.Results;
 
 namespace aweXpect;

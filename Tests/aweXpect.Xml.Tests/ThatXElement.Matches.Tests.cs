@@ -31,8 +31,8 @@ public sealed partial class ThatXElement
 
 			[Test]
 			[Arguments("<a x=\"2\"/>", "<a x=\"1\"/>", "/a/@x was \"2\" instead of \"1\"")]
-			[Arguments("<a/>", "<a x=\"1\"/>", "/a/@x was missing")]
-			[Arguments("<a><c/></a>", "<a><b/></a>", "/a/b was missing")]
+			[Arguments("<a/>", "<a x=\"1\"/>", "/a/@x had missing \"1\"")]
+			[Arguments("<a><c/></a>", "<a><b/></a>", "/a/b had missing <b />")]
 			[Arguments("<a>y</a>", "<a>x</a>", "/a/text() was \"y\" instead of \"x\"")]
 			[Arguments("<a><c/><b/></a>", "<a><b/><c/></a>", "/a had the child nodes in the order c, b instead of b, c")]
 			[Arguments("<a xmlns=\"urn:v1\"/>", "<a xmlns=\"urn:v2\"/>",
@@ -217,9 +217,9 @@ public sealed partial class ThatXElement
 		public sealed class Tests
 		{
 			[Test]
-			[Arguments("<a x=\"1\" y=\"2\"/>", "<a x=\"1\"/>", "/a/@y was unexpected")]
-			[Arguments("<a><b/><c/></a>", "<a><b/></a>", "/a/c was unexpected")]
-			[Arguments("<a>text<b/></a>", "<a><b/></a>", "/a/text() was unexpected")]
+			[Arguments("<a x=\"1\" y=\"2\"/>", "<a x=\"1\"/>", "/a/@y had unexpected \"2\"")]
+			[Arguments("<a><b/><c/></a>", "<a><b/></a>", "/a/c had unexpected <c />")]
+			[Arguments("<a>text<b/></a>", "<a><b/></a>", "/a/text() had unexpected \"text\"")]
 			[Arguments("<a x=\"2\"/>", "<a x=\"1\"/>", "/a/@x was \"2\" instead of \"1\"")]
 			public async Task WhenSubjectDiffers_ShouldFail(string subject, string expected, string difference)
 			{
@@ -264,10 +264,10 @@ public sealed partial class ThatXElement
 			}
 
 			[Test]
-			[Arguments("<a xml:space=\"preserve\"> <b/></a>", "<a xml:space=\"preserve\"><b/></a>", "/a/text() was unexpected")]
+			[Arguments("<a xml:space=\"preserve\"> <b/></a>", "<a xml:space=\"preserve\"><b/></a>", "/a/text() had unexpected \" \"")]
 			[Arguments("<a xml:space=\"preserve\"><b> <c/></b></a>", "<a xml:space=\"preserve\"><b><c/></b></a>",
-				"/a/b/text() was unexpected")]
-			[Arguments("<a><![CDATA[ ]]></a>", "<a/>", "/a/text() was unexpected")]
+				"/a/b/text() had unexpected \" \"")]
+			[Arguments("<a><![CDATA[ ]]></a>", "<a/>", "/a/text() had unexpected \" \"")]
 			public async Task WhenSubjectHasSignificantWhitespace_ShouldCompareIt(string subject, string expected,
 				string difference)
 			{
@@ -291,7 +291,7 @@ public sealed partial class ThatXElement
 					=> await That(element).MatchesExactly("<a><b/></a>");
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("*but it differed as /a/text() was unexpected*").AsWildcard()
+					.WithMessage("*but it differed as /a/text() had unexpected \" \"*").AsWildcard()
 					.Because("xml:space applies to the subject also when it is set on an ancestor");
 			}
 

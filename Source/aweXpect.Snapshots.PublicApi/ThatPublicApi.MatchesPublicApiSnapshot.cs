@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Snapshots.PublicApi;
+using aweXpect.Snapshots.PublicApi.Options;
 using aweXpect.Snapshots.Results;
 
 namespace aweXpect;

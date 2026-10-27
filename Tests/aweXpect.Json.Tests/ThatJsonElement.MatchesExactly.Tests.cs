@@ -1141,7 +1141,7 @@ public sealed partial class ThatJsonElement
 		public sealed class ObjectTests
 		{
 			[Test]
-			[Arguments("{}", "$.foo was missing")]
+			[Arguments("{}", "$.foo had missing 2")]
 			[Arguments("{\"foo\": 2}")]
 			public async Task ShouldFailIfPropertyIsMissing(string json,
 				string? errorMessage = null)
@@ -1300,7 +1300,7 @@ public sealed partial class ThatJsonElement
 					             	foo = (string?)null,
 					             	bar = 2,
 					             } exactly,
-					             but it differed as $.foo was missing
+					             but it differed as $.foo had missing <null>
 					             """);
 			}
 
@@ -1424,7 +1424,7 @@ public sealed partial class ThatJsonElement
 
 				async Task Act()
 					=> await That(track).MatchesExactly(new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
-						o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
+						o => o.IgnoringMember("id").IgnoringMember("createdAt").IgnoringMembers(path => path.EndsWith(".etag")));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -1823,7 +1823,7 @@ public sealed partial class ThatJsonElement
 							},
 						},
 						etag = 2,
-					}, o => o.Ignoring(path => path.StartsWith("$.items[") && path.EndsWith(".etag")));
+					}, o => o.IgnoringMembers(path => path.StartsWith("$.items[") && path.EndsWith(".etag")));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -1862,7 +1862,7 @@ public sealed partial class ThatJsonElement
 					}, o => o
 						.IgnoringMember("id")
 						.IgnoringMember("createdAt")
-						.Ignoring(path => path == "$.etag"));
+						.IgnoringMembers(path => path == "$.etag"));
 
 				await That(Act).DoesNotThrow();
 			}

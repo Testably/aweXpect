@@ -78,7 +78,7 @@ public sealed partial class XmlOptionsTests
 				             but it differed as
 				               /a/b[1]/text() was "x" instead of "y" and
 				               /a/b[2]/text() was "y" instead of "z" and
-				               /a/b[2]/d was unexpected
+				               /a/b[2]/d had unexpected <d />
 
 				             Actual:
 				             <a><b>x<c/></b><b>y<c/><d/></b></a>
@@ -102,7 +102,7 @@ public sealed partial class XmlOptionsTests
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringElementOrder());
 
 			await That(Act).Throws<FailException>()
-				.WithMessage("*but it differed as /a/b[2] was missing*").AsWildcard();
+				.WithMessage("*but it differed as /a/b[2] had missing <b x=\"2\" />*").AsWildcard();
 		}
 
 		[Test]
@@ -115,7 +115,7 @@ public sealed partial class XmlOptionsTests
 				=> await That(subject).IsEqualTo(expected).AsXml(o => o.IgnoringElementOrder());
 
 			await That(Act).Throws<FailException>()
-				.WithMessage("*but it differed as /a/b[3] was unexpected*").AsWildcard();
+				.WithMessage("*but it differed as /a/b[3] had unexpected <b x=\"3\" />*").AsWildcard();
 		}
 
 		[Test]
@@ -262,7 +262,7 @@ public sealed partial class XmlOptionsTests
 				=> await That(element).Matches("<a><b/><b x=\"1\"/></a>", o => o.IgnoringElementOrder());
 
 			await That(Act).Throws<FailException>()
-				.WithMessage("*but it differed as /a/b[2]/@x was missing*").AsWildcard()
+				.WithMessage("*but it differed as /a/b[2]/@x had missing \"1\"*").AsWildcard()
 				.Because("the first expected element is paired with the first element it matches, although the second expected element needed it");
 		}
 	}

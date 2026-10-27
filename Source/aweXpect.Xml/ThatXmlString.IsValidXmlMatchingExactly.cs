@@ -1,7 +1,7 @@
 using System;
 using aweXpect.Core;
 using aweXpect.Results;
-using aweXpect.Xml;
+using aweXpect.Xml.Options;
 
 namespace aweXpect;
 

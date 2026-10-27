@@ -79,7 +79,7 @@ public sealed partial class XmlOptionsTests
 
 			async Task Act()
 				=> await That(subject).IsEqualTo("<a id=\"2\" x=\"2\"/>")
-					.AsXml(o => o.IgnoringMember("@id").Ignoring(path => path.EndsWith("/@etag")));
+					.AsXml(o => o.IgnoringMember("@id").IgnoringMembers(path => path.EndsWith("/@etag")));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

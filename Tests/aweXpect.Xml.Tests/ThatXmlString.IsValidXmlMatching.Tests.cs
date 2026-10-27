@@ -185,7 +185,7 @@ public sealed partial class ThatXmlString
 					.WithMessage("""
 					             Expected that subject
 					             is valid XML which matches <a x="1"/> exactly,
-					             but it differed as /a/@y was unexpected
+					             but it differed as /a/@y had unexpected "2"
 					             """);
 			}
 

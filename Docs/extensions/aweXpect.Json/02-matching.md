@@ -119,16 +119,16 @@ The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `
 [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json).
 They work like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
 
-| Option                                                             | Configures                                             |
-|--------------------------------------------------------------------|--------------------------------------------------------|
-| [`IgnoringAdditionalProperties()`](#objects)                       | ignores additional properties of objects               |
-| [`TreatingNullAsAbsent()`](#treating-null-as-absent)               | a property with the value `null` counts as absent      |
-| [`IgnoringAdditionalArrayElements()`](#additional-array-elements)  | ignores additional elements of arrays                  |
-| [`IgnoringArrayOrder()`](#array-order)                             | the elements of arrays can be in any order             |
-| [`IgnoringMember(name)`, `Ignoring(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
-| [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance) | numbers match within an absolute or relative tolerance |
-| [`WithDocumentOptions(…)`](./06-customization.md)                  | the `JsonDocumentOptions` used to parse JSON strings   |
-| [`WithSerializerOptions(…)`](#serializer-options)                  | the `JsonSerializerOptions` for the expected value     |
+| Option                                                                    | Configures                                             |
+|---------------------------------------------------------------------------|--------------------------------------------------------|
+| [`IgnoringAdditionalProperties()`](#objects)                              | ignores additional properties of objects               |
+| [`TreatingNullAsAbsent()`](#treating-null-as-absent)                      | a property with the value `null` counts as absent      |
+| [`IgnoringAdditionalArrayElements()`](#additional-array-elements)         | ignores additional elements of arrays                  |
+| [`IgnoringArrayOrder()`](#array-order)                                    | the elements of arrays can be in any order             |
+| [`IgnoringMember(name)`, `IgnoringMembers(path => …)`](#ignoring-members) | leaves values out of the comparison                    |
+| [`ComparingNumbersWithin(tolerance)`](#numbers-within-a-tolerance)        | numbers match within an absolute or relative tolerance |
+| [`WithDocumentOptions(…)`](./06-customization.md)                         | the `JsonDocumentOptions` used to parse JSON strings   |
+| [`WithSerializerOptions(…)`](#serializer-options)                         | the `JsonSerializerOptions` for the expected value     |
 
 ### Treating `null` as absent
 
@@ -210,7 +210,7 @@ The pairing is greedy, so overlapping `It.Is…` expectations can fail, although
 ### Ignoring members
 
 Generated values, e.g. ids, timestamps or ETags, can be left out of the comparison with `IgnoringMember(name)` or
-`Ignoring(path => …)`. An ignored value and everything below it is neither compared nor reported as missing or
+`IgnoringMembers(path => …)`. An ignored value and everything below it is neither compared nor reported as missing or
 unexpected:
 
 ```csharp
@@ -219,7 +219,7 @@ JsonElement track = JsonDocument.Parse(
 
 await Expect.That(track).MatchesExactly(
     new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
-    o => o.IgnoringMember("id").IgnoringMember("createdAt").Ignoring(path => path.EndsWith(".etag")));
+    o => o.IgnoringMember("id").IgnoringMember("createdAt").IgnoringMembers(path => path.EndsWith(".etag")));
 ```
 
 The name is matched against the JSON path, as it is shown in failure messages, and must cover whole trailing segments

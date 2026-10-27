@@ -7,7 +7,7 @@ using aweXpect.Core.Extending;
 using aweXpect.Formatting;
 using static aweXpect.Formatting.Format;
 
-namespace aweXpect.Xml;
+namespace aweXpect.Xml.Options;
 
 /// <summary>
 ///     Options for comparing XML.
@@ -21,7 +21,7 @@ public sealed class XmlOptions
 	/// <summary>
 	///     Creates options without any active option.
 	/// </summary>
-	public XmlOptions()
+	internal XmlOptions()
 	{
 	}
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Nodes;
 using aweXpect.Core;
-using aweXpect.Json;
+using aweXpect.Json.Options;
 using aweXpect.Results;
 
 namespace aweXpect;

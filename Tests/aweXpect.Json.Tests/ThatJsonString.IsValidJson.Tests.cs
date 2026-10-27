@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json.Tests;
 
@@ -17,10 +18,10 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2,]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson(o => o with
+					=> await That(subject).IsValidJson(o => o.WithDocumentOptions(d => d with
 					{
 						AllowTrailingCommas = allowTrailingCommas,
-					});
+					}));
 
 				await That(Act).Throws<FailException>().OnlyIf(!allowTrailingCommas);
 			}
@@ -169,6 +170,28 @@ public sealed partial class ThatJsonString
 			}
 
 			[Test]
+			public async Task WhenComparisonOptionsAreProvided_ShouldIgnoreThem()
+			{
+				string subject = "[2, 1]";
+
+				async Task Act()
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]), o => o.IgnoringArrayOrder());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches [1, 2,],
+					             but it differed as
+					               $[0] was 2 instead of 1 and
+					               $[1] was 1 instead of 2
+
+					             JSON options (it):
+					              - ignore additional properties
+					             """)
+					.Because("only the document options apply to parsing, the comparison options of the nested expectations are their own");
+			}
+
+			[Test]
 			public async Task WhenExpectationFails_ShouldFail()
 			{
 				string subject = "[1, 2]";
@@ -264,10 +287,10 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2,]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]), o => o with
+					=> await That(subject).IsValidJson(d => d.Matches([1, 2,]), o => o.WithDocumentOptions(d => d with
 					{
 						AllowTrailingCommas = allowTrailingCommas,
-					});
+					}));
 
 				await That(Act).Throws<FailException>().OnlyIf(!allowTrailingCommas)
 					.WithMessage("""
@@ -294,33 +317,30 @@ public sealed partial class ThatJsonString
 		public sealed class OverloadResolutionTests
 		{
 			[Test]
-			public async Task WhenLambdaCreatesOptions_ShouldBindToOptions()
+			public async Task WhenLambdaReturnsItsParameter_ShouldBindToOptions()
 			{
-				string subject = "[1, 2,]";
+				string subject = "[1]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson(_ => new JsonDocumentOptions
-					{
-						AllowTrailingCommas = true,
-					});
+					=> await That(subject).IsValidJson(o => o);
 
 				await That(Act).DoesNotThrow()
-					.Because("an object creation is also a valid statement for the expectations, but a lambda with a return value binds better to the options");
+					.Because("a parameter alone is no valid statement for the expectations");
 			}
 
 			[Test]
-			public async Task WhenLambdaReturnsModifiedOptions_ShouldBindToOptions()
+			public async Task WhenLambdaSetsDocumentOptions_ShouldBindToOptions()
 			{
 				string subject = "[1, 2,]";
 
 				async Task Act()
-					=> await That(subject).IsValidJson(o => o with
+					=> await That(subject).IsValidJson(o => o.WithDocumentOptions(d => d with
 					{
 						AllowTrailingCommas = true,
-					});
+					}));
 
 				await That(Act).DoesNotThrow()
-					.Because("a with expression only compiles for the options");
+					.Because("an option only compiles on the options");
 			}
 
 			[Test]
@@ -351,11 +371,11 @@ public sealed partial class ThatJsonString
 				await That(Act).DoesNotThrow()
 					.Because("the method group only converts to the options");
 
-				static JsonDocumentOptions AllowTrailingCommas(JsonDocumentOptions options)
-					=> options with
+				static JsonOptions AllowTrailingCommas(JsonOptions options)
+					=> options.WithDocumentOptions(d => d with
 					{
 						AllowTrailingCommas = true,
-					};
+					});
 			}
 
 			[Test]
@@ -506,10 +526,10 @@ public sealed partial class ThatJsonString
 				string subject = "[1, 2,]";
 
 				async Task Act()
-					=> await That(subject).IsNotValidJson(o => o with
+					=> await That(subject).IsNotValidJson(o => o.WithDocumentOptions(d => d with
 					{
 						AllowTrailingCommas = allowTrailingCommas,
-					});
+					}));
 
 				await That(Act).Throws<FailException>().OnlyIf(allowTrailingCommas)
 					.WithMessage("""

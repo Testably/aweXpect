@@ -31,7 +31,7 @@ public sealed partial class ExpectedSerializerOptionsTests
 			             	Title = "Let It Be",
 			             } exactly,
 			             but it differed as
-			               $.Title was missing and
+			               $.Title had missing "Let It Be" and
 			               $.title had unexpected "Let It Be"
 			             """)
 			.Because("without customized options, the expected value keeps the casing of its properties");

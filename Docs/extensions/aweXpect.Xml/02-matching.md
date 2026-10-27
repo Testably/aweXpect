@@ -76,11 +76,11 @@ The options are available wherever `XmlOptions` are accepted, i.e. `Matches`, `M
 `IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). They work like the
 [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
 
-| Option                                                             | Configures                                                   |
-|--------------------------------------------------------------------|--------------------------------------------------------------|
-| [`IgnoringAdditionalNodes()`](#additional-nodes)                   | ignores additional attributes and child nodes of the subject |
-| [`IgnoringMember(path)`, `Ignoring(path => …)`](#ignoring-members) | leaves members out of the comparison                         |
-| [`IgnoringElementOrder()`](#element-order)                         | the child elements and texts can be in any order             |
+| Option                                                                    | Configures                                                   |
+|---------------------------------------------------------------------------|--------------------------------------------------------------|
+| [`IgnoringAdditionalNodes()`](#additional-nodes)                          | ignores additional attributes and child nodes of the subject |
+| [`IgnoringMember(path)`, `IgnoringMembers(path => …)`](#ignoring-members) | leaves members out of the comparison                         |
+| [`IgnoringElementOrder()`](#element-order)                                | the child elements and texts can be in any order             |
 
 ### Additional nodes
 
@@ -119,7 +119,7 @@ await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together"
     .AsXml(o => o
         .IgnoringMember("/album/@id")
         .IgnoringMember("@createdAt")
-        .Ignoring(path => path.EndsWith("/@etag")));
+        .IgnoringMembers(path => path.EndsWith("/@etag")));
 ```
 
 `IgnoringMember` matches whole trailing segments of the [path](./01-strings.md#string-comparison-as-xml):
@@ -127,7 +127,7 @@ await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together"
 starting with `/`, e.g. `"/album/@id"`, only ignores this member. A segment without a position, e.g. `track`, matches
 every element of the name, and `track[2]` only the second. The names are compared case-sensitively, as in XML. Like
 the paths, they are local names, so that `"track"` ignores a `track` in every namespace, unlike
-[`HasElement`](./03-navigation.md#names-and-namespaces), which looks up the name with its namespace. `Ignoring`
+[`HasElement`](./03-navigation.md#names-and-namespaces), which looks up the name with its namespace. `IgnoringMembers`
 receives the path of every compared member instead.
 
 An ignored attribute, element or text, and everything below it, is neither compared nor reported as missing or

@@ -177,7 +177,7 @@ public sealed partial class XmlOptionsTests
 				.WithMessage("""
 				             Expected that element
 				             matches <a x="1"/> exactly,
-				             but it differed as /a/@y was unexpected
+				             but it differed as /a/@y had unexpected "2"
 				             """)
 				.Because("disabling the preset option makes Matches compare like MatchesExactly");
 		}

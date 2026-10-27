@@ -21,9 +21,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> MatchesExactly(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XDocument, aweXpect.Core.IThat<System.Xml.Linq.XDocument?>> MatchesExactly(this aweXpect.Core.IThat<System.Xml.Linq.XDocument?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
     }
     public static class ThatXElement
     {
@@ -44,9 +44,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Xml.Results.XmlValueResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> HasValue(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> Matches(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> MatchesExactly(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<System.Xml.Linq.XElement, aweXpect.Core.IThat<System.Xml.Linq.XElement?>> MatchesExactly(this aweXpect.Core.IThat<System.Xml.Linq.XElement?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
     }
     public static class ThatXmlString
     {
@@ -57,28 +57,30 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXml(this aweXpect.Core.IThat<string?> subject, System.Action<aweXpect.Core.IThatSubject<System.Xml.Linq.XElement>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXmlMatching(this aweXpect.Core.IThat<string?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXmlMatching(this aweXpect.Core.IThat<string?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXmlMatchingExactly(this aweXpect.Core.IThat<string?> subject, string expected, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) { }
+        public static aweXpect.Results.AndOrResult<string, aweXpect.Core.IThat<string?>> IsValidXmlMatchingExactly(this aweXpect.Core.IThat<string?> subject, string expected, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) { }
     }
     public static class XmlExtensions
     {
-        public static TSelf AsXml<TSelf>(this TSelf result, System.Func<aweXpect.Xml.XmlOptions, aweXpect.Xml.XmlOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
+        public static TSelf AsXml<TSelf>(this TSelf result, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
 }
 namespace aweXpect.Xml
 {
+    public static class XmlOptionsExtensions
+    {
+        public static aweXpect.Xml.Options.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.Options.XmlOptions @this, bool ignoreAdditionalNodes = true) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringElementOrder(this aweXpect.Xml.Options.XmlOptions @this, bool ignoreElementOrder = true) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringMember(this aweXpect.Xml.Options.XmlOptions @this, string memberToIgnore) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringMembers(this aweXpect.Xml.Options.XmlOptions @this, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+    }
+}
+namespace aweXpect.Xml.Options
+{
     [aweXpect.Core.ImmutableOptions]
     public sealed class XmlOptions
     {
-        public XmlOptions() { }
-    }
-    public static class XmlOptionsExtensions
-    {
-        public static aweXpect.Xml.XmlOptions Ignoring(this aweXpect.Xml.XmlOptions @this, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Xml.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.XmlOptions @this, bool ignoreAdditionalNodes = true) { }
-        public static aweXpect.Xml.XmlOptions IgnoringElementOrder(this aweXpect.Xml.XmlOptions @this, bool ignoreElementOrder = true) { }
-        public static aweXpect.Xml.XmlOptions IgnoringMember(this aweXpect.Xml.XmlOptions @this, string memberToIgnore) { }
     }
 }
 namespace aweXpect.Xml.Results

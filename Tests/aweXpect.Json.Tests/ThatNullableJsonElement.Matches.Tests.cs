@@ -673,7 +673,7 @@ public sealed partial class ThatNullableJsonElement
 			}
 
 			[Test]
-			[Arguments("{}", "$.foo was missing")]
+			[Arguments("{}", "$.foo had missing 2")]
 			[Arguments("{\"foo\": 2}")]
 			public async Task ShouldFailIfPropertyIsMissing(string json,
 				string? errorMessage = null)

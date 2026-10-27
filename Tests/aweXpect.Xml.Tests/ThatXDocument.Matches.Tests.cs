@@ -145,8 +145,8 @@ public sealed partial class ThatXDocument
 					             Expected that document
 					             matches <a/> exactly,
 					             but it differed as
-					               /a/@x was unexpected and
-					               /a/b was unexpected
+					               /a/@x had unexpected "1" and
+					               /a/b had unexpected <b />
 					             """);
 			}
 

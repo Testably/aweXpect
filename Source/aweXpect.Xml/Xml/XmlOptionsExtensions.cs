@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
+using aweXpect.Xml.Options;
 
 namespace aweXpect.Xml;
 
@@ -94,7 +95,7 @@ public static class XmlOptionsExtensions
 	///     An ignored attribute, element or text, and everything below it, is neither compared nor reported as missing
 	///     or unexpected, and an ignored child is not considered for the order of the child nodes.
 	/// </remarks>
-	public static XmlOptions Ignoring(
+	public static XmlOptions IgnoringMembers(
 		this XmlOptions @this,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")

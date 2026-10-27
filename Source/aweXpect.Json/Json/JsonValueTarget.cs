@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Json.Options;
 
 namespace aweXpect.Json;
 

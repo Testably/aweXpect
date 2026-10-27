@@ -116,10 +116,16 @@ including `It.Is…` expectations. Without `JsonSerializerOptions`, the subject 
 the [customization](./06-customization.md). A `null` subject is serialized as `null`, and a subject that cannot be
 serialized, e.g. because of a reference cycle, fails the expectation with the message of the exception.
 
-The `JsonSerializerOptions` parameter only serializes the subject. An expected object is serialized with the default
-options, neither with this parameter nor with the customized default options, so that a naming policy cannot hide
-how the subject is actually serialized. To serialize the expected object with other options, pass them with
-[`o => o.WithSerializerOptions(…)`](./02-matching.md#serializer-options):
+The subject and an expected object are serialized on two separate paths:
+
+| Value              | Serialized with                                                          | Without them                              |
+|--------------------|--------------------------------------------------------------------------|-------------------------------------------|
+| the subject        | the `JsonSerializerOptions` or `JsonTypeInfo<T>` parameter               | the default options of the customization  |
+| an expected object | [`o => o.WithSerializerOptions(…)`](./02-matching.md#serializer-options) | the default options of `System.Text.Json` |
+
+So the `JsonSerializerOptions` parameter only serializes the subject, and an expected object is serialized neither
+with this parameter nor with the customized default options, so that a naming policy cannot hide how the subject is
+actually serialized. To serialize the expected object with other options, pass them with `WithSerializerOptions(…)`:
 
 ```csharp
 JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };

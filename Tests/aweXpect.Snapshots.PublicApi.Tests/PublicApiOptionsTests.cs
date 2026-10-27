@@ -1,5 +1,6 @@
 using aweXpect.Customization;
 using aweXpect.Snapshots.PublicApi.Fixture;
+using aweXpect.Snapshots.PublicApi.Options;
 using aweXpect.Snapshots.PublicApi.Tests.TestHelpers;
 
 namespace aweXpect.Snapshots.PublicApi.Tests;
@@ -98,6 +99,43 @@ public sealed class PublicApiOptionsTests
 
 		await That(exception).IsNotNull();
 		await That(traceWriter.Exceptions).HasSingle().Which.IsSameAs(exception);
+	}
+
+	[Test]
+	public async Task Options_ShouldNotChangeTheOptionsTheyAreCalledOn()
+	{
+		string expected = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o => o);
+
+		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, o =>
+		{
+			_ = o.Ignoring.Attribute<ObsoleteAttribute>();
+			_ = o.Ignoring.CompilerGeneratedMembers();
+			_ = o.Ignoring.ForwardedTypes();
+			_ = o.Ignoring.Namespace("");
+			_ = o.Ignoring.Type<Album>();
+			_ = o.Within.Namespace("Nowhere");
+			_ = o.Within.Type<Album>();
+			_ = o.Formatting.ParametersOnSeparateLines();
+			return o;
+		});
+
+		await That(result).IsEqualTo(expected)
+			.Because("each option returns new options instead of changing the ones it is called on");
+	}
+
+	[Test]
+	public async Task StoredOptions_ShouldNotBeChangedByLaterOptions()
+	{
+		PublicApiOptions withinAlbum = new PublicApiOptions().Within.Type<Album>();
+		string expected = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, _ => withinAlbum);
+
+		PublicApiOptions ignoringAlbum = withinAlbum.Ignoring.Type<Album>();
+		string result = PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, _ => withinAlbum);
+
+		await That(result).IsEqualTo(expected).And.Contains("class Album")
+			.Because("options derived from stored options must not change them");
+		await That(PublicApiDeclarations.GenerateFrom(typeof(Album).Assembly, _ => ignoringAlbum))
+			.DoesNotContain("class Album");
 	}
 
 	[Test]

@@ -7,6 +7,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Json;
+using aweXpect.Json.Options;
 
 namespace aweXpect;
 

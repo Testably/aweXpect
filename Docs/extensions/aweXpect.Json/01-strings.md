@@ -80,12 +80,15 @@ but it could not be parsed: Expected depth to be zero at the end of the JSON pay
 This verifies that the string can be parsed by
 [`JsonDocument.Parse`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocument.parse) without
 exceptions. You can also specify the
-[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions):
+[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) with
+`WithDocumentOptions(…)`; the other [JSON options](./02-matching.md#options) are ignored, as there is nothing to
+compare:
 
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson(o => o with { CommentHandling = JsonCommentHandling.Disallow });
+await Expect.That(track).IsValidJson(
+    o => o.WithDocumentOptions(d => d with { CommentHandling = JsonCommentHandling.Disallow }));
 ```
 
 You can also verify that a string is not valid JSON:
@@ -101,7 +104,8 @@ The `JsonDocumentOptions` are available here as well, e.g. to reject a trailing 
 ```csharp
 string track = """{"title": "Let It Be",}""";
 
-await Expect.That(track).IsNotValidJson(o => o with { AllowTrailingCommas = false });
+await Expect.That(track).IsNotValidJson(
+    o => o.WithDocumentOptions(d => d with { AllowTrailingCommas = false }));
 ```
 
 If the string is valid JSON, e.g. `"[1, 2]"`, the expectation fails with:
@@ -114,13 +118,14 @@ but it was "[1, 2]"
 
 You can add further expectations on the root
 [`JsonElement`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonelement) parsed from the subject,
-optionally followed by the `JsonDocumentOptions`:
+optionally followed by the document options:
 
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
 await Expect.That(track).IsValidJson(j => j.Matches(new { title = "Let It Be" }));
-await Expect.That(track).IsValidJson(j => j.IsObject(), o => o with { AllowTrailingCommas = true });
+await Expect.That(track).IsValidJson(j => j.IsObject(),
+    o => o.WithDocumentOptions(d => d with { AllowTrailingCommas = true }));
 ```
 
 Or you can verify that the string is valid JSON and [matches](./02-matching.md) an expected value in one step:

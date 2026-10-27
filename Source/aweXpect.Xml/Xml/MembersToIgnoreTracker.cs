@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core.Extending;
+using aweXpect.Xml.Options;
 
 namespace aweXpect.Xml;
 

@@ -1,4 +1,4 @@
-namespace aweXpect.Snapshots.PublicApi;
+namespace aweXpect.Snapshots.PublicApi.Options;
 
 /// <summary>
 ///     Selects how the public API is formatted, e.g. <c>o => o.Formatting.ParametersOnSeparateLines()</c>.
@@ -17,8 +17,8 @@ public sealed class PublicApiFormatting
 	///     on separate lines, so that a change of a single parameter shows up as a change of a single line.
 	/// </summary>
 	public PublicApiOptions ParametersOnSeparateLines()
-	{
-		_options.WritesParametersOnSeparateLines = true;
-		return _options;
-	}
+		=> new PublicApiOptions(_options)
+		{
+			WritesParametersOnSeparateLines = true,
+		};
 }

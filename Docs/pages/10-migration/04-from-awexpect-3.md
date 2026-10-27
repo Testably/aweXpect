@@ -38,14 +38,16 @@ the next major version.
 
 None of the renames has an `[Obsolete]` forwarder; each is a compile error that is fixed once:
 
-| v3                                                       | v4                                                         |
-|----------------------------------------------------------|------------------------------------------------------------|
-| `IsEquivalentTo(…, o => o.Ignoring(predicate))`          | `IsEquivalentTo(…, o => o.IgnoringMembers(predicate))`     |
-| `IsValidJson().Which(j => …)`                            | `IsValidJson(j => …)`                                      |
-| `IsValidXml().Which(root => …)`                          | `IsValidXml(root => …)`                                    |
-| `HasStatusCode().DifferentTo(…)`                         | `HasStatusCode().NotEqualTo(…)`                            |
-| `WithJsonOptions(…)` in the Json options                 | `WithDocumentOptions(…)`                                   |
-| `o => o with { … }` on `JsonOptions`                     | the option methods, e.g. `o => o.IgnoringArrayOrder()`     |
+| v3                                                | v4                                                           |
+|---------------------------------------------------|--------------------------------------------------------------|
+| `IsEquivalentTo(…, o => o.Ignoring(predicate))`   | `IsEquivalentTo(…, o => o.IgnoringMembers(predicate))`       |
+| `IsValidJson().Which(j => …)`                     | `IsValidJson(j => …)`                                        |
+| `IsValidXml().Which(root => …)`                   | `IsValidXml(root => …)`                                      |
+| `HasStatusCode().DifferentTo(…)`                  | `HasStatusCode().NotEqualTo(…)`                              |
+| `WithJsonOptions(…)` in the Json options          | `WithDocumentOptions(…)`                                     |
+| `o => o with { … }` on `JsonOptions`              | the option methods, e.g. `o => o.IgnoringArrayOrder()`       |
+| `Ignoring(predicate)` in the Json and Xml options | `IgnoringMembers(predicate)`                                 |
+| `IsValidJson(o => o with { … })`                  | `IsValidJson(o => o.WithDocumentOptions(d => d with { … }))` |
 
 `IsValidJson(null)` without a parameter name is now ambiguous; write `IsValidJson(options: null)`.
 
@@ -66,6 +68,8 @@ need an update. Among others:
   items`, and a negated JSON kind check names the actual kind.
 - The JSON and XML options are listed in the failure of the comparison itself, not in the failure of an unrelated
   expectation on the same subject.
+- A missing JSON property and a missing or unexpected XML node name the value like a missing array element, e.g.
+  `$.title had missing "Let It Be"` instead of `$.title was missing`.
 - The status code expectations read like the operators of the other property results, e.g.
   `DoesNotHaveStatusCode(404)` and `HasStatusCode().NotEqualTo(404)` read `does not have status code equal to 404
   NotFound`, and `HasStatusCode().Success()` reads `has status code in the success range (2xx)`.
@@ -189,6 +193,8 @@ Suppress it in test projects that use a virtual time system.
   `ExcludingForwardedTypes`, and needs no extra `using`.
 - `MatchesPublicApiSnapshot` has one overload per subject with an optional `options` parameter instead of one with and
   one without options. Calls compile unchanged, but have to be compiled again.
+- `PublicApiOptions` is immutable: each option returns new options, so a call whose result is discarded has no
+  effect.
 
 ### aweXpect.Web
 
@@ -204,7 +210,8 @@ Suppress it in test projects that use a virtual time system.
 
 ### Namespaces
 
-Results of the extension packages are in `aweXpect.<Package>.Results` and their other public types in
+Results of the extension packages are in `aweXpect.<Package>.Results`, their option types (`JsonOptions`,
+`XmlOptions`, `PublicApiOptions`) in `aweXpect.<Package>.Options` and their other public types in
 `aweXpect.<Package>`. Add the matching `using` where you name such a type.
 
 ## Extensions
