@@ -1278,6 +1278,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -1493,7 +1499,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -1712,7 +1719,8 @@ window.BENCHMARK_DATA = {
           10489.977147028996,
           5358.826784133911,
           8652.412251790365,
-          10400.28583233173
+          10400.28583233173,
+          10515.410911560059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1936,6 +1944,7 @@ window.BENCHMARK_DATA = {
           1976,
           1976,
           1976,
+          1984,
           1984
         ],
         "borderColor": "#63A2AC",
@@ -2163,7 +2172,8 @@ window.BENCHMARK_DATA = {
           401642.30247395835,
           194877.18960336538,
           297464.66705729166,
-          371071.47405133926
+          371071.47405133926,
+          377371.292578125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2387,7 +2397,8 @@ window.BENCHMARK_DATA = {
           590291,
           590288,
           590288,
-          590292
+          590292,
+          590291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2614,7 +2625,8 @@ window.BENCHMARK_DATA = {
           20991.482006835937,
           10431.344758097332,
           16469.35012919108,
-          19432.951599121094
+          19432.951599121094,
+          20851.203070504325
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2626,6 +2638,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4088,6 +4101,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -4296,7 +4315,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -4508,7 +4528,8 @@ window.BENCHMARK_DATA = {
           268.76230669021606,
           114.64276261840548,
           209.92364970842996,
-          233.70654643376668
+          233.70654643376668,
+          246.00695794423422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4704,6 +4725,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -4945,7 +4967,8 @@ window.BENCHMARK_DATA = {
           565.7285221735636,
           271.3984006245931,
           521.033000055949,
-          495.96548315684
+          495.96548315684,
+          515.6137050628662
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4957,6 +4980,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5382,7 +5406,8 @@ window.BENCHMARK_DATA = {
           414.6178254127502,
           238.0486925159182,
           368.73893276850384,
-          390.90698251724245
+          390.90698251724245,
+          386.83908125559486
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5394,6 +5419,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -11469,6 +11495,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -12447,7 +12479,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -13429,7 +13462,8 @@ window.BENCHMARK_DATA = {
           120.85143076578775,
           61.115884167807444,
           98.70392932494481,
-          112.92923006216685
+          112.92923006216685,
+          119.79995482762655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14395,6 +14429,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -15406,7 +15441,8 @@ window.BENCHMARK_DATA = {
           256.9643646478653,
           136.47668579419454,
           245.51052757898967,
-          247.6885269800822
+          247.6885269800822,
+          280.7942096074422
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15599,6 +15635,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -16664,7 +16701,8 @@ window.BENCHMARK_DATA = {
           260.82339305877684,
           129.7329966838543,
           219.25721429983776,
-          238.22259707450866
+          238.22259707450866,
+          248.92077496846517
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16676,6 +16714,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -18224,6 +18263,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -18439,7 +18484,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -18658,7 +18704,8 @@ window.BENCHMARK_DATA = {
           224.4891011397044,
           120.88694395337787,
           197.99038395086924,
-          212.80931339263915
+          212.80931339263915,
+          205.57335909207663
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18863,6 +18910,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -19109,7 +19157,8 @@ window.BENCHMARK_DATA = {
           562.1018281936646,
           277.5664177962712,
           504.0490386327108,
-          509.0085248213548
+          509.0085248213548,
+          568.9625689188639
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19121,6 +19170,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -19560,7 +19610,8 @@ window.BENCHMARK_DATA = {
           371.66222922007245,
           197.08220030580247,
           305.9918378829956,
-          332.53013273874916
+          332.53013273874916,
+          335.10666138331095
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19572,6 +19623,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -25654,6 +25706,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -26632,7 +26690,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -27614,7 +27673,8 @@ window.BENCHMARK_DATA = {
           646.1703109741211,
           354.46659870147704,
           573.6079611460368,
-          695.6640479405721
+          695.6640479405721,
+          714.4166584650676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28601,6 +28661,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632
         ],
         "borderColor": "#63A2AC",
@@ -29591,7 +29652,8 @@ window.BENCHMARK_DATA = {
           1500.8751750359168,
           753.7673233472384,
           1329.6641362508137,
-          1334.5597615559896
+          1334.5597615559896,
+          1402.562000656128
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29784,6 +29846,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -30849,7 +30912,8 @@ window.BENCHMARK_DATA = {
           712.7167714436849,
           403.42504018147787,
           607.7884842554728,
-          653.5866984587449
+          653.5866984587449,
+          665.1049089431763
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -30861,6 +30925,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -36987,6 +37052,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -37965,7 +38036,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -38947,7 +39019,8 @@ window.BENCHMARK_DATA = {
           618.9662200487577,
           304.8892898956935,
           566.8571136474609,
-          684.1464664595468
+          684.1464664595468,
+          693.0974640528361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39934,6 +40007,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680
         ],
         "borderColor": "#63A2AC",
@@ -40924,7 +40998,8 @@ window.BENCHMARK_DATA = {
           28654.099338785807,
           10208.97784096854,
           20233.715747070313,
-          27241.71321458083
+          27241.71321458083,
+          28917.264513288224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41911,6 +41986,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -42182,7 +42258,8 @@ window.BENCHMARK_DATA = {
           852.3491975148519,
           465.1733773946762,
           696.7771507898966,
-          765.9901011330741
+          765.9901011330741,
+          772.3851131439209
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42194,6 +42271,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -44090,6 +44168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -44363,7 +44447,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -44640,7 +44725,8 @@ window.BENCHMARK_DATA = {
           749.8283603986105,
           385.54454121222864,
           613.2341925303141,
-          630.3837281545003
+          630.3837281545003,
+          687.2933294432504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44903,6 +44989,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -45207,7 +45294,8 @@ window.BENCHMARK_DATA = {
           85590.06118164063,
           29188.59113769531,
           58447.50229492188,
-          83616.77040452223
+          83616.77040452223,
+          84075.01208496094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45488,6 +45576,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252,
           5252
         ],
@@ -47129,6 +47218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -47402,7 +47497,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -47679,7 +47775,8 @@ window.BENCHMARK_DATA = {
           148.4233966668447,
           73.56455666224161,
           121.34991385142008,
-          134.8602651632749
+          134.8602651632749,
+          133.9367210070292
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47942,6 +48039,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -48246,7 +48344,8 @@ window.BENCHMARK_DATA = {
           32999.1159929548,
           10477.307544163295,
           18403.84365641276,
-          31789.325146484374
+          31789.325146484374,
+          32851.561991373695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48528,6 +48627,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -48799,7 +48899,8 @@ window.BENCHMARK_DATA = {
           265.2003936767578,
           128.52056963627155,
           212.2626174926758,
-          241.647686788014
+          241.647686788014,
+          246.29228868484498
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48811,6 +48912,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -50359,6 +50461,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -50574,7 +50682,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -50793,7 +50902,8 @@ window.BENCHMARK_DATA = {
           312.3705617359706,
           169.02705829938253,
           291.7025326569875,
-          295.10806773503623
+          295.10806773503623,
+          320.0022249902998
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50998,6 +51108,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -51244,7 +51355,8 @@ window.BENCHMARK_DATA = {
           421.86007649557934,
           225.30329511960346,
           372.1575810114543,
-          438.2374895731608
+          438.2374895731608,
+          405.3172934214274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51256,6 +51368,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -51695,7 +51808,8 @@ window.BENCHMARK_DATA = {
           421.3777366002401,
           226.85828365484875,
           398.68115234375,
-          400.7309808731079
+          400.7309808731079,
+          427.3096423149109
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51707,6 +51821,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -53211,6 +53326,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -53426,7 +53547,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -53645,7 +53767,8 @@ window.BENCHMARK_DATA = {
           815.2234243392944,
           413.3240692956107,
           725.4992129007975,
-          749.5395003636678
+          749.5395003636678,
+          718.8821296010699
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53850,6 +53973,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -54096,7 +54220,8 @@ window.BENCHMARK_DATA = {
           2175.8355026245117,
           1090.631132712731,
           1911.5708292643228,
-          1896.178002802531
+          1896.178002802531,
+          1958.3943887438093
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54108,6 +54233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -54547,7 +54673,8 @@ window.BENCHMARK_DATA = {
           983.6891864776611,
           494.6581190745036,
           886.0369398752848,
-          916.9929584503174
+          916.9929584503174,
+          954.8091292699178
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54559,6 +54686,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -56063,6 +56191,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -56278,7 +56412,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -56497,7 +56632,8 @@ window.BENCHMARK_DATA = {
           11800.711340097281,
           6136.009203774588,
           9631.080190531413,
-          11882.191110464242
+          11882.191110464242,
+          12399.951493399483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56702,6 +56838,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -56948,7 +57085,8 @@ window.BENCHMARK_DATA = {
           42300.57576090495,
           19312.276668003626,
           31008.904752604165,
-          40071.89233867939
+          40071.89233867939,
+          41405.83826153095
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57168,6 +57306,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -57399,7 +57538,8 @@ window.BENCHMARK_DATA = {
           10566.767869131905,
           5810.696180490347,
           8751.386455281576,
-          10638.628136771065
+          10638.628136771065,
+          10842.04224219689
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57411,6 +57551,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -58915,6 +59056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -59130,7 +59277,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -59349,7 +59497,8 @@ window.BENCHMARK_DATA = {
           11387.493163045247,
           5809.341846759503,
           8937.208895874024,
-          11557.052298912635
+          11557.052298912635,
+          12130.702407836914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59554,6 +59703,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -59800,7 +59950,8 @@ window.BENCHMARK_DATA = {
           61176.094962565105,
           27732.272364689754,
           43597.6715209961,
-          58561.45086669922
+          58561.45086669922,
+          59272.01207682292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60022,6 +60173,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -60251,7 +60403,8 @@ window.BENCHMARK_DATA = {
           20903.09815626878,
           11401.662147521973,
           17245.50056254069,
-          21088.26198401818
+          21088.26198401818,
+          21284.25398472377
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60263,6 +60416,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
