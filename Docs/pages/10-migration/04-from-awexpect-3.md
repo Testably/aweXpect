@@ -169,6 +169,8 @@ Suppress it in test projects that use a virtual time system.
 - The version components (`HasVersion().WithMajor`) offer all comparisons of an `int` property, including
   `Between(…).And(…)`.
 - `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`.
+- `AccessModifiers` moved from `aweXpect.Reflection.Collections` to `aweXpect.Reflection`; replace the `using` where
+  you name it.
 
 ### aweXpect.Snapshots (from 0.x)
 

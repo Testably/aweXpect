@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using aweXpect.Core.Extending;
-using aweXpect.Reflection.Collections;
+using aweXpect.Reflection;
 using aweXpect.Reflection.Helpers;
 
 namespace aweXpect;

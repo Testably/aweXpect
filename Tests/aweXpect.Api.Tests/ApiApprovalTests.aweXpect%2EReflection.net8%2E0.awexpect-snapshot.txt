@@ -867,11 +867,11 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<TMember, aweXpect.Core.IThat<TMember?>> HasName<TMember>(this aweXpect.Core.IThat<TMember?> subject, string expected) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> Is<TMember>(this aweXpect.Core.IThat<TMember?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> Is<TMember>(this aweXpect.Core.IThat<TMember?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> IsInternal<TMember>(this aweXpect.Core.IThat<TMember?> subject) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> IsNot<TMember>(this aweXpect.Core.IThat<TMember?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> IsNot<TMember>(this aweXpect.Core.IThat<TMember?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TMember, aweXpect.Core.IThat<TMember?>> IsNotInternal<TMember>(this aweXpect.Core.IThat<TMember?> subject) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -902,12 +902,12 @@ namespace aweXpect
     public static class ThatMembers
     {
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> Are<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> Are<TMember>(this aweXpect.IAsyncEnumerableItems<TMember?> items, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> Are<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> Are<TMember>(this aweXpect.IAsyncEnumerableItems<TMember?> items, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> Are<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> Are<TMember>(this aweXpect.IEnumerableItems<TMember?> items, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
-        public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> Are<TCollection, TMember>(this aweXpect.IStructEnumerableItems<TCollection, TMember?> items, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TCollection : struct, System.Collections.Generic.IEnumerable<TMember?> where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> Are<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> Are<TMember>(this aweXpect.IEnumerableItems<TMember?> items, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> Are<TCollection, TMember>(this aweXpect.IStructEnumerableItems<TCollection, TMember?> items, aweXpect.Reflection.AccessModifiers accessModifier) where TCollection : struct, System.Collections.Generic.IEnumerable<TMember?> where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> AreInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject) where TMember : System.Reflection.MemberInfo { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> AreInternal<TMember>(this aweXpect.IAsyncEnumerableItems<TMember?> items) where TMember : System.Reflection.MemberInfo { }
@@ -916,9 +916,9 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> AreInternal<TMember>(this aweXpect.IEnumerableItems<TMember?> items) where TMember : System.Reflection.MemberInfo { }
         public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>> AreInternal<TCollection, TMember>(this aweXpect.IStructEnumerableItems<TCollection, TMember?> items) where TCollection : struct, System.Collections.Generic.IEnumerable<TMember?> where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> AreNot<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> AreNot<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> AreNot<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?> subject, aweXpect.Reflection.Collections.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
+        public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?>> AreNot<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TMember?>?> subject, aweXpect.Reflection.AccessModifiers accessModifier) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<TMember?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?>> AreNotInternal<TMember>(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<TMember?>?> subject) where TMember : System.Reflection.MemberInfo { }
         [aweXpect.Core.GuaranteesNotNull]
@@ -2594,6 +2594,17 @@ namespace aweXpect
 }
 namespace aweXpect.Reflection
 {
+    [System.Flags]
+    public enum AccessModifiers
+    {
+        Internal = 1,
+        Protected = 2,
+        Private = 4,
+        Public = 8,
+        ProtectedInternal = 16,
+        PrivateProtected = 32,
+        Any = 63,
+    }
     public static class AssemblyFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Assemblies Except(this aweXpect.Reflection.Collections.Filtered.Assemblies @this, System.Func<System.Reflection.Assembly, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
@@ -2645,9 +2656,9 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.Collections.Filtered.Constructors Except(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Func<System.Reflection.ConstructorInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors Which(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Func<System.Reflection.ConstructorInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAre(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAre(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Constructors @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Constructors WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
@@ -2765,10 +2776,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.EventFilters.EventsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
         public static aweXpect.Reflection.EventFilters.EventsOfType OfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events Which(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<System.Reflection.EventInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Events WhichAre(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAre(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotNullable(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -2828,10 +2839,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
         public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Which(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<System.Reflection.FieldInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAre(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAre(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreConstant(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotConstant(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotNullable(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -2900,13 +2911,13 @@ namespace aweXpect.Reflection
     {
         public static aweXpect.Reflection.Collections.Filtered.Methods Except(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<System.Reflection.MethodInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Methods Which(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Func<System.Reflection.MethodInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAre(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAre(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreAsync(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreExtensionMethods(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.GenericMethods WhichAreGeneric(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Methods @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotAsync(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods WhichAreNotExtensionMethods(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
@@ -3113,12 +3124,12 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
         public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Which(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<System.Reflection.PropertyInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAre(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAre(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreExtensionProperties(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreIndexers(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotExtensionProperties(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotIndexers(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -3204,7 +3215,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types Except(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Types Except<T>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types Which(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<System.Type, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichAre(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAre(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreAssignableFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreAssignableFrom<TType>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
@@ -3221,7 +3232,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInterfaces(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreInternal(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNested(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.AccessModifiers accessModifier) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNot(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotAbstract(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotAssignableFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type type) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichAreNotAssignableFrom<TType>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
@@ -3350,17 +3361,6 @@ namespace aweXpect.Reflection
 }
 namespace aweXpect.Reflection.Collections
 {
-    [System.Flags]
-    public enum AccessModifiers
-    {
-        Internal = 1,
-        Protected = 2,
-        Private = 4,
-        Public = 8,
-        ProtectedInternal = 16,
-        PrivateProtected = 32,
-        Any = 63,
-    }
     public static class Filtered
     {
         public class Assemblies : aweXpect.Reflection.Collections.Filtered<System.Reflection.Assembly, aweXpect.Reflection.Collections.Filtered.Assemblies>, aweXpect.Core.IDescribableSubject, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies, aweXpect.Reflection.Collections.ILimitedStaticTypeAssemblies<aweXpect.Reflection.Collections.ITypeAssemblies>, aweXpect.Reflection.Collections.ITypeAssemblies, aweXpect.Reflection.Collections.ITypeAssemblies.IPrivate, aweXpect.Reflection.Collections.ITypeAssemblies.IProtected

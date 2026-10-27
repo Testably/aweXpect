@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace aweXpect.Reflection.Collections;
+namespace aweXpect.Reflection;
 
 /// <summary>
 ///     The access modifiers.<br />
