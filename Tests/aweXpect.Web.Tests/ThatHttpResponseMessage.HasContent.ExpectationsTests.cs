@@ -66,6 +66,29 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentHasDifferentLineCount_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("foo");
+
+				async Task Act()
+					=> await That(subject).HasContent(which => which.HasLineCount().EqualTo(2));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content which has line count equal to 2,
+					             but the string content had line count 1
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               foo
+					             """);
+			}
+
+			[Test]
 			public async Task WhenContentIsNotSet_ShouldTreatItAsEmpty()
 			{
 				HttpResponseMessage subject = new();

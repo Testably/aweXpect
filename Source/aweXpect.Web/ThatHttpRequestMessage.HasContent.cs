@@ -50,7 +50,7 @@ public static partial class ThatHttpRequestMessage
 							: await m.Content.ReadAsStringOrEmptyAsync(cancellationToken),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
-				.AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),
+				.AddExpectations(expectations),
 			subject);
 	}
 
