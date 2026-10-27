@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
-        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
-      },
-      {
         "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "d5b93f89",
       "44ad4465",
       "f760ae08",
       "b7024c3c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          770.6385414416974,
           774.8481519063314,
           617.3371315002441,
           718.3466386795044,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           894.2884833472116,
           991.1092564900716,
           910.2304321016584,
-          879.8539744890653
+          879.8539744890653,
+          649.9406497819083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1152,
           1152,
           1080,
           1080,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           1000,
           1000,
           1000,
+          1000,
           1000
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          712.6537930806478,
           793.3384056091309,
           751.2140968029315,
           794.8861404418946,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           701.3189781188964,
           727.8085537637983,
           710.2752144495646,
-          667.1537717819214
+          667.1537717819214,
+          568.1711455753872
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
-        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
-      },
-      {
         "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "d5b93f89",
       "44ad4465",
       "f760ae08",
       "b7024c3c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4842.347706134503,
           5088.288535817464,
           4200.797970835368,
           5352.313227844238,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4540.665985107422,
           4842.084578450521,
           4266.367202758789,
-          4171.955720011393
+          4171.955720011393,
+          3447.65522480011
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24320,
           24320,
           24320,
           24321,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24179,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5509.599374389649,
           5681.303656441824,
           5345.694017028809,
           5993.469849650065,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5281.758043729342,
           5589.4507507324215,
           5012.110445022583,
-          4927.087525939942
+          4927.087525939942,
+          3860.961341349284
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
-        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
-      },
-      {
         "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "d5b93f89",
       "44ad4465",
       "f760ae08",
       "b7024c3c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2742.5520622253416,
           2873.360083516439,
           2547.1726687295095,
           2927.384025280292,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2572.0728040059407,
           2783.576471455892,
           2551.2896525065103,
-          2371.869044670692
+          2371.869044670692,
+          1954.7066823323569
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12780,
           12856,
           12856,
           12780,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3810.9593646709736,
           3760.2646779378256,
           3519.164355214437,
           3936.670391337077,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3589.527540588379,
           3886.4850867135183,
           3441.3160074869793,
-          3363.453271993001
+          3363.453271993001,
+          2732.59995396932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
-        "message": "refactor!: move the results of aweXpect.Reflection into their own namespace (#2029)"
-      },
-      {
         "sha": "44ad446522cd5d2f9452dab1723f7836c88e8b8d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 22:24:47 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "d5b93f89",
       "44ad4465",
       "f760ae08",
       "b7024c3c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14272.117397562663,
           14520.231580607096,
           12620.04585164388,
           14644.65506526402,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13801.574124145507,
           14078.57225748698,
           13505.70010732015,
-          13217.875526428223
+          13217.875526428223,
+          10438.83113301595
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25494,
           25568,
           25568,
           25494,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          360097.71064453124,
           378766.24045973556,
           256199.9169921875,
           380882.41346153844,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           360950.58902994794,
           363622.49820963544,
           354125.66834435094,
-          348069.9138590495
+          348069.9138590495,
+          254396.66204427084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544268,
           544247,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544329
+          544329,
+          544267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
