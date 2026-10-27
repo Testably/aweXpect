@@ -1296,6 +1296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -1514,7 +1520,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -1736,7 +1743,8 @@ window.BENCHMARK_DATA = {
           10400.28583233173,
           10515.410911560059,
           10475.076081412179,
-          6802.314890180315
+          6802.314890180315,
+          10538.726154872349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1960,6 +1968,7 @@ window.BENCHMARK_DATA = {
           1976,
           1976,
           1976,
+          1984,
           1984,
           1984,
           1984,
@@ -2193,7 +2202,8 @@ window.BENCHMARK_DATA = {
           371071.47405133926,
           377371.292578125,
           385971.85518973216,
-          231774.32708333334
+          231774.32708333334,
+          363326.84401041665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2420,7 +2430,8 @@ window.BENCHMARK_DATA = {
           590292,
           590291,
           590292,
-          590225
+          590225,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2650,7 +2661,8 @@ window.BENCHMARK_DATA = {
           19432.951599121094,
           20851.203070504325,
           20030.473704020184,
-          15496.647686549595
+          15496.647686549595,
+          19672.621939086916
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2662,6 +2674,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4145,6 +4158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -4356,7 +4375,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -4571,7 +4591,8 @@ window.BENCHMARK_DATA = {
           233.70654643376668,
           246.00695794423422,
           241.75827528635662,
-          192.3836533864339
+          192.3836533864339,
+          218.18747185071308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4767,6 +4788,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5014,7 +5036,8 @@ window.BENCHMARK_DATA = {
           495.96548315684,
           515.6137050628662,
           548.1042075157166,
-          444.89528022493636
+          444.89528022493636,
+          529.1383274078369
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5026,6 +5049,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5457,7 +5481,8 @@ window.BENCHMARK_DATA = {
           390.90698251724245,
           386.83908125559486,
           392.68041235605875,
-          318.43022983414784
+          318.43022983414784,
+          398.31770318349203
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5469,6 +5494,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -11565,6 +11591,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -12546,7 +12578,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -13531,7 +13564,8 @@ window.BENCHMARK_DATA = {
           112.92923006216685,
           119.79995482762655,
           120.7259739557902,
-          100.36527586778006
+          100.36527586778006,
+          114.02293352286021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14497,6 +14531,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -15514,7 +15549,8 @@ window.BENCHMARK_DATA = {
           247.6885269800822,
           280.7942096074422,
           272.8400145530701,
-          230.383254803144
+          230.383254803144,
+          253.53078285853067
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15707,6 +15743,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -16778,7 +16815,8 @@ window.BENCHMARK_DATA = {
           238.22259707450866,
           248.92077496846517,
           252.3815371831258,
-          184.59641208648682
+          184.59641208648682,
+          246.2931913693746
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -16790,6 +16828,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -18359,6 +18398,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -18577,7 +18622,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -18799,7 +18845,8 @@ window.BENCHMARK_DATA = {
           212.80931339263915,
           205.57335909207663,
           200.91025212605794,
-          168.2110378061022
+          168.2110378061022,
+          207.7527398109436
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19004,6 +19051,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -19256,7 +19304,8 @@ window.BENCHMARK_DATA = {
           509.0085248213548,
           568.9625689188639,
           537.186267153422,
-          472.717945988973
+          472.717945988973,
+          543.7893135070801
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19268,6 +19317,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -19713,7 +19763,8 @@ window.BENCHMARK_DATA = {
           332.53013273874916,
           335.10666138331095,
           343.98013346535816,
-          264.96855508364166
+          264.96855508364166,
+          370.6078098932902
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19725,6 +19776,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -25828,6 +25880,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -26809,7 +26867,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -27794,7 +27853,8 @@ window.BENCHMARK_DATA = {
           695.6640479405721,
           714.4166584650676,
           715.1119587080819,
-          512.1646082217877
+          512.1646082217877,
+          739.2471934000652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -28781,6 +28841,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -29777,7 +29838,8 @@ window.BENCHMARK_DATA = {
           1334.5597615559896,
           1402.562000656128,
           1454.097093435434,
-          1145.9090396336146
+          1145.9090396336146,
+          1476.1285327031062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -29970,6 +30032,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -31041,7 +31104,8 @@ window.BENCHMARK_DATA = {
           653.5866984587449,
           665.1049089431763,
           665.5318328312466,
-          517.7112626295823
+          517.7112626295823,
+          673.2420337041219
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31053,6 +31117,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -37200,6 +37265,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -38181,7 +38252,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -39166,7 +39238,8 @@ window.BENCHMARK_DATA = {
           684.1464664595468,
           693.0974640528361,
           708.8894685109457,
-          505.76607608795166
+          505.76607608795166,
+          735.8788118362427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40153,6 +40226,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -41149,7 +41223,8 @@ window.BENCHMARK_DATA = {
           27241.71321458083,
           28917.264513288224,
           28312.550266810827,
-          14123.841658528645
+          14123.841658528645,
+          28382.848071758563
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42139,7 +42214,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42413,7 +42489,8 @@ window.BENCHMARK_DATA = {
           765.9901011330741,
           772.3851131439209,
           822.5016328266689,
-          616.7730066935221
+          616.7730066935221,
+          798.6557955060687
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42425,6 +42502,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -44342,6 +44420,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -44618,7 +44702,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -44898,7 +44983,8 @@ window.BENCHMARK_DATA = {
           630.3837281545003,
           687.2933294432504,
           708.5394563039143,
-          526.9579750696818
+          526.9579750696818,
+          672.5873224894206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45161,6 +45247,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -45471,7 +45558,8 @@ window.BENCHMARK_DATA = {
           83616.77040452223,
           84075.01208496094,
           85294.3212076823,
-          34967.66512407576
+          34967.66512407576,
+          85416.7746826172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45756,7 +45844,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47414,6 +47503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -47690,7 +47785,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -47970,7 +48066,8 @@ window.BENCHMARK_DATA = {
           134.8602651632749,
           133.9367210070292,
           148.00868147214254,
-          126.49396435419719
+          126.49396435419719,
+          141.8376863513674
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48233,6 +48330,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -48543,7 +48641,8 @@ window.BENCHMARK_DATA = {
           31789.325146484374,
           32851.561991373695,
           32928.06267438616,
-          14530.27349308559
+          14530.27349308559,
+          32181.0542195638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48828,6 +48927,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -49102,7 +49202,8 @@ window.BENCHMARK_DATA = {
           241.647686788014,
           246.29228868484498,
           250.03475298200334,
-          181.9119541828449
+          181.9119541828449,
+          242.30101455052693
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49114,6 +49215,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -50683,6 +50785,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -50901,7 +51009,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -51123,7 +51232,8 @@ window.BENCHMARK_DATA = {
           295.10806773503623,
           320.0022249902998,
           308.36704483032224,
-          243.04579127629597
+          243.04579127629597,
+          290.29678942362466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51328,6 +51438,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -51580,7 +51691,8 @@ window.BENCHMARK_DATA = {
           438.2374895731608,
           405.3172934214274,
           391.94575929641724,
-          338.2688860098521
+          338.2688860098521,
+          400.42635482152303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51592,6 +51704,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -52037,7 +52150,8 @@ window.BENCHMARK_DATA = {
           400.7309808731079,
           427.3096423149109,
           409.4859329859416,
-          316.8610441868122
+          316.8610441868122,
+          410.4248814264933
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52049,6 +52163,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -53574,6 +53689,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -53792,7 +53913,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -54014,7 +54136,8 @@ window.BENCHMARK_DATA = {
           749.5395003636678,
           718.8821296010699,
           780.9628657023112,
-          586.296238558633
+          586.296238558633,
+          739.7714654922486
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54219,6 +54342,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -54471,7 +54595,8 @@ window.BENCHMARK_DATA = {
           1896.178002802531,
           1958.3943887438093,
           2044.4432421366373,
-          1639.9969753265382
+          1639.9969753265382,
+          1945.4502791086832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54483,6 +54608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -54928,7 +55054,8 @@ window.BENCHMARK_DATA = {
           916.9929584503174,
           954.8091292699178,
           953.5621128082275,
-          715.4458729426066
+          715.4458729426066,
+          970.0866402943929
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54940,6 +55067,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -56465,6 +56593,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -56683,7 +56817,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -56905,7 +57040,8 @@ window.BENCHMARK_DATA = {
           11882.191110464242,
           12399.951493399483,
           11991.388101850238,
-          8155.714149475098
+          8155.714149475098,
+          12068.01067679269
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57110,6 +57246,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -57362,7 +57499,8 @@ window.BENCHMARK_DATA = {
           40071.89233867939,
           41405.83826153095,
           40629.73855154855,
-          26444.53381565639
+          26444.53381565639,
+          40499.11569448618
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57589,7 +57727,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57819,7 +57958,8 @@ window.BENCHMARK_DATA = {
           10638.628136771065,
           10842.04224219689,
           10607.365555983324,
-          7469.099488394601
+          7469.099488394601,
+          10637.142882127027
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57831,6 +57971,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -59356,6 +59497,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -59574,7 +59721,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -59796,7 +59944,8 @@ window.BENCHMARK_DATA = {
           11557.052298912635,
           12130.702407836914,
           11595.370719401042,
-          7685.613923292894
+          7685.613923292894,
+          11774.496982029506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60001,6 +60150,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -60253,7 +60403,8 @@ window.BENCHMARK_DATA = {
           58561.45086669922,
           59272.01207682292,
           59136.647208658855,
-          38276.865170992336
+          38276.865170992336,
+          60294.73805454799
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60480,7 +60631,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60710,7 +60862,8 @@ window.BENCHMARK_DATA = {
           21088.26198401818,
           21284.25398472377,
           20874.03888643705,
-          14907.455971854073
+          14907.455971854073,
+          21107.473101298016
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60722,6 +60875,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
