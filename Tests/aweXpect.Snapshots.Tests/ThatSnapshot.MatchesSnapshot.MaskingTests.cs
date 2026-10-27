@@ -299,7 +299,7 @@ public sealed partial class ThatSnapshot
 						.For.Text(pattern).AsWildcard().Mask("<m>");
 
 				await That(Act).Throws<FailException>();
-				await That(Regex.Matches(store.Mismatches[Id], "<m>").Count).IsEqualTo(expectedCount);
+				await That(store.Mismatches[Id]).Contains("<m>").Exactly(expectedCount);
 				await That(subject).Contains(pattern).AsWildcard().Exactly(expectedCount)
 					.Because("the wildcard of a snapshot rule is translated like the one of aweXpect's string comparison");
 			}
