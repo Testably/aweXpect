@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
-      {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1638.4001864115396,
           2176.7965695307803,
           1487.1613461812337,
           2153.4374498639786,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1162.7327873523418,
           1554.1834622896636,
           1144.1937400272914,
-          2011.9457617539626
+          2011.9457617539626,
+          2011.316039766584
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -450,7 +450,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10886.648873901368,
           15994.652080829326,
           9670.001746041435,
           16668.6328511556,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           7173.664085388184,
           11210.02507425944,
           7508.065033503941,
-          15612.89904315655
+          15612.89904315655,
+          15169.616349283855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
-      {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1307.5085592269897,
           1756.8202382496424,
           1108.6923746381487,
           1744.776542370136,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           938.9290584836688,
           1279.644205229623,
           928.3882946014404,
-          1619.191248212542
+          1619.191248212542,
+          1632.562714440482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1058,7 +1058,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10542.309217180524,
           14830.891222635904,
           8916.316970825195,
           15345.517045593262,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7090.131292070661,
           10279.51811327253,
           7132.92980855306,
-          14227.382204691568
+          14227.382204691568,
+          13703.548706054688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
-      {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3945.5726943969726,
           5218.103447547326,
           3371.4532132466634,
           5422.465886252267,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3097.190896987915,
           4027.3860271998815,
           3071.7376703534806,
-          5399.504783630371
+          5399.504783630371,
+          5243.654524583083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1666,7 +1666,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30162.97150878906,
           47229.157421875,
           28370.980021158855,
           49201.156022135416,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           21019.843021647135,
           31477.846778282754,
           21102.357454427085,
-          45954.73359026228
+          45954.73359026228,
+          47783.97342122396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           61926,
-          61926,
           61925,
           61926,
           61926,
@@ -1807,6 +1806,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
       {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7665.376858847482,
           9512.512535095215,
           6978.022907511393,
           9651.898329671223,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5025.389504568918,
           7524.578917870154,
           5151.186249287924,
-          9231.71848473182
+          9231.71848473182,
+          9583.964651489257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2274,7 +2274,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          219512.95109049478,
           308093.34877929685,
           186873.35874720983,
           315789.0275878906,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           140179.92766462054,
           225797.5104654948,
           145854.58447265625,
-          289229.61485877406
+          289229.61485877406,
+          288868.6288736979
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521541,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
       {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2260.7418215615407,
           2870.4714209238687,
           2170.48557917277,
           2867.356034342448,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1616.964059448242,
           2278.927075606126,
           1627.391671694242,
-          2792.736383756002
+          2792.736383756002,
+          2858.853217491737
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2860,7 +2860,6 @@ window.BENCHMARK_DATA = {
           1328,
           1328,
           1328,
-          1328,
           1488,
           1488,
           1488,
@@ -2885,6 +2884,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1600.6378626505534,
           1976.182002766927,
           1486.5311923027039,
           1948.9172571818033,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1094.2227733318623,
           1568.4732554299492,
           1101.4330151875813,
-          1917.0464908599854
+          1917.0464908599854,
+          1925.2120079040528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "937f5ce04e2292c7d73138a975574a891df7cd2c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:10:40 2026 \u002B0200",
-        "message": "refactor!: generate the predicate expectations of aweXpect.Json and aweXpect.Web (#2005)"
-      },
-      {
         "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
-      "937f5ce0",
       "5c160901",
       "4f69216a",
       "64f45253",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1744.1700759615217,
           2051.1081465207612,
           1438.4370535441808,
           2108.8259740193685,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1429.1129812876384,
           2168.5853563944497,
           1508.834768976484,
-          2664.107189178467
+          2664.107189178467,
+          2630.5645484924316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3483,7 +3483,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3493,6 +3492,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1539.1395468393962,
           1819.47263768514,
           1453.1506287711006,
           1888.9080256144205,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           925.4155009587606,
           1553.0216890062604,
           947.3740917205811,
-          1715.4762353897095
+          1715.4762353897095,
+          1663.9987241109213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3804,6 +3804,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -3832,7 +3838,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -3864,7 +3871,8 @@ window.BENCHMARK_DATA = {
           1193.3022445678712,
           1679.1431387583414,
           1202.221165384565,
-          2127.1996359143936
+          2127.1996359143936,
+          2105.3517211914063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3876,6 +3884,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -3941,7 +3950,8 @@ window.BENCHMARK_DATA = {
           594.5914199829101,
           1015.3559288024902,
           626.0237678381113,
-          1104.2046455383302
+          1104.2046455383302,
+          1118.6011288506645
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3953,6 +3963,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4148,6 +4159,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
         "message": "feat!: negate constraint results only through Invert and InvertIf (#2095)"
+      },
+      {
+        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
+        "message": "docs: focus the documentation on users and extension authors (#2094)"
       }
     ],
     "labels": [
@@ -4176,7 +4193,8 @@ window.BENCHMARK_DATA = {
       "37b17490",
       "faf8259e",
       "95843406",
-      "71904262"
+      "71904262",
+      "eea60aeb"
     ],
     "datasets": [
       {
@@ -4208,7 +4226,8 @@ window.BENCHMARK_DATA = {
           1588.1253022413987,
           2360.8571137019567,
           1648.4648790359497,
-          2904.959517615182
+          2904.959517615182,
+          2973.9782000223795
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4227,6 +4246,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -4285,7 +4305,8 @@ window.BENCHMARK_DATA = {
           675.8455649784634,
           1105.7281152180262,
           666.6912180582682,
-          1264.4452566782634
+          1264.4452566782634,
+          1322.9479579925537
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4297,6 +4318,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
