@@ -58,6 +58,65 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentHeaderDoesNotExist_ShouldFail()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com/")
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Disposition");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a "Content-Disposition" header,
+					             but it did not contain the expected header
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
+			[Arguments("Content-Type")]
+			[Arguments("content-type")]
+			[Arguments("Content-Length")]
+			public async Task WhenContentHeaderExists_ShouldSucceed(string name)
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com/")
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader(name);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenContentLengthWasNotComputedYet_ShouldFindTheComputedValue()
+			{
+				StringContent content = new("some content");
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com/")
+				{
+					Content = content,
+				};
+				await That(content.Headers.TryGetValues("Content-Length", out _)).IsFalse()
+					.Because("the content length is only computed when it is read");
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Length").WithValue("12");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -90,6 +149,23 @@ public sealed partial class ThatHttpRequestMessage
 
 				async Task Act()
 					=> await That(subject).HasHeader(name);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenHeaderIsInTheMessageAndTheContentHeaders_ShouldCombineTheValues()
+			{
+				StringContent content = new("some content");
+				content.Headers.Add("x-my-header", "content value");
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com/")
+				{
+					Content = content,
+				};
+				subject.Headers.Add("x-my-header", "message value");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValues("message value", "content value");
 
 				await That(Act).DoesNotThrow();
 			}

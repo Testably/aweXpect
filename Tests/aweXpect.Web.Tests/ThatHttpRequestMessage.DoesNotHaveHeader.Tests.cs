@@ -58,6 +58,31 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentHeaderExists_ShouldFail()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com/")
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveHeader("Content-Type");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a "Content-Type" header,
+					             but it did contain the "Content-Type" header: ["text/plain; charset=utf-8"]
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldSucceed()
 			{
 				string name = "x-my-header";

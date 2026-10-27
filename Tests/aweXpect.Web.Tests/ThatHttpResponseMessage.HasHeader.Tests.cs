@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 
 namespace aweXpect.Tests;
 
@@ -58,6 +59,65 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentHeaderDoesNotExist_ShouldFail()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Disposition");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a "Content-Disposition" header,
+					             but it did not contain the expected header
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
+					             """);
+			}
+
+			[Test]
+			[Arguments("Content-Type")]
+			[Arguments("content-type")]
+			[Arguments("Content-Length")]
+			public async Task WhenContentHeaderExists_ShouldSucceed(string name)
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = new StringContent("some content"),
+				};
+
+				async Task Act()
+					=> await That(subject).HasHeader(name);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenContentLengthWasNotComputedYet_ShouldFindTheComputedValue()
+			{
+				StringContent content = new("some content");
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = content,
+				};
+				await That(content.Headers.TryGetValues("Content-Length", out _)).IsFalse()
+					.Because("the content length is only computed when it is read");
+
+				async Task Act()
+					=> await That(subject).HasHeader("Content-Length").WithValue("12");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";
@@ -90,6 +150,23 @@ public sealed partial class ThatHttpResponseMessage
 
 				async Task Act()
 					=> await That(subject).HasHeader(name);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenHeaderIsInTheMessageAndTheContentHeaders_ShouldCombineTheValues()
+			{
+				StringContent content = new("some content");
+				content.Headers.Add("x-my-header", "content value");
+				HttpResponseMessage subject = new(HttpStatusCode.OK)
+				{
+					Content = content,
+				};
+				subject.Headers.Add("x-my-header", "message value");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WithValues("message value", "content value");
 
 				await That(Act).DoesNotThrow();
 			}

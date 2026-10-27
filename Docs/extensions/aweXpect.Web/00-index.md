@@ -68,14 +68,14 @@ Expectations for [`HttpRequestMessage`](./01-http-messages.md#httprequestmessage
 
 Expectations for [`HttpResponseMessage`](./01-http-messages.md#httpresponsemessage):
 
-| Expectation                                                         | Negated                  | Summary                                         |
-|---------------------------------------------------------------------|--------------------------|-------------------------------------------------|
-| [`HasStatusCode`](./01-http-messages.md#status-code)                | `DoesNotHaveStatusCode`  | has the expected status code or status category |
-| [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value           |
-| [`HasContentType`](./01-http-messages.md#response-content-type)     | `DoesNotHaveContentType` | has the expected media type                     |
-| [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`     | has the expected string content                 |
-| [`HasProblemDetailsContent`](./01-http-messages.md#problem-details) | use `DoesNotComplyWith`  | has a `ProblemDetails` content                  |
-| [`HasRequestMessage`](./01-http-messages.md#request-message)        |                          | the request message meets nested expectations   |
+| Expectation                                                         | Negated                      | Summary                                         |
+|---------------------------------------------------------------------|------------------------------|-------------------------------------------------|
+| [`HasStatusCode`](./01-http-messages.md#status-code)                | `DoesNotHaveStatusCode`      | has the expected status code or status category |
+| [`HasHeader`](./01-http-messages.md#response-headers)               | `DoesNotHaveHeader`          | has a header, optionally with a value           |
+| [`HasContentType`](./01-http-messages.md#response-content-type)     | `DoesNotHaveContentType`     | has the expected media type                     |
+| [`HasContent`](./01-http-messages.md#response-content)              | `DoesNotHaveContent`         | has the expected string content                 |
+| [`HasProblemDetailsContent`](./01-http-messages.md#problem-details) | use `DoesNotHaveContentType` | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](./01-http-messages.md#request-message)        |                              | the request message meets nested expectations   |
 
 Expectations for [`Uri`](./02-uri.md):
 

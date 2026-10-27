@@ -219,6 +219,9 @@ Suppress it in test projects that use a virtual time system.
 - The expected values of `HasProblemDetailsContent(…)` and its `WithTitle`, `WithStatus`, `WithDetail` and
   `WithInstance` are named `expected` instead of `type`, `title`, `status`, `detail` and `instance`. This only affects
   calls with named arguments.
+- `HasHeader` and `DoesNotHaveHeader` also read the headers of the content, so `HasHeader("Content-Type")` now
+  succeeds and `DoesNotHaveHeader("Content-Type")` fails when the content has this header, the same for
+  `Content-Length`, `Content-Encoding` or `Content-Disposition`. Use `HasContentType` to verify the media type.
 
 ### Namespaces
 

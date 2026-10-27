@@ -14,14 +14,14 @@ Expectations for [`HttpRequestMessage`](#httprequestmessage):
 
 Expectations for [`HttpResponseMessage`](#httpresponsemessage):
 
-| Expectation                                    | Negated                  | Summary                                         |
-|------------------------------------------------|--------------------------|-------------------------------------------------|
-| [`HasStatusCode`](#status-code)                | `DoesNotHaveStatusCode`  | has the expected status code or status category |
-| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`      | has a header, optionally with a value           |
-| [`HasContentType`](#response-content-type)     | `DoesNotHaveContentType` | has the expected media type                     |
-| [`HasContent`](#response-content)              | `DoesNotHaveContent`     | has the expected string content                 |
-| [`HasProblemDetailsContent`](#problem-details) | use `DoesNotComplyWith`  | has a `ProblemDetails` content                  |
-| [`HasRequestMessage`](#request-message)        |                          | the request message meets nested expectations   |
+| Expectation                                    | Negated                      | Summary                                         |
+|------------------------------------------------|------------------------------|-------------------------------------------------|
+| [`HasStatusCode`](#status-code)                | `DoesNotHaveStatusCode`      | has the expected status code or status category |
+| [`HasHeader`](#response-headers)               | `DoesNotHaveHeader`          | has a header, optionally with a value           |
+| [`HasContentType`](#response-content-type)     | `DoesNotHaveContentType`     | has the expected media type                     |
+| [`HasContent`](#response-content)              | `DoesNotHaveContent`         | has the expected string content                 |
+| [`HasProblemDetailsContent`](#problem-details) | use `DoesNotHaveContentType` | has a `ProblemDetails` content                  |
+| [`HasRequestMessage`](#request-message)        |                              | the request message meets nested expectations   |
 
 ## `HttpRequestMessage`
 
@@ -82,6 +82,10 @@ await Expect.That(request).HasHeader("Accept").WithValue("application/json");
 await Expect.That(request).HasHeader("Accept").WithValue("application/*").AsWildcard();
 await Expect.That(request).DoesNotHaveHeader("Authorization");
 ```
+
+The headers of the content are included, so you can also verify headers like `Content-Type`, `Content-Length` or
+`Content-Disposition`. Their value is the raw header value, e.g. `application/json; charset=utf-8`, so use
+[`HasContentType`](#request-content-type) to verify the media type.
 
 `WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
@@ -246,6 +250,10 @@ await Expect.That(response).HasHeader("Cache-Control").WithValue("*max-age=0*").
 await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
 ```
 
+The headers of the content are included, so you can also verify headers like `Content-Type`, `Content-Length` or
+`Content-Disposition`. Their value is the raw header value, e.g. `application/json; charset=utf-8`, so use
+[`HasContentType`](#response-content-type) to verify the media type.
+
 `WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
 
@@ -380,15 +388,17 @@ await Expect.That(response)
     .WithInstance("/tracks/").AsPrefix();
 ```
 
-There is no dedicated negation. `DoesNotComplyWith` succeeds when the content is a `ProblemDetails` object that differs
-in any of the given parts, and still fails when the content is no valid `ProblemDetails` object:
+To verify that a response is no problem details response, verify that it does not have the problem details media
+type:
 
 ```csharp
-HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
+HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).DoesNotComplyWith(it => it
-    .HasProblemDetailsContent().WithStatus(500));
+await Expect.That(response).DoesNotHaveContentType("application/problem+json");
 ```
+
+[RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#section-3) identifies problem details by this media type, whereas
+the structural check of `HasProblemDetailsContent` accepts almost any JSON object, as all of its members are optional.
 
 <details>
 <summary>Absent members</summary>
