@@ -110,6 +110,17 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Constructors_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		ConstructorInfo constructor = typeof(ClassWithMembers).GetConstructors()[0];
+
+		Filtered.Constructors sut = In.Constructors(constructor).Which(c => c.IsPublic);
+
+		await That(sut.GetDescription())
+			.IsEqualTo("in the constructors [InTests.ClassWithMembers()] matching c => c.IsPublic");
+	}
+
+	[Test]
 	public async Task Events_WithEnumerable_ShouldContainProvidedEvents()
 	{
 		IEnumerable<EventInfo> events = typeof(BaseClassWithMembers).GetEvents();
@@ -128,6 +139,18 @@ public sealed class InTests
 		Filtered.Events sut = In.Events(null, @event);
 
 		await That(sut).HasSingle().Which.IsEqualTo(@event);
+	}
+
+	[Test]
+	public async Task Events_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		EventInfo @event = typeof(BaseClassWithMembers).GetEvent(nameof(BaseClassWithMembers.BaseEvent))!;
+
+		Filtered.Events sut = In.Events(@event).Which(e => e.Name.Length > 0);
+
+		await That(sut.GetDescription())
+			.IsEqualTo(
+				"in the events [event EventHandler BaseClassWithMembers.BaseEvent] matching e => e.Name.Length > 0");
 	}
 
 	[Test]
@@ -159,6 +182,29 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Fields_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		FieldInfo field = typeof(ClassWithMembers).GetField(nameof(ClassWithMembers.Field))!;
+
+		Filtered.Fields sut = In.Fields(field).Which(f => f.IsPublic);
+
+		await That(sut.GetDescription())
+			.IsEqualTo("in the fields [int InTests.ClassWithMembers.Field] matching f => f.IsPublic");
+	}
+
+	[Test]
+	public async Task Methods_DeclaringTypes_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		MethodInfo method = typeof(ClassWithMembers).GetMethod(nameof(ClassWithMembers.Method))!;
+
+		Filtered.Types sut = In.Methods(method).DeclaringTypes().WhichAreClasses();
+
+		await That(sut.GetDescription())
+			.IsEqualTo(
+				"declaring types of in the methods [int InTests.ClassWithMembers.Method()] which are classes");
+	}
+
+	[Test]
 	public async Task Methods_ShouldExcludeCompilerGeneratedAccessors()
 	{
 		Filtered.Methods methods = In.Type<ClassWithMembers>().Methods();
@@ -184,6 +230,17 @@ public sealed class InTests
 		Filtered.Methods sut = In.Methods(method);
 
 		await That(sut).HasSingle().Which.IsEqualTo(method);
+	}
+
+	[Test]
+	public async Task Methods_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		MethodInfo method = typeof(ClassWithMembers).GetMethod(nameof(ClassWithMembers.Method))!;
+
+		Filtered.Methods sut = In.Methods(method).Which(m => m.IsPublic);
+
+		await That(sut.GetDescription())
+			.IsEqualTo("in the methods [int InTests.ClassWithMembers.Method()] matching m => m.IsPublic");
 	}
 
 	[Test]
@@ -218,6 +275,18 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Properties_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		PropertyInfo property = typeof(ClassWithMembers).GetProperty(nameof(ClassWithMembers.Property))!;
+
+		Filtered.Properties sut = In.Properties(property).Which(p => p.CanWrite);
+
+		await That(sut.GetDescription())
+			.IsEqualTo(
+				"in the properties [public int InTests.ClassWithMembers.Property { get; set; }] matching p => p.CanWrite");
+	}
+
+	[Test]
 	public async Task Type_WithGenericParameter_ShouldIncludeSpecifiedType()
 	{
 		Filtered.Types sut = In.Type<InTests>();
@@ -225,6 +294,48 @@ public sealed class InTests
 		await That(sut).HasSingle().Which
 			.IsEqualTo(typeof(InTests));
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
+	}
+
+	[Test]
+	public async Task Type_WithGenericParameter_WithPrefixFilter_ShouldIncludeItInTheFailureMessage()
+	{
+		async Task Act()
+			=> await That(In.Type<ClassWithMembers>().WhichAreSealed()).IsEmpty();
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sealed in type InTests.ClassWithMembers
+			             is empty,
+			             but it was [
+			               InTests.ClassWithMembers,
+			               (… and maybe more)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task Type_WithGenericParameter_WithSuffixFilter_ShouldSeparateItFromTheSourceInTheFailureMessage()
+	{
+		async Task Act()
+			=> await That(In.Type<ClassWithMembers>().WhichAreClasses()).IsEmpty();
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that in type InTests.ClassWithMembers which are classes
+			             is empty,
+			             but it was [
+			               InTests.ClassWithMembers,
+			               (… and maybe more)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task Type_WithGenericParameter_WithSuffixFilter_ShouldSeparateItFromTheSourceOfMembers()
+	{
+		Filtered.Methods sut = In.Type<ClassWithMembers>().WhichAreClasses().Methods();
+
+		await That(sut.GetDescription()).IsEqualTo("methods in type InTests.ClassWithMembers which are classes");
 	}
 
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
@@ -236,6 +347,14 @@ public sealed class InTests
 		await That(sut).HasSingle().Which
 			.IsEqualTo(typeof(InTests));
 		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)}");
+	}
+
+	[Test]
+	public async Task Type_WithTypeParameter_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		Filtered.Types sut = In.Type(typeof(InTests)).WhichAreClasses();
+
+		await That(sut.GetDescription()).IsEqualTo($"in type {nameof(InTests)} which are classes");
 	}
 #pragma warning restore CA2263
 
@@ -258,6 +377,17 @@ public sealed class InTests
 		Filtered.Types sut = In.Types(types);
 
 		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task Types_WithEnumerable_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		IEnumerable<Type> types = [typeof(InTests), typeof(InternalClass),];
+
+		Filtered.Types sut = In.Types(types).WhichAreClasses();
+
+		await That(sut.GetDescription())
+			.IsEqualTo($"in types [{nameof(InTests)}, {nameof(InternalClass)}] which are classes");
 	}
 
 	[Test]
@@ -300,12 +430,56 @@ public sealed class InTests
 	}
 
 	[Test]
+	public async Task Types_WithThreeGenericParameters_WithSuffixFilter_ShouldSeparateItFromTheSource()
+	{
+		Filtered.Types sut = In.Types<InTests, InternalClass, PublicClass>().WhichAreClasses();
+
+		await That(sut.GetDescription())
+			.IsEqualTo(
+				$"in types {nameof(InTests)}, {nameof(InternalClass)} and {nameof(PublicClass)} which are classes");
+	}
+
+	[Test]
 	public async Task Types_WithTwoGenericParameters_ShouldIncludeSpecifiedTypes()
 	{
 		Filtered.Types sut = In.Types<InTests, InternalClass>();
 
 		await That(sut).IsEqualTo([typeof(InTests), typeof(InternalClass),]).InAnyOrder();
 		await That(sut.GetDescription()).IsEqualTo($"in types {nameof(InTests)} and {nameof(InternalClass)}");
+	}
+
+	[Test]
+	public async Task Types_WithTwoGenericParameters_WithPrefixFilter_ShouldIncludeItInTheFailureMessage()
+	{
+		async Task Act()
+			=> await That(In.Types<ClassWithMembers, InTests>().WhichAreSealed()).IsEmpty();
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that sealed in types InTests.ClassWithMembers and InTests
+			             is empty,
+			             but it was [
+			               InTests.ClassWithMembers,
+			               (… and maybe more)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task Types_WithTwoGenericParameters_WithSuffixFilter_ShouldSeparateItFromTheSourceInTheFailureMessage()
+	{
+		async Task Act()
+			=> await That(In.Types<ClassWithMembers, InTests>().WhichAreClasses()).IsEmpty();
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that in types InTests.ClassWithMembers and InTests which are classes
+			             is empty,
+			             but it was [
+			               InTests.ClassWithMembers,
+			               (… and maybe more)
+			             ]
+			             """);
 	}
 
 	[Test]

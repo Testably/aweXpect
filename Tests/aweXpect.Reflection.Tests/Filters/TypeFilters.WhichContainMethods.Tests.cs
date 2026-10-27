@@ -201,10 +201,10 @@ public sealed partial class TypeFilters
 					.Because("a quantifier must return a new filter instead of changing the one it was called on");
 				await That(once).IsEqualTo([typeof(TaggedClass),]);
 				await That(once.GetDescription())
-					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute exactly once ");
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute exactly once");
 				await That(never).IsEqualTo([typeof(UntaggedClass),]);
 				await That(never.GetDescription())
-					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute never ");
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute never");
 			}
 
 			[Test]
@@ -215,7 +215,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(TwiceTaggedClass),]);
 				await That(types.GetDescription())
-					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least twice ");
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least twice");
 			}
 
 			[Test]
@@ -239,7 +239,7 @@ public sealed partial class TypeFilters
 
 				await That(Act).Throws<FailException>()
 					.WithMessage(
-						"Expected that in types * which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once *all have name ending with \"Tests\"*")
+						"Expected that in types * which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once*all have name ending with \"Tests\"*")
 					.AsWildcard();
 			}
 
@@ -292,7 +292,7 @@ public sealed partial class TypeFilters
 				await That(containing).IsEqualTo([typeof(TaggedClass), typeof(TwiceTaggedClass),]).InAnyOrder()
 					.Because("Twice must return a new filter instead of changing the one it was called on");
 				await That(containing.GetDescription())
-					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once ");
+					.Contains("which contain methods with TypeFilters.WhichContainMethods.MarkerAttribute at least once");
 				await That(twice).IsEqualTo([typeof(TwiceTaggedClass),]).InAnyOrder();
 			}
 
@@ -304,7 +304,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(DerivedClassWithInheritedMarkedMethod),]);
 				await That(types.GetDescription())
-					.Contains("which declare methods with TypeFilters.WhichContainMethods.MarkerAttribute never ");
+					.Contains("which declare methods with TypeFilters.WhichContainMethods.MarkerAttribute never");
 			}
 
 			[Test]
@@ -345,7 +345,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEmpty();
 				await That(types.GetDescription())
-					.Contains("which contain methods with name equal to \"Equals\" including object members never ");
+					.Contains("which contain methods with name equal to \"Equals\" including object members never");
 			}
 
 			[Test]
