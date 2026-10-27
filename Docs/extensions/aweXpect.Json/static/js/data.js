@@ -1110,6 +1110,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -1297,7 +1303,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -1488,7 +1495,8 @@ window.BENCHMARK_DATA = {
           1581.2947902679443,
           1545.1311745276819,
           2041.1570022583007,
-          2112.986998494466
+          2112.986998494466,
+          2078.9626052856447
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1634,6 +1642,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1883,7 +1892,8 @@ window.BENCHMARK_DATA = {
           10879.711952209473,
           11581.982772827148,
           15669.244974772135,
-          15961.13096110026
+          15961.13096110026,
+          15907.82141331264
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1895,6 +1905,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -3203,6 +3214,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -3390,7 +3407,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -3581,7 +3599,8 @@ window.BENCHMARK_DATA = {
           1257.5928990500313,
           1252.6473203023274,
           1629.9370290120444,
-          1741.379569871085
+          1741.379569871085,
+          1691.4222714560372
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3727,6 +3746,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3976,7 +3996,8 @@ window.BENCHMARK_DATA = {
           10338.449785505023,
           10583.066922869,
           14156.253602164132,
-          15167.919065348307
+          15167.919065348307,
+          14973.495389811198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3988,6 +4009,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -5236,6 +5258,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -5413,7 +5441,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -5594,7 +5623,8 @@ window.BENCHMARK_DATA = {
           4032.504530225481,
           4073.4305463518417,
           5478.442045211792,
-          5513.921094767253
+          5513.921094767253,
+          5573.049152119955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5777,6 +5807,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -5969,7 +6000,8 @@ window.BENCHMARK_DATA = {
           30386.86795915876,
           31591.503173828125,
           48371.05629882812,
-          48711.80868765024
+          48711.80868765024,
+          48473.97191975911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6149,6 +6181,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -7219,6 +7252,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -7396,7 +7435,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -7577,7 +7617,8 @@ window.BENCHMARK_DATA = {
           7412.175616924579,
           7555.033297729492,
           9518.424818929036,
-          9559.88588663737
+          9559.88588663737,
+          9519.79383305141
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7713,6 +7754,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -7952,7 +7994,8 @@ window.BENCHMARK_DATA = {
           214061.53138020833,
           225459.5381033761,
           290610.9993489583,
-          305782.2564778646
+          305782.2564778646,
+          298104.2845052083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8117,6 +8160,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -9202,6 +9246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -9379,7 +9429,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -9560,7 +9611,8 @@ window.BENCHMARK_DATA = {
           2249.467575709025,
           2212.0648094177245,
           2857.54761832101,
-          2966.47819035848
+          2966.47819035848,
+          2966.4180230360766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9746,6 +9798,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296
         ],
         "borderColor": "#63A2AC",
@@ -9935,7 +9988,8 @@ window.BENCHMARK_DATA = {
           1590.8516989390055,
           1592.5073368889946,
           2003.5903765360515,
-          1964.5523948669434
+          1964.5523948669434,
+          2020.967291768392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9947,6 +10001,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -11185,6 +11240,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -11362,7 +11423,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -11543,7 +11605,8 @@ window.BENCHMARK_DATA = {
           2272.9708557128906,
           2334.6731905255997,
           2926.689926692418,
-          2886.198728688558
+          2886.198728688558,
+          2964.4125410226675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11726,6 +11789,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -11918,7 +11982,8 @@ window.BENCHMARK_DATA = {
           1433.3593019757952,
           1589.3227558135986,
           1816.8210629781088,
-          1783.0299625396729
+          1783.0299625396729,
+          1815.2466063866248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11930,6 +11995,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -12466,6 +12532,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -12526,7 +12598,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -12590,7 +12663,8 @@ window.BENCHMARK_DATA = {
           1793.0235778808594,
           1838.3382360018218,
           2293.2801010131834,
-          2331.5834429423016
+          2331.5834429423016,
+          2351.8820971171062
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12656,6 +12730,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -12731,7 +12806,8 @@ window.BENCHMARK_DATA = {
           937.873424911499,
           998.9570941925049,
           1136.8054129282634,
-          1107.8757119496663
+          1107.8757119496663,
+          1250.2372016906738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12743,6 +12819,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -13162,6 +13239,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
@@ -13222,7 +13305,8 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
@@ -13286,7 +13370,8 @@ window.BENCHMARK_DATA = {
           2361.349171447754,
           2394.2550597557656,
           3042.4292755126953,
-          3010.500703684489
+          3010.500703684489,
+          3131.058696201869
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13336,6 +13421,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -13427,7 +13513,8 @@ window.BENCHMARK_DATA = {
           1071.6646926879882,
           1106.6964110056558,
           1289.2114197657659,
-          1320.680685043335
+          1320.680685043335,
+          1357.6422740391322
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13439,6 +13526,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -13516,17 +13604,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          169196.58732722356
+          169196.58732722356,
+          166606.0400390625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13538,6 +13634,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664
         ],
         "borderColor": "#63A2AC",
@@ -13553,7 +13650,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          198094.59946289062
+          198094.59946289062,
+          199580.6094970703
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13565,6 +13663,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          266951,
           266951
         ],
         "borderColor": "#FF671B",
@@ -13585,17 +13684,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2692.453815460205
+          2692.453815460205,
+          2897.014651997884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13607,6 +13714,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400
         ],
         "borderColor": "#63A2AC",
@@ -13622,7 +13730,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1917.4742403666178
+          1917.4742403666178,
+          1926.2845264434814
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13634,6 +13743,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656
         ],
         "borderColor": "#FF671B",
