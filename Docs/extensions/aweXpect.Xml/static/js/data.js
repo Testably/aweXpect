@@ -996,6 +996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -1164,7 +1170,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -1336,7 +1343,8 @@ window.BENCHMARK_DATA = {
           847.3585856119792,
           623.287029393514,
           464.48995033899945,
-          771.5664036432902
+          771.5664036432902,
+          484.6863160814558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1513,7 +1521,8 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1016
+          1016,
+          992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1693,7 +1702,8 @@ window.BENCHMARK_DATA = {
           705.0621175084796,
           535.8155067150409,
           364.3465259756361,
-          919.9354384740194
+          919.9354384740194,
+          411.4539412180583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1705,6 +1715,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2880,6 +2891,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -3048,7 +3065,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -3220,7 +3238,8 @@ window.BENCHMARK_DATA = {
           4378.950245448521,
           3222.361375955435,
           2521.2735341389975,
-          5118.012402670724
+          5118.012402670724,
+          2713.70579401652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3397,7 +3416,8 @@ window.BENCHMARK_DATA = {
           24172,
           24178,
           24178,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3577,7 +3597,8 @@ window.BENCHMARK_DATA = {
           5088.507198588053,
           3818.3228318350657,
           2896.413189479283,
-          5993.014304097494
+          5993.014304097494,
+          3171.290367126465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3589,6 +3610,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4704,6 +4726,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -4862,7 +4890,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -5024,7 +5053,8 @@ window.BENCHMARK_DATA = {
           2347.6034310658774,
           1859.1278354099818,
           1424.7426387786866,
-          2829.9095585162822
+          2829.9095585162822,
+          1479.986473083496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5181,6 +5211,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -5361,7 +5392,8 @@ window.BENCHMARK_DATA = {
           3397.833568572998,
           2603.686304473877,
           1992.9139753488394,
-          3791.0432393391925
+          3791.0432393391925,
+          2013.7089848836263
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5373,6 +5405,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6478,6 +6511,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
@@ -6636,7 +6675,8 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
@@ -6798,7 +6838,8 @@ window.BENCHMARK_DATA = {
           13262.115475245884,
           9988.81308186849,
           7591.0876958211265,
-          13915.1745060512
+          13915.1745060512,
+          7689.950396728515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6955,6 +6996,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -7135,7 +7177,8 @@ window.BENCHMARK_DATA = {
           348581.2459635417,
           238698.9900390625,
           174336.07709960936,
-          288986.64533342636
+          288986.64533342636,
+          183401.78305664062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7302,7 +7345,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544247
+          544247,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
