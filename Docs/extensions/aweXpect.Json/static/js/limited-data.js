@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
-      {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1491.6770226614815,
           2138.456617795504,
           2102.60070215861,
           1088.6847472557654,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1959.5529726468599,
           1952.158845583598,
           1919.824794769287,
-          1080.2099618911743
+          1080.2099618911743,
+          1159.843358039856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -442,7 +442,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9764.462448120117,
           15829.667034912109,
           15401.899850027901,
           6748.578261311849,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           13506.207710266113,
           13440.439089965821,
           14837.160940551757,
-          6799.475921122233
+          6799.475921122233,
+          7582.6638761247905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
-      {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1142.6977142333985,
           1748.8010089056831,
           1703.4892683664957,
           886.6457416094266,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1565.2540854045324,
           1571.804591623942,
           1582.2391945975166,
-          891.7719541549683
+          891.7719541549683,
+          944.3034023557391
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1050,7 +1050,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          8952.992305462178,
           14793.3252146403,
           14229.354368082682,
           6171.036888667515,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           12319.175088735727,
           12444.189442443847,
           14022.666897583007,
-          6247.761223929269
+          6247.761223929269,
+          6875.024433390299
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
-      {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3289.8828040531703,
           5308.704491751535,
           5248.778239323543,
           2687.579786300659,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4905.762284342448,
           5016.275821940104,
           5181.571557851938,
-          2820.6038772583006
+          2820.6038772583006,
+          2892.360029856364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1658,7 +1658,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27512.632727989785,
           47993.68871663411,
           45757.73691030649,
           18712.001591273718,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           36869.56129807692,
           37431.86021071214,
           44939.22609049479,
-          19689.206085205078
+          19689.206085205078,
+          19217.471745082312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61925,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
       {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6951.238620758057,
           9541.134737141927,
           9670.423076375326,
           4805.025039164225,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9289.273645019532,
           9551.038673909505,
           9244.469947306316,
-          4860.644812950721
+          4860.644812950721,
+          4996.040178571428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2266,7 +2266,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          188633.06755371095,
           304609.64765625,
           305664.3974609375,
           126534.18486676898,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           257777.4066731771,
           264192.2839355469,
           283257.12418619794,
-          132819.52260044642
+          132819.52260044642,
+          154566.56959635418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521541,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
       {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2186.472573598226,
           2882.0151021321612,
           2904.233473641532,
           1601.9896074022565,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2788.385491884672,
           2842.5007768358505,
           2773.1535029093425,
-          1525.9469441005162
+          1525.9469441005162,
+          1608.5227415902275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1328,
           1488,
           1488,
           1488,
@@ -2877,6 +2876,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1533.3313273021154,
           1983.8023913065592,
           1989.6868207114082,
           1015.4289829254151,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1870.9672266153189,
           1938.5604802449545,
           1892.4782450358073,
-          1054.2686029161725
+          1054.2686029161725,
+          1104.23078757066
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "96ea23be640ec7574e54ea7201261845c9e762c0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 17:49:47 2026 \u002B0200",
-        "message": "refactor!: keep the exception type after HasInner and DoesNotHaveInner with a type (#2018)"
-      },
-      {
         "sha": "f9009a09c63bfc2fca06623193d928efbd3e7c94",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 17:50:29 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
-      "96ea23be",
       "f9009a09",
       "8b73c040",
       "54813a41",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1432.2884834834508,
           2033.3944884708949,
           2033.3821258544922,
           1107.0907585144043,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2648.1790784200034,
           2593.3188910851113,
           2721.2580242156982,
-          1452.236800511678
+          1452.236800511678,
+          1535.3223019917807
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3475,7 +3475,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3485,6 +3484,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1482.4823626200357,
           1901.5678967793783,
           1841.0681457519531,
           861.3106429760272,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1801.3541812896729,
           1835.1480749570405,
           1672.1682736714681,
-          902.1269260406494
+          902.1269260406494,
+          978.0366556803385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3852,6 +3852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
@@ -3888,7 +3894,8 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
@@ -3928,7 +3935,8 @@ window.BENCHMARK_DATA = {
           2073.8892018454417,
           2050.7261090596517,
           2105.8552178602954,
-          1169.2232639312745
+          1169.2232639312745,
+          1286.4825721468244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3940,6 +3948,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -4021,7 +4030,8 @@ window.BENCHMARK_DATA = {
           1237.052924601237,
           1171.4105795542398,
           1074.3531423715444,
-          586.274728161948
+          586.274728161948,
+          603.1657292502267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4033,6 +4043,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4284,6 +4295,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:44:21 2026 \u002B0100",
         "message": "feat!: support string options in generated collection expectations (#2096)"
+      },
+      {
+        "sha": "f244417826014c0ea772948e7d7f4543c50afdad",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:45:24 2026 \u002B0100",
+        "message": "feat!: make AreEqualTo of non-generic items generic over the collection (#2098)"
       }
     ],
     "labels": [
@@ -4320,7 +4337,8 @@ window.BENCHMARK_DATA = {
       "4af90a17",
       "5d21419f",
       "e09c66b4",
-      "7649b140"
+      "7649b140",
+      "f2444178"
     ],
     "datasets": [
       {
@@ -4360,7 +4378,8 @@ window.BENCHMARK_DATA = {
           2751.5475101470947,
           2782.5566696166993,
           2797.3843754359655,
-          1506.340566253662
+          1506.340566253662,
+          1641.7069622039794
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4379,6 +4398,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -4453,7 +4473,8 @@ window.BENCHMARK_DATA = {
           1394.8823061625162,
           1335.8880700331467,
           1211.6317358016968,
-          639.7746554888212
+          639.7746554888212,
+          692.6933606465658
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4465,6 +4486,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
