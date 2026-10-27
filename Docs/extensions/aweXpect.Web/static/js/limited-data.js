@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
-      {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          249.19009194007288,
           466.92680530548097,
           471.2498177119664,
           451.5183933258057,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           253.70347741671972,
           494.79986374194806,
           343.99022534688316,
-          316.39989782969155
+          316.39989782969155,
+          453.71519371668495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          712,
           664,
           664,
           664,
@@ -452,6 +451,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          545.8322916712079,
           1035.8629913330078,
           1068.1593735558647,
           946.2378022120549,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           514.9583790779113,
           1034.8770593007405,
           910.86525787626,
-          787.7659174374172
+          787.7659174374172,
+          955.0897411982219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
-      {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          124.77876938184103,
           253.95046892166138,
           268.7785805922288,
           214.4095104376475,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           127.60655578545162,
           253.66847105026244,
           205.55006698199682,
-          186.2806418623243
+          186.2806418623243,
+          242.04026679992677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          137.21731553077697,
           262.26263230641683,
           276.06841046469555,
           260.7723628452846,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           137.60128811427526,
           268.36130701700847,
           252.2637170278109,
-          217.91079696019492
+          217.91079696019492,
+          255.67062606811524
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
-      {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          375.26465316613513,
           729.624892616272,
           788.2864138285319,
           668.1025075276692,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           379.5079736709595,
           742.8550732930502,
           628.7902672449748,
-          536.3601025263469
+          536.3601025263469,
+          728.1997217450823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1088,
+          1032,
           1032,
           1032,
           1032,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          487.8286143620809,
           955.65826365153,
           1042.3638690948487,
           905.5831069946289,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           515.1387907663981,
           1015.0835796356201,
           852.0393388271332,
-          715.3524859973362
+          715.3524859973362,
+          929.0748093922933
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
-      {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1154.616456440517,
           1845.8018004099529,
           1964.9316997528076,
           1925.049166752742,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1185.7119279588971,
           1907.9598112742106,
           1231.5092565096343,
-          1165.2582729046162
+          1165.2582729046162,
+          1827.0886987958636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1760,
+          1592,
           1592,
           1592,
           1592,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10577.21393737793,
           21650.66208089193,
           22129.781467982702,
           17848.629412841798,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           9712.709330967495,
           22823.0644144694,
           13360.437669020434,
-          12651.129877726236
+          12651.129877726236,
+          20858.086165364584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2400,7 +2400,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
       {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          428.5768095334371,
           851.7625869115194,
           808.4831566810608,
           705.1771821294512,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           405.7249538217272,
           868.1512826283773,
           563.2277349063328,
-          524.170546736036
+          524.170546736036,
+          746.4120240211487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1096,
+          1040,
           1040,
           1040,
           1040,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          708.8148473739624,
           1401.0271640777587,
           1456.255123011271,
           1265.2470620228694,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           676.403100673969,
           1431.0748596191406,
           1150.0280779202778,
-          1047.33023147583
+          1047.33023147583,
+          1329.397498675755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "35cd9bf1a3c916122072cb044a222c4f197b3922",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 08:14:07 2026 \u002B0100",
-        "message": "feat: add a generated registration hook for extensions to aweXpect.Core (#2074)"
-      },
-      {
         "sha": "7a6dec572a73f2ecf32578f6963c0bde2fe0195e",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 09:14:53 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
         "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
+      },
+      {
+        "sha": "26a495951625b114b6cf7b537128b31877629eee",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
+        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
       }
     ],
     "labels": [
-      "35cd9bf1",
       "7a6dec57",
       "0f3856d6",
       "cb617241",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "31332abd",
       "2ba23029",
       "630e8f0a",
-      "76bf298b"
+      "76bf298b",
+      "26a49595"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          746.5965579577854,
           1287.0904276711601,
           1415.3086838355432,
           1233.8007663999285,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           791.4559697423663,
           1387.392942564828,
           839.8379922279945,
-          784.4232167402903
+          784.4232167402903,
+          1277.230293146769
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1512,
           1464,
           1464,
           1464,
@@ -3492,6 +3491,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          434.13460098902385,
           791.2830004374187,
           856.0742458615985,
           750.9815040588379,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           411.2725131670634,
           830.2182019551595,
           742.6991150038583,
-          654.2161556879679
+          654.2161556879679,
+          728.3287561416626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
