@@ -9,6 +9,19 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Test]
+			public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Test]
 			public async Task WhenMemberIsACollection_Negated_ShouldUsePluralVerb()
 			{
 				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
@@ -203,6 +216,19 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Test]
 			[Arguments("type", "42", "was a Number, not a String")]
 			[Arguments("title", "{}", "was an Object, not a String")]
 			[Arguments("detail", "[]", "was an Array, not a String")]
@@ -258,35 +284,6 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).DoesNotThrow()
 					.Because("a null optional member is equivalent to an absent one");
-			}
-
-			[Test]
-			public async Task WhenNoTypeIsSpecified_ShouldFail()
-			{
-				HttpResponseMessage subject = ResponseBuilder
-					.WithContent("""
-					             {
-					               "no-type": "foo"
-					             }
-					             """);
-
-				async Task Act()
-					=> await That(subject).HasProblemDetailsContent("foo");
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             has a ProblemDetails content with type "foo",
-					             but it did not match the expected format because no 'type' property existed
-
-					             HTTP-Response:
-					               200 OK HTTP/1.1
-					                 Content-Type: text/plain; charset=utf-8
-					                 Content-Length: *
-					               {
-					                 "no-type": "foo"
-					               }
-					             """).AsWildcard();
 			}
 
 			[Test]
@@ -390,6 +387,125 @@ public sealed partial class ThatHttpResponseMessage
 					                 "title": "Not Found"
 					               }
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsent_ShouldFailWithAboutBlank()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "no-type": "foo"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but it had type "about:blank", which differs at index 0:
+					                ↓ (actual)
+					               "about:blank"
+					               "foo"
+					                ↑ (expected)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "no-type": "foo"
+					               }
+					             """).AsWildcard()
+					.Because("an absent type is assumed to be \"about:blank\" (RFC 9457)");
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsent_ShouldMatchAboutBlank()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("about:blank");
+
+				await That(Act).DoesNotThrow()
+					.Because("an absent type is assumed to be \"about:blank\" (RFC 9457)");
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsent_WithoutExpectedType_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent();
+
+				await That(Act).DoesNotThrow()
+					.Because("the type is optional in a problem details object (RFC 9457)");
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsentAndDoesNotMatchWildcard_ShouldFailWithAboutBlank()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("*/not-found").AsWildcard();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type matching "*/not-found",
+					             but it had type "about:blank", which did not match:
+					               ↓ (actual)
+					               "about:blank"
+					               "*/not-found"
+					               ↑ (wildcard pattern)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "title": "Not Found"
+					               }
+					             """).AsWildcard()
+					.Because("the wildcard is matched against the assumed type \"about:blank\"");
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsentAndMatchesWildcard_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("about:*").AsWildcard();
+
+				await That(Act).DoesNotThrow()
+					.Because("the wildcard is matched against the assumed type \"about:blank\"");
 			}
 
 			[Test]
@@ -574,7 +690,24 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
-			public async Task WhenTypeIsAbsentAndMatchedAsWildcard_ShouldFail()
+			public async Task WhenTypeIsAbsent_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "title": "Not Found"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).DoesNotThrow()
+					.Because("an absent type is assumed to be \"about:blank\", which differs from the type");
+			}
+
+			[Test]
+			public async Task WhenTypeIsAbsentAndMatchesWildcard_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder
 					.WithContent("""
@@ -590,7 +723,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             does not have a ProblemDetails content with type matching "*",
-					             but it did not match the expected format because no 'type' property existed
+					             but it had
 
 					             HTTP-Response:
 					               200 OK HTTP/1.1
@@ -600,7 +733,7 @@ public sealed partial class ThatHttpResponseMessage
 					                 "title": "Not Found"
 					               }
 					             """).AsWildcard()
-					.Because("an absent type has no content to inspect, so it fails the expectation and its negation alike");
+					.Because("an absent type is assumed to be \"about:blank\", which matches the wildcard");
 			}
 
 			[Test]

@@ -363,6 +363,9 @@ await Expect.That(response)
     .WithInstance("/tracks/42");
 ```
 
+A content without a `type` member has the type `"about:blank"`, as defined in
+[RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#section-3.1.1).
+
 The type, title, detail and instance support the same
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. The options apply to

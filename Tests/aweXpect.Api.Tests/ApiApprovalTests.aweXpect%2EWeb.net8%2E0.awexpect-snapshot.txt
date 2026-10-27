@@ -62,7 +62,9 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string name) { }
         [aweXpect.Core.GuaranteesNotNull]
-        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string? type = null) { }
+        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, string expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> subject, System.Action<aweXpect.Core.IThatSubject<System.Net.Http.HttpRequestMessage?>> expectations) { }
         [aweXpect.Core.GuaranteesNotNull]
