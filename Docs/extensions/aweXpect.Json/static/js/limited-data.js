@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
-      {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1637.836156717936,
           1160.235124881451,
           1491.6770226614815,
           2138.456617795504,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1561.1389947255452,
           1994.8989089965821,
           1959.5529726468599,
-          1952.158845583598
+          1952.158845583598,
+          1919.824794769287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -444,7 +444,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10533.678971510668,
           7357.624616895403,
           9764.462448120117,
           15829.667034912109,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10796.284393310547,
           15649.225950113932,
           13506.207710266113,
-          13440.439089965821
+          13440.439089965821,
+          14837.160940551757
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
-      {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1312.8550450642904,
           956.176525409405,
           1142.6977142333985,
           1748.8010089056831,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1271.496812547956,
           1581.1493995984395,
           1565.2540854045324,
-          1571.804591623942
+          1571.804591623942,
+          1582.2391945975166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1052,7 +1052,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9771.71205357143,
           6832.471127065023,
           8952.992305462178,
           14793.3252146403,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10628.388557434082,
           14286.818372453961,
           12319.175088735727,
-          12444.189442443847
+          12444.189442443847,
+          14022.666897583007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
-      {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3957.1692368643626,
           2967.172002352201,
           3289.8828040531703,
           5308.704491751535,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3994.0535608927407,
           5343.130387526292,
           4905.762284342448,
-          5016.275821940104
+          5016.275821940104,
+          5181.571557851938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1660,7 +1660,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29862.515775408065,
           20632.745359293618,
           27512.632727989785,
           47993.68871663411,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           29800.301461356026,
           46421.414322916666,
           36869.56129807692,
-          37431.86021071214
+          37431.86021071214,
+          44939.22609049479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1763,7 +1763,6 @@ window.BENCHMARK_DATA = {
         "data": [
           61925,
           61925,
-          61925,
           61926,
           61926,
           61925,
@@ -1801,6 +1800,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
       {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7481.549066816057,
           5285.959641592844,
           6951.238620758057,
           9541.134737141927,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7455.602329508463,
           9361.770928519112,
           9289.273645019532,
-          9551.038673909505
+          9551.038673909505,
+          9244.469947306316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2268,7 +2268,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          212759.83513532366,
           147338.79598563057,
           188633.06755371095,
           304609.64765625,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           222758.7924967448,
           305768.065359933,
           257777.4066731771,
-          264192.2839355469
+          264192.2839355469,
+          283257.12418619794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521541,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
       {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2241.588741048177,
           1650.6082714625768,
           2186.472573598226,
           2882.0151021321612,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2218.7206720205454,
           2875.2551705496653,
           2788.385491884672,
-          2842.5007768358505
+          2842.5007768358505,
+          2773.1535029093425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2854,7 +2854,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1328,
           1328,
-          1328,
           1488,
           1488,
           1488,
@@ -2879,6 +2878,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1554.1265459696451,
           1097.3393002827963,
           1533.3313273021154,
           1983.8023913065592,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1525.2256462914604,
           1898.9493497212727,
           1870.9672266153189,
-          1938.5604802449545
+          1938.5604802449545,
+          1892.4782450358073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "4bb0504618c214ce4ea0346e0f6adc7d425a6b35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 15:46:34 2026 \u002B0200",
-        "message": "refactor!: offer the property result operators through interfaces (#2009)"
-      },
-      {
         "sha": "0eb20dfe785260a7170a8dcbda09f4f86fea747a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 15:46:52 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
-      "4bb05046",
       "0eb20dfe",
       "96ea23be",
       "f9009a09",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1618.0649976094564,
           1149.388292176383,
           1432.2884834834508,
           2033.3944884708949,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1947.215661730085,
           2720.019955268273,
           2648.1790784200034,
-          2593.3188910851113
+          2593.3188910851113,
+          2721.2580242156982
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3477,7 +3477,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3487,6 +3486,7 @@ window.BENCHMARK_DATA = {
           2832,
           2832,
           2832,
+          2776,
           2776,
           2776,
           2776,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1381.5087300709315,
           926.6665716807048,
           1482.4823626200357,
           1901.5678967793783,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1347.7595267977033,
           1826.4594035829816,
           1801.3541812896729,
-          1835.1480749570405
+          1835.1480749570405,
+          1672.1682736714681
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3840,6 +3840,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -3874,7 +3880,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -3912,7 +3919,8 @@ window.BENCHMARK_DATA = {
           1568.562493387858,
           2114.7358540126256,
           2073.8892018454417,
-          2050.7261090596517
+          2050.7261090596517,
+          2105.8552178602954
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3924,6 +3932,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2888,
           2888,
           2888,
           2888,
@@ -4001,7 +4010,8 @@ window.BENCHMARK_DATA = {
           921.2033727509635,
           1162.358382542928,
           1237.052924601237,
-          1171.4105795542398
+          1171.4105795542398,
+          1074.3531423715444
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4013,6 +4023,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4250,6 +4261,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -4284,7 +4301,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -4322,7 +4340,8 @@ window.BENCHMARK_DATA = {
           2195.1029897417343,
           2957.44679914202,
           2751.5475101470947,
-          2782.5566696166993
+          2782.5566696166993,
+          2797.3843754359655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4341,6 +4360,7 @@ window.BENCHMARK_DATA = {
           3768,
           3768,
           3768,
+          3744,
           3744,
           3744,
           3744,
@@ -4411,7 +4431,8 @@ window.BENCHMARK_DATA = {
           1051.4106652577718,
           1305.5889602661132,
           1394.8823061625162,
-          1335.8880700331467
+          1335.8880700331467,
+          1211.6317358016968
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4423,6 +4444,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
