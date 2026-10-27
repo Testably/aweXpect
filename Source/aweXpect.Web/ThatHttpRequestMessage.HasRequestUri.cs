@@ -53,6 +53,26 @@ public static partial class ThatHttpRequestMessage
 	}
 
 	/// <summary>
+	///     Verifies that the <see cref="HttpRequestMessage.RequestUri" /> satisfies the <paramref name="expectations" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
+		HasRequestUri(this IThat<HttpRequestMessage?> subject, Action<IThatSubject<Uri?>> expectations)
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		return new AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
+			subject.Get().ExpectationBuilder
+				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
+				.ForMember(MemberAccessor<HttpRequestMessage, Uri?>.FromFuncWithName(
+						static request => request.RequestUri,
+						" the request URI"),
+					static (_, stringBuilder) => stringBuilder.Append("has a request URI which "))
+				// Not nested, as the nested grammar turns `HasHost()` into "whose host", which does not follow "which".
+				.AddExpectations(expectations),
+			subject);
+	}
+
+	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" />
 	///     <see cref="HttpRequestMessage.RequestUri" />.
 	/// </summary>

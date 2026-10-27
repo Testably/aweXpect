@@ -4,7 +4,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatHttpRequestMessage
 {
-	public sealed class HasRequestUri
+	public sealed partial class HasRequestUri
 	{
 		public sealed class Tests
 		{

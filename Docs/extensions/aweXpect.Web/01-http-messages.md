@@ -56,6 +56,18 @@ await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1").I
 await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/Admin").IgnoringCase();
 ```
 
+The expected request URI is compared as a URI, so it supports no match types. To verify parts of the request URI,
+e.g. with a wildcard or a prefix, add expectations on the request URI with the [URI expectations](./02-uri.md):
+
+```csharp
+await Expect.That(request).HasRequestUri(uri => uri
+    .HasHost().EqualTo("music.example.com").And
+    .HasPath().StartingWith("/tracks/"));
+await Expect.That(request).HasRequestUri(uri => uri.HasPath("/tracks/*").AsWildcard());
+```
+
+To negate the nested expectations, use `DoesNotComplyWith(it => it.HasRequestUri(uri => ...))`.
+
 ### Request headers
 
 You can verify that the `HttpRequestMessage` has a header, optionally with the expected value, or that it does not have

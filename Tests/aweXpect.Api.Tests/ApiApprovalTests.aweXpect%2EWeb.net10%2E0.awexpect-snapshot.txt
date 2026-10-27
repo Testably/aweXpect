@@ -38,6 +38,8 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasMethod(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Net.Http.HttpMethod expected) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Action<aweXpect.Core.IThatSubject<System.Uri?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, System.Uri expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> subject, string expected) { }
