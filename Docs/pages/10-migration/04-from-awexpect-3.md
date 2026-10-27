@@ -213,6 +213,9 @@ Suppress it in test projects that use a virtual time system.
   instead of `StatusCodeResult`, which was removed. `Success()`, `Redirection()`, `ClientError()`, `ServerError()` and
   `Error()` are extension methods in `HttpStatusCodePropertyResultExtensions`. Calls compile unchanged, but code that
   names `StatusCodeResult` has to use the new type.
+- `HasProblemDetailsContent()` without a type no longer offers string options or match types, and
+  `HasProblemDetailsContent(…)` requires a non-null type. A content without a `type` member has the type
+  `"about:blank"` instead of failing.
 
 ### Namespaces
 

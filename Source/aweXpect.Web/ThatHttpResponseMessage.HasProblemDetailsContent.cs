@@ -24,7 +24,23 @@ public static partial class ThatHttpResponseMessage
 	};
 
 	/// <summary>
-	///     Verifies that the string content contains a problem details response with the expected <paramref name="type" />.
+	///     Verifies that the string content contains a problem details response with any type.
+	///     <seealso href="https://datatracker.ietf.org/doc/html/rfc7807" />
+	///     <seealso href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails" />
+	/// </summary>
+	[GuaranteesNotNull]
+	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
+		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject)
+	{
+		ProblemDetailsOptions options = new();
+		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
+			AddProblemDetailsConstraint(subject, null, new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default), options),
+			subject,
+			options);
+	}
+
+	/// <summary>
+	///     Verifies that the string content contains a problem details response with the <paramref name="expected" /> type.
 	///     <seealso href="https://datatracker.ietf.org/doc/html/rfc7807" />
 	///     <seealso href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.mvc.problemdetails" />
 	/// </summary>
@@ -38,19 +54,24 @@ public static partial class ThatHttpResponseMessage
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
-		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string? type = null)
+		HasProblemDetailsContent(this IThat<HttpResponseMessage?> subject, string expected)
 	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		OptionsHolder<StringEqualityOptions> typeOptions = new(StringEqualityOptions.Default);
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
-			subject.Get().ExpectationBuilder
-				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
-				.AddConstraint((type, options, typeOptions), static (state, it, grammars) =>
-					new HasProblemDetailsConstraint(it, grammars, state.type, state.options, state.typeOptions)),
+			AddProblemDetailsConstraint(subject, expected, typeOptions, options),
 			subject,
 			typeOptions,
 			options);
 	}
+
+	private static ExpectationBuilder AddProblemDetailsConstraint(IThat<HttpResponseMessage?> subject,
+		string? expectedType, OptionsHolder<StringEqualityOptions> typeOptions, ProblemDetailsOptions options)
+		=> subject.Get().ExpectationBuilder
+			.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
+			.AddConstraint((expectedType, options, typeOptions), static (state, it, grammars) =>
+				new HasProblemDetailsConstraint(it, grammars, state.expectedType, state.options, state.typeOptions));
 
 	private sealed class HasProblemDetailsConstraint(
 		string it,
@@ -81,7 +102,7 @@ public static partial class ThatHttpResponseMessage
 			string message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
 			using JsonDocument? problemDetails = ParseObjectOrDefault(message, out _parseError);
 			if (problemDetails is null
-			    || !TryGetString(problemDetails.RootElement, "type", out string? type, out _parseError)
+			    || !TryGetString(problemDetails.RootElement, "type", out string? typeMember, out _parseError)
 			    || !TryGetStatus(problemDetails.RootElement, out int? status, out _parseError)
 			    || !TryGetString(problemDetails.RootElement, "title", out string? title, out _parseError)
 			    || !TryGetString(problemDetails.RootElement, "instance", out string? instance, out _parseError)
@@ -91,19 +112,17 @@ public static partial class ThatHttpResponseMessage
 				return this;
 			}
 
+			// RFC 9457, section 3.1.1: when the "type" member is not present, its value is assumed to be "about:blank".
+			string type = typeMember ?? "about:blank";
 			_failures.Clear();
 			StringEqualityOptions evaluationTypeOptions = typeOptions.Value.ForEvaluation(context, cancellationToken);
 			ProblemDetailsOptions evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			_evaluationTypeOptions = evaluationTypeOptions;
 			_evaluationOptions = evaluationOptions;
 
-			if (type == null)
+			if (expectedType != null)
 			{
-				_failures.Add($"{It} did not match the expected format because no 'type' property existed");
-			}
-			else if (expectedType != null)
-			{
-				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType, "type");
+				MatchResult typeResult = await evaluationTypeOptions.MatchWithExplanation(type, expectedType, "expected");
 				if (!typeResult.IsMatch)
 				{
 					_failures.Add(evaluationTypeOptions.GetExtendedMemberFailure(It, "type", Grammars, type,
@@ -122,8 +141,7 @@ public static partial class ThatHttpResponseMessage
 
 			if (_failures.Any())
 			{
-				Outcome = (expectedType != null && type == null && typeOptions.Value.InspectsSubject) ||
-				          evaluationOptions.InspectsAbsentMember(title, detail, instance)
+				Outcome = evaluationOptions.InspectsAbsentMember(title, detail, instance)
 					? Outcome.FailureBothWays
 					: Outcome.Failure;
 				return this;
