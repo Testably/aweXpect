@@ -1056,6 +1056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -1234,7 +1240,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -1416,7 +1423,8 @@ window.BENCHMARK_DATA = {
           991.1092564900716,
           910.2304321016584,
           879.8539744890653,
-          649.9406497819083
+          649.9406497819083,
+          653.6024447168622
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1597,6 +1605,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -1793,7 +1802,8 @@ window.BENCHMARK_DATA = {
           727.8085537637983,
           710.2752144495646,
           667.1537717819214,
-          568.1711455753872
+          568.1711455753872,
+          623.7429504394531
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1805,6 +1815,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3050,6 +3061,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -3228,7 +3245,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -3410,7 +3428,8 @@ window.BENCHMARK_DATA = {
           4842.084578450521,
           4266.367202758789,
           4171.955720011393,
-          3447.65522480011
+          3447.65522480011,
+          3362.634377034505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3597,6 +3616,7 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24178,
+          24172,
           24172
         ],
         "borderColor": "#63A2AC",
@@ -3787,7 +3807,8 @@ window.BENCHMARK_DATA = {
           5589.4507507324215,
           5012.110445022583,
           4927.087525939942,
-          3860.961341349284
+          3860.961341349284,
+          3941.885052998861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3799,6 +3820,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4984,6 +5006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -5152,7 +5180,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -5324,7 +5353,8 @@ window.BENCHMARK_DATA = {
           2783.576471455892,
           2551.2896525065103,
           2371.869044670692,
-          1954.7066823323569
+          1954.7066823323569,
+          2049.168035888672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5500,6 +5530,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654
         ],
@@ -5681,7 +5712,8 @@ window.BENCHMARK_DATA = {
           3886.4850867135183,
           3441.3160074869793,
           3363.453271993001,
-          2732.59995396932
+          2732.59995396932,
+          2755.487914276123
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5693,6 +5725,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6868,6 +6901,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -7036,7 +7075,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -7208,7 +7248,8 @@ window.BENCHMARK_DATA = {
           14078.57225748698,
           13505.70010732015,
           13217.875526428223,
-          10438.83113301595
+          10438.83113301595,
+          10571.946630205426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7384,6 +7425,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367
         ],
@@ -7565,7 +7607,8 @@ window.BENCHMARK_DATA = {
           363622.49820963544,
           354125.66834435094,
           348069.9138590495,
-          254396.66204427084
+          254396.66204427084,
+          267660.50169270835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7742,7 +7785,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544329,
-          544267
+          544267,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
