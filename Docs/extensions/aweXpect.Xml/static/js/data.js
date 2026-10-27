@@ -1062,6 +1062,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
         "message": "feat!: split the snapshot result by the kind of subject (#2116)"
+      },
+      {
+        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
+        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
       }
     ],
     "labels": [
@@ -1241,7 +1247,8 @@ window.BENCHMARK_DATA = {
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
-      "057732a7"
+      "057732a7",
+      "cda17b83"
     ],
     "datasets": [
       {
@@ -1424,7 +1431,8 @@ window.BENCHMARK_DATA = {
           910.2304321016584,
           879.8539744890653,
           649.9406497819083,
-          653.6024447168622
+          653.6024447168622,
+          668.5717233249119
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1605,6 +1613,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -1803,7 +1812,8 @@ window.BENCHMARK_DATA = {
           710.2752144495646,
           667.1537717819214,
           568.1711455753872,
-          623.7429504394531
+          623.7429504394531,
+          601.8102392196655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1815,6 +1825,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3067,6 +3078,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
         "message": "feat!: split the snapshot result by the kind of subject (#2116)"
+      },
+      {
+        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
+        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
       }
     ],
     "labels": [
@@ -3246,7 +3263,8 @@ window.BENCHMARK_DATA = {
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
-      "057732a7"
+      "057732a7",
+      "cda17b83"
     ],
     "datasets": [
       {
@@ -3429,7 +3447,8 @@ window.BENCHMARK_DATA = {
           4266.367202758789,
           4171.955720011393,
           3447.65522480011,
-          3362.634377034505
+          3362.634377034505,
+          4054.1504099527997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3616,6 +3635,7 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24178,
+          24172,
           24172,
           24172
         ],
@@ -3808,7 +3828,8 @@ window.BENCHMARK_DATA = {
           5012.110445022583,
           4927.087525939942,
           3860.961341349284,
-          3941.885052998861
+          3941.885052998861,
+          4723.594826253256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3820,6 +3841,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -5012,6 +5034,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
         "message": "feat!: split the snapshot result by the kind of subject (#2116)"
+      },
+      {
+        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
+        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
       }
     ],
     "labels": [
@@ -5181,7 +5209,8 @@ window.BENCHMARK_DATA = {
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
-      "057732a7"
+      "057732a7",
+      "cda17b83"
     ],
     "datasets": [
       {
@@ -5354,7 +5383,8 @@ window.BENCHMARK_DATA = {
           2551.2896525065103,
           2371.869044670692,
           1954.7066823323569,
-          2049.168035888672
+          2049.168035888672,
+          2310.9047627766927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5530,6 +5560,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654
@@ -5713,7 +5744,8 @@ window.BENCHMARK_DATA = {
           3441.3160074869793,
           3363.453271993001,
           2732.59995396932,
-          2755.487914276123
+          2755.487914276123,
+          3090.2909009297687
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5725,6 +5757,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6907,6 +6940,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
         "message": "feat!: split the snapshot result by the kind of subject (#2116)"
+      },
+      {
+        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
+        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
       }
     ],
     "labels": [
@@ -7076,7 +7115,8 @@ window.BENCHMARK_DATA = {
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
-      "057732a7"
+      "057732a7",
+      "cda17b83"
     ],
     "datasets": [
       {
@@ -7249,7 +7289,8 @@ window.BENCHMARK_DATA = {
           13505.70010732015,
           13217.875526428223,
           10438.83113301595,
-          10571.946630205426
+          10571.946630205426,
+          11146.982480875651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7425,6 +7466,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367
@@ -7608,7 +7650,8 @@ window.BENCHMARK_DATA = {
           354125.66834435094,
           348069.9138590495,
           254396.66204427084,
-          267660.50169270835
+          267660.50169270835,
+          271044.9377092634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7786,7 +7829,8 @@ window.BENCHMARK_DATA = {
           544335,
           544329,
           544267,
-          544335
+          544335,
+          544267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
