@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1370.1396741231283,
           2041.8105615888323,
           1626.2337636947632,
           1128.8846218109131,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1528.3591998418171,
           1992.8010104252742,
           1983.9704545338948,
-          2022.9429598490397
+          2022.9429598490397,
+          1963.6753173241248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -435,7 +435,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264,
+          1136,
           1136,
           1136,
           1136,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10805.116793823243,
           16185.91210530599,
           10654.639459228516,
           6953.832410959097,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10286.743300301689,
           15688.73051234654,
           14241.545103890556,
-          15613.3274470738
+          15613.3274470738,
+          15217.806331927959
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1091.8530395507812,
           1715.7299590791974,
           1281.484151204427,
           909.7753084727696,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1252.8774864196778,
           1633.6317869822185,
           1577.676675062913,
-          1653.2868336268834
+          1653.2868336268834,
+          1596.8817813055855
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1043,7 +1043,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
-          1240,
+          1112,
           1112,
           1112,
           1112,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9847.225593058269,
           14841.715057373047,
           10078.870348103841,
           6247.957277738131,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9624.006561279297,
           14510.116868239184,
           13074.250087483724,
-          14412.894830557016
+          14412.894830557016,
+          13953.242579142252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3098.5948468526203,
           5156.224453226725,
           3856.1664188929967,
           2711.996167500814,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3992.430689493815,
           5377.160658700125,
           5024.688140282264,
-          5444.528891499837
+          5444.528891499837,
+          5226.138007572719
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1651,7 +1651,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
-          3736,
+          3712,
           3712,
           3712,
           3712,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30406.433602469308,
           48341.91689453125,
           29604.76174316406,
           18320.619295392717,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           28921.10770089286,
           47925.998046875,
           38961.839634486605,
-          46583.15764508928
+          46583.15764508928,
+          46247.996154785156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61925,
           61925,
@@ -1806,6 +1805,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
       {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6258.864602661133,
           9717.63136618478,
           7447.75219930013,
           4902.419089762369,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7259.411357879639,
           9356.479189359225,
           9523.185396321614,
-          9480.182297842843
+          9480.182297842843,
+          9088.596923828125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2259,7 +2259,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
-          7064,
+          6936,
           6936,
           6936,
           6936,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          191201.1509440104,
           313009.56178385415,
           210369.08369954428,
           132469.18714192708,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           204646.28187779017,
           293824.86369441106,
           276010.1675455729,
-          294855.1893717448
+          294855.1893717448,
+          290788.59059495194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521542,
           521594,
           521594,
           521594,
@@ -2414,6 +2413,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
       {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2126.0365430196125,
           2891.5522695268905,
           2324.492087437556,
           1570.2585129056658,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2233.6704504830495,
           2826.7530822753906,
           2827.68478339059,
-          2830.8420031229657
+          2830.8420031229657,
+          2892.4465185312124
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2867,9 +2867,9 @@ window.BENCHMARK_DATA = {
           1488,
           1488,
           1488,
-          1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1475.7565314953144,
           2057.5816904703775,
           1573.0983747754779,
           1049.972974650065,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1487.1400520324707,
           1913.2993995666504,
           1995.1520678202312,
-          1911.3879028956096
+          1911.3879028956096,
+          1894.4147076924642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1454.482082775661,
           2083.7518471309118,
           1603.7095394770304,
           1089.7641321818035,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2115.2720480698804,
           2886.1521092928374,
           2841.9240038945127,
-          2771.6740882873537
+          2771.6740882873537,
+          2872.603721110026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3468,7 +3468,6 @@ window.BENCHMARK_DATA = {
           2864,
           2864,
           2864,
-          2864,
           2832,
           2832,
           2832,
@@ -3507,6 +3506,7 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2776,
+          2840,
           2840,
           2840,
           2840
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1702.1578440666199,
           1985.1931248982748,
           1362.0189651761737,
           904.8501657803853,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1362.6760102785552,
           1732.6620335212122,
           1919.8194819132486,
-          1735.6793715613228
+          1735.6793715613228,
+          1731.1378271920341
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3894,6 +3894,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
@@ -3937,7 +3943,8 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
@@ -3984,7 +3991,8 @@ window.BENCHMARK_DATA = {
           1706.7921857100266,
           2272.108928135463,
           2293.9124477093037,
-          2239.381045750209
+          2239.381045750209,
+          2170.276918851412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4034,6 +4042,7 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
+          3016,
           3016,
           3016,
           3016
@@ -4091,7 +4100,8 @@ window.BENCHMARK_DATA = {
           919.9076296732976,
           1111.2774925231934,
           1246.264877764384,
-          1093.746534211295
+          1093.746534211295,
+          1064.2389193943568
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4103,6 +4113,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -4403,6 +4414,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
@@ -4446,7 +4463,8 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
@@ -4493,7 +4511,8 @@ window.BENCHMARK_DATA = {
           2176.349072519938,
           3023.707836151123,
           3109.3818367004396,
-          3010.7014503479004
+          3010.7014503479004,
+          2991.141622815813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4543,6 +4562,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872
@@ -4600,7 +4620,8 @@ window.BENCHMARK_DATA = {
           1063.2200600941976,
           1256.6118648529052,
           1399.5015284674507,
-          1239.6238641005295
+          1239.6238641005295,
+          1219.6681006113688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4612,6 +4633,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
