@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
-      {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          415.20387336186,
           746.0109142575945,
           547.543568611145,
           698.6567604201181,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           479.49518559773765,
           683.7838911692302,
           666.6127347264971,
-          665.8043145452227
+          665.8043145452227,
+          489.17134523391724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           680,
           680,
-          680,
           592,
           592,
           592,
@@ -445,6 +444,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          537.4325718561809,
           949.1029126827533,
           713.0279911041259,
           867.1128482500712,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           664.6209078516279,
           888.4635460036142,
           895.483428700765,
-          924.3699908574422
+          924.3699908574422,
+          705.753936735789
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
-      {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          67.90990020547595,
           138.64567680358886,
           111.37152926127116,
           134.05891900062562,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           77.49322361151377,
           127.94034349918365,
           110.38219611644745,
-          104.73018941708973
+          104.73018941708973,
+          81.86474782625834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1043,7 +1043,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          121.73796608050664,
           235.3674200943538,
           178.66626567045847,
           236.91705253918965,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           165.09521929423013,
           222.4375822385152,
           203.17515718142192,
-          208.81318254470824
+          208.81318254470824,
+          181.1204728603363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
-      {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1052.0314263661703,
           1897.2226204190936,
           1573.4939260482788,
           1741.3658753712973,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1415.1304913838705,
           1871.1344306128365,
           1849.2000342777797,
-          1765.0012737001691
+          1765.0012737001691,
+          1453.3621735890706
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1808,
           1808,
           1808,
           1808,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1808,
           1808
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          894.5072598775228,
           1496.679707118443,
           1144.722375869751,
           1391.031954574585,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1050.1498386383057,
           1474.2612149374825,
           1461.2678910573325,
-          1502.0768995920816
+          1502.0768995920816,
+          1148.5390441258749
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1765,7 +1765,6 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864,
           1952,
           1952,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
       {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1474.5852530343193,
           2766.2454493840537,
           2136.797777909499,
           2537.0834714253742,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2066.135239192418,
           2753.8066532428447,
           2744.6297828674315,
-          2652.938941683088
+          2652.938941683088,
+          2166.4732570648193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2768,
           2824,
           2824,
           3016,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3104,
           3104
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2308.254963175456,
           3928.0958228478066,
           3087.4135325295583,
           3868.2142426627024,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2868.607315650353,
           3891.0896694476787,
           3747.2123440333776,
-          3889.462844848633
+          3889.462844848633,
+          3021.682448523385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3980,
           3981,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
       {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          186.4191400527954,
           386.82397877375286,
           291.96210692723594,
           405.5110895792643,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           265.41401750700817,
           415.663347752889,
           430.3165431658427,
-          390.14111406462536
+          390.14111406462536,
+          281.0942595163981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2854,7 +2854,6 @@ window.BENCHMARK_DATA = {
         "data": [
           552,
           552,
-          552,
           696,
           696,
           696,
@@ -2868,6 +2867,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1361.1415935243879,
           2360.1266645703995,
           1810.6032690320696,
           2228.1548685709636,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1704.281129582723,
           2293.051630147298,
           2371.6556992164024,
-          2314.8307098388673
+          2314.8307098388673,
+          1778.823710123698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
-        "message": "refactor: let the nullability of collection items flow into their expectations (#2021)"
-      },
-      {
         "sha": "6b630d2bbfd415c18182973bb88a11e7008fb849",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 20:01:44 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
         "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
+      },
+      {
+        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
+        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
       }
     ],
     "labels": [
-      "8a57efc7",
       "6b630d2b",
       "3378cc72",
       "90516b35",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a2f72904",
       "55068d5f",
       "de6df36f",
-      "fc7e1e8a"
+      "fc7e1e8a",
+      "031fdf5a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1666.5236518859863,
           2885.2662280156064,
           2379.497585296631,
           2858.762821451823,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2175.8464069366455,
           2892.35730273907,
           3117.1435152689614,
-          2880.7348442077637
+          2880.7348442077637,
+          2257.7525494893393
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3232,
           3232,
           3232,
           3232,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
+          3200,
           3200
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          179066.13724459134,
           283260.81852213544,
           243798.26583426338,
           300848.6583333333,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           239587.49898856026,
           278114.8661733774,
           279421.47138671874,
-          279200.60117885045
+          279200.60117885045,
+          239771.20134626116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17574,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17727,
           17577,
-          17577
+          17577,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
