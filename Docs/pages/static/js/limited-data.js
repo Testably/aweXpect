@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5828.415414537702,
           11188.161548069545,
           10725.838558490459,
           5346.679335021972,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10649.13065631573,
           10981.005493164062,
           10356.985510019156,
-          11667.550142415364
+          11667.550142415364,
+          10971.02842276437
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -436,7 +436,6 @@ window.BENCHMARK_DATA = {
           2208,
           2208,
           2208,
-          2208,
           2080,
           2080,
           1976,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
-          1984
+          1984,
+          1968
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          200242.60232979912,
           386225.900390625,
           378791.923828125,
           169878.25319010418,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           387294.73723958334,
           363793.9384765625,
           383944.40546875,
-          352011.8722098214
+          352011.8722098214,
+          373467.351953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590288,
           590290,
           590292,
           590287,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590290
+          590290,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10975.592144557408,
           20083.07002766927,
           19759.197509765625,
           9732.070493425641,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           21273.877155010516,
           19460.758770751952,
           20700.15324837821,
-          18641.00264078776
+          18641.00264078776,
+          19098.509545898436
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          151.56276639302573,
           299.9512793858846,
           310.87667481104535,
           126.35500013828278,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           247.33953313827516,
           223.88998905250006,
           279.88351692472185,
-          212.97324488957722
+          212.97324488957722,
+          230.37155287606376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1169,7 +1169,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
-          512,
+          384,
           384,
           384,
           384,
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          289.59023223604476,
           531.148554120745,
           499.83627517406757,
           248.70912674495153,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           567.8351980618069,
           500.3758484033438,
           531.7292888641357,
-          473.50347155791064
+          473.50347155791064,
+          553.0337856732882
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          219.5969561735789,
           397.40638710657754,
           391.1855565071106,
           190.12586188316345,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           411.07143812179567,
           371.46784023138196,
           395.6136736529214,
-          381.7928891181946
+          381.7928891181946,
+          405.4190135955811
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          80.13773941142219,
           156.14635217984517,
           149.51440051623754,
           71.23183561222893,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           123.97251486778259,
           106.67387558732715,
           121.6337941010793,
-          108.5827237708228
+          108.5827237708228,
+          106.09052584171295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1902,7 +1902,6 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
-          448,
           320,
           320,
           320,
@@ -1935,7 +1934,8 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
-          320
+          320,
+          272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          157.22749842007954,
           275.9036222139994,
           259.30012407302854,
           124.19887183507284,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           274.43534007439246,
           235.38718282259427,
           266.4050352414449,
-          241.32654368082683
+          241.32654368082683,
+          253.32412792841595
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          138.89531258174353,
           254.74322485923767,
           244.2840792451586,
           116.78505226281973,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           251.88001845677692,
           226.75356256167095,
           251.82462590535482,
-          232.7335284607751
+          232.7335284607751,
+          265.231112798055
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          146.08031913212366,
           283.7267198562622,
           286.46409527460736,
           129.5158381121499,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           254.41025835673014,
           186.56122859319052,
           210.796752342811,
-          192.61174212183272
+          192.61174212183272,
+          208.47135865688324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2635,9 +2635,9 @@ window.BENCHMARK_DATA = {
           520,
           520,
           520,
-          520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          305.3505081653595,
           550.3791928609212,
           543.8346082687378,
           252.30248141288757,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           596.4860254923502,
           500.1375148479755,
           539.0843565622965,
-          487.57185881478443
+          487.57185881478443,
+          552.2503123283386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          187.64818437894186,
           361.63201774869646,
           351.25829841295877,
           165.01991299788156,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           341.63826503072465,
           316.5294620807354,
           354.55345283235823,
-          318.9336665017264
+          318.9336665017264,
+          345.8871308962504
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          357.8542076860155,
           697.318991456713,
           705.2051502863566,
           320.80484645707264,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           829.6247128077915,
           664.8987370218549,
           714.4090765635173,
-          672.9119856016977
+          672.9119856016977,
+          677.599874941508
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3368,7 +3368,6 @@ window.BENCHMARK_DATA = {
           784,
           784,
           784,
-          784,
           656,
           656,
           600,
@@ -3390,6 +3389,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          803.8106863657633,
           1469.8924522399902,
           1411.2454528808594,
           658.4624439386221,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1531.6021266937255,
           1380.2029197399434,
           1428.00422223409,
-          1302.8837714876447
+          1302.8837714876447,
+          1407.1486531575522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          365.94262766838074,
           683.4718556404114,
           645.8053511301677,
           333.6246384620666,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           732.3529832703726,
           648.89015013831,
           652.7090460459391,
-          636.2350999968393
+          636.2350999968393,
+          666.4853186607361
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          367.0375752131144,
           686.2884492238362,
           691.6242256898147,
           321.26442060470583,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           807.3850479125977,
           668.346793238322,
           724.5196519851685,
-          683.653612613678
+          683.653612613678,
+          683.1775679270427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4101,7 +4101,6 @@ window.BENCHMARK_DATA = {
           832,
           832,
           832,
-          832,
           704,
           704,
           648,
@@ -4123,6 +4122,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11726.311918992262,
           28249.111905924477,
           29200.94760131836,
           10144.358744303385,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28844.799253336587,
           27410.881810506184,
           29136.240849421574,
-          27108.859639485676
+          27108.859639485676,
+          28110.23997061593
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4229,7 +4229,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4252,6 +4251,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          448.0965605735779,
           847.9214347203573,
           787.6263622283935,
           430.18995097478233,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           803.5804691995893,
           791.5459552129109,
           803.7510045369467,
-          783.1581976754325
+          783.1581976754325,
+          782.3231446584066
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          405.56573886871337,
           746.2276570638021,
           721.3546847025553,
           351.6483565012614,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           676.1556984356472,
           657.1919548034668,
           739.6696332931518,
-          645.9166467666626
+          645.9166467666626,
+          619.9633960088094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4834,7 +4834,6 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1608,
           1608,
           1576,
@@ -4867,7 +4866,8 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576
+          1576,
+          1488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30253.282244001115,
           85564.43594563802,
           83395.02146559495,
           27365.753682454426,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           82244.42719914363,
           83301.8121500651,
           84017.47172328403,
-          81336.81665039062
+          81336.81665039062,
+          82576.70678710938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5256,
@@ -4988,6 +4987,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
       {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          110.20277601480484,
           187.81222772598267,
           183.6666120015658,
           89.05134416421255,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           187.59611945152284,
           133.07843921979267,
           139.83271738199088,
-          150.25553563435872
+          150.25553563435872,
+          145.6789005279541
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5442,7 +5442,6 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
-          464,
           336,
           336,
           320,
@@ -5475,7 +5474,8 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
-          320
+          320,
+          304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10906.61905110677,
           33191.11193440755,
           33139.41019548689,
           9323.684568132672,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32625.85824584961,
           31507.689115084133,
           32569.04319545201,
-          31709.059659830727
+          31709.059659830727,
+          32473.04043143136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5615,
@@ -5588,6 +5587,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          132.18289993490492,
           256.3050258636475,
           266.16836449305214,
           117.75027503875586,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           253.48458562578475,
           232.36786219278972,
           264.6024436610086,
-          234.137047958374
+          234.137047958374,
+          242.57681693349565
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          202.55006200926644,
           372.30651003973827,
           347.66867358343944,
           164.32709153493246,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           314.06292085647584,
           287.864625453949,
           307.72088731129963,
-          297.3447113770705
+          297.3447113770705,
+          299.6269555773054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6175,9 +6175,9 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
-          656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.1466427530561,
           403.4592960357666,
           395.78185246785483,
           193.4021841287613,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           405.59647347132363,
           359.64358053888594,
           412.69402583440143,
-          384.2404969419752
+          384.2404969419752,
+          373.3380802154541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          242.56105035146078,
           433.50025777816774,
           413.7372666676839,
           195.50226495947157,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           425.1693227841304,
           396.2578442437308,
           420.97771266301476,
-          400.78634554545084
+          400.78634554545084,
+          415.97790066401166
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          422.2042633465358,
           819.67055199941,
           810.3135171254476,
           363.0605041821798,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           748.5419169108073,
           690.4466000284467,
           736.2036177771432,
-          708.8766406377157
+          708.8766406377157,
+          755.7562480654035
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6908,7 +6908,6 @@ window.BENCHMARK_DATA = {
           1448,
           1448,
           1448,
-          1448,
           1376,
           1376,
           1280,
@@ -6941,7 +6940,8 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
-          1280
+          1280,
+          1232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1162.8113864898683,
           2083.255942753383,
           1912.665381749471,
           923.7328998859113,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2057.260549545288,
           1754.6228174062876,
           2038.9093073527017,
-          1857.3877079827446
+          1857.3877079827446,
+          2062.0258979797363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          536.0233231272016,
           966.7127560206821,
           982.0366469065349,
           450.2476945559184,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           960.7354236602783,
           911.474152633122,
           956.0184542792184,
-          899.8355593314537
+          899.8355593314537,
+          997.8104310353597
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6000.1758542742045,
           11456.64790725708,
           11660.4072265625,
           5753.702564239502,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           12170.218641008649,
           12350.81097957066,
           11979.84641441932,
-          11598.430708665113
+          11598.430708665113,
+          11870.050783284505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7634,7 +7634,6 @@ window.BENCHMARK_DATA = {
           1608,
           1608,
           1608,
-          1608,
           1680,
           1680,
           1680,
@@ -7644,6 +7643,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19260.566722324915,
           41950.07255045573,
           41904.63652155949,
           17693.158142089844,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41178.61326599121,
           41245.8612234933,
           41155.593407264125,
-          40305.06870524088
+          40305.06870524088,
+          40596.89405705379
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5811.060300554548,
           10577.883535531852,
           10920.68641117641,
           5480.875860595703,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10560.199771587666,
           10534.03259059361,
           10607.79208577474,
-          10432.578377356896
+          10432.578377356896,
+          10689.45614188058
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "c65f55ef62d730e5b436dc8c81dd41dc6cad2d7b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 18:12:42 2026 \u002B0200",
-        "message": "feat!: add HasDayOfWeek and a generic enum property result (#2023)"
-      },
-      {
         "sha": "8a57efc7cb84bfab5e7e3d2b691b3e247b72fb35",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 18:14:45 2026 \u002B0200",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
         "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
+      },
+      {
+        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
+        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
       }
     ],
     "labels": [
-      "c65f55ef",
       "8a57efc7",
       "6b630d2b",
       "3378cc72",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "acd69449",
       "a2f72904",
       "55068d5f",
-      "de6df36f"
+      "de6df36f",
+      "fc7e1e8a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5616.011057535808,
           10979.10561312162,
           11288.625946044922,
           5436.401277160645,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11760.074511014498,
           11547.153645106724,
           11331.493611262395,
-          11073.579542795816
+          11073.579542795816,
+          11280.372094726563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8367,7 +8367,6 @@ window.BENCHMARK_DATA = {
           2088,
           2088,
           2088,
-          2088,
           2160,
           2160,
           2160,
@@ -8377,6 +8376,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27684.13321861854,
           61654.75865071615,
           60563.74659016927,
           26565.955466715495,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           59404.395470252406,
           59220.62046595982,
           58654.36075701033,
-          58356.82728271485
+          58356.82728271485,
+          59287.33451625279
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23553,
           23554,
           23554,
           23553,
@@ -8526,6 +8525,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11421.36048235212,
           21024.556053748496,
           21305.166082763673,
           11115.603009905133,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21073.582826886857,
           20891.292957850867,
           21284.376227242607,
-          20919.51668003627
+          20919.51668003627,
+          21022.98698425293
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
