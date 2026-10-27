@@ -990,6 +990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -1157,7 +1163,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -1328,7 +1335,8 @@ window.BENCHMARK_DATA = {
           1159.843358039856,
           1224.5429663658142,
           1167.5245909009661,
-          1528.3591998418171
+          1528.3591998418171,
+          1992.8010104252742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1474,6 +1482,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1683,7 +1692,8 @@ window.BENCHMARK_DATA = {
           7582.6638761247905,
           9975.092721792367,
           8173.189092782827,
-          10286.743300301689
+          10286.743300301689,
+          15688.73051234654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1695,6 +1705,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -2863,6 +2874,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -3030,7 +3047,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -3201,7 +3219,8 @@ window.BENCHMARK_DATA = {
           944.3034023557391,
           955.9236197471619,
           932.9338413385244,
-          1252.8774864196778
+          1252.8774864196778,
+          1633.6317869822185
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3347,6 +3366,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3556,7 +3576,8 @@ window.BENCHMARK_DATA = {
           6875.024433390299,
           9184.138306753975,
           7573.432151794434,
-          9624.006561279297
+          9624.006561279297,
+          14510.116868239184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3568,6 +3589,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -4676,6 +4698,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -4833,7 +4861,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -4994,7 +5023,8 @@ window.BENCHMARK_DATA = {
           2892.360029856364,
           3016.75602944692,
           2938.944308417184,
-          3992.430689493815
+          3992.430689493815,
+          5377.160658700125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5130,6 +5160,7 @@ window.BENCHMARK_DATA = {
           3736,
           3736,
           3736,
+          3712,
           3712,
           3712,
           3712,
@@ -5329,7 +5360,8 @@ window.BENCHMARK_DATA = {
           19217.471745082312,
           27933.34803185096,
           20318.531598772322,
-          28921.10770089286
+          28921.10770089286,
+          47925.998046875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5494,6 +5526,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926
         ],
@@ -6439,6 +6472,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -6596,7 +6635,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -6757,7 +6797,8 @@ window.BENCHMARK_DATA = {
           4996.040178571428,
           6046.560206486629,
           5219.561555989583,
-          7259.411357879639
+          7259.411357879639,
+          9356.479189359225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6893,6 +6934,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -7092,7 +7134,8 @@ window.BENCHMARK_DATA = {
           154566.56959635418,
           193785.03443321816,
           144057.04025065104,
-          204646.28187779017
+          204646.28187779017,
+          293824.86369441106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7257,6 +7300,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594
         ],
@@ -8202,6 +8246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -8359,7 +8409,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -8520,7 +8571,8 @@ window.BENCHMARK_DATA = {
           1608.5227415902275,
           1875.3302319844563,
           1624.149617603847,
-          2233.6704504830495
+          2233.6704504830495,
+          2826.7530822753906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8658,6 +8710,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -8855,7 +8908,8 @@ window.BENCHMARK_DATA = {
           1104.23078757066,
           1427.2918148040771,
           1134.0497041429792,
-          1487.1400520324707
+          1487.1400520324707,
+          1913.2993995666504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8867,6 +8921,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -9965,6 +10020,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -10122,7 +10183,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -10283,7 +10345,8 @@ window.BENCHMARK_DATA = {
           1535.3223019917807,
           1624.174480565389,
           1516.2643054081843,
-          2115.2720480698804
+          2115.2720480698804,
+          2886.1521092928374
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10449,7 +10512,8 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2776,
-          2776
+          2776,
+          2840
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10618,7 +10682,8 @@ window.BENCHMARK_DATA = {
           978.0366556803385,
           1617.787249345046,
           1028.66346244812,
-          1362.6760102785552
+          1362.6760102785552,
+          1732.6620335212122
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10630,6 +10695,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -11026,6 +11092,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -11066,7 +11138,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -11110,7 +11183,8 @@ window.BENCHMARK_DATA = {
           1286.4825721468244,
           1333.385994974772,
           1260.5935675303142,
-          1706.7921857100266
+          1706.7921857100266,
+          2272.108928135463
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11159,7 +11233,8 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
-          2888
+          2888,
+          3016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11211,7 +11286,8 @@ window.BENCHMARK_DATA = {
           603.1657292502267,
           1196.7103785106115,
           602.1614033835275,
-          919.9076296732976
+          919.9076296732976,
+          1111.2774925231934
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11223,6 +11299,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -11502,6 +11579,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
         "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
+      },
+      {
+        "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
+        "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
       }
     ],
     "labels": [
@@ -11542,7 +11625,8 @@ window.BENCHMARK_DATA = {
       "f2444178",
       "69ead4c3",
       "acd69449",
-      "a2f72904"
+      "a2f72904",
+      "55068d5f"
     ],
     "datasets": [
       {
@@ -11586,7 +11670,8 @@ window.BENCHMARK_DATA = {
           1641.7069622039794,
           1894.1041729266826,
           1685.7219298226494,
-          2176.349072519938
+          2176.349072519938,
+          3023.707836151123
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11635,7 +11720,8 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
-          3744
+          3744,
+          3872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11687,7 +11773,8 @@ window.BENCHMARK_DATA = {
           692.6933606465658,
           1386.3157577514648,
           756.3274247096135,
-          1063.2200600941976
+          1063.2200600941976,
+          1256.6118648529052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11699,6 +11786,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
