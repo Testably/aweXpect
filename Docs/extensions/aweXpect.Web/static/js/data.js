@@ -930,6 +930,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -1087,7 +1093,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -1248,7 +1255,8 @@ window.BENCHMARK_DATA = {
           274.2593930134407,
           486.2570652280535,
           243.11349118550618,
-          366.0022515517015
+          366.0022515517015,
+          479.20609823862713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1397,6 +1405,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1583,7 +1592,8 @@ window.BENCHMARK_DATA = {
           603.0536935670035,
           1037.2135566711427,
           522.3913921943077,
-          721.9450086593628
+          721.9450086593628,
+          987.3341917310443
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1595,6 +1605,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2693,6 +2704,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -2850,7 +2867,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -3011,7 +3029,8 @@ window.BENCHMARK_DATA = {
           133.26832509040833,
           265.3763427734375,
           138.0016256911414,
-          172.27613118489583
+          172.27613118489583,
+          248.35408636728923
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3158,6 +3177,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3346,7 +3366,8 @@ window.BENCHMARK_DATA = {
           140.58361787455422,
           265.7293525060018,
           147.66373621622722,
-          200.98934360912867
+          200.98934360912867,
+          256.0922216006688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3358,6 +3379,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4396,6 +4418,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -4543,7 +4571,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -4694,7 +4723,8 @@ window.BENCHMARK_DATA = {
           424.7720924890958,
           749.7643460591634,
           373.58027042661394,
-          514.1039806774685
+          514.1039806774685,
+          782.788984489441
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4833,6 +4863,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5009,7 +5040,8 @@ window.BENCHMARK_DATA = {
           475.18969110342175,
           1017.278343963623,
           510.09454917907715,
-          737.2106490135193
+          737.2106490135193,
+          995.3872695650373
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5021,6 +5053,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6049,6 +6082,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -6196,7 +6235,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -6347,7 +6387,8 @@ window.BENCHMARK_DATA = {
           1127.3268191997822,
           1897.902670451573,
           1163.7652222951253,
-          1458.05278137752
+          1458.05278137752,
+          1959.0115190233503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6486,6 +6527,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -6662,7 +6704,8 @@ window.BENCHMARK_DATA = {
           11054.930619376046,
           21659.06239827474,
           10220.081864493233,
-          13634.141950167143
+          13634.141950167143,
+          21642.35054321289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6793,6 +6836,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -7702,6 +7746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -7849,7 +7899,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -8000,7 +8051,8 @@ window.BENCHMARK_DATA = {
           414.2957160656269,
           782.1341785430908,
           400.0812046686808,
-          563.9472856521606
+          563.9472856521606,
+          826.9175990649632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8139,6 +8191,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -8315,7 +8368,8 @@ window.BENCHMARK_DATA = {
           673.9035356521606,
           1346.114484914144,
           694.5454277311053,
-          1028.383648463658
+          1028.383648463658,
+          1501.9412724812826
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8327,6 +8381,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -9355,6 +9410,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
         "message": "docs: focus the documentation on users and extension authors (#2094)"
+      },
+      {
+        "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
+        "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
       }
     ],
     "labels": [
@@ -9502,7 +9563,8 @@ window.BENCHMARK_DATA = {
       "faf8259e",
       "95843406",
       "71904262",
-      "eea60aeb"
+      "eea60aeb",
+      "a9c742d3"
     ],
     "datasets": [
       {
@@ -9653,7 +9715,8 @@ window.BENCHMARK_DATA = {
           766.2229170432457,
           1303.206131108602,
           775.3494510650635,
-          958.8750595092773
+          958.8750595092773,
+          1286.1388671875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9792,6 +9855,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -9968,7 +10032,8 @@ window.BENCHMARK_DATA = {
           411.7090767621994,
           815.6388447443644,
           454.82737851142883,
-          596.2715656573956
+          596.2715656573956,
+          758.4231937953404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9980,6 +10045,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
