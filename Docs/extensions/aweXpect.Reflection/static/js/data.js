@@ -960,6 +960,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -1122,7 +1128,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -1288,7 +1295,8 @@ window.BENCHMARK_DATA = {
           485.7919549624125,
           680.1379316647848,
           489.4275792666844,
-          349.77796055720404
+          349.77796055720404,
+          318.35973532994586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1444,6 +1452,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -1633,7 +1642,8 @@ window.BENCHMARK_DATA = {
           686.9909416834513,
           933.5449281839224,
           644.7326856026283,
-          504.43075718198503
+          504.43075718198503,
+          487.36285972595215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1645,6 +1655,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2778,6 +2789,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -2940,7 +2957,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -3106,7 +3124,8 @@ window.BENCHMARK_DATA = {
           77.14158741065434,
           106.55110574563345,
           75.41930011908214,
-          57.821878228868755
+          57.821878228868755,
+          53.062227074589046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3253,6 +3272,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3451,7 +3471,8 @@ window.BENCHMARK_DATA = {
           165.2982189105107,
           241.3693735940116,
           166.062668800354,
-          125.90101364680699
+          125.90101364680699,
+          115.92414813775282
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3463,6 +3484,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4596,6 +4618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -4758,7 +4786,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -4924,7 +4953,8 @@ window.BENCHMARK_DATA = {
           1392.1435402461461,
           1913.842772263747,
           1382.546235148112,
-          1006.4992156709943
+          1006.4992156709943,
+          911.3679145177206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5071,6 +5101,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -5269,7 +5300,8 @@ window.BENCHMARK_DATA = {
           1062.1297046661377,
           1479.2701263427734,
           1082.640353902181,
-          831.0409699122112
+          831.0409699122112,
+          758.3283020019531
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5438,6 +5470,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
+          1864,
           1864,
           1864,
           1864
@@ -6354,6 +6387,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -6506,7 +6545,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -6662,7 +6702,8 @@ window.BENCHMARK_DATA = {
           2107.8079149882,
           2943.847755704607,
           2110.1127049763995,
-          1463.629804611206
+          1463.629804611206,
+          1318.1837924321492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6799,6 +6840,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -6987,7 +7029,8 @@ window.BENCHMARK_DATA = {
           2976.01773584806,
           3896.461219200721,
           2900.9416122436523,
-          2208.402438354492
+          2208.402438354492,
+          2055.689343516032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7148,7 +7191,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8062,6 +8106,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -8214,7 +8264,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -8370,7 +8421,8 @@ window.BENCHMARK_DATA = {
           279.65377289908275,
           396.8604276730464,
           272.38374493672296,
-          208.23742826168353
+          208.23742826168353,
+          183.7481241861979
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8507,6 +8559,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -8695,7 +8748,8 @@ window.BENCHMARK_DATA = {
           1710.1219693501791,
           2371.8510081951435,
           1690.690761566162,
-          1308.409900529044
+          1308.409900529044,
+          1173.6930400303431
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8707,6 +8761,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -9770,6 +9825,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
         "message": "feat!: make the signaler and event recording subjects nullable (#2100)"
+      },
+      {
+        "sha": "e09c66b4c5c1df038a00c5f8afdd4900b111d855",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 21:42:35 2026 \u002B0100",
+        "message": "refactor!: name the type parameters of results consistently (#2104)"
       }
     ],
     "labels": [
@@ -9922,7 +9983,8 @@ window.BENCHMARK_DATA = {
       "ce025baa",
       "1690b3ad",
       "4af90a17",
-      "5d21419f"
+      "5d21419f",
+      "e09c66b4"
     ],
     "datasets": [
       {
@@ -10078,7 +10140,8 @@ window.BENCHMARK_DATA = {
           2200.0262672424315,
           3006.8011205037433,
           2234.089752469744,
-          1591.9458465576172
+          1591.9458465576172,
+          1418.7146925608317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10224,6 +10287,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200,
           3200,
           3200,
@@ -10403,7 +10467,8 @@ window.BENCHMARK_DATA = {
           240230.03211388222,
           287825.48603515624,
           239645.20078822545,
-          166082.3169468471
+          166082.3169468471,
+          161738.3274676983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10564,6 +10629,7 @@ window.BENCHMARK_DATA = {
           17707,
           17577,
           17577,
+          17574,
           17574
         ],
         "borderColor": "#FF671B",
