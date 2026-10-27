@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
-      {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          696.8964576721191,
           390.2847415850713,
           414.9462034702301,
           741.3719130198161,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           484.72664880752563,
           338.12206854139055,
           668.9751103719076,
-          677.3221646717617
+          677.3221646717617,
+          671.4171265920003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -427,7 +427,6 @@ window.BENCHMARK_DATA = {
           592,
           592,
           592,
-          592,
           464,
           464,
           464,
@@ -437,6 +436,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          918.6337985311236,
           535.3275960922241,
           535.7304812944852,
           939.1226808003017,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           687.895776612418,
           470.3614543279012,
           874.3199213027954,
-          899.9544789240911
+          899.9544789240911,
+          963.0680847167969
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
-      {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          148.9260809788337,
           74.94456945146833,
           80.29966062307358,
           156.31375538508098,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           78.25070672829946,
           56.3144095659256,
           107.21382932479565,
-          105.81736228295735
+          105.81736228295735,
+          118.14017221132914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1035,7 +1035,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
-          296,
+          168,
           168,
           168,
           168,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          209.3827139230875,
           133.6875028292338,
           130.46587387720743,
           220.10515964825947,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           170.34959718159266,
           130.78059196472168,
           220.85847078959148,
-          207.8133637223925
+          207.8133637223925,
+          247.25246426264445
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
-      {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1820.626187769572,
           1041.751329421997,
           995.7361735026042,
           1952.0222222464424,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1363.3655841827392,
           908.0967491785685,
           1837.593967144306,
-          1865.7873246119573
+          1865.7873246119573,
+          1942.0211727435772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1800,
           1888,
           1888,
           1888,
@@ -1644,6 +1643,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1438.6167323248726,
           835.3079631169637,
           834.8698577245076,
           1483.188051478068,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1129.8047323226929,
           790.750996653239,
           1461.6903575897218,
-          1431.6957876841227
+          1431.6957876841227,
+          1518.5174478803362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1953,
           1864,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
       {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2665.9691129831167,
           1518.6339042370137,
           1468.103524017334,
           2848.43616027832,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2061.2373196919757,
           1339.6654103597004,
           2711.781241280692,
-          2700.6533147176106
+          2700.6533147176106,
+          2920.4694085802353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3008,
           3184,
           3184,
           3184,
@@ -2252,6 +2251,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3713.240572520665,
           2235.4746020180837,
           2315.7253766377767,
           3904.8881650652206,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3062.191277430608,
           2097.339874812535,
           3693.858551297869,
-          3766.2877437046595
+          3766.2877437046595,
+          4000.3064329964773
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3980,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3981,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
       {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          395.25831361917346,
           225.76909025510153,
           217.1549676014827,
           463.555238978068,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           295.33603828293934,
           182.87367059389751,
           380.3301629066467,
-          391.31976725260415
+          391.31976725260415,
+          445.2730850855509
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2859,7 +2859,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
-          696,
+          568,
           568,
           568,
           568,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2296.1132569994247,
           1362.5206458227974,
           1409.5500555038452,
           2373.0495864323207,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1839.6418684445894,
           1224.9972310384114,
           2209.320582707723,
-          2311.799169100248
+          2311.799169100248,
+          2411.5259519723745
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "9dc4e7bbd037e6b7b13cc0155bf737c967200983",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 22:37:59 2026 \u002B0200",
-        "message": "refactor!: select access modifiers of types only through the chain or a filter (#2033)"
-      },
-      {
         "sha": "b7024c3cccfece7aac86b310810476ac2e40acb3",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:11:33 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
-      "9dc4e7bb",
       "b7024c3c",
       "9f98f729",
       "7d0dbd4c",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2870.9504817326865,
           1638.7766861234393,
           1623.9279898234777,
           3046.3959538777667,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2220.8905308063213,
           1494.520046488444,
           2887.684476852417,
-          2838.7573070526123
+          2838.7573070526123,
+          3028.309989420573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3224,
           3312,
           3312,
           3312,
@@ -3477,6 +3476,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200,
           3200,
           3200,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          276975.9881310096,
           165553.58056640625,
           172382.05252278646,
           280915.2075846354,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           239549.76911808894,
           160814.23063777044,
           280257.90891927085,
-          277900.56604003906
+          277900.56604003906,
+          290732.1885091146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17574,
           17576,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17574,
           17577,
-          17577
+          17577,
+          17879
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
