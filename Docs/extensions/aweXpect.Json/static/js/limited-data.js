@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1998.5301905314127,
           1144.5054862682637,
           2047.760078938802,
           1743.8749532699585,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2112.986998494466,
           2078.9626052856447,
           2002.1438337472769,
-          1553.343476840428
+          1553.343476840428,
+          2041.0273508707683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14742.2350189209,
           7176.637215169271,
           16381.57700805664,
           12821.364896501813,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           15961.13096110026,
           15907.82141331264,
           15612.746715291341,
-          12111.159053548177
+          12111.159053548177,
+          17248.27479117257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1627.0530489408052,
           938.326703291673,
           1715.6842297871908,
           1370.1837903431483,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1741.379569871085,
           1691.4222714560372,
           1666.2785999591533,
-          1287.2674263000488
+          1287.2674263000488,
+          1646.505560874939
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13581.928694588798,
           6760.275062561035,
           14844.47417195638,
           12044.597059122721,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           15167.919065348307,
           14973.495389811198,
           15029.327513631184,
-          11357.86665242513
+          11357.86665242513,
+          15960.658412679037
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5163.1312185014995,
           3051.8622027079264,
           5443.847474161784,
           4173.6183504377095,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5513.921094767253,
           5573.049152119955,
           5498.241242472331,
-          3815.971667989095
+          3815.971667989095,
+          5685.943733215332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1667,7 +1667,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1679,6 +1678,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40533.5778902494,
           19434.500352125902,
           48195.047912597656,
           36000.69462702824,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           48711.80868765024,
           48473.97191975911,
           48082.12121582031,
-          32478.476969401043
+          32478.476969401043,
+          49438.050354003906
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1763,7 +1763,6 @@ window.BENCHMARK_DATA = {
         "data": [
           61926,
           61926,
-          61926,
           61925,
           61926,
           61926,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
       {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9605.55645106389,
           5083.516858237131,
           9829.43128306071,
           8322.804649353027,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9559.88588663737,
           9519.79383305141,
           9362.658601614145,
-          7286.235590253557
+          7286.235590253557,
+          9539.489362444196
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          287268.4398925781,
           141520.58675711494,
           305976.151297433,
           249743.68704427083,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           305782.2564778646,
           298104.2845052083,
           309273.2155761719,
-          230929.51668294272
+          230929.51668294272,
+          316016.8295735677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521541,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521541
+          521541,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
       {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2874.9522822243825,
           1593.3387859344482,
           2859.910303388323,
           2629.9251869746618,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2966.47819035848,
           2966.4180230360766,
           2822.092520305089,
-          2339.903066253662
+          2339.903066253662,
+          2878.234126164363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2897,7 +2897,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1999.9706717899867,
           1061.9097052982875,
           2061.7027366638185,
           1917.626728602818,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1964.5523948669434,
           2020.967291768392,
           1989.1352724347796,
-          1779.6196866353353
+          1779.6196866353353,
+          2005.7089811471792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2732.7821927751816,
           1365.1781311035156,
           2739.7035283406576,
           2207.171106719971,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2886.198728688558,
           2964.4125410226675,
           2878.1142407735188,
-          2112.002439626058
+          2112.002439626058,
+          3143.5914372762045
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3486,7 +3486,6 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2776,
-          2776,
           2840,
           2840,
           2840,
@@ -3503,6 +3502,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2032.941022491455,
           856.7953752108982,
           1977.3048049926758,
           2056.406147548131,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1783.0299625396729,
           1815.2466063866248,
           1685.4638674418131,
-          1949.1847943623861
+          1949.1847943623861,
+          1927.088729095459
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2150.017341359456,
           1131.88678755079,
           2103.64189453125,
           1855.3363744099936,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2331.5834429423016,
           2351.8820971171062,
           2416.109371772179,
-          1833.0526563008627
+          1833.0526563008627,
+          2461.498104640416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4094,7 +4094,6 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
-          2888,
           3016,
           3016,
           3016,
@@ -4111,6 +4110,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1347.3144874572754,
           595.3509517033895,
           1178.3722721099853,
           1470.8178543090821,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1107.8757119496663,
           1250.2372016906738,
           1145.5878542491369,
-          1360.7521257400513
+          1360.7521257400513,
+          1227.1598706563313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
-        "message": "ci: run the docs tests in the API job (#2080)"
-      },
-      {
         "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
-      "cb617241",
       "7294afca",
       "20357097",
       "1dc71bae",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2966.209689839681,
           1508.3880148569742,
           3074.059043629964,
           2663.779745992025,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           3010.500703684489,
           3131.058696201869,
           3037.964632161458,
-          2429.930246225993
+          2429.930246225993,
+          3122.3266352335613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4702,7 +4702,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
-          3744,
+          3872,
           3872,
           3872,
           3872,
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1547.9981408800397,
           667.9071994145711,
           1448.817500559489,
           1690.9243260792323,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1320.680685043335,
           1357.6422740391322,
           1320.729950087411,
-          1552.1033114024572
+          1552.1033114024572,
+          1409.697113445827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4888,13 +4888,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
@@ -4904,7 +4911,8 @@ window.BENCHMARK_DATA = {
           169196.58732722356,
           166606.0400390625,
           160665.34225260417,
-          137958.8206217448
+          137958.8206217448,
+          162809.2893254207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4916,6 +4924,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -4937,7 +4946,8 @@ window.BENCHMARK_DATA = {
           198094.59946289062,
           199580.6094970703,
           192922.53414481026,
-          166827.9689860026
+          166827.9689860026,
+          197813.32146344866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4952,7 +4962,8 @@ window.BENCHMARK_DATA = {
           266951,
           266951,
           266951,
-          266882
+          266882,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4990,13 +5001,20 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
         "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
+      },
+      {
+        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
+        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
       }
     ],
     "labels": [
       "76bf298b",
       "26a49595",
       "6f944ab7",
-      "7a6e1961"
+      "7a6e1961",
+      "23f4f8ec"
     ],
     "datasets": [
       {
@@ -5006,7 +5024,8 @@ window.BENCHMARK_DATA = {
           2692.453815460205,
           2897.014651997884,
           2680.29673903329,
-          2073.7609283447264
+          2073.7609283447264,
+          2885.482154573713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5018,6 +5037,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5039,7 +5059,8 @@ window.BENCHMARK_DATA = {
           1917.4742403666178,
           1926.2845264434814,
           1793.1345399220784,
-          1823.9254959106445
+          1823.9254959106445,
+          1973.0849143981934
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5051,6 +5072,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
