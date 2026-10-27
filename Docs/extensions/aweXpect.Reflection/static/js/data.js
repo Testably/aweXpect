@@ -1110,6 +1110,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -1297,7 +1303,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -1488,7 +1495,8 @@ window.BENCHMARK_DATA = {
           651.8453866640726,
           625.580910174052,
           477.2522231419881,
-          664.9107264836629
+          664.9107264836629,
+          652.548350921044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1644,6 +1652,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -1883,7 +1892,8 @@ window.BENCHMARK_DATA = {
           858.9271539279392,
           873.3722170421055,
           704.8498471123831,
-          914.3311543782552
+          914.3311543782552,
+          925.2037527720133
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1895,6 +1905,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3203,6 +3214,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -3390,7 +3407,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -3581,7 +3599,8 @@ window.BENCHMARK_DATA = {
           116.4206503374236,
           98.65278679132462,
           83.54979624067035,
-          112.72798475424449
+          112.72798475424449,
+          113.32602600867932
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3728,6 +3747,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3976,7 +3996,8 @@ window.BENCHMARK_DATA = {
           203.17071310679117,
           215.99976619084677,
           170.84991351763406,
-          205.00154617627462
+          205.00154617627462,
+          220.2185204188029
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3988,6 +4009,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5296,6 +5318,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -5483,7 +5511,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -5674,7 +5703,8 @@ window.BENCHMARK_DATA = {
           1827.2344784055438,
           1807.4887440999348,
           1449.6105542500813,
-          1924.6272258758545
+          1924.6272258758545,
+          1844.407607014974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5869,6 +5899,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856
         ],
@@ -6069,7 +6100,8 @@ window.BENCHMARK_DATA = {
           1400.6412498474122,
           1397.3083488757793,
           1129.3629906972249,
-          1446.0350646972656
+          1446.0350646972656,
+          1500.9760232652936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6265,7 +6297,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7329,6 +7362,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -7506,7 +7545,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -7687,7 +7727,8 @@ window.BENCHMARK_DATA = {
           2687.227822167533,
           2724.579819605901,
           2191.858303833008,
-          2814.40004196167
+          2814.40004196167,
+          2715.5166798909504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7872,6 +7913,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152
         ],
@@ -8062,7 +8104,8 @@ window.BENCHMARK_DATA = {
           3718.9599884033205,
           3900.8211244855606,
           3041.749449803279,
-          3814.9808616638184
+          3814.9808616638184,
+          3877.3625057765416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8248,7 +8291,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9312,6 +9356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -9489,7 +9539,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -9670,7 +9721,8 @@ window.BENCHMARK_DATA = {
           382.56969029108683,
           353.833411026001,
           281.9323324839274,
-          371.9933384827205
+          371.9933384827205,
+          406.6761632919312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9807,6 +9859,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -10045,7 +10098,8 @@ window.BENCHMARK_DATA = {
           2264.9147387913295,
           2251.7104760487873,
           1792.012609073094,
-          2206.2890281677246
+          2206.2890281677246,
+          2339.105630141038
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10057,6 +10111,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -11295,6 +11350,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
         "message": "feat!: list the snapshot and public API options in the failure (#2123)"
+      },
+      {
+        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
+        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
       }
     ],
     "labels": [
@@ -11472,7 +11533,8 @@ window.BENCHMARK_DATA = {
       "dfdf7bc1",
       "31332abd",
       "2ba23029",
-      "630e8f0a"
+      "630e8f0a",
+      "76bf298b"
     ],
     "datasets": [
       {
@@ -11653,7 +11715,8 @@ window.BENCHMARK_DATA = {
           2815.706266256479,
           2997.911884894738,
           2721.564973977896,
-          2920.9518320719403
+          2920.9518320719403,
+          2864.680062157767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11838,6 +11901,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
+          3248,
           3248,
           3248
         ],
@@ -12028,7 +12092,8 @@ window.BENCHMARK_DATA = {
           281150.8317173549,
           306289.36247907364,
           239200.2611607143,
-          277738.87561035156
+          277738.87561035156,
+          281847.8198893229
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12210,6 +12275,7 @@ window.BENCHMARK_DATA = {
           17879,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577,
