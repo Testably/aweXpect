@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
-      {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          446.6067923545837,
           476.62060131345476,
           452.4477687065418,
           535.2559365590413,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           453.71519371668495,
           330.5044671058655,
           250.1517732302348,
-          456.01056003570557
+          456.01056003570557,
+          212.62073295457023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -447,7 +447,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          973.9919999929575,
           1040.2450190226236,
           1027.0318613052368,
           991.3581536610922,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           955.0897411982219,
           737.6938452039446,
           507.0532956441244,
-          1136.7805593930757
+          1136.7805593930757,
+          474.0762982368469
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
-      {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          249.3118230819702,
           254.19710245132447,
           232.00475084781647,
           260.0305640220642,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           242.04026679992677,
           180.1076249395098,
           121.71482060636792,
-          269.49409039815265
+          269.49409039815265,
+          113.97554241759437
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.41070439020794,
           253.95475301742553,
           264.6599634806315,
           272.33496082746063,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           255.67062606811524,
           202.8274187019893,
           126.63684141635895,
-          320.31061731974285
+          320.31061731974285,
+          122.06529651369367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
-      {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          771.3073598997934,
           749.3013362248738,
           669.8444964545114,
           777.2642192840576,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           728.1997217450823,
           512.3724195480347,
           366.1072335924421,
-          744.1217367989676
+          744.1217367989676,
+          475.842946879069
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1685,7 +1685,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
-          1032
+          1192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          929.9089051564534,
           975.6534481048584,
           962.4267501149859,
           1038.4253131321498,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           929.0748093922933,
           737.6815742651621,
           469.7671685900007,
-          1102.59083543505
+          1102.59083543505,
+          454.2289246045626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
-      {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1842.5138240227332,
           1900.1002059664045,
           1896.937804882343,
           1950.3321706136069,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1827.0886987958636,
           1422.0985904693603,
           1113.2513363701958,
-          1676.5335039774577
+          1676.5335039774577,
+          1048.671103922526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20983.919543457032,
           21228.796875,
           18475.970909705527,
           21481.467146809897,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           20858.086165364584,
           13633.464186604817,
           10508.656198774066,
-          17193.50115356445
+          17193.50115356445,
+          9380.347384134928
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2396,7 +2396,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
       {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          765.41995375497,
           795.979282506307,
           708.7724781769973,
           819.9159835179647,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           746.4120240211487,
           552.8954482396443,
           408.56006152289257,
-          750.5178563044622
+          750.5178563044622,
+          410.72088912328087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1293.543425486638,
           1356.6411356244769,
           1340.6348939259847,
           1353.6084494272868,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1329.397498675755,
           970.3872172491891,
           678.8819772720337,
-          1474.2933091481527
+          1474.2933091481527,
+          688.5845597130912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "7294afcad3f1eec86db153caf9de6a7f4bfe0414",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 12:08:26 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 4 updates (#2081)"
-      },
-      {
         "sha": "2035709788e314afef5721e8499327ca998ac367",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
         "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
+      },
+      {
+        "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
+        "message": "feat!: let the header expectations also read the content headers (#2128)"
       }
     ],
     "labels": [
-      "7294afca",
       "20357097",
       "1dc71bae",
       "5520582a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "26a49595",
       "6f944ab7",
       "7a6e1961",
-      "23f4f8ec"
+      "23f4f8ec",
+      "978086a8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1254.384162012736,
           1321.079565556844,
           1269.305921681722,
           1295.5133110046386,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1277.230293146769,
           1020.0592324393136,
           733.1517812093099,
-          1151.0647342999775
+          1151.0647342999775,
+          744.3508659998575
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3487,7 +3487,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
-          1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          730.2304495297946,
           775.6313112258911,
           795.8693497339884,
           823.1605088370187,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           728.3287561416626,
           598.7262877782185,
           390.1776904741923,
-          924.860945447286
+          924.860945447286,
+          377.19361083848133
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
