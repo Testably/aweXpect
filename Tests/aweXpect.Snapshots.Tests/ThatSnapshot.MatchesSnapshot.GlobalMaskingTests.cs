@@ -160,6 +160,26 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WhenGlobalTextSelectionIsReusedAfterAnOption_ShouldKeepItsOwnOptions()
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				SnapshotText<SnapshotRule> track = SnapshotRule.For.Text("track ?");
+				SnapshotRule wildcard = track.AsWildcard().Mask("<wildcard>");
+				SnapshotRule anyCase = track.IgnoringCase().Mask("<any case>");
+				SnapshotRule exact = track.Mask("<exact>");
+				using CustomizationLifetime rules = Customize.aweXpect.Snapshots().Rules.Set([exact, anyCase, wildcard,]);
+				string subject = "track ?, TRACK ?, track 1";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName);
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo("<exact>, <any case>, <wildcard>")
+					.Because("each option returns a new selection and leaves the stored one unchanged");
+			}
+
+			[Test]
 			public async Task WhenLocalAndGlobalMaskings_ShouldApplyTheLocalOnesFirst()
 			{
 				InMemorySnapshotStore store = new();

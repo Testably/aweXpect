@@ -279,6 +279,54 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			[Arguments("Track ?", "Track 1, Track 2", 2)]
+			[Arguments("Track *!", "Track 1: Help!, Track 2: Let It Be!", 1)]
+			[Arguments("a?c*", "abc-axc", 1)]
+			[Arguments("1+1=?", "1+1=2, 11=2", 1)]
+			[Arguments(@"(a)[b]{c}.$^|\#", @"x(a)[b]{c}.$^|\#y", 1)]
+			[Arguments("a.c", "abc", 0)]
+			[Arguments("Mood: ?!", "Mood: \U0001F3B5!", 1)]
+			[Arguments("?", "a\U0001F3B5b", 3)]
+			[Arguments("??", "\U0001F3B5", 0)]
+			public async Task WhenMaskingAsWildcard_ShouldMatchLikeTheStringComparison(string pattern, string subject,
+				int expectedCount)
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Text(pattern).AsWildcard().Mask("<m>");
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).Contains("<m>").Exactly(expectedCount);
+				await That(subject).Contains(pattern).AsWildcard().Exactly(expectedCount)
+					.Because("the wildcard of a snapshot rule is translated like the one of aweXpect's string comparison");
+			}
+
+			[Test]
+			[Arguments("Help*Be", "Help\nIt\nBe")]
+			[Arguments("p?I", "Help\nIt")]
+			[Arguments("t?B", "It\rBe")]
+			[Arguments("a*b", "a\r\nb")]
+			public async Task WhenMaskingAsWildcard_ShouldNotMatchALineBreakUnlikeTheStringComparison(string pattern,
+				string subject)
+			{
+				InMemorySnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+						.For.Text(pattern).AsWildcard().Mask("<m>");
+
+				await That(Act).Throws<FailException>();
+				await That(store.Mismatches[Id]).IsEqualTo(subject)
+					.Because("a wildcard of a snapshot rule matches within a line");
+				await That(subject).Contains(pattern).AsWildcard().Once()
+					.Because("a wildcard of aweXpect's string comparison also matches a line break");
+			}
+
+			[Test]
 			public async Task WhenMaskingWithRegex_ShouldUseItsOptions()
 			{
 				InMemorySnapshotStore store = new();
