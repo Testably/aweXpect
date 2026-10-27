@@ -56,7 +56,9 @@ public static partial class Filtered
 		/// <inheritdoc />
 		public string GetDescription()
 		{
-			string description = _description();
+			// Suffix filters end with a space that separates them from the outer description. A source without one,
+			// e.g. In.Type, needs a space before them instead and drops the trailing one.
+			string description = _types is null ? _description() + " " : _description();
 			foreach (IFilter<PropertyInfo> filter in Filters)
 			{
 				description = filter.Describes(description);
@@ -67,7 +69,7 @@ public static partial class Filtered
 				return description + _types.GetDescription().PrefixIn();
 			}
 
-			return description;
+			return description.TrimEnd();
 		}
 
 		/// <inheritdoc />
