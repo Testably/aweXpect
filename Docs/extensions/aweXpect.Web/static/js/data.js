@@ -948,6 +948,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -1108,7 +1114,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -1272,7 +1279,8 @@ window.BENCHMARK_DATA = {
           366.0022515517015,
           479.20609823862713,
           242.85460563806387,
-          347.9686454023634
+          347.9686454023634,
+          363.6178228378296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1421,6 +1429,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1613,7 +1622,8 @@ window.BENCHMARK_DATA = {
           721.9450086593628,
           987.3341917310443,
           520.2494353514451,
-          714.0956982832688
+          714.0956982832688,
+          879.844220606486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1625,6 +1635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2744,6 +2755,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -2904,7 +2921,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -3068,7 +3086,8 @@ window.BENCHMARK_DATA = {
           172.27613118489583,
           248.35408636728923,
           123.42481372906612,
-          178.08983652932304
+          178.08983652932304,
+          180.5696722439357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3215,6 +3234,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3409,7 +3429,8 @@ window.BENCHMARK_DATA = {
           200.98934360912867,
           256.0922216006688,
           134.6471348206202,
-          201.13847789764404
+          201.13847789764404,
+          218.6117254770719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3421,6 +3442,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4480,6 +4502,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -4630,7 +4658,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -4784,7 +4813,8 @@ window.BENCHMARK_DATA = {
           514.1039806774685,
           782.788984489441,
           386.00081157684326,
-          525.8709332602365
+          525.8709332602365,
+          590.1431130681719
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4923,6 +4953,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5105,7 +5136,8 @@ window.BENCHMARK_DATA = {
           737.2106490135193,
           995.3872695650373,
           496.2667764663696,
-          719.6934509277344
+          719.6934509277344,
+          840.3600288391114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5117,6 +5149,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6166,6 +6199,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -6316,7 +6355,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -6470,7 +6510,8 @@ window.BENCHMARK_DATA = {
           1458.05278137752,
           1959.0115190233503,
           1105.8887264545147,
-          1440.406469599406
+          1440.406469599406,
+          1540.6497641972132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6609,6 +6650,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -6791,7 +6833,8 @@ window.BENCHMARK_DATA = {
           13634.141950167143,
           21642.35054321289,
           10142.197319030762,
-          13552.602865600586
+          13552.602865600586,
+          15332.87242595966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6922,6 +6965,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -7852,6 +7896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -8002,7 +8052,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -8156,7 +8207,8 @@ window.BENCHMARK_DATA = {
           563.9472856521606,
           826.9175990649632,
           397.07221364974976,
-          553.8046045303345
+          553.8046045303345,
+          580.46723985672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8295,6 +8347,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -8477,7 +8530,8 @@ window.BENCHMARK_DATA = {
           1028.383648463658,
           1501.9412724812826,
           643.3150248527527,
-          961.8249022165934
+          961.8249022165934,
+          1159.1047822316489
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8489,6 +8543,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -9538,6 +9593,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
         "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
+      },
+      {
+        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
+        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
       }
     ],
     "labels": [
@@ -9688,7 +9749,8 @@ window.BENCHMARK_DATA = {
       "eea60aeb",
       "a9c742d3",
       "ce025baa",
-      "1690b3ad"
+      "1690b3ad",
+      "4af90a17"
     ],
     "datasets": [
       {
@@ -9842,7 +9904,8 @@ window.BENCHMARK_DATA = {
           958.8750595092773,
           1286.1388671875,
           739.2131657600403,
-          985.8325730837308
+          985.8325730837308,
+          1020.1573291506086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9981,6 +10044,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -10163,7 +10227,8 @@ window.BENCHMARK_DATA = {
           596.2715656573956,
           758.4231937953404,
           407.213606766292,
-          589.5115729059492
+          589.5115729059492,
+          642.252339553833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10175,6 +10240,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
