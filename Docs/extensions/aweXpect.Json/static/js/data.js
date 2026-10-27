@@ -1092,6 +1092,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -1276,7 +1282,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -1464,7 +1471,8 @@ window.BENCHMARK_DATA = {
           2015.2118952433268,
           1979.4800186157227,
           2103.9728783827563,
-          1581.2947902679443
+          1581.2947902679443,
+          1545.1311745276819
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1610,6 +1618,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1853,7 +1862,8 @@ window.BENCHMARK_DATA = {
           14907.855632781982,
           13213.673052978516,
           16355.712644304547,
-          10879.711952209473
+          10879.711952209473,
+          11581.982772827148
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1865,6 +1875,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -3152,6 +3163,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -3336,7 +3353,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -3524,7 +3542,8 @@ window.BENCHMARK_DATA = {
           1644.729345028217,
           1589.8825171544001,
           1690.4521116529193,
-          1257.5928990500313
+          1257.5928990500313,
+          1252.6473203023274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3670,6 +3689,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -3913,7 +3933,8 @@ window.BENCHMARK_DATA = {
           13677.300699506488,
           12405.019945780436,
           14996.585013756385,
-          10338.449785505023
+          10338.449785505023,
+          10583.066922869
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3925,6 +3946,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -5152,6 +5174,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -5326,7 +5354,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -5504,7 +5533,8 @@ window.BENCHMARK_DATA = {
           5529.316717965262,
           4882.668211255755,
           5612.46333530971,
-          4032.504530225481
+          4032.504530225481,
+          4073.4305463518417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5687,6 +5717,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704
         ],
         "borderColor": "#63A2AC",
@@ -5873,7 +5904,8 @@ window.BENCHMARK_DATA = {
           45128.31701660156,
           37106.726274762834,
           48573.64327799479,
-          30386.86795915876
+          30386.86795915876,
+          31591.503173828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6053,6 +6085,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926,
           61926,
           61926,
@@ -7102,6 +7135,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -7276,7 +7315,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -7454,7 +7494,8 @@ window.BENCHMARK_DATA = {
           9445.196464538574,
           9303.31702532087,
           9572.548245239257,
-          7412.175616924579
+          7412.175616924579,
+          7555.033297729492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7590,6 +7631,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -7823,7 +7865,8 @@ window.BENCHMARK_DATA = {
           291411.79641927086,
           260952.07728794642,
           305187.5098702567,
-          214061.53138020833
+          214061.53138020833,
+          225459.5381033761
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7988,6 +8031,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -9052,6 +9096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -9226,7 +9276,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -9404,7 +9455,8 @@ window.BENCHMARK_DATA = {
           2812.361069543021,
           2764.9428089686803,
           2904.9403447469076,
-          2249.467575709025
+          2249.467575709025,
+          2212.0648094177245
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9542,6 +9594,7 @@ window.BENCHMARK_DATA = {
           1488,
           1360,
           1360,
+          1288,
           1288,
           1288,
           1288,
@@ -9773,7 +9826,8 @@ window.BENCHMARK_DATA = {
           1907.4194725581578,
           1920.1689692179361,
           2008.511747632708,
-          1590.8516989390055
+          1590.8516989390055,
+          1592.5073368889946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9785,6 +9839,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -11002,6 +11057,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -11176,7 +11237,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -11354,7 +11416,8 @@ window.BENCHMARK_DATA = {
           2924.003154373169,
           2746.6428225199384,
           3131.8467609698955,
-          2272.9708557128906
+          2272.9708557128906,
+          2334.6731905255997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11537,6 +11600,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904
         ],
         "borderColor": "#63A2AC",
@@ -11723,7 +11787,8 @@ window.BENCHMARK_DATA = {
           1739.75355052948,
           1808.773286819458,
           1941.1125183105469,
-          1433.3593019757952
+          1433.3593019757952,
+          1589.3227558135986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11735,6 +11800,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -12250,6 +12316,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -12307,7 +12379,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -12368,7 +12441,8 @@ window.BENCHMARK_DATA = {
           2287.716771345872,
           2177.608450317383,
           2497.200919087728,
-          1793.0235778808594
+          1793.0235778808594,
+          1838.3382360018218
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12434,6 +12508,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072
         ],
         "borderColor": "#63A2AC",
@@ -12503,7 +12578,8 @@ window.BENCHMARK_DATA = {
           1106.108641688029,
           1253.9313658396402,
           1268.3080777486166,
-          937.873424911499
+          937.873424911499,
+          998.9570941925049
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12515,6 +12591,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -12913,6 +12990,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
         "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
+      },
+      {
+        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
+        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
       }
     ],
     "labels": [
@@ -12970,7 +13053,8 @@ window.BENCHMARK_DATA = {
       "cda17b83",
       "3c243dad",
       "dfdf7bc1",
-      "31332abd"
+      "31332abd",
+      "2ba23029"
     ],
     "datasets": [
       {
@@ -13031,7 +13115,8 @@ window.BENCHMARK_DATA = {
           2950.8557929992676,
           2933.0064969380696,
           3130.8209887186686,
-          2361.349171447754
+          2361.349171447754,
+          2394.2550597557656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13081,6 +13166,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -13166,7 +13252,8 @@ window.BENCHMARK_DATA = {
           1262.654737179096,
           1418.1543813069661,
           1501.9619153340657,
-          1071.6646926879882
+          1071.6646926879882,
+          1106.6964110056558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13178,6 +13265,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
