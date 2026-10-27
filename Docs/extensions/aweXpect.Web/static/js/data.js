@@ -1128,6 +1128,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -1318,7 +1324,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -1512,7 +1519,8 @@ window.BENCHMARK_DATA = {
           343.99022534688316,
           316.39989782969155,
           453.71519371668495,
-          330.5044671058655
+          330.5044671058655,
+          250.1517732302348
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1692,6 +1700,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1913,7 +1922,8 @@ window.BENCHMARK_DATA = {
           910.86525787626,
           787.7659174374172,
           955.0897411982219,
-          737.6938452039446
+          737.6938452039446,
+          507.0532956441244
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1925,6 +1935,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3254,6 +3265,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -3444,7 +3461,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -3638,7 +3656,8 @@ window.BENCHMARK_DATA = {
           205.55006698199682,
           186.2806418623243,
           242.04026679992677,
-          180.1076249395098
+          180.1076249395098,
+          121.71482060636792
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3785,6 +3804,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4039,7 +4059,8 @@ window.BENCHMARK_DATA = {
           252.2637170278109,
           217.91079696019492,
           255.67062606811524,
-          202.8274187019893
+          202.8274187019893,
+          126.63684141635895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4051,6 +4072,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5320,6 +5342,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -5500,7 +5528,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -5684,7 +5713,8 @@ window.BENCHMARK_DATA = {
           628.7902672449748,
           536.3601025263469,
           728.1997217450823,
-          512.3724195480347
+          512.3724195480347,
+          366.1072335924421
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5823,6 +5853,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -6065,7 +6096,8 @@ window.BENCHMARK_DATA = {
           852.0393388271332,
           715.3524859973362,
           929.0748093922933,
-          737.6815742651621
+          737.6815742651621,
+          469.7671685900007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6077,6 +6109,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -7336,6 +7369,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -7516,7 +7555,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -7700,7 +7740,8 @@ window.BENCHMARK_DATA = {
           1231.5092565096343,
           1165.2582729046162,
           1827.0886987958636,
-          1422.0985904693603
+          1422.0985904693603,
+          1113.2513363701958
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7839,6 +7880,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -8081,7 +8123,8 @@ window.BENCHMARK_DATA = {
           13360.437669020434,
           12651.129877726236,
           20858.086165364584,
-          13633.464186604817
+          13633.464186604817,
+          10508.656198774066
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8269,6 +8312,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -9352,6 +9396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -9532,7 +9582,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -9716,7 +9767,8 @@ window.BENCHMARK_DATA = {
           563.2277349063328,
           524.170546736036,
           746.4120240211487,
-          552.8954482396443
+          552.8954482396443,
+          408.56006152289257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9855,6 +9907,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -10097,7 +10150,8 @@ window.BENCHMARK_DATA = {
           1150.0280779202778,
           1047.33023147583,
           1329.397498675755,
-          970.3872172491891
+          970.3872172491891,
+          678.8819772720337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10109,6 +10163,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -11368,6 +11423,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
@@ -11548,7 +11609,8 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
@@ -11732,7 +11794,8 @@ window.BENCHMARK_DATA = {
           839.8379922279945,
           784.4232167402903,
           1277.230293146769,
-          1020.0592324393136
+          1020.0592324393136,
+          733.1517812093099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11902,6 +11965,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -12113,7 +12177,8 @@ window.BENCHMARK_DATA = {
           742.6991150038583,
           654.2161556879679,
           728.3287561416626,
-          598.7262877782185
+          598.7262877782185,
+          390.1776904741923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12125,6 +12190,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
