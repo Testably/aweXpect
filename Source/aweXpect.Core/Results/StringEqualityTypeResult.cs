@@ -11,7 +11,7 @@ namespace aweXpect.Results;
 public class StringEqualityTypeResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringEqualityTypeResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
@@ -19,7 +19,7 @@ public class StringEqualityTypeResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options.Holder;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
@@ -36,7 +36,7 @@ public class StringEqualityTypeResult<TType, TThat>(
 	/// </exception>
 	public StringBlockResult<TType, TThat> AsBlock()
 	{
-		options.AsBlock();
+		options.Holder.AsBlock();
 		return new StringBlockResult<TType, TThat>(ExpectationBuilder, _returnValue, options);
 	}
 }

@@ -138,6 +138,68 @@ The interfaces with `TSelf` let the compiler infer the element type from your re
 `TSelf`. An expectation that already sets an option itself, e.g. `StartsWith` the match type, returns a result that
 does not offer it again.
 
+<details>
+<summary>Creating the holder only when an option is set</summary>
+
+Most callers set no option, so the holder is often created for nothing. When only your constraint and your result
+share the holder, the constraint can create it on demand: it implements `IOptionsHolderSource<TOptions>`, compares with
+the default options until the result asks for its `Holder`, and you pass the constraint to the result instead of a
+holder. `AddConstraint(state, constraintBuilder, out constraint)` returns the added constraint for this. The results
+take an `IOptionsHolderSource<TOptions>`, which a holder implements as well, so both ways work with the same results:
+
+```csharp
+public static StringEqualityResult<Track, IThat<Track?>> IsTitled(this IThat<Track?> subject, string expected)
+    => new(subject.Get().ExpectationBuilder.AddConstraint(expected,
+            static (expected, it, grammars) => new IsTitledConstraint(it, grammars, expected),
+            out IsTitledConstraint constraint),
+        subject,
+        constraint);
+
+private sealed class IsTitledConstraint(string it, ExpectationGrammars grammars, string expected)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IAsyncContextConstraint<Track?>,
+        IOptionsHolderSource<StringEqualityOptions>
+{
+    private OptionsHolder<StringEqualityOptions>? _holder;
+
+    OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+        => _holder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
+    private StringEqualityOptions Options => _holder?.Value ?? StringEqualityOptions.Default;
+
+    public async ValueTask<ConstraintResult> IsMetBy(Track? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        Actual = actual;
+        if (actual is not null)
+        {
+            bool isEqual = await Options.ForEvaluation(context, cancellationToken)
+                .AreConsideredEqual(actual.Title, expected, nameof(expected));
+            Outcome = isEqual ? Outcome.Success : Outcome.Failure;
+        }
+
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is titled ").Append(Options.GetExpectation(expected, ExpectationGrammars.None));
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+    {
+        stringBuilder.Append(It).Append(" had title ");
+        Formatter.Format(stringBuilder, Actual?.Title);
+    }
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("is not titled ").Append(Options.GetExpectation(expected, ExpectationGrammars.None));
+}
+```
+
+Keep creating the holder in the expectation when something else that is built with the expectation reads it as well,
+e.g. the item matcher of a collection expectation: it would not see a holder that the constraint creates later.
+
+</details>
+
 ## Setting options in your own code
 
 You can also set the options of `aweXpect.Core` in your own code, e.g. in an option of your own. Each method of an

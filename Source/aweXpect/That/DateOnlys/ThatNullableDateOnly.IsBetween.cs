@@ -24,17 +24,17 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance)),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -51,17 +51,17 @@ public static partial class ThatNullableDateOnly
 		this IThat<DateOnly?> subject,
 		DateOnly? minimum)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new BetweenResult<TimeToleranceResult<DateOnly, IThat<DateOnly?>>, DateOnly?>(maximum =>
 		{
 			ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 			return new TimeToleranceResult<DateOnly, IThat<DateOnly?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Tolerance: tolerance),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum, state.Tolerance).Invert()),
+						new IsBetweenConstraint(it, grammars, state.Minimum, state.Maximum).Invert(),
+					out IsBetweenConstraint constraint),
 				subject,
-				tolerance);
+				constraint);
 		});
 	}
 
@@ -69,11 +69,20 @@ public static partial class ThatNullableDateOnly
 		string it,
 		ExpectationGrammars grammars,
 		DateOnly? minimum,
-		DateOnly? maximum,
-		OptionsHolder<TimeTolerance> tolerance)
+		DateOnly? maximum)
 		: OrderingConstraint<DateOnly?>(it, grammars, minimum is null || maximum is null),
-			IValueConstraint<DateOnly?>
+			IValueConstraint<DateOnly?>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Days : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Days);
+
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			Actual = actual;
@@ -83,7 +92,7 @@ public static partial class ThatNullableDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = minimum.Value.DayNumber - actual.Value.DayNumber <= (int)timeTolerance.TotalDays &&
 				          actual.Value.DayNumber - maximum.Value.DayNumber <= (int)timeTolerance.TotalDays
 					? Outcome.Success
@@ -99,7 +108,7 @@ public static partial class ThatNullableDateOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance.Value.ToDayString());
+			stringBuilder.Append(CurrentTolerance.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -115,7 +124,7 @@ public static partial class ThatNullableDateOnly
 			Formatter.Format(stringBuilder, minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, maximum);
-			stringBuilder.Append(tolerance.Value.ToDayString());
+			stringBuilder.Append(CurrentTolerance.ToDayString());
 		}
 	}
 }

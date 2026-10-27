@@ -24,31 +24,40 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOn(
 		this IThat<Assembly?> subject, string expected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
-				.AddConstraint((Expected: expected, Options: options),
-					static (s, it, grammars)
-					=> new DependsOnConstraint(it, grammars, s.Expected, "expected", s.Options)),
+				.AddConstraint(expected,
+					static (expected, it, grammars)
+					=> new DependsOnConstraint(it, grammars, expected, "expected"),
+					out DependsOnConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class DependsOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncContextConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 
 		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			StringEqualityOptions evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			StringEqualityOptions evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_evaluationOptions = evaluationOptions;
 			Outcome = actual is not null &&
 			          await actual.GetReferencedAssemblyNames()
@@ -59,14 +68,14 @@ public static partial class ThatAssembly
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has a dependency on assembly ").Append(options.Value.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has a dependency on assembly ").Append(CurrentOptions.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has no dependency on assembly ")
-				.Append(options.Value.GetExpectation(expected, Grammars.Negate()));
+				.Append(CurrentOptions.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" did");
@@ -80,7 +89,7 @@ public static partial class ThatAssembly
 					Actual.GetReferencedAssemblyNames().Select(dep => dep.Name).ToArray());
 			}
 
-			(_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			(_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 		}
 	}
 }

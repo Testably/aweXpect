@@ -16,11 +16,11 @@ namespace aweXpect.Results;
 public class ExecutesInToleranceResult<TResult>(
 	ExpectationBuilder expectationBuilder,
 	TResult returnValue,
-	OptionsHolder<ExecutionTimeOptions> options,
+	IOptionsHolderSource<ExecutionTimeOptions> options,
 	TimeSpan expected) : ITimeoutBound
 {
 	/// <inheritdoc cref="ITimeoutBound.UpperBound" />
-	TimeSpan? ITimeoutBound.UpperBound => options.Value.UpperBound;
+	TimeSpan? ITimeoutBound.UpperBound => options.Holder.Value.UpperBound;
 
 	/// <summary>
 	///     …allowing the delegate to throw an exception, measuring the duration until it did so,
@@ -31,7 +31,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// </remarks>
 	public ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.Value = options.Value.AllowingExceptions(allowExceptions);
+		options.Holder.Value = options.Holder.Value.AllowingExceptions(allowExceptions);
 		return this;
 	}
 
@@ -41,7 +41,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// <exception cref="InvalidOperationException">A limit of another option is already specified.</exception>
 	public TResult Within(TimeSpan tolerance)
 	{
-		options.Value = options.Value.Approximately(expected, tolerance);
+		options.Holder.Value = options.Holder.Value.Approximately(expected, tolerance);
 		expectationBuilder.AddTimeoutBound(this);
 		return returnValue;
 	}

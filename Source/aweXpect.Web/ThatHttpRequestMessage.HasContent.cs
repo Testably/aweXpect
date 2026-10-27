@@ -23,14 +23,14 @@ public static partial class ThatHttpRequestMessage
 		HasContent(this IThat<HttpRequestMessage?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
-				.AddConstraint((expected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.expected, "expected", state.options)),
+				.AddConstraint(expected, static (expected, it, grammars) =>
+						new HasContentConstraint(it, grammars, expected, "expected"),
+					out HasContentConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -62,25 +62,34 @@ public static partial class ThatHttpRequestMessage
 		DoesNotHaveContent(this IThat<HttpRequestMessage?> subject, string unexpected)
 	{
 		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
-				.AddConstraint((unexpected, options), static (state, it, grammars) =>
-					new HasContentConstraint(it, grammars, state.unexpected, "unexpected", state.options).Invert()),
+				.AddConstraint(unexpected, static (unexpected, it, grammars) =>
+						new HasContentConstraint(it, grammars, unexpected, "unexpected").Invert(),
+					out HasContentConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class HasContentConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<HttpRequestMessage>(it, grammars),
-			IAsyncContextConstraint<HttpRequestMessage>
+			IAsyncContextConstraint<HttpRequestMessage>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 		private string? _message;
@@ -108,7 +117,7 @@ public static partial class ThatHttpRequestMessage
 #else
 			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected, parameterName);
 			if (_matchResult.IsMatch)
 			{
@@ -122,11 +131,11 @@ public static partial class ThatHttpRequestMessage
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			=> (_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("has a string content ", "have a string content "))
-				.Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(CurrentOptions.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -136,14 +145,14 @@ public static partial class ThatHttpRequestMessage
 			}
 			else
 			{
-				stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "string content",
+				stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "string content",
 					Grammars, _message, expected, _matchResult));
 			}
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))
-				.Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
+				.Append(CurrentOptions.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" had");

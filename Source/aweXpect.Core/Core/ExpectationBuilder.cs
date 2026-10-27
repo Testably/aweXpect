@@ -257,6 +257,26 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Adds the constraint from the <paramref name="constraintBuilder" /> and returns it as
+	///     <paramref name="constraint" />.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="constraint" /> can then be the source of the options of the result, so that the
+	///     <see cref="OptionsHolder{TOptions}" /> is only created when an option is set, see
+	///     <see cref="IOptionsHolderSource{TOptions}" />.
+	/// </remarks>
+	public ExpectationBuilder AddConstraint<TState, TConstraint>(
+		TState state,
+		Func<TState, string, ExpectationGrammars, TConstraint> constraintBuilder,
+		out TConstraint constraint)
+		where TConstraint : IConstraint
+	{
+		constraint = constraintBuilder(state, _it, ExpectationGrammars);
+		AddToNode(constraint);
+		return this;
+	}
+
+	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
 	///     underlying value.
 	/// </summary>

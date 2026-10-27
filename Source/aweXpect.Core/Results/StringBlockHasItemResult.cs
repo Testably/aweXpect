@@ -14,20 +14,20 @@ namespace aweXpect.Results;
 public class StringBlockHasItemResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<CollectionIndexOptions> collectionIndexOptions,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<CollectionIndexOptions> collectionIndexOptions,
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TCollection, TThat, StringBlockHasItemResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions.Holder;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
 	public StringBlockHasItemResult<TCollection, TThat> IgnoringCase(bool ignoreCase = true)
 	{
-		options.IgnoringCase(ignoreCase);
+		options.Holder.IgnoringCase(ignoreCase);
 		return this;
 	}
 
@@ -37,7 +37,7 @@ public class StringBlockHasItemResult<TCollection, TThat>(
 	public StringBlockHasItemResult<TCollection, TThat> Using(
 		IEqualityComparer<string> comparer)
 	{
-		options.Using(comparer);
+		options.Holder.Using(comparer);
 		return this;
 	}
 }

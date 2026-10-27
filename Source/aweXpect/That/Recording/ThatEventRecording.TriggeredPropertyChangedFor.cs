@@ -36,22 +36,19 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default.AddPredicate(
+		TriggerEventFilter filter = TriggerEventFilter.Default.AddPredicate(
 			MatchesPropertyName(propertyName),
-			DescribePropertyName(propertyName)));
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+			DescribePropertyName(propertyName));
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(filter,
+				static (filter, it, grammars)
 					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-						state.Filter,
-						state.Quantifier,
-						state.Options)),
+						filter),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 
 	/// <summary>
@@ -85,22 +82,19 @@ public static partial class ThatEventRecording
 		string? propertyName)
 		where TSubject : INotifyPropertyChanged
 	{
-		OptionsHolder<Options.Quantifier> quantifier = new(new Options.Quantifier());
-		OptionsHolder<TriggerEventFilter> filter = new(TriggerEventFilter.Default.AddPredicate(
+		TriggerEventFilter filter = TriggerEventFilter.Default.AddPredicate(
 			MatchesPropertyName(propertyName),
-			DescribePropertyName(propertyName)));
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+			DescribePropertyName(propertyName));
 		return new EventTriggerResult<TSubject>(
-			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
-				static (state, it, grammars)
+			subject.Get().ExpectationBuilder.AddConstraint(filter,
+				static (filter, it, grammars)
 					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-						state.Filter,
-						state.Quantifier,
-						state.Options).Invert()),
+						filter).Invert(),
+				out HaveTriggeredConstraint<TSubject> constraint),
 			subject,
-			filter,
-			quantifier,
-			options);
+			constraint,
+			constraint,
+			constraint);
 	}
 
 	/// <summary>

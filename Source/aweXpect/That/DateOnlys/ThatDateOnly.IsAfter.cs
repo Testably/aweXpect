@@ -18,13 +18,13 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? expected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsAfterConstraint(it, grammars, state.Expected, state.Tolerance)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) =>
+					new IsAfterConstraint(it, grammars, expected),
+				out IsAfterConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	/// <summary>
@@ -34,23 +34,32 @@ public static partial class ThatDateOnly
 		this IThat<DateOnly> subject,
 		DateOnly? unexpected)
 	{
-		OptionsHolder<TimeTolerance> tolerance = new(TimeTolerance.Days);
 		return new TimeToleranceResult<DateOnly, IThat<DateOnly>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Tolerance: tolerance),
-				static (state, it, grammars) =>
-					new IsAfterConstraint(it, grammars, state.Unexpected, state.Tolerance).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars) =>
+					new IsAfterConstraint(it, grammars, unexpected).Invert(),
+				out IsAfterConstraint constraint),
 			subject,
-			tolerance);
+			constraint);
 	}
 
 	private sealed class IsAfterConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		DateOnly? expected,
-		OptionsHolder<TimeTolerance> tolerance)
+		DateOnly? expected)
 		: OrderingConstraint<DateOnly>(it, grammars, expected is null),
-			IValueConstraint<DateOnly>
+			IValueConstraint<DateOnly>,
+			IOptionsHolderSource<TimeTolerance>
 	{
+		private OptionsHolder<TimeTolerance>? _toleranceHolder;
+
+		private TimeTolerance CurrentTolerance
+			=> _toleranceHolder is null ? TimeTolerance.Days : _toleranceHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<TimeTolerance> IOptionsHolderSource<TimeTolerance>.Holder
+			=> _toleranceHolder ??= new OptionsHolder<TimeTolerance>(TimeTolerance.Days);
+
 		public ConstraintResult IsMetBy(DateOnly actual)
 		{
 			Actual = actual;
@@ -60,7 +69,7 @@ public static partial class ThatDateOnly
 			}
 			else
 			{
-				TimeSpan timeTolerance = tolerance.Value.GetToleranceOrDefault();
+				TimeSpan timeTolerance = CurrentTolerance.GetToleranceOrDefault();
 				Outcome = expected.Value.DayNumber - actual.DayNumber < (int)timeTolerance.TotalDays
 					? Outcome.Success
 					: Outcome.Failure;
@@ -73,7 +82,7 @@ public static partial class ThatDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is after ", "are after "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance.Value.ToDayString());
+			stringBuilder.Append(CurrentTolerance.ToDayString());
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -87,7 +96,7 @@ public static partial class ThatDateOnly
 		{
 			stringBuilder.Append(Grammars.Verb("is not after ", "are not after "));
 			Formatter.Format(stringBuilder, expected);
-			stringBuilder.Append(tolerance.Value.ToDayString());
+			stringBuilder.Append(CurrentTolerance.ToDayString());
 		}
 	}
 }

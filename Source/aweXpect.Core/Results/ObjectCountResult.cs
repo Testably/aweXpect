@@ -13,15 +13,15 @@ namespace aweXpect.Results;
 public class ObjectCountResult<TCollection, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<Quantifier> quantifier,
-	OptionsHolder<ObjectMatchType<TItem>> options)
+	IOptionsHolderSource<Quantifier> quantifier,
+	IOptionsHolderSource<ObjectMatchType<TItem>> options)
 	: AndOrResult<TCollection, TThat, ObjectCountResult<TCollection, TThat, TItem>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>,
 		IObjectEqualityResult<ObjectCountResult<TCollection, TThat, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options;
+	OptionsHolder<ObjectMatchType<TItem>> IOptionsProvider<ObjectMatchType<TItem>>.Options => options.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier.Holder;
 }

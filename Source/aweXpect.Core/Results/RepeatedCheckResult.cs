@@ -10,21 +10,21 @@ namespace aweXpect.Results;
 public class RepeatedCheckResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<RepeatedCheckOptions> options)
+	IOptionsHolderSource<RepeatedCheckOptions> options)
 	: AndOrResult<TType, TThat>(expectationBuilder, returnValue),
 		IOptionsProvider<RepeatedCheckOptions>
 {
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => options;
+	OptionsHolder<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => options.Holder;
 
 	/// <summary>
 	///     Allows a <paramref name="timeout" /> until the condition must be met.
 	/// </summary>
 	public WithRepetition Within(TimeSpan timeout)
 	{
-		options.Within(timeout);
+		options.Holder.Within(timeout);
 		return new WithRepetition(ExpectationBuilder, _returnValue, options);
 	}
 
@@ -34,7 +34,7 @@ public class RepeatedCheckResult<TType, TThat>(
 	public class WithRepetition(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<RepeatedCheckOptions> options)
+		IOptionsHolderSource<RepeatedCheckOptions> options)
 		: AndOrResult<TType, TThat>(expectationBuilder, returnValue)
 	{
 		/// <summary>
@@ -45,7 +45,7 @@ public class RepeatedCheckResult<TType, TThat>(
 		/// </remarks>
 		public AndOrResult<TType, TThat> CheckEvery(TimeSpan interval)
 		{
-			options.CheckEvery(interval);
+			options.Holder.CheckEvery(interval);
 			return this;
 		}
 	}

@@ -28,13 +28,12 @@ public static partial class ThatNullableJsonElement
 		this IThat<JsonElement?> subject, string expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<JsonElement, IThat<JsonElement?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static IAsyncContextConstraint<JsonElement?> (state, it, grammars)
-					=> new IsJsonStringEqualToConstraint(it, grammars, state.Expected, state.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars) => new IsJsonStringEqualToConstraint(it, grammars, expected),
+				out IsJsonStringEqualToConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <inheritdoc cref="ThatJsonElement.IsString(IThat{JsonElement})" />

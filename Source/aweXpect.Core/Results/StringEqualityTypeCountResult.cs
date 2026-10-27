@@ -11,8 +11,8 @@ namespace aweXpect.Results;
 public class StringEqualityTypeCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<Quantifier> quantifier,
-	OptionsHolder<StringEqualityOptions> options)
+	IOptionsHolderSource<Quantifier> quantifier,
+	IOptionsHolderSource<StringEqualityOptions> options)
 	: AndOrResult<TType, TThat, StringEqualityTypeCountResult<TType, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<Quantifier>,
 		IOptionsProvider<StringEqualityOptions>,
@@ -21,10 +21,10 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => quantifier.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options.Holder;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
@@ -41,7 +41,7 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	/// </exception>
 	public StringBlockCountResult<TType, TThat> AsBlock()
 	{
-		options.AsBlock();
+		options.Holder.AsBlock();
 		return new StringBlockCountResult<TType, TThat>(ExpectationBuilder, _returnValue, quantifier, options);
 	}
 }

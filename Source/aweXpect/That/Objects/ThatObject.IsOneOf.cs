@@ -31,7 +31,7 @@ public static partial class ThatObject
 		bool negated)
 	{
 		IEnumerable<object?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsHolder<ObjectMatchType<object?>> options = new(ObjectMatchType<object?>.Default);
+		ObjectMatchType<object?> options = ObjectMatchType<object?>.Default;
 		return new ObjectEqualityResult<object?, IThat<object?>, object?>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -39,9 +39,10 @@ public static partial class ThatObject
 				static (state, it, grammars)
 					=> new IsOneOfConstraint<object?, object?>(it, grammars, state.ExpectedValues,
 							state.ExpectedExpression, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out IsOneOfConstraint<object?, object?> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	[CreateExpectationFamily("Is{Not}OneOf", Summary = IsOneOfSummary, NegatedSummary = IsNotOneOfSummary)]
@@ -55,7 +56,7 @@ public static partial class ThatObject
 		where T : class?
 	{
 		IEnumerable<T?> expectedValues = expected.ToNonEmptyValues(negated);
-		OptionsHolder<ObjectMatchType<T>> options = new(ObjectMatchType<T>.Default);
+		ObjectMatchType<T> options = ObjectMatchType<T>.Default;
 		return new ObjectEqualityResult<T, IThat<T>, T>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
@@ -63,9 +64,10 @@ public static partial class ThatObject
 				static (state, it, grammars)
 					=> new IsOneOfConstraint<T, T>(it, grammars, state.ExpectedValues,
 							state.ExpectedExpression, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out IsOneOfConstraint<T, T> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class IsOneOfConstraint<TSubject, TExpected>(
@@ -73,15 +75,24 @@ public static partial class ThatObject
 		ExpectationGrammars grammars,
 		IEnumerable<TExpected?> expected,
 		string? expectedExpression,
-		OptionsHolder<ObjectMatchType<TSubject>> options)
+		ObjectMatchType<TSubject> options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
-			IAsyncContextConstraint<TSubject>
+			IAsyncContextConstraint<TSubject>,
+			IOptionsHolderSource<ObjectMatchType<TSubject>>
 	{
+		private OptionsHolder<ObjectMatchType<TSubject>>? _optionsHolder;
+
+		private ObjectMatchType<TSubject> CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<ObjectMatchType<TSubject>> IOptionsHolderSource<ObjectMatchType<TSubject>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<ObjectMatchType<TSubject>>(options);
+
 		private ObjectMatcher<TSubject>? _matcher;
 		private TExpected? _matchedCandidate;
 		private MatchResult _matchResult;
 
-		private ObjectMatcher<TSubject> Matcher => _matcher ?? options.Value.ForEvaluation(default);
+		private ObjectMatcher<TSubject> Matcher => _matcher ?? CurrentOptions.ForEvaluation(default);
 
 		/// <remarks>
 		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
@@ -92,7 +103,7 @@ public static partial class ThatObject
 		{
 			Actual = actual;
 			_matchedCandidate = default;
-			_matcher = options.Value.ForEvaluation(new MatchEnvironment(context, cancellationToken));
+			_matcher = CurrentOptions.ForEvaluation(new MatchEnvironment(context, cancellationToken));
 			foreach (TExpected? value in expected)
 			{
 				_matchResult = await _matcher.CompareWithExplanation(actual, value);
@@ -120,7 +131,7 @@ public static partial class ThatObject
 		///     itself, e.g. <c>is equivalent to one of […]</c>.
 		/// </remarks>
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(options.Value.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is ", "are ")).Append(CurrentOptions.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		/// <remarks>
@@ -136,7 +147,7 @@ public static partial class ThatObject
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(options.Value.GetItemExpectation(
+			=> stringBuilder.Append(Grammars.Verb("is not ", "are not ")).Append(CurrentOptions.GetItemExpectation(
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		/// <remarks>

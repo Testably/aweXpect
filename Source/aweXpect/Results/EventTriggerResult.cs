@@ -22,16 +22,16 @@ public class EventTriggerResult<TSubject>
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
-	private readonly OptionsHolder<TriggerEventFilter> _filter;
-	private readonly OptionsHolder<RepeatedCheckOptions> _options;
-	private readonly OptionsHolder<Quantifier> _quantifier;
+	private readonly IOptionsHolderSource<TriggerEventFilter> _filter;
+	private readonly IOptionsHolderSource<RepeatedCheckOptions> _options;
+	private readonly IOptionsHolderSource<Quantifier> _quantifier;
 
 	internal EventTriggerResult(
 		ExpectationBuilder expectationBuilder,
 		IThat<IEventRecording<TSubject>?> returnValue,
-		OptionsHolder<TriggerEventFilter> filter,
-		OptionsHolder<Quantifier> quantifier,
-		OptionsHolder<RepeatedCheckOptions> options)
+		IOptionsHolderSource<TriggerEventFilter> filter,
+		IOptionsHolderSource<Quantifier> quantifier,
+		IOptionsHolderSource<RepeatedCheckOptions> options)
 		: base(expectationBuilder, returnValue)
 	{
 		_filter = filter;
@@ -47,7 +47,7 @@ public class EventTriggerResult<TSubject>
 	{
 		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
-		_filter.Value = _filter.Value.AddPredicate(
+		_filter.Holder.Value = _filter.Holder.Value.AddPredicate(
 			o => position == null
 				? o.Any(x => x is TParameter p && UserCode.Invoke(predicate, p, "the predicate"))
 				: MatchesAt(o, position.Value, predicate),
@@ -56,10 +56,10 @@ public class EventTriggerResult<TSubject>
 	}
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier;
+	OptionsHolder<Quantifier> IOptionsProvider<Quantifier>.Options => _quantifier.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => _options;
+	OptionsHolder<RepeatedCheckOptions> IOptionsProvider<RepeatedCheckOptions>.Options => _options.Holder;
 
 	/// <summary>
 	///     Adds a predicate for the sender of the event.
@@ -73,7 +73,7 @@ public class EventTriggerResult<TSubject>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_filter.Value = _filter.Value.AddPredicate(
+		_filter.Holder.Value = _filter.Holder.Value.AddPredicate(
 			o => o.Length > 0 && UserCode.Invoke(predicate, o[0], "the predicate"),
 			$" with sender {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -93,7 +93,7 @@ public class EventTriggerResult<TSubject>
 		where TEventArgs : EventArgs
 	{
 		predicate.ThrowIfNull();
-		_filter.Value = _filter.Value.AddPredicate(
+		_filter.Holder.Value = _filter.Holder.Value.AddPredicate(
 			o => MatchesAt(o, 1, predicate),
 			$" with {Formatter.Format(typeof(TEventArgs))} {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -111,7 +111,7 @@ public class EventTriggerResult<TSubject>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_filter.Value = _filter.Value.AddPredicate(
+		_filter.Holder.Value = _filter.Holder.Value.AddPredicate(
 			o => o.Any(x => x is TParameter m && UserCode.Invoke(predicate, m, "the predicate")),
 			$" with {Formatter.Format(typeof(TParameter))} parameter {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -131,7 +131,7 @@ public class EventTriggerResult<TSubject>
 	{
 		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
-		_filter.Value = _filter.Value.AddPredicate(
+		_filter.Holder.Value = _filter.Holder.Value.AddPredicate(
 			o => MatchesAt(o, position, predicate),
 			$" with {Formatter.Format(typeof(TParameter))} parameter [{position}] {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
@@ -142,7 +142,7 @@ public class EventTriggerResult<TSubject>
 	/// </summary>
 	public EventTriggerResult<TSubject> Within(TimeSpan timeout)
 	{
-		_options.Within(timeout);
+		_options.Holder.Within(timeout);
 		return this;
 	}
 

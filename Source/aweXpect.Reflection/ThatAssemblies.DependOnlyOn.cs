@@ -42,13 +42,13 @@ public static partial class ThatAssemblies
 		this IThat<IEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsHolder<StringEqualityOptions> Options), IEnumerable<Assembly?>>((expected.ToArray(), options),
-					static (s, it, grammars)
-					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
+				.ExpectationBuilder.AddConstraint(expected.ToArray(),
+					static (allowed, it, grammars)
+					=> new DependOnlyOnConstraint(it, grammars, allowed),
+					out DependOnlyOnConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 #if NET8_0_OR_GREATER
@@ -76,31 +76,40 @@ public static partial class ThatAssemblies
 			this IThat<IAsyncEnumerable<Assembly?>?> subject, IEnumerable<string> expected)
 	{
 		ThrowHelper.ThrowIfNull(expected, nameof(expected));
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
-				.ExpectationBuilder.AddConstraint<(string[] Allowed, OptionsHolder<StringEqualityOptions> Options), IAsyncEnumerable<Assembly?>>((expected.ToArray(), options),
-					static (s, it, grammars)
-					=> new DependOnlyOnConstraint(it, grammars, s.Allowed, s.Options)),
+				.ExpectationBuilder.AddConstraint(expected.ToArray(),
+					static (allowed, it, grammars)
+					=> new DependOnlyOnConstraint(it, grammars, allowed),
+					out DependOnlyOnConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 #endif
 
 	private sealed class DependOnlyOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
-		string[] allowed,
-		OptionsHolder<StringEqualityOptions> options)
+		string[] allowed)
 		: CollectionConstraintResult<Assembly?>(it, grammars),
-			IAsyncContextConstraint<IEnumerable<Assembly?>>
+			IAsyncContextConstraint<IEnumerable<Assembly?>>,
+			IOptionsHolderSource<StringEqualityOptions>
 #if NET8_0_OR_GREATER
 			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 
-		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? options.Value;
+		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? CurrentOptions;
 
 		private readonly Dictionary<Assembly, string?[]> _disallowedDependencies = new();
 
@@ -108,7 +117,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			return await SetAsyncValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
 		}
 #endif
@@ -116,7 +125,7 @@ public static partial class ThatAssemblies
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			return await SetValue(actual, context, DependsOnlyOnAllowed, cancellationToken);
 		}
 
@@ -161,6 +170,6 @@ public static partial class ThatAssemblies
 		private string DescribeAllowed()
 			=> allowed.Length == 0
 				? "no assemblies"
-				: $"assemblies {string.Join(" or ", allowed.Select(expected => options.Value.GetExpectation(expected, ExpectationGrammars.None)))}";
+				: $"assemblies {string.Join(" or ", allowed.Select(expected => CurrentOptions.GetExpectation(expected, ExpectationGrammars.None)))}";
 	}
 }

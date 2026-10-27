@@ -16,7 +16,7 @@ namespace aweXpect.Results;
 public class NullableNumberToleranceResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<NumberTolerance<TType>> options)
+	IOptionsHolderSource<NumberTolerance<TType>> options)
 	: AndOrResult<TType?, TThat, NullableNumberToleranceResult<TType, TThat>>(expectationBuilder, returnValue),
 		INumberToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 #if NET8_0_OR_GREATER
@@ -28,12 +28,12 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	private readonly TThat _returnValue = returnValue;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options;
+	OptionsHolder<NumberTolerance<TType>> IOptionsProvider<NumberTolerance<TType>>.Options => options.Holder;
 
 	/// <inheritdoc cref="ToleranceExtensions.Within{TSelf, TNumber}(INumberToleranceResult{TSelf, TNumber}, TNumber)" />
 	public WithinResult Within(TType tolerance)
 	{
-		options.Within(tolerance);
+		options.Holder.Within(tolerance);
 		return new WithinResult(ExpectationBuilder, _returnValue, options);
 	}
 
@@ -44,7 +44,7 @@ public class NullableNumberToleranceResult<TType, TThat>(
 	public sealed class WithinResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		OptionsHolder<NumberTolerance<TType>> options)
+		IOptionsHolderSource<NumberTolerance<TType>> options)
 		: NullableNumberToleranceResult<TType, TThat>(expectationBuilder, returnValue, options),
 			IWithinToleranceResult<NullableNumberToleranceResult<TType, TThat>, TType>
 	{

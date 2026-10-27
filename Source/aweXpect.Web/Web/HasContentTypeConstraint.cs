@@ -23,12 +23,22 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 	ExpectationGrammars grammars,
 	string expected,
 	string parameterName,
-	OptionsHolder<StringEqualityOptions> options,
+	StringEqualityOptions options,
 	Func<TMessage, HttpContent?> getContent)
 	: ConstraintResult.WithNotNullValue<TMessage>(it, grammars),
-		IAsyncContextConstraint<TMessage>
+		IAsyncContextConstraint<TMessage>,
+		IOptionsHolderSource<StringEqualityOptions>
 	where TMessage : class
 {
+	private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+	private StringEqualityOptions CurrentOptions
+		=> _optionsHolder is null ? options : _optionsHolder.Value;
+
+	/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+	OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+		=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(options);
+
 	private string? _contentType;
 	private StringEqualityOptions? _evaluationOptions;
 	private MatchResult _matchResult;
@@ -49,7 +59,7 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 			return this;
 		}
 
-		_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+		_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 		_matchResult = await _evaluationOptions.MatchWithExplanation(_contentType, expected, parameterName);
 		if (!_matchResult.IsMatch)
 		{
@@ -63,11 +73,11 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
+		=> (_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has a `Content-Type` header ", "have a `Content-Type` header "))
-			.Append(options.Value.GetExpectation(expected, Grammars));
+			.Append(CurrentOptions.GetExpectation(expected, Grammars));
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -77,14 +87,14 @@ internal sealed class HasContentTypeConstraint<TMessage>(
 		}
 		else
 		{
-			stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "content type",
+			stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "content type",
 				Grammars, _contentType, expected, _matchResult));
 		}
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have a `Content-Type` header ", "do not have a `Content-Type` header "))
-			.Append(options.Value.GetExpectation(expected, Grammars.Negate()));
+			.Append(CurrentOptions.GetExpectation(expected, Grammars.Negate()));
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(It).Append(" had");

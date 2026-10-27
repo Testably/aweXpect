@@ -23,25 +23,34 @@ public static partial class ThatMember
 		this IThat<TMember?> subject, string expected)
 		where TMember : MemberInfo
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (s, it, grammars)
-				=> new HasNameConstraint<TMember?>(it, grammars, s.Expected, "expected", s.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars)
+				=> new HasNameConstraint<TMember?>(it, grammars, expected, "expected"),
+				out HasNameConstraint<TMember?> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class HasNameConstraint<TMember>(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<TMember>(it, grammars),
-			IAsyncContextConstraint<TMember>
+			IAsyncContextConstraint<TMember>,
+			IOptionsHolderSource<StringEqualityOptions>
 		where TMember : MemberInfo?
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
@@ -49,7 +58,7 @@ public static partial class ThatMember
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.Name, expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -57,13 +66,13 @@ public static partial class ThatMember
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			=> (_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has name ").Append(options.Value.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("has name ").Append(CurrentOptions.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "name", Grammars,
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "name", Grammars,
 				Actual?.Name, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

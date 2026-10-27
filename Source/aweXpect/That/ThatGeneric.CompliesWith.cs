@@ -25,12 +25,12 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
-					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options)),
+				.AddConstraint(expectations, static (expectations, _, grammars) =>
+					new CompliesWithConstraint<T>(grammars, expectations),
+					out CompliesWithConstraint<T> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -44,29 +44,37 @@ public static partial class ThatGeneric
 		Action<IThatSubject<T>> expectations)
 	{
 		expectations.ThrowIfNull();
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((Expectations: expectations, Options: options), static (state, _, grammars) =>
-					new CompliesWithConstraint<T>(grammars, state.Expectations, state.Options).Invert()),
+				.AddConstraint(expectations, static (expectations, _, grammars) =>
+					new CompliesWithConstraint<T>(grammars, expectations).Invert(),
+					out CompliesWithConstraint<T> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class CompliesWithConstraint<T>
 		: ConstraintResult,
 			IAsyncContextConstraint<T>,
-			IExpectationTextConstraint
+			IExpectationTextConstraint,
+		IOptionsHolderSource<RepeatedCheckOptions>
 	{
 		private readonly ManualExpectationBuilder<T> _itemExpectationBuilder;
-		private readonly OptionsHolder<RepeatedCheckOptions> _options;
-		private bool _isNegated;
+			private OptionsHolder<RepeatedCheckOptions>? _optionsHolder;
+
+		private RepeatedCheckOptions CurrentOptions
+			=> _optionsHolder is null ? RepeatedCheckOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<RepeatedCheckOptions> IOptionsHolderSource<RepeatedCheckOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<RepeatedCheckOptions>(RepeatedCheckOptions.Default);
+
+	private bool _isNegated;
 		private ConstraintResult? _negatedResult;
 
 		public CompliesWithConstraint(ExpectationGrammars grammars,
-			Action<IThatSubject<T>> expectations, OptionsHolder<RepeatedCheckOptions> options)
+			Action<IThatSubject<T>> expectations)
 			: base(grammars)
 		{
-			_options = options;
 			_itemExpectationBuilder = new ManualExpectationBuilder<T>(grammars);
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
 		}
@@ -77,7 +85,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			RevertPreviousNegation();
-			if (!_options.Value.IsRepeated)
+			if (!CurrentOptions.IsRepeated)
 			{
 				return ToResult(await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken), actual);
 			}
@@ -91,7 +99,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			ConstraintResult? isMatch = null;
-			Outcome outcome = await _options.Value.CheckRepeatedly(async checkContext =>
+			Outcome outcome = await CurrentOptions.CheckRepeatedly(async checkContext =>
 			{
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, checkContext, cancellationToken);
 				return IsMet(isMatch);
@@ -145,7 +153,7 @@ public static partial class ThatGeneric
 
 		private void AppendSuffix(StringBuilder stringBuilder)
 		{
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 			_itemExpectationBuilder.AppendReasons(stringBuilder);
 		}
 

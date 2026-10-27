@@ -28,10 +28,10 @@ public static partial class ThatObject
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		OptionsHolder<ObjectMatchType<TSubject>> equalityOptions = new(new EquivalencyMatchType<TSubject>(equivalencyOptions));
+		ObjectMatchType<TSubject> equalityOptions = new EquivalencyMatchType<TSubject>(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, expected,
-				equalityOptions, expectedExpression: doNotPopulateThisValue),
+				equalityOptions, out _, expectedExpression: doNotPopulateThisValue),
 			subject);
 	}
 
@@ -65,10 +65,10 @@ public static partial class ThatObject
 			equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 		}
 
-		OptionsHolder<ObjectMatchType<TSubject>> equalityOptions = new(new EquivalencyMatchType<TSubject>(equivalencyOptions));
+		ObjectMatchType<TSubject> equalityOptions = new EquivalencyMatchType<TSubject>(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
 			Core.Extending.ExpectationBuilderExtensions.AddEqualityConstraint(expectationBuilder, unexpected,
-				equalityOptions, isNegated: true, expectedExpression: doNotPopulateThisValue),
+				equalityOptions, out _, isNegated: true, expectedExpression: doNotPopulateThisValue),
 			subject);
 	}
 

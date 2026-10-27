@@ -24,13 +24,13 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> Targets(
 		this IThat<Assembly?> subject, string expected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Expected: expected, Options: options),
-				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Expected, "expected", s.Options)),
+			subject.Get().ExpectationBuilder.AddConstraint(expected,
+				static (expected, it, grammars)
+				=> new TargetsConstraint(it, grammars, expected, "expected"),
+				out TargetsConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -41,24 +41,33 @@ public static partial class ThatAssembly
 	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DoesNotTarget(
 		this IThat<Assembly?> subject, string unexpected)
 	{
-		OptionsHolder<StringEqualityOptions> options = new(StringEqualityOptions.Default);
 		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((Unexpected: unexpected, Options: options),
-				static (s, it, grammars)
-				=> new TargetsConstraint(it, grammars, s.Unexpected, "unexpected", s.Options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(unexpected,
+				static (unexpected, it, grammars)
+				=> new TargetsConstraint(it, grammars, unexpected, "unexpected").Invert(),
+				out TargetsConstraint constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	private sealed class TargetsConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
-		string parameterName,
-		OptionsHolder<StringEqualityOptions> options)
+		string parameterName)
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
-			IAsyncContextConstraint<Assembly?>
+			IAsyncContextConstraint<Assembly?>,
+			IOptionsHolderSource<StringEqualityOptions>
 	{
+		private OptionsHolder<StringEqualityOptions>? _optionsHolder;
+
+		private StringEqualityOptions CurrentOptions
+			=> _optionsHolder is null ? StringEqualityOptions.Default : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<StringEqualityOptions> IOptionsHolderSource<StringEqualityOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<StringEqualityOptions>(StringEqualityOptions.Default);
+
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 
@@ -66,7 +75,7 @@ public static partial class ThatAssembly
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_evaluationOptions = options.Value.ForEvaluation(context, cancellationToken);
+			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(actual?.GetTargetFramework(), expected, parameterName);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
@@ -74,13 +83,13 @@ public static partial class ThatAssembly
 
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> (_evaluationOptions ?? options.Value).AppendContexts(contexts);
+			=> (_evaluationOptions ?? CurrentOptions).AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("targets ").Append(options.Value.GetExpectation(expected, Grammars));
+			=> stringBuilder.Append("targets ").Append(CurrentOptions.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? options.Value).GetExtendedMemberFailure(It, "target framework",
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "target framework",
 				Grammars, Actual?.GetTargetFramework(), expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

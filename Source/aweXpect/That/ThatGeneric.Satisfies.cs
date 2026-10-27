@@ -27,7 +27,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		RepeatedCheckOptions options = RepeatedCheckOptions.Default;
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -36,9 +36,10 @@ public static partial class ThatGeneric
 							grammars,
 							state.Predicate,
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
-							state.Options)),
+							state.Options),
+					out SatisfiesConstraint<T> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <summary>
@@ -54,7 +55,7 @@ public static partial class ThatGeneric
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		OptionsHolder<RepeatedCheckOptions> options = new(RepeatedCheckOptions.Default);
+		RepeatedCheckOptions options = RepeatedCheckOptions.Default;
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
 				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 					static (state, it, grammars) =>
@@ -63,9 +64,10 @@ public static partial class ThatGeneric
 							grammars,
 							state.Predicate,
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
-							state.Options).Invert()),
+							state.Options).Invert(),
+					out SatisfiesConstraint<T> constraint),
 			subject,
-			options);
+			constraint);
 	}
 
 	/// <remarks>
@@ -78,10 +80,19 @@ public static partial class ThatGeneric
 		ExpectationGrammars grammars,
 		Func<T, bool> predicate,
 		string predicateExpression,
-		OptionsHolder<RepeatedCheckOptions> options)
+		RepeatedCheckOptions options)
 		: ConstraintResult.WithValue<T>(it, grammars),
-			IAsyncContextConstraint<T>
+			IAsyncContextConstraint<T>,
+			IOptionsHolderSource<RepeatedCheckOptions>
 	{
+		private OptionsHolder<RepeatedCheckOptions>? _optionsHolder;
+
+		private RepeatedCheckOptions CurrentOptions => _optionsHolder is null ? options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<RepeatedCheckOptions> IOptionsHolderSource<RepeatedCheckOptions>.Holder
+			=> _optionsHolder ??= new OptionsHolder<RepeatedCheckOptions>(options);
+
 		private Exception? _exception;
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
@@ -91,7 +102,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (!options.Value.IsRepeated)
+			if (!CurrentOptions.IsRepeated)
 			{
 				IsMet(actual, cancellationToken);
 				return new ValueTask<ConstraintResult>(this);
@@ -104,7 +115,7 @@ public static partial class ThatGeneric
 			CancellationToken cancellationToken)
 		{
 			Outcome outcome =
-				await options.Value.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
+				await CurrentOptions.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
 			if (outcome == Outcome.Undecided)
 			{
 				Outcome = Outcome.Undecided;
@@ -137,7 +148,7 @@ public static partial class ThatGeneric
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("satisfies ", "satisfy ")).Append(predicateExpression.TrimCommonWhiteSpace())
-				.Append(options);
+				.Append(CurrentOptions);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -153,6 +164,6 @@ public static partial class ThatGeneric
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not satisfy ", "do not satisfy ")).Append(predicateExpression.TrimCommonWhiteSpace())
-				.Append(options);
+				.Append(CurrentOptions);
 	}
 }

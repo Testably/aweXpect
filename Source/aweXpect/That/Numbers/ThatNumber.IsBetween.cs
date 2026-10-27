@@ -27,14 +27,14 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Options: options),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)),
+						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum),
+					out IsBetweenConstraint<TNumber> constraint),
 				subject,
-				options);
+				constraint);
 		});
 
 	/// <summary>
@@ -51,15 +51,14 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Options: options),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum,
-							state.Options)),
+						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum),
+					out NullableIsBetweenConstraint<TNumber> constraint),
 				subject,
-				options);
+				constraint);
 		});
 
 	/// <summary>
@@ -75,15 +74,15 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Options: options),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
-							.Invert()),
+						new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum)
+							.Invert(),
+					out IsBetweenConstraint<TNumber> constraint),
 				subject,
-				options);
+				constraint);
 		});
 
 	/// <summary>
@@ -100,30 +99,37 @@ public static partial class ThatNumber
 		where TNumber : struct, INumber<TNumber>
 		=> new(maximum =>
 		{
-			OptionsHolder<NumberTolerance<TNumber>> options = new(new NumberTolerance<TNumber>(CalculateDifference));
 			return new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 				subject.Get().ExpectationBuilder.AddConstraint(
-					(Minimum: minimum, Maximum: maximum, Options: options),
+					(Minimum: minimum, Maximum: maximum),
 					static (state, it, grammars) =>
-						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum,
-							state.Options).Invert()),
+						new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum).Invert(),
+					out NullableIsBetweenConstraint<TNumber> constraint),
 				subject,
-				options);
+				constraint);
 		});
 
 	private sealed class IsBetweenConstraint<TNumber> : OrderingConstraint<TNumber>,
-		IValueConstraint<TNumber>
+		IValueConstraint<TNumber>,
+		IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, INumber<TNumber>
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
+
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions
+			=> _optionsHolder is null ? new NumberTolerance<TNumber>(CalculateDifference) : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(new NumberTolerance<TNumber>(CalculateDifference));
 
 		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
-			TNumber? maximum,
-			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			TNumber? maximum) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -137,7 +143,6 @@ public static partial class ThatNumber
 
 			_minimum = minimum;
 			_maximum = maximum;
-			_options = options;
 		}
 
 		public ConstraintResult IsMetBy(TNumber actual)
@@ -149,7 +154,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = _options.Value.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -159,7 +164,7 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -175,23 +180,31 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
-		IValueConstraint<TNumber?>
+		IValueConstraint<TNumber?>,
+		IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, INumber<TNumber>
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
+
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions
+			=> _optionsHolder is null ? new NumberTolerance<TNumber>(CalculateDifference) : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(new NumberTolerance<TNumber>(CalculateDifference));
 
 		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
-			TNumber? maximum,
-			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			TNumber? maximum) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -205,7 +218,6 @@ public static partial class ThatNumber
 
 			_minimum = minimum;
 			_maximum = maximum;
-			_options = options;
 		}
 
 		public ConstraintResult IsMetBy(TNumber? actual)
@@ -217,7 +229,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = _options.Value.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -227,7 +239,7 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -243,7 +255,7 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 #else
@@ -267,15 +279,16 @@ public static partial class ThatNumber
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
+		NumberTolerance<TNumber> options = initialOptions;
 		return new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new IsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out IsBetweenConstraint<TNumber> constraint),
 			subject,
-			options));
+			constraint));
 	}
 
 	[CreateExpectationFamily("Is{Not}Between", Factory = typeof(NumberToleranceFactory), GuaranteesNotNull = true,
@@ -288,30 +301,40 @@ public static partial class ThatNumber
 			bool negated)
 		where TNumber : struct, IComparable<TNumber>
 	{
-		OptionsHolder<NumberTolerance<TNumber>> options = new(initialOptions);
+		NumberTolerance<TNumber> options = initialOptions;
 		return new(maximum => new NumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(Minimum: minimum, Maximum: maximum, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new NullableIsBetweenConstraint<TNumber>(it, grammars, state.Minimum, state.Maximum, state.Options)
-						.InvertIf(state.Negated)),
+						.InvertIf(state.Negated),
+				out NullableIsBetweenConstraint<TNumber> constraint),
 			subject,
-			options));
+			constraint));
 	}
 
 	private sealed class IsBetweenConstraint<TNumber> : OrderingConstraint<TNumber>,
-		IValueConstraint<TNumber>
+		IValueConstraint<TNumber>,
+		IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, IComparable<TNumber>
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
+		private readonly NumberTolerance<TNumber> _options;
+
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions => _optionsHolder is null ? _options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(_options);
 
 		public IsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -338,7 +361,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = _options.Value.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -348,14 +371,14 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, _options.Value);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, CurrentOptions);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -364,23 +387,32 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
-		IValueConstraint<TNumber?>
+		IValueConstraint<TNumber?>,
+		IOptionsHolderSource<NumberTolerance<TNumber>>
 		where TNumber : struct, IComparable<TNumber>
 	{
 		private readonly TNumber? _maximum;
 		private readonly TNumber? _minimum;
-		private readonly OptionsHolder<NumberTolerance<TNumber>> _options;
+		private readonly NumberTolerance<TNumber> _options;
+
+		private OptionsHolder<NumberTolerance<TNumber>>? _optionsHolder;
+
+		private NumberTolerance<TNumber> CurrentOptions => _optionsHolder is null ? _options : _optionsHolder.Value;
+
+		/// <inheritdoc cref="IOptionsHolderSource{TOptions}.Holder" />
+		OptionsHolder<NumberTolerance<TNumber>> IOptionsHolderSource<NumberTolerance<TNumber>>.Holder
+			=> _optionsHolder ??= new OptionsHolder<NumberTolerance<TNumber>>(_options);
 
 		public NullableIsBetweenConstraint(string it,
 			ExpectationGrammars grammars,
 			TNumber? minimum,
 			TNumber? maximum,
-			OptionsHolder<NumberTolerance<TNumber>> options) : base(it, grammars, minimum is null || maximum is null)
+			NumberTolerance<TNumber> options) : base(it, grammars, minimum is null || maximum is null)
 		{
 			minimum.ThrowIfNaN();
 			maximum.ThrowIfNaN();
@@ -407,7 +439,7 @@ public static partial class ThatNumber
 				return this;
 			}
 
-			Outcome = _options.Value.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
+			Outcome = CurrentOptions.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -417,14 +449,14 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
 			Formatter.Format(stringBuilder, Actual);
-			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, _options.Value);
+			AppendDifferenceToRange(stringBuilder, Actual, _minimum, _maximum, CurrentOptions);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -433,7 +465,7 @@ public static partial class ThatNumber
 			Formatter.Format(stringBuilder, _minimum);
 			stringBuilder.Append(" and ");
 			Formatter.Format(stringBuilder, _maximum);
-			stringBuilder.Append(_options);
+			stringBuilder.Append(CurrentOptions);
 		}
 	}
 #endif

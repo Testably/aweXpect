@@ -13,16 +13,16 @@ namespace aweXpect.Results;
 public class StringCollectionMatchResult<TCollection, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	OptionsHolder<StringEqualityOptions> options,
-	OptionsHolder<CollectionMatchOptions> collectionMatchOptions)
+	IOptionsHolderSource<StringEqualityOptions> options,
+	IOptionsHolderSource<CollectionMatchOptions> collectionMatchOptions)
 	: AndOrResult<TCollection, TThat, StringCollectionMatchResult<TCollection, TThat>>(expectationBuilder, returnValue),
 		IOptionsProvider<CollectionMatchOptions>,
 		IOptionsProvider<StringEqualityOptions>,
 		IStringMatchTypeOptions
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
+	OptionsHolder<CollectionMatchOptions> IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions.Holder;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options;
+	OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => options.Holder;
 }
