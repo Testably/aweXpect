@@ -1380,6 +1380,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -1612,7 +1618,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -1848,7 +1855,8 @@ window.BENCHMARK_DATA = {
           6702.517283512996,
           11501.64677810669,
           10696.453085763114,
-          5522.329231849084
+          5522.329231849084,
+          5562.67060147799
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2084,6 +2092,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2333,7 +2342,8 @@ window.BENCHMARK_DATA = {
           228624.34186197916,
           378017.168359375,
           382822.93973214284,
-          161794.7661621094
+          161794.7661621094,
+          194225.5869140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2574,7 +2584,8 @@ window.BENCHMARK_DATA = {
           590226,
           590292,
           590292,
-          590286
+          590286,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2818,7 +2829,8 @@ window.BENCHMARK_DATA = {
           15591.829648844401,
           19741.821193440755,
           19844.618162027993,
-          10114.491306011494
+          10114.491306011494,
+          10641.744139451246
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2830,6 +2842,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4411,6 +4424,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -4636,7 +4655,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -4865,7 +4885,8 @@ window.BENCHMARK_DATA = {
           184.65565565427144,
           232.03947542508442,
           228.27260483105977,
-          101.60581788649925
+          101.60581788649925,
+          119.03057606403644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5061,6 +5082,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5336,7 +5358,8 @@ window.BENCHMARK_DATA = {
           443.7991304397583,
           514.5530372619629,
           502.03181813557944,
-          246.09257759366716
+          246.09257759366716,
+          305.8531039442335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5348,6 +5371,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5807,7 +5831,8 @@ window.BENCHMARK_DATA = {
           310.73369750976565,
           388.7750547409058,
           387.8379059791565,
-          189.17344064712523
+          189.17344064712523,
+          219.3459482559791
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5819,6 +5844,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12013,6 +12039,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -13008,7 +13040,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -14007,7 +14040,8 @@ window.BENCHMARK_DATA = {
           82.344562180837,
           103.59044840506145,
           103.21252195835113,
-          53.765977430343625
+          53.765977430343625,
+          58.04703967846357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15006,6 +15040,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16018,7 +16053,8 @@ window.BENCHMARK_DATA = {
           226.7978673662458,
           251.7609690152682,
           256.4655884106954,
-          128.04535892804464
+          128.04535892804464,
+          141.53252390452795
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16211,6 +16247,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17310,7 +17347,8 @@ window.BENCHMARK_DATA = {
           178.04267365591866,
           240.05465354919434,
           244.87104002634683,
-          126.78889404024396
+          126.78889404024396,
+          132.49622480685895
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17322,6 +17360,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -18989,6 +19028,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -19221,7 +19266,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -19457,7 +19503,8 @@ window.BENCHMARK_DATA = {
           171.31820906003315,
           206.6004903657096,
           213.62260166803995,
-          102.14035465887615
+          102.14035465887615,
+          118.27160442670187
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19662,6 +19709,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -19942,7 +19990,8 @@ window.BENCHMARK_DATA = {
           470.39820085253035,
           518.1834402720134,
           513.7436959584554,
-          246.49441542992224
+          246.49441542992224,
+          271.0027256693159
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19954,6 +20003,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -20427,7 +20477,8 @@ window.BENCHMARK_DATA = {
           264.21241958324725,
           348.932692750295,
           339.02858851750693,
-          165.5763714483806
+          165.5763714483806,
+          193.45000119209288
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20439,6 +20490,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -26640,6 +26692,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -27635,7 +27693,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -28634,7 +28693,8 @@ window.BENCHMARK_DATA = {
           498.4293526921953,
           687.2798617907932,
           785.1944880167644,
-          340.0593204498291
+          340.0593204498291,
+          395.5330280303955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29621,6 +29681,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -30645,7 +30706,8 @@ window.BENCHMARK_DATA = {
           1127.5242167252761,
           1393.7302603403728,
           1396.7574534098308,
-          645.4952359517415
+          645.4952359517415,
+          761.1451645578657
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30838,6 +30900,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -31937,7 +32000,8 @@ window.BENCHMARK_DATA = {
           513.7909718195598,
           658.9558313233512,
           690.0422336138212,
-          338.85224136939416
+          338.85224136939416,
+          357.7810184955597
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31949,6 +32013,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -38194,6 +38259,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -39189,7 +39260,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -40188,7 +40260,8 @@ window.BENCHMARK_DATA = {
           490.2052463803972,
           696.675085957845,
           768.4744716644287,
-          343.6156844139099
+          343.6156844139099,
+          382.68833681515287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41175,6 +41248,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -42199,7 +42273,8 @@ window.BENCHMARK_DATA = {
           13997.627959187825,
           28334.67564039964,
           27953.733048502603,
-          9652.730807964619
+          9652.730807964619,
+          11791.960572306316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43203,6 +43278,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -43491,7 +43567,8 @@ window.BENCHMARK_DATA = {
           609.9294756571452,
           780.8793531145368,
           807.3921253204346,
-          398.360992363521
+          398.360992363521,
+          442.70852103600134
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -43503,6 +43580,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -45518,6 +45596,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -45808,7 +45892,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -46102,7 +46187,8 @@ window.BENCHMARK_DATA = {
           506.3214931488037,
           635.8081000191825,
           688.0200400670369,
-          306.03168903986614
+          306.03168903986614,
+          358.8756615932171
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46396,6 +46482,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -46703,7 +46790,8 @@ window.BENCHMARK_DATA = {
           28041.196132114954,
           84468.56821289062,
           83973.3186819894,
-          28601.543470110213
+          28601.543470110213,
+          29783.015329996746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47002,6 +47090,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -48744,6 +48833,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -49034,7 +49129,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -49328,7 +49424,8 @@ window.BENCHMARK_DATA = {
           119.60454456622784,
           134.97739693096705,
           141.64406515757244,
-          63.459520737330116
+          63.459520737330116,
+          78.69864263704845
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49622,6 +49719,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -49929,7 +50027,8 @@ window.BENCHMARK_DATA = {
           14379.46526184082,
           32751.45675048828,
           31779.87716064453,
-          8866.293089646559
+          8866.293089646559,
+          10776.875611368816
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50228,6 +50327,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -50516,7 +50616,8 @@ window.BENCHMARK_DATA = {
           182.5133302529653,
           247.63845637639363,
           251.46916755040488,
-          116.56927270155687
+          116.56927270155687,
+          129.21980069478352
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50528,6 +50629,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -52195,6 +52297,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -52427,7 +52535,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -52663,7 +52772,8 @@ window.BENCHMARK_DATA = {
           228.87336097558338,
           333.8627694203303,
           291.5732334772746,
-          150.2717865364892
+          150.2717865364892,
+          165.72703151702882
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52868,6 +52978,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -53148,7 +53259,8 @@ window.BENCHMARK_DATA = {
           343.43352394104005,
           365.78042726516725,
           390.84653428622653,
-          204.04711397488913
+          204.04711397488913,
+          212.63366204041702
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53160,6 +53272,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -53633,7 +53746,8 @@ window.BENCHMARK_DATA = {
           309.906347990036,
           400.5586095589858,
           410.2577807562692,
-          203.52974519729614
+          203.52974519729614,
+          225.90736281871796
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -53645,6 +53759,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -55268,6 +55383,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -55500,7 +55621,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -55736,7 +55858,8 @@ window.BENCHMARK_DATA = {
           555.2396861394246,
           724.328476524353,
           713.227235730489,
-          341.3919143040975
+          341.3919143040975,
+          385.2355584303538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55972,6 +56095,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -56221,7 +56345,8 @@ window.BENCHMARK_DATA = {
           1594.1991196950278,
           1873.6489195505778,
           1983.3402926127117,
-          980.2413647515433
+          980.2413647515433,
+          1094.4405457632881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56233,6 +56358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -56706,7 +56832,8 @@ window.BENCHMARK_DATA = {
           712.4923323949178,
           925.146796353658,
           946.7809991200764,
-          431.20647063622107
+          431.20647063622107,
+          509.5423445020403
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56718,6 +56845,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -58341,6 +58469,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -58573,7 +58707,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -58809,7 +58944,8 @@ window.BENCHMARK_DATA = {
           8177.976256150466,
           11951.79460144043,
           12019.639755249023,
-          5751.97408412053
+          5751.97408412053,
+          6129.79380446214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59048,6 +59184,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720
@@ -59294,7 +59431,8 @@ window.BENCHMARK_DATA = {
           26659.054977416992,
           40679.75695364816,
           40962.90633544922,
-          17593.471204485213
+          17593.471204485213,
+          20004.696498616537
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59533,6 +59671,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609
@@ -59779,7 +59918,8 @@ window.BENCHMARK_DATA = {
           7750.48002406529,
           10512.973590557393,
           10566.777144211988,
-          5442.117374674479
+          5442.117374674479,
+          5883.823026021321
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59791,6 +59931,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -61414,6 +61555,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -61646,7 +61793,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -61882,7 +62030,8 @@ window.BENCHMARK_DATA = {
           7873.336032104492,
           11795.338354257437,
           11405.718409946987,
-          5470.540798187256
+          5470.540798187256,
+          5923.666859218052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62121,6 +62270,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200
@@ -62367,7 +62517,8 @@ window.BENCHMARK_DATA = {
           39045.36710902623,
           59275.53034667969,
           59595.12173025949,
-          25262.673274448938
+          25262.673274448938,
+          28377.119321187336
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62596,6 +62747,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -62852,7 +63004,8 @@ window.BENCHMARK_DATA = {
           15195.415170288086,
           20878.829068697414,
           21104.347063337053,
-          10780.578627450126
+          10780.578627450126,
+          11917.937850952148
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62864,6 +63017,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
