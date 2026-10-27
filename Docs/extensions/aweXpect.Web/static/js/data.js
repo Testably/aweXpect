@@ -1062,6 +1062,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -1241,7 +1247,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -1424,7 +1431,8 @@ window.BENCHMARK_DATA = {
           501.08385056715747,
           243.95742290360587,
           468.22961873274585,
-          486.36500345865886
+          486.36500345865886,
+          223.5864475795201
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1604,6 +1612,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1803,7 +1812,8 @@ window.BENCHMARK_DATA = {
           1055.40873840877,
           508.508009161268,
           1082.931537882487,
-          929.5945545832316
+          929.5945545832316,
+          512.6541816847665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1815,6 +1825,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3067,6 +3078,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -3246,7 +3263,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -3429,7 +3447,8 @@ window.BENCHMARK_DATA = {
           268.5558290799459,
           144.42747661045618,
           279.2687221209208,
-          250.16857674916585
+          250.16857674916585,
+          123.39553442001343
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3576,6 +3595,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3808,7 +3828,8 @@ window.BENCHMARK_DATA = {
           279.078387705485,
           147.87248187405723,
           250.4324870109558,
-          248.4758246285575
+          248.4758246285575,
+          130.65717989206314
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3820,6 +3841,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5012,6 +5034,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -5181,7 +5209,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -5354,7 +5383,8 @@ window.BENCHMARK_DATA = {
           831.4142941792805,
           393.1221553166707,
           746.8927319600032,
-          736.819604365031
+          736.819604365031,
+          374.3287629347581
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5493,6 +5523,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5713,7 +5744,8 @@ window.BENCHMARK_DATA = {
           1034.8188137054444,
           499.79274008824274,
           991.5358709607806,
-          1021.7144416809082
+          1021.7144416809082,
+          472.1112215360006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5725,6 +5757,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6907,6 +6940,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -7076,7 +7115,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -7249,7 +7289,8 @@ window.BENCHMARK_DATA = {
           1926.0909589131672,
           1177.2920851026263,
           1958.2026219685872,
-          1858.7134050641741
+          1858.7134050641741,
+          1058.938818522862
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7388,6 +7429,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -7608,7 +7650,8 @@ window.BENCHMARK_DATA = {
           21972.503662109375,
           10465.854170663017,
           21861.020222255163,
-          22040.96430460612
+          22040.96430460612,
+          9506.014527384441
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7782,6 +7825,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -8802,6 +8846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -8971,7 +9021,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -9144,7 +9195,8 @@ window.BENCHMARK_DATA = {
           866.7201562608991,
           433.6317463602339,
           769.6820955276489,
-          815.0018540791103
+          815.0018540791103,
+          389.4335874239604
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9283,6 +9335,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -9503,7 +9556,8 @@ window.BENCHMARK_DATA = {
           1371.1180374962944,
           737.3961765766144,
           1362.0484779064473,
-          1282.5236325945173
+          1282.5236325945173,
+          666.4958557764689
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9515,6 +9569,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -10697,6 +10752,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
         "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
+      },
+      {
+        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
+        "message": "fix: never compile snapshot files of a test project (#2118)"
       }
     ],
     "labels": [
@@ -10866,7 +10927,8 @@ window.BENCHMARK_DATA = {
       "144c7b56",
       "b091e811",
       "84c8c5e0",
-      "e2339ca9"
+      "e2339ca9",
+      "9ea73f6f"
     ],
     "datasets": [
       {
@@ -11039,7 +11101,8 @@ window.BENCHMARK_DATA = {
           1387.4547334035237,
           807.4877299528855,
           1320.3673434938703,
-          1287.7322060902914
+          1287.7322060902914,
+          728.2057986940656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11209,6 +11272,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -11398,7 +11462,8 @@ window.BENCHMARK_DATA = {
           797.6576168060303,
           442.80978135267895,
           831.9102221171062,
-          786.7034755071004
+          786.7034755071004,
+          404.8780078206743
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11410,6 +11475,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
