@@ -1014,6 +1014,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
         "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
+      },
+      {
+        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
+        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
       }
     ],
     "labels": [
@@ -1185,7 +1191,8 @@ window.BENCHMARK_DATA = {
       "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
-      "67f30838"
+      "67f30838",
+      "2e0f7001"
     ],
     "datasets": [
       {
@@ -1360,7 +1367,8 @@ window.BENCHMARK_DATA = {
           771.5664036432902,
           484.6863160814558,
           892.7094680241177,
-          558.5206277211507
+          558.5206277211507,
+          914.548518385206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1540,7 +1548,8 @@ window.BENCHMARK_DATA = {
           1016,
           992,
           992,
-          992
+          992,
+          1000
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1723,7 +1732,8 @@ window.BENCHMARK_DATA = {
           919.9354384740194,
           411.4539412180583,
           687.0703350067139,
-          574.5839573996408
+          574.5839573996408,
+          752.0956639562335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1735,6 +1745,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2931,6 +2942,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
         "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
+      },
+      {
+        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
+        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
       }
     ],
     "labels": [
@@ -3102,7 +3119,8 @@ window.BENCHMARK_DATA = {
       "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
-      "67f30838"
+      "67f30838",
+      "2e0f7001"
     ],
     "datasets": [
       {
@@ -3277,7 +3295,8 @@ window.BENCHMARK_DATA = {
           5118.012402670724,
           2713.70579401652,
           4105.226925986154,
-          3322.3321614583333
+          3322.3321614583333,
+          4719.634000651042
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3457,6 +3476,7 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24178,
+          24172,
           24172
         ],
         "borderColor": "#63A2AC",
@@ -3640,7 +3660,8 @@ window.BENCHMARK_DATA = {
           5993.014304097494,
           3171.290367126465,
           4752.00021307809,
-          3923.565017191569
+          3923.565017191569,
+          5541.623286655971
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3652,6 +3673,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4788,6 +4810,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
         "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
+      },
+      {
+        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
+        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
       }
     ],
     "labels": [
@@ -4949,7 +4977,8 @@ window.BENCHMARK_DATA = {
       "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
-      "67f30838"
+      "67f30838",
+      "2e0f7001"
     ],
     "datasets": [
       {
@@ -5114,7 +5143,8 @@ window.BENCHMARK_DATA = {
           2829.9095585162822,
           1479.986473083496,
           2350.903139659337,
-          1950.4946624210902
+          1950.4946624210902,
+          2629.016909154256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5271,6 +5301,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -5457,7 +5488,8 @@ window.BENCHMARK_DATA = {
           3791.0432393391925,
           2013.7089848836263,
           3239.4659388405935,
-          2665.141414097377
+          2665.141414097377,
+          3840.422245319073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5469,6 +5501,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6595,6 +6628,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
         "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
+      },
+      {
+        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
+        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
       }
     ],
     "labels": [
@@ -6756,7 +6795,8 @@ window.BENCHMARK_DATA = {
       "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
-      "67f30838"
+      "67f30838",
+      "2e0f7001"
     ],
     "datasets": [
       {
@@ -6921,7 +6961,8 @@ window.BENCHMARK_DATA = {
           13915.1745060512,
           7689.950396728515,
           13121.56071879069,
-          10673.236022949219
+          10673.236022949219,
+          14267.907149251301
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7078,6 +7119,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -7264,7 +7306,8 @@ window.BENCHMARK_DATA = {
           288986.64533342636,
           183401.78305664062,
           339471.9620535714,
-          212926.37643229167
+          212926.37643229167,
+          371167.7600097656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7434,7 +7477,8 @@ window.BENCHMARK_DATA = {
           544247,
           544335,
           544335,
-          544178
+          544178,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
