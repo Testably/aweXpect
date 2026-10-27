@@ -87,6 +87,9 @@ public sealed partial class ThatSnapshot
 
 						              Pending snapshot:
 						              {directory.PendingPath}
+
+						              Snapshot options:
+						               - accept all snapshots
 						              """).AsWildcard();
 					await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar" + Environment.NewLine)
 						.Because("a version control system like Perforce checks files out read-only, so the value is kept for review");
@@ -116,6 +119,9 @@ public sealed partial class ThatSnapshot
 					              *
 					              Accepted snapshot:
 					              {directory.SnapshotPath}
+
+					              Snapshot options:
+					               - accept all snapshots
 					              """).AsWildcard()
 					.Because("the pending snapshot is only a leftover of an earlier run");
 				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo" + Environment.NewLine);
@@ -145,6 +151,9 @@ public sealed partial class ThatSnapshot
 
 					              Accepted snapshot:
 					              {directory.SnapshotPath}
+
+					              Snapshot options:
+					               - accept all snapshots
 					              """);
 				await That(File.ReadAllBytes(directory.SnapshotPath))
 					.IsEqualTo(new System.Text.UTF8Encoding(false).GetBytes(subject + Environment.NewLine));
@@ -505,7 +514,7 @@ public sealed partial class ThatSnapshot
 						.WithExtension("xml").Accepting(SnapshotAcceptance.All);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"*Accepted snapshot:*{snapshotPath}").AsWildcard()
+					.WithMessage($"*Accepted snapshot:*{snapshotPath}*").AsWildcard()
 					.Because("the snapshot with the extension 'txt' is another file");
 				await That(File.ReadAllText(snapshotPath)).IsEqualTo(subject + Environment.NewLine);
 				await That(File.Exists(pendingPath)).IsFalse();
@@ -845,6 +854,9 @@ public sealed partial class ThatSnapshot
 
 					              Accepted snapshot:
 					              {snapshotPath}
+
+					              Snapshot options:
+					               - accept all snapshots
 					              """);
 				await That(File.ReadAllBytes(snapshotPath)).IsEqualTo(subject);
 				await That(File.Exists(pendingPath)).IsFalse();

@@ -1,4 +1,6 @@
 using System;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -11,11 +13,17 @@ public class SnapshotPattern<TResult>
 {
 	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly Func<string, TextMasking>? _createMasking;
+	private readonly Func<string>? _describeSelection;
 
-	internal SnapshotPattern(Func<SnapshotRule, TResult> add, Func<string, TextMasking>? createMasking)
+	/// <param name="add">Adds the rule of an action.</param>
+	/// <param name="createMasking">Creates the masking with a template.</param>
+	/// <param name="describeSelection">Describes the selected text for the failure.</param>
+	internal SnapshotPattern(Func<SnapshotRule, TResult> add, Func<string, TextMasking>? createMasking,
+		Func<string>? describeSelection)
 	{
 		_add = add;
 		_createMasking = createMasking;
+		_describeSelection = describeSelection;
 	}
 
 	/// <summary>
@@ -32,8 +40,12 @@ public class SnapshotPattern<TResult>
 	///     snapshots, so put a specific rule before a general one.
 	/// </remarks>
 	public TResult Mask(string template)
-		=> _add(new SnapshotRule(CreateMasking(RuleArguments.ThrowIfNull(template, nameof(template)))));
+		=> _add(new SnapshotRule(CreateMasking(RuleArguments.ThrowIfNull(template, nameof(template))),
+			() => $"mask {DescribeSelection()} with {Formatter.Format(template)}"));
 
 	private protected virtual TextMasking CreateMasking(string template)
 		=> _createMasking!(template);
+
+	private protected virtual string DescribeSelection()
+		=> _describeSelection!();
 }

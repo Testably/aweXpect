@@ -43,8 +43,8 @@ public static class ThatPublicApi
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject,
-			assembly => PublicApiDeclarations.GenerateFrom(assembly, options),
+		=> AddPublicApiSnapshot(subject, options,
+			static (assembly, generateWith) => PublicApiDeclarations.GenerateFrom(assembly, generateWith),
 			callerFilePath, callerMemberName);
 
 	/// <summary>
@@ -73,30 +73,40 @@ public static class ThatPublicApi
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddPublicApiSnapshot(subject,
-			file => PublicApiDeclarations.GenerateFrom(file, options),
+		=> AddPublicApiSnapshot(subject, options,
+			static (file, generateWith) => PublicApiDeclarations.GenerateFrom(file, generateWith),
 			callerFilePath, callerMemberName);
 
 	/// <remarks>
 	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the
-	///     generated public API.
+	///     generated public API.<br />
+	///     The options that the public API was generated with are kept for the "Public API options" of a failure.
 	/// </remarks>
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]
 	private static StringSnapshotResult<string?, IThat<string?>> AddPublicApiSnapshot<TSubject>(
 		IThat<TSubject?> subject,
-		Func<TSubject, string> write,
+		Func<PublicApiOptions, PublicApiOptions>? options,
+		Func<TSubject, Func<PublicApiOptions, PublicApiOptions>, string> write,
 		string callerFilePath,
 		string callerMemberName)
 		where TSubject : class
 	{
+		PublicApiOptions? usedOptions = null;
 		StringSnapshotResult<string?, IThat<string?>>? result = null;
 		subject.Get().ExpectationBuilder
 			.ForMember(MemberAccessor<TSubject?, string?>.FromFuncWithName(
-					value => value is null ? null : write(value), "public API"),
+					value => value is null
+						? null
+						: write(value, defaults => usedOptions = options?.Invoke(defaults) ?? defaults),
+					"public API"),
 				(_, stringBuilder) => stringBuilder.Append("has a public API which "))
-			.AddExpectations(expectationBuilder => result =
-				new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath, callerMemberName)!);
+			.AddExpectations(expectationBuilder =>
+			{
+				expectationBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions?.AddContext(contexts));
+				result = new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath,
+					callerMemberName)!;
+			});
 		return result!;
 	}
 }

@@ -109,11 +109,11 @@ namespace aweXpect.Snapshots
     public class SnapshotLines<TResult>
     {
         public aweXpect.Snapshots.SnapshotLinesContaining<TResult> Containing(string text) { }
-        public TResult Convert(System.Func<string, string?> convert) { }
-        public aweXpect.Snapshots.SnapshotLines<TResult> Except(System.Func<string, bool> predicate) { }
+        public TResult Convert(System.Func<string, string?> convert, [System.Runtime.CompilerServices.CallerArgumentExpression("convert")] string doNotPopulateThisValue = "") { }
+        public aweXpect.Snapshots.SnapshotLines<TResult> Except(System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public TResult Ignore() { }
         public TResult Mask(string template) { }
-        public aweXpect.Snapshots.SnapshotLines<TResult> Which(System.Func<string, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotLines<TResult> Which(System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
     public sealed class SnapshotLinesContaining<TResult> : aweXpect.Snapshots.SnapshotLines<TResult>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Snapshots.SnapshotLinesContaining<TResult>>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringPatternMatchTypeOptions
     {
@@ -125,16 +125,16 @@ namespace aweXpect.Snapshots
     }
     public class SnapshotMembers<TResult, TValue>
     {
-        public TResult Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TConverted>(System.Func<TValue, TConverted> convert) { }
+        public TResult Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TConverted>(System.Func<TValue, TConverted> convert, [System.Runtime.CompilerServices.CallerArgumentExpression("convert")] string doNotPopulateThisValue = "") { }
         public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> DeclaredIn<T>() { }
-        public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public TResult Ignore() { }
         public TResult Mask() { }
-        public TResult Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
+        public TResult Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template, [System.Runtime.CompilerServices.CallerArgumentExpression("template")] string doNotPopulateThisValue = "") { }
         public TResult Mask(string template) { }
         public aweXpect.Snapshots.SnapshotMembersOfType<TResult, T> OfExactType<T>() { }
         public aweXpect.Snapshots.SnapshotMembersOfType<TResult, T> OfType<T>() { }
-        public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public aweXpect.Snapshots.SnapshotEmptyCollections<TResult> WhichAreEmptyCollections() { }
         public aweXpect.Snapshots.SnapshotMembersWithName<TResult, TValue> WithName(string name) { }
         public aweXpect.Snapshots.SnapshotMembers<TResult, TValue> WithPath(string path) { }
@@ -202,16 +202,16 @@ namespace aweXpect.Snapshots
     }
     public class SnapshotValues<TResult, TValue>
     {
-        public TResult Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TConverted>(System.Func<TValue, TConverted> convert) { }
+        public TResult Convert<[aweXpect.Core.Metadata.RequiresMemberMetadata] TConverted>(System.Func<TValue, TConverted> convert, [System.Runtime.CompilerServices.CallerArgumentExpression("convert")] string doNotPopulateThisValue = "") { }
         public aweXpect.Snapshots.SnapshotValues<TResult, TValue> DeclaredIn<T>() { }
-        public aweXpect.Snapshots.SnapshotValues<TResult, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotValues<TResult, TValue> Except(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public TResult Ignore() { }
         public TResult Mask() { }
-        public TResult Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template) { }
+        public TResult Mask(System.Func<aweXpect.Formatting.FormattedValue, string?> template, [System.Runtime.CompilerServices.CallerArgumentExpression("template")] string doNotPopulateThisValue = "") { }
         public TResult Mask(string template) { }
         public aweXpect.Snapshots.SnapshotValuesOfType<TResult, T> OfExactType<T>() { }
         public aweXpect.Snapshots.SnapshotValuesOfType<TResult, T> OfType<T>() { }
-        public aweXpect.Snapshots.SnapshotValues<TResult, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate) { }
+        public aweXpect.Snapshots.SnapshotValues<TResult, TValue> Which(System.Func<aweXpect.Formatting.FormattedValue, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public aweXpect.Snapshots.SnapshotValuesWithName<TResult, TValue> WithName(string name) { }
         public aweXpect.Snapshots.SnapshotValues<TResult, TValue> WithPath(string path) { }
     }

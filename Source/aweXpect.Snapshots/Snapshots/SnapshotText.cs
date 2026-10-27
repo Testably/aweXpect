@@ -1,5 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -28,7 +30,7 @@ public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 	}
 
 	private SnapshotText(Func<SnapshotRule, TResult> add, string text, bool ignoreCase, Kind kind)
-		: base(add, null)
+		: base(add, null, null)
 	{
 		_add = add;
 		_text = text;
@@ -77,6 +79,17 @@ public sealed class SnapshotText<TResult> : SnapshotPattern<TResult>
 			_ when _ignoreCase => TextMasking.Pattern(Regex.Escape(text), options, template, false, nameof(text)),
 			_ => TextMasking.Literal(text, template),
 		};
+	}
+
+	private protected override string DescribeSelection()
+	{
+		string kind = _kind switch
+		{
+			Kind.Regex => " as regex",
+			Kind.Wildcard => " as wildcard",
+			_ => "",
+		};
+		return $"the text {Formatter.Format(_text)}{kind}{(_ignoreCase ? " ignoring case" : "")}";
 	}
 
 	private enum Kind

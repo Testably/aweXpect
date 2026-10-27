@@ -1,8 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -23,13 +25,15 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 {
 	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly OptionsHolder<StringEqualityOptions> _options;
+	private readonly Func<string>[] _sourceDescriptions;
 	private readonly Func<string, ValueTask<bool>>[] _sourceFilters;
 	private readonly Action[] _sourceValidations;
 	private readonly string _text;
 
 	internal SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
-		Action[] sourceValidations, string text, StringEqualityOptions options)
-		: this(add, sourceFilters, sourceValidations, text, new OptionsHolder<StringEqualityOptions>(options))
+		Action[] sourceValidations, Func<string>[] sourceDescriptions, string text, StringEqualityOptions options)
+		: this(add, sourceFilters, sourceValidations, sourceDescriptions, text,
+			new OptionsHolder<StringEqualityOptions>(options))
 	{
 	}
 
@@ -38,14 +42,17 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	///     changes the holder directly also applies.
 	/// </remarks>
 	private SnapshotLinesContaining(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] sourceFilters,
-		Action[] sourceValidations, string text, OptionsHolder<StringEqualityOptions> options)
+		Action[] sourceValidations, Func<string>[] sourceDescriptions, string text,
+		OptionsHolder<StringEqualityOptions> options)
 		: base(add,
 			[.. sourceFilters, line => StringRules.Contains(options.Value, line, text, nameof(text)),],
-			[.. sourceValidations, () => options.Value.ValidateExpected(text, nameof(text)),])
+			[.. sourceValidations, () => options.Value.ValidateExpected(text, nameof(text)),],
+			[.. sourceDescriptions, () => "containing " + Formatter.Format(text) + options.Value,])
 	{
 		_add = add;
 		_sourceFilters = sourceFilters;
 		_sourceValidations = sourceValidations;
+		_sourceDescriptions = sourceDescriptions;
 		_text = text;
 		_options = options;
 	}
@@ -56,5 +63,5 @@ public sealed class SnapshotLinesContaining<TResult> : SnapshotLines<TResult>,
 	/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
 	SnapshotLinesContaining<TResult> ICopyOnOption<StringEqualityOptions, SnapshotLinesContaining<TResult>>.WithOptions(
 		StringEqualityOptions options)
-		=> new(_add, _sourceFilters, _sourceValidations, _text, options);
+		=> new(_add, _sourceFilters, _sourceValidations, _sourceDescriptions, _text, options);
 }

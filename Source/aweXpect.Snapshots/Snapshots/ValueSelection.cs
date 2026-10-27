@@ -3,6 +3,7 @@ using System.Linq;
 using aweXpect.Core;
 using aweXpect.Formatting;
 using aweXpect.Options;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -12,6 +13,7 @@ namespace aweXpect.Snapshots;
 /// </summary>
 internal sealed class ValueSelection
 {
+	private readonly Func<string>[] _descriptions;
 	private readonly Func<FormattedValue, bool>[] _filters;
 	private readonly bool _isMembersOnly;
 	private readonly bool _isNamed;
@@ -19,21 +21,27 @@ internal sealed class ValueSelection
 	private readonly Action[] _validations;
 
 	private ValueSelection(bool isMembersOnly, Func<FormattedValue, bool>[] filters, Action[] validations,
-		TypeFilter[] types, bool isNamed)
+		TypeFilter[] types, bool isNamed, Func<string>[] descriptions)
 	{
 		_isMembersOnly = isMembersOnly;
 		_filters = filters;
+		_descriptions = descriptions;
 		_validations = validations;
 		_types = types;
 		_isNamed = isNamed;
 	}
 
-	public static ValueSelection Members { get; } = new(true, [], [], [], false);
+	public static ValueSelection Members { get; } = new(true, [], [], [], false, []);
 
-	public static ValueSelection Values { get; } = new(false, [], [], [], false);
+	public static ValueSelection Values { get; } = new(false, [], [], [], false, []);
 
-	public ValueSelection Where(Func<FormattedValue, bool> filter)
-		=> new(_isMembersOnly, [.. _filters, filter,], _validations, _types, _isNamed);
+	/// <summary>
+	///     Adds the <paramref name="filter" />, which the <paramref name="description" /> describes for the failure,
+	///     e.g. <c>declared in Album</c>.
+	/// </summary>
+	public ValueSelection Where(Func<FormattedValue, bool> filter, Func<string> description)
+		=> new(_isMembersOnly, [.. _filters, filter,], _validations, _types, _isNamed,
+			[.. _descriptions, description,]);
 
 	/// <summary>
 	///     Selects the values with the <paramref name="name" />, compared with the <paramref name="options" />.
@@ -45,18 +53,30 @@ internal sealed class ValueSelection
 	public ValueSelection WithName(string name, IReadOnlyOptionsHolder<StringEqualityOptions> options)
 		=> new(_isMembersOnly,
 			[.. _filters, value => StringRules.IsMatch(options.Value, value.Name, name, nameof(name)),],
-			[.. _validations, () => options.Value.ValidateExpected(name, nameof(name)),], _types, true);
+			[.. _validations, () => options.Value.ValidateExpected(name, nameof(name)),], _types, true,
+			[.. _descriptions, () => "whose name " + options.Value.GetExpectation(name, ExpectationGrammars.Active),]);
 
 	public ValueSelection WithPath(string path)
 		=> new(_isMembersOnly, [.. _filters, value => ValueFilters.HasPath(value.Path, path),], _validations,
-			_types, true);
+			_types, true, [.. _descriptions, () => "whose path ends with " + Formatter.Format(path),]);
 
 	/// <summary>
 	///     Selects the values that match any of the <paramref name="types" />.
 	/// </summary>
 	public ValueSelection OfType(TypeFilter[] types)
 		=> new(_isMembersOnly, [.. _filters, value => types.Any(type => type.Matches(value)),], _validations, types,
-			_isNamed);
+			_isNamed, [.. _descriptions, () => string.Join(" or ", types.Select(type => type.Description)),]);
+
+	/// <summary>
+	///     Describes the selection for the failure, e.g. <c>the members whose name is equal to "Id"</c>.
+	/// </summary>
+	public string Describe()
+	{
+		string values = _isMembersOnly ? "the members" : "the values";
+		return _descriptions.Length == 0
+			? values
+			: values + " " + string.Join(" and ", _descriptions.Select(describe => describe()));
+	}
 
 	/// <summary>
 	///     Whether the selection contains the <paramref name="value" />.

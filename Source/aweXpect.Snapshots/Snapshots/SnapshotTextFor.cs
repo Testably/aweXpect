@@ -1,6 +1,8 @@
 using System;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -45,7 +47,8 @@ public class SnapshotTextFor<TResult>
 			throw Tracing.WriteException(new ArgumentNullException(nameof(pattern), "The 'pattern' cannot be null."));
 		}
 
-		return new SnapshotPattern<TResult>(Add, replacement => TextMasking.Pattern(pattern, replacement));
+		return new SnapshotPattern<TResult>(Add, replacement => TextMasking.Pattern(pattern, replacement),
+			() => $"the matches of the regex {Formatter.Format(pattern.ToString())}");
 	}
 
 	/// <summary>
@@ -60,7 +63,7 @@ public class SnapshotTextFor<TResult>
 	///     <c>.For.Values().OfType&lt;Guid&gt;().Mask()</c>.
 	/// </remarks>
 	public SnapshotKnownText<TResult> Guids()
-		=> new(Add, TextMasking.Guids);
+		=> new(Add, TextMasking.Guids, "the Guids");
 
 	/// <summary>
 	///     Selects each date and date with time in ISO 8601 in the written snapshot.
@@ -75,7 +78,7 @@ public class SnapshotTextFor<TResult>
 	///     the same number.
 	/// </remarks>
 	public SnapshotKnownText<TResult> Dates()
-		=> new(Add, TextMasking.Dates);
+		=> new(Add, TextMasking.Dates, "the dates");
 
 	/// <summary>
 	///     Selects the name of this machine, <see cref="Environment.MachineName" />, in the written snapshot.
@@ -86,7 +89,7 @@ public class SnapshotTextFor<TResult>
 	///     rules, so that they see the placeholder.
 	/// </remarks>
 	public SnapshotKnownText<TResult> MachineName()
-		=> new(Add, TextMasking.MachineName);
+		=> new(Add, TextMasking.MachineName, "the machine name");
 
 	/// <summary>
 	///     Selects the name of the current user, <see cref="Environment.UserName" />, in the written snapshot.
@@ -98,7 +101,7 @@ public class SnapshotTextFor<TResult>
 	///     <c>{UserProfile}</c>, unless the paths are kept.
 	/// </remarks>
 	public SnapshotKnownText<TResult> UserName()
-		=> new(Add, TextMasking.UserName);
+		=> new(Add, TextMasking.UserName, "the user name");
 
 	/// <summary>
 	///     Selects the paths of the environment, which are masked by default, so that they can be kept.

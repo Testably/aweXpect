@@ -170,7 +170,8 @@ User code picks a source, navigates to a member kind, filters and expects:
   framework that `buildTransitive/aweXpect.Snapshots.targets` records in the test assembly, so that snapshots are found
   in deterministic builds (from `ExtensionRegistry`, and by scanning the loaded assemblies that registered nothing, as
   a project cannot always compile a module initializer); the rules (`SnapshotMembers*`, `SnapshotLines*`, `SnapshotText`, ...), whose surface
-  `SnapshotRule` repeats for all snapshots (`For_ShouldOfferTheSameRulesAsForAllSnapshots` keeps both equal); the
+  `SnapshotRule` repeats for all snapshots (`For_ShouldOfferTheSameRulesAsForAllSnapshots` keeps both equal) and
+  whose filters and actions describe each rule for the "Snapshot options" context of a failure; the
   extension points `SnapshotComparer` and `SnapshotReporter`, abstract classes so that members can get a default;
   `SnapshotAcceptance` and `AcceptEnvironment` (`AWEXPECT_ACCEPT_SNAPSHOTS`, build server detection); and
   `ClaimedSnapshots`/`OrphanedSnapshots` for orphan detection.
@@ -180,7 +181,8 @@ User code picks a source, navigates to a member kind, filters and expects:
 - `aweXpect.Snapshots.PublicApi`: `PublicApiDeclarations` reads an assembly with Roslyn from its metadata and writes
   its public API as C# declarations; missing dependencies are resolved from the `deps.json` and the NuGet packages
   folder. Not trimmable. `Options/` (namespace `aweXpect.Snapshots.PublicApi.Options`) holds the immutable
-  `PublicApiOptions` and its selectors `Ignoring`, `Within` and `Formatting`, whose methods each return new options.
+  `PublicApiOptions` and its selectors `Ignoring`, `Within` and `Formatting`, whose methods each return new options;
+  a new option must be copied in the internal copy constructor and listed in the "Public API options" context.
 - `aweXpect.Snapshots.DiffEngine`: `DiffEngineReporter` opens a diff tool. Its `buildTransitive` targets let the
   generated module initializer call `DiffEngineReporter.Register()` in consuming projects, which
   `<AweXpectSnapshotsDiffEngine>false</AweXpectSnapshotsDiffEngine>` turns off.

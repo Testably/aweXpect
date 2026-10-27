@@ -1,4 +1,6 @@
 using System;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -12,11 +14,17 @@ public sealed class SnapshotKnownText<TResult>
 {
 	private readonly Func<SnapshotRule, TResult> _add;
 	private readonly Func<string?, TextMasking> _createMasking;
+	private readonly string _selection;
 
-	internal SnapshotKnownText(Func<SnapshotRule, TResult> add, Func<string?, TextMasking> createMasking)
+	/// <param name="add">Adds the rule of an action.</param>
+	/// <param name="createMasking">Creates the masking with a template, or with the default one.</param>
+	/// <param name="selection">Describes the selected text for the failure, e.g. <c>the Guids</c>.</param>
+	internal SnapshotKnownText(Func<SnapshotRule, TResult> add, Func<string?, TextMasking> createMasking,
+		string selection)
 	{
 		_add = add;
 		_createMasking = createMasking;
+		_selection = selection;
 	}
 
 	/// <summary>
@@ -29,7 +37,7 @@ public sealed class SnapshotKnownText<TResult>
 	///     come before.
 	/// </remarks>
 	public TResult Mask()
-		=> _add(new SnapshotRule(_createMasking(null)));
+		=> _add(new SnapshotRule(_createMasking(null), () => $"mask {_selection}"));
 
 	/// <summary>
 	///     Replaces each selected text with the <paramref name="template" />, which is inserted literally, or with
@@ -39,5 +47,6 @@ public sealed class SnapshotKnownText<TResult>
 	///     <c>{0}</c> is replaced as plain text, and every text masked with the same template shares one counter.
 	/// </remarks>
 	public TResult Mask(string template)
-		=> _add(new SnapshotRule(_createMasking(RuleArguments.ThrowIfNull(template, nameof(template)))));
+		=> _add(new SnapshotRule(_createMasking(RuleArguments.ThrowIfNull(template, nameof(template))),
+			() => $"mask {_selection} with {Formatter.Format(template)}"));
 }

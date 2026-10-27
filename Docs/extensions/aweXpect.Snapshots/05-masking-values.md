@@ -417,6 +417,32 @@ using (Customize.aweXpect.Snapshots().Rules.Set([
 }
 ```
 
+A failure lists the rules that applied to the subject in the "Snapshot options" context, those for all snapshots
+marked as such, so that a rule set far away from the test is not overlooked. The context also names the comparer and
+the acceptance when they are set, and is left out when nothing is:
+
+```text title="Failure message"
+Expected that album
+matches the snapshot "/src/Tests/AlbumTests.Describes.awexpect-snapshot.txt",
+but the snapshot did not exist
+
+Actual:
+Album {
+  Id = <id>,
+  Title = "Abbey Road"
+}
+
+Pending snapshot:
+/src/Tests/AlbumTests.Describes.awexpect-snapshot.pending.txt
+
+Snapshot options:
+ - mask the members whose name is equal to "Id" with "<id>"
+ - ignore the members whose name is equal to "PlayCount" (for all snapshots)
+```
+
+A predicate, a mask function or a converter is described by its code, e.g.
+`convert the values of type DateTime using date => date.Year`.
+
 ## Order
 
 The rules are applied in this order:

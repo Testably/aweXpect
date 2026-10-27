@@ -705,6 +705,9 @@ public sealed partial class ThatSnapshot
 					               "Abbey Road"
 					               "Let It Be"
 					                ↑ (expected)
+
+					             Snapshot options:
+					              - ignore the lines containing "elapsed"
 					             """)
 					.Because("the value without the removed lines is what was compared and what would be stored");
 			}

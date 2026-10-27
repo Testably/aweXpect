@@ -1,5 +1,6 @@
 using System;
 using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -21,6 +22,11 @@ internal sealed class TypeFilter
 	///     The name of a numbered placeholder for a value of this type, e.g. <c>Guid</c>.
 	/// </summary>
 	public string PlaceholderName => ValueFilters.GetPlaceholderName(_type);
+
+	/// <summary>
+	///     Describes the filter for the failure, e.g. <c>of type Guid</c>.
+	/// </summary>
+	public string Description => (_isExact ? "of exact type " : "of type ") + Formatter.Format(_type);
 
 	public bool Matches(FormattedValue value)
 		=> _isExact ? ValueFilters.IsOfExactType(value, _type) : ValueFilters.IsOfType(value, _type);

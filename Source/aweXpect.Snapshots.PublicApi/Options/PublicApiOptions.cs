@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using aweXpect.Core;
+using aweXpect.Formatting;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots.PublicApi.Options;
 
@@ -71,6 +75,56 @@ public sealed class PublicApiOptions
 	/// </summary>
 	internal static HashSet<string> Add(HashSet<string> set, string value)
 		=> new(set, StringComparer.Ordinal) { value, };
+
+	/// <summary>
+	///     Adds the "Public API options" context, which lists the active options, to the <paramref name="contexts" />,
+	///     unless no option is active.
+	/// </summary>
+	/// <remarks>
+	///     The context comes last, like the "Equivalency options" of aweXpect. The names are sorted, so that the
+	///     context does not depend on the order of the options.
+	/// </remarks>
+	internal void AddContext(ResultContextCollector contexts)
+	{
+		StringBuilder sb = new();
+		AppendNames(sb, "ignore attributes", AttributesToIgnore);
+		if (!IncludesCompilerGeneratedMembers)
+		{
+			sb.AppendLine(" - ignore compiler-generated members");
+		}
+
+		if (!IncludesForwardedTypes)
+		{
+			sb.AppendLine(" - ignore forwarded types");
+		}
+
+		AppendNames(sb, "ignore namespaces", NamespacesToIgnore);
+		AppendNames(sb, "ignore types", TypesToIgnore);
+		AppendNames(sb, "restrict to namespaces", NamespacesToRestrictTo);
+		AppendNames(sb, "restrict to types", TypesToRestrictTo);
+		if (WritesParametersOnSeparateLines)
+		{
+			sb.AppendLine(" - write parameters on separate lines");
+		}
+
+		if (sb.Length > 0)
+		{
+			contexts.Add(new ResultContext.Fixed("Public API options", sb.ToString().TrimEnd(), int.MinValue));
+		}
+	}
+
+	private static void AppendNames(StringBuilder sb, string option, HashSet<string> names)
+	{
+		if (names.Count == 0)
+		{
+			return;
+		}
+
+		sb.Append(" - ").Append(option).Append(": ");
+		Formatter.Format(sb, names.OrderBy(name => name, StringComparer.Ordinal).ToArray(),
+			FormattingOptions.SingleLine);
+		sb.AppendLine();
+	}
 
 	/// <summary>
 	///     The name of the <paramref name="type" /> like <see cref="Type.FullName" />, for a generic type the one of its

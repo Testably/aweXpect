@@ -683,6 +683,9 @@ public sealed partial class ThatSnapshot
 
 					             Snapshot:
 					             id=<id>, name=foo
+
+					             Snapshot options:
+					              - mask the text "17" with "<id>"
 					             """)
 					.Because("the masked value is what was compared and what would be stored");
 			}

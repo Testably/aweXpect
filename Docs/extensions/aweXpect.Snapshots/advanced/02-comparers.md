@@ -47,7 +47,8 @@ order of the list, and otherwise the built-in comparison.
 - When the comparer considers the value equal, the snapshot matches and is kept unchanged, even while accepting
   changes, and a leftover pending snapshot is deleted. Otherwise the failure shows its description, e.g.
   `but it differed: only 97.2% of the pixels are the same`, and the value is recorded for review or accepted like any
-  other difference.
+  other difference. The "Snapshot options" of the failure name the comparer, e.g.
+  `compare with CoverArtComparer (for all snapshots)`.
 - Tests run in parallel, so a comparer can be called concurrently and must be thread-safe.
 
 <details>
