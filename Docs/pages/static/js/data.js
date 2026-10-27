@@ -1404,6 +1404,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -1640,7 +1646,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -1880,7 +1887,8 @@ window.BENCHMARK_DATA = {
           5562.67060147799,
           11028.965635172526,
           7839.9295000348775,
-          12043.71618761335
+          12043.71618761335,
+          10437.98568725586
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2116,6 +2124,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2373,7 +2382,8 @@ window.BENCHMARK_DATA = {
           194225.5869140625,
           380806.705078125,
           260073.44361979168,
-          370915.9766927083
+          370915.9766927083,
+          374730.36171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2618,7 +2628,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590288,
-          590292
+          590292,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2866,7 +2877,8 @@ window.BENCHMARK_DATA = {
           10641.744139451246,
           19305.49663289388,
           14848.854580218975,
-          19370.103010911207
+          19370.103010911207,
+          18929.997983660018
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2878,6 +2890,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4487,6 +4500,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -4716,7 +4735,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -4949,7 +4969,8 @@ window.BENCHMARK_DATA = {
           119.03057606403644,
           235.43255945614405,
           187.94713469346365,
-          220.49511467615764
+          220.49511467615764,
+          220.26489746570587
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5145,6 +5166,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5428,7 +5450,8 @@ window.BENCHMARK_DATA = {
           305.8531039442335,
           509.7501617431641,
           463.8245777717003,
-          501.3619050979614
+          501.3619050979614,
+          529.2206758352427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5440,6 +5463,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5907,7 +5931,8 @@ window.BENCHMARK_DATA = {
           219.3459482559791,
           398.933593409402,
           323.3356704345116,
-          389.58596245447796
+          389.58596245447796,
+          385.72296915054324
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5919,6 +5944,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12141,6 +12167,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -13140,7 +13172,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -14143,7 +14176,8 @@ window.BENCHMARK_DATA = {
           58.04703967846357,
           102.71912565231324,
           84.89646662871043,
-          109.80573293140957
+          109.80573293140957,
+          104.97226091225942
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15142,6 +15176,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16162,7 +16197,8 @@ window.BENCHMARK_DATA = {
           141.53252390452795,
           250.0135591506958,
           224.11021451950074,
-          249.35799051920574
+          249.35799051920574,
+          243.9872314453125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16355,6 +16391,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17462,7 +17499,8 @@ window.BENCHMARK_DATA = {
           132.49622480685895,
           241.2341347694397,
           201.63653787544794,
-          253.71124770091131
+          253.71124770091131,
+          234.04026751858848
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17474,6 +17512,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -19169,6 +19208,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -19405,7 +19450,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -19645,7 +19691,8 @@ window.BENCHMARK_DATA = {
           118.27160442670187,
           214.33836371558053,
           160.48556835834796,
-          198.26838076909382
+          198.26838076909382,
+          205.8019369159426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19850,6 +19897,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -20138,7 +20186,8 @@ window.BENCHMARK_DATA = {
           271.0027256693159,
           517.546653175354,
           407.0741669450487,
-          508.3953858057658
+          508.3953858057658,
+          499.4910842259725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20150,6 +20199,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -20631,7 +20681,8 @@ window.BENCHMARK_DATA = {
           193.45000119209288,
           346.7119176047189,
           276.3500461578369,
-          333.19088830947874
+          333.19088830947874,
+          320.1984897760245
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20643,6 +20694,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -26872,6 +26924,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -27871,7 +27929,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -28874,7 +28933,8 @@ window.BENCHMARK_DATA = {
           395.5330280303955,
           716.1098003387451,
           546.6377283976628,
-          743.5845772425333
+          743.5845772425333,
+          724.2646183013916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29861,6 +29921,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -30893,7 +30954,8 @@ window.BENCHMARK_DATA = {
           761.1451645578657,
           1418.749098968506,
           1128.0791772206624,
-          1382.465445109776
+          1382.465445109776,
+          1342.9759494781495
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31086,6 +31148,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -32193,7 +32256,8 @@ window.BENCHMARK_DATA = {
           357.7810184955597,
           646.5586440013005,
           513.0793280919393,
-          649.5115981468788
+          649.5115981468788,
+          643.034560748509
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32205,6 +32269,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -38478,6 +38543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -39477,7 +39548,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -40480,7 +40552,8 @@ window.BENCHMARK_DATA = {
           382.68833681515287,
           724.5150806563241,
           539.6298472540719,
-          747.1063079833984
+          747.1063079833984,
+          694.6949176107134
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41467,6 +41540,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -42499,7 +42573,8 @@ window.BENCHMARK_DATA = {
           11791.960572306316,
           28928.101212565103,
           16573.625370279948,
-          28645.10520063128
+          28645.10520063128,
+          28228.59678548177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43507,6 +43582,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -43799,7 +43875,8 @@ window.BENCHMARK_DATA = {
           442.70852103600134,
           806.3352283477783,
           605.1147817884173,
-          804.4148065567017
+          804.4148065567017,
+          782.9051110403879
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -43811,6 +43888,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -45854,6 +45932,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -46148,7 +46232,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -46446,7 +46531,8 @@ window.BENCHMARK_DATA = {
           358.8756615932171,
           627.684126663208,
           524.6332745185265,
-          616.0744426591056
+          616.0744426591056,
+          662.6124880654471
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46740,6 +46826,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -47055,7 +47142,8 @@ window.BENCHMARK_DATA = {
           29783.015329996746,
           84390.57357083834,
           55034.13025919596,
-          83956.29605337289
+          83956.29605337289,
+          82416.62518310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47358,6 +47446,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -49124,6 +49213,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -49418,7 +49513,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -49716,7 +49812,8 @@ window.BENCHMARK_DATA = {
           78.69864263704845,
           140.8675048828125,
           105.73799150723677,
-          134.1145841439565
+          134.1145841439565,
+          132.95380571683248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50010,6 +50107,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -50325,7 +50423,8 @@ window.BENCHMARK_DATA = {
           10776.875611368816,
           33330.16429443359,
           15697.398236083984,
-          32644.6953125
+          32644.6953125,
+          32627.028267415364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50628,6 +50727,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -50920,7 +51020,8 @@ window.BENCHMARK_DATA = {
           129.21980069478352,
           239.94283657073976,
           201.2060196240743,
-          238.7123198876014
+          238.7123198876014,
+          243.8988392353058
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50932,6 +51033,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -52627,6 +52729,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -52863,7 +52971,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -53103,7 +53212,8 @@ window.BENCHMARK_DATA = {
           165.72703151702882,
           283.50856234232583,
           226.45373741785684,
-          289.60260575612386
+          289.60260575612386,
+          299.2795062383016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53308,6 +53418,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -53596,7 +53707,8 @@ window.BENCHMARK_DATA = {
           212.63366204041702,
           406.9449840954372,
           341.4339385032654,
-          375.26352630342757
+          375.26352630342757,
+          379.6067220247709
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53608,6 +53720,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -54089,7 +54202,8 @@ window.BENCHMARK_DATA = {
           225.90736281871796,
           413.54109652837116,
           346.42620067596437,
-          408.43828026453656
+          408.43828026453656,
+          400.8758399327596
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54101,6 +54215,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -55752,6 +55867,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -55988,7 +56109,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -56228,7 +56350,8 @@ window.BENCHMARK_DATA = {
           385.2355584303538,
           752.6435533932278,
           578.5219897588094,
-          702.298184468196
+          702.298184468196,
+          707.9254325457981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56464,6 +56587,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -56721,7 +56845,8 @@ window.BENCHMARK_DATA = {
           1094.4405457632881,
           1974.2892120361328,
           1666.717170461019,
-          1850.6348987579345
+          1850.6348987579345,
+          1897.3628135681151
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56733,6 +56858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -57214,7 +57340,8 @@ window.BENCHMARK_DATA = {
           509.5423445020403,
           950.9501117978778,
           795.5892605463664,
-          911.4032513936361
+          911.4032513936361,
+          905.3824821880886
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57226,6 +57353,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -58877,6 +59005,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -59113,7 +59247,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -59353,7 +59488,8 @@ window.BENCHMARK_DATA = {
           6129.79380446214,
           12108.943184407552,
           8472.02957280477,
-          11913.027764456612
+          11913.027764456612,
+          11808.614476130559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59592,6 +59728,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -59846,7 +59983,8 @@ window.BENCHMARK_DATA = {
           20004.696498616537,
           41423.06805419922,
           27132.750196184432,
-          40705.309622628345
+          40705.309622628345,
+          40080.265148925784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60085,6 +60223,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -60339,7 +60478,8 @@ window.BENCHMARK_DATA = {
           5883.823026021321,
           10697.181376139322,
           7909.356509868915,
-          10480.001091003418
+          10480.001091003418,
+          10516.495049612862
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60351,6 +60491,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -62002,6 +62143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
         "message": "fix: never compile snapshot files of a test project (#2118)"
+      },
+      {
+        "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
+        "message": "feat!: split the snapshot result by the kind of subject (#2116)"
       }
     ],
     "labels": [
@@ -62238,7 +62385,8 @@ window.BENCHMARK_DATA = {
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
-      "9ea73f6f"
+      "9ea73f6f",
+      "057732a7"
     ],
     "datasets": [
       {
@@ -62478,7 +62626,8 @@ window.BENCHMARK_DATA = {
           5923.666859218052,
           11679.168796245869,
           8019.377580915178,
-          11627.956140790668
+          11627.956140790668,
+          11461.085594685872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62717,6 +62866,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -62971,7 +63121,8 @@ window.BENCHMARK_DATA = {
           28377.119321187336,
           58316.129286545976,
           38403.26795450846,
-          59388.35749162947
+          59388.35749162947,
+          58594.70852661133
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63200,6 +63351,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -63464,7 +63616,8 @@ window.BENCHMARK_DATA = {
           11917.937850952148,
           21183.66518511091,
           15404.555786132812,
-          21011.581904484676
+          21011.581904484676,
+          20842.519077845984
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63476,6 +63629,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
