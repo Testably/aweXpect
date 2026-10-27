@@ -1080,6 +1080,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
         "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
+      },
+      {
+        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
+        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
       }
     ],
     "labels": [
@@ -1262,7 +1268,8 @@ window.BENCHMARK_DATA = {
       "057732a7",
       "cda17b83",
       "3c243dad",
-      "dfdf7bc1"
+      "dfdf7bc1",
+      "31332abd"
     ],
     "datasets": [
       {
@@ -1448,7 +1455,8 @@ window.BENCHMARK_DATA = {
           653.6024447168622,
           668.5717233249119,
           454.7661970456441,
-          444.77126830418905
+          444.77126830418905,
+          1087.845893713144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1629,6 +1637,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -1833,7 +1842,8 @@ window.BENCHMARK_DATA = {
           623.7429504394531,
           601.8102392196655,
           342.7720734732492,
-          333.9779723607577
+          333.9779723607577,
+          741.1114924975803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1845,6 +1855,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3118,6 +3129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
         "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
+      },
+      {
+        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
+        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
       }
     ],
     "labels": [
@@ -3300,7 +3317,8 @@ window.BENCHMARK_DATA = {
       "057732a7",
       "cda17b83",
       "3c243dad",
-      "dfdf7bc1"
+      "dfdf7bc1",
+      "31332abd"
     ],
     "datasets": [
       {
@@ -3486,7 +3504,8 @@ window.BENCHMARK_DATA = {
           3362.634377034505,
           4054.1504099527997,
           2403.098262532552,
-          2263.9936548868814
+          2263.9936548868814,
+          4975.470752970377
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3677,7 +3696,8 @@ window.BENCHMARK_DATA = {
           24172,
           24172,
           24179,
-          24172
+          24172,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3871,7 +3891,8 @@ window.BENCHMARK_DATA = {
           3941.885052998861,
           4723.594826253256,
           2715.355271911621,
-          2746.9846316019693
+          2746.9846316019693,
+          5744.9167556762695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3883,6 +3904,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -5096,6 +5118,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
         "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
+      },
+      {
+        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
+        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
       }
     ],
     "labels": [
@@ -5268,7 +5296,8 @@ window.BENCHMARK_DATA = {
       "057732a7",
       "cda17b83",
       "3c243dad",
-      "dfdf7bc1"
+      "dfdf7bc1",
+      "31332abd"
     ],
     "datasets": [
       {
@@ -5444,7 +5473,8 @@ window.BENCHMARK_DATA = {
           2049.168035888672,
           2310.9047627766927,
           1287.369072119395,
-          1289.9014395395914
+          1289.9014395395914,
+          2688.704825846354
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5625,6 +5655,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -5809,7 +5840,8 @@ window.BENCHMARK_DATA = {
           2755.487914276123,
           3090.2909009297687,
           1860.5019541422525,
-          1735.2011231013707
+          1735.2011231013707,
+          3512.239438193185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5821,6 +5853,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -7024,6 +7057,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
         "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
+      },
+      {
+        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
+        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
       }
     ],
     "labels": [
@@ -7196,7 +7235,8 @@ window.BENCHMARK_DATA = {
       "057732a7",
       "cda17b83",
       "3c243dad",
-      "dfdf7bc1"
+      "dfdf7bc1",
+      "31332abd"
     ],
     "datasets": [
       {
@@ -7372,7 +7412,8 @@ window.BENCHMARK_DATA = {
           10571.946630205426,
           11146.982480875651,
           6914.969618988037,
-          6989.139996846517
+          6989.139996846517,
+          15368.31226172814
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7553,6 +7594,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -7737,7 +7779,8 @@ window.BENCHMARK_DATA = {
           267660.50169270835,
           271044.9377092634,
           158980.15380859375,
-          161314.70522460938
+          161314.70522460938,
+          370386.5908551897
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7917,6 +7960,7 @@ window.BENCHMARK_DATA = {
           544267,
           544335,
           544267,
+          544335,
           544335,
           544335
         ],
