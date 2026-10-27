@@ -984,6 +984,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -1150,7 +1156,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -1320,7 +1327,8 @@ window.BENCHMARK_DATA = {
           318.35973532994586,
           656.2019107682364,
           527.7983943394253,
-          475.2670113018581
+          475.2670113018581,
+          676.2547330856323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1476,6 +1484,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -1673,7 +1682,8 @@ window.BENCHMARK_DATA = {
           487.36285972595215,
           903.2886648178101,
           677.7573592322213,
-          700.1124062904945
+          700.1124062904945,
+          922.8373019536336
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1685,6 +1695,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2846,6 +2857,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -3012,7 +3029,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -3182,7 +3200,8 @@ window.BENCHMARK_DATA = {
           53.062227074589046,
           110.45066498120626,
           80.86813158648354,
-          79.05764417648315
+          79.05764417648315,
+          112.4019524867718
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3329,6 +3348,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3535,7 +3555,8 @@ window.BENCHMARK_DATA = {
           115.92414813775282,
           210.54550397396088,
           175.25222398553575,
-          170.07244939804076
+          170.07244939804076,
+          219.59364676475525
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3547,6 +3568,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4708,6 +4730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -4874,7 +4902,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -5044,7 +5073,8 @@ window.BENCHMARK_DATA = {
           911.3679145177206,
           1765.5958549499512,
           1452.6765670776367,
-          1441.8219606081645
+          1441.8219606081645,
+          1836.8846421559651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5191,6 +5221,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -5397,7 +5428,8 @@ window.BENCHMARK_DATA = {
           758.3283020019531,
           1440.820011138916,
           1114.6942801157634,
-          1120.9094804617075
+          1120.9094804617075,
+          1485.1252858298164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5572,7 +5604,8 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6510,6 +6543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -6666,7 +6705,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -6826,7 +6866,8 @@ window.BENCHMARK_DATA = {
           1318.1837924321492,
           2700.3685066223143,
           2165.2721918741863,
-          2109.4537180582684
+          2109.4537180582684,
+          2717.3074806758336
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6963,6 +7004,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -7159,7 +7201,8 @@ window.BENCHMARK_DATA = {
           2055.689343516032,
           3811.665287653605,
           2981.524951662336,
-          3032.2001231266904
+          3032.2001231266904,
+          3886.851166861398
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7324,6 +7367,7 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -8262,6 +8306,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -8418,7 +8468,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -8578,7 +8629,8 @@ window.BENCHMARK_DATA = {
           183.7481241861979,
           363.47918885094776,
           305.99921401341754,
-          287.60613171259564
+          287.60613171259564,
+          391.17898461023964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8715,6 +8767,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -8911,7 +8964,8 @@ window.BENCHMARK_DATA = {
           1173.6930400303431,
           2234.1289777119955,
           1780.968310722938,
-          1814.082862854004
+          1814.082862854004,
+          2363.9307523091634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8923,6 +8977,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -10014,6 +10069,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 21:46:23 2026 \u002B0100",
         "message": "fix: accept a nullable string accessor in AreUnique and AreNotUnique (#2099)"
+      },
+      {
+        "sha": "acd69449439d332fcb4717597e4d421649697b67",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
+        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
       }
     ],
     "labels": [
@@ -10170,7 +10231,8 @@ window.BENCHMARK_DATA = {
       "e09c66b4",
       "7649b140",
       "f2444178",
-      "69ead4c3"
+      "69ead4c3",
+      "acd69449"
     ],
     "datasets": [
       {
@@ -10330,7 +10392,8 @@ window.BENCHMARK_DATA = {
           1418.7146925608317,
           2725.9737236022947,
           2177.3604766300746,
-          2319.181091562907
+          2319.181091562907,
+          2930.4361095428467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10476,6 +10539,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200,
           3200,
           3200,
@@ -10663,7 +10727,8 @@ window.BENCHMARK_DATA = {
           161738.3274676983,
           272854.9411433293,
           240599.47422572545,
-          235395.01935686384
+          235395.01935686384,
+          280823.8064313616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10828,6 +10893,7 @@ window.BENCHMARK_DATA = {
           17574,
           17577,
           17835,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
