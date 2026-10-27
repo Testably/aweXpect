@@ -942,6 +942,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -1101,7 +1107,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -1264,7 +1271,8 @@ window.BENCHMARK_DATA = {
           243.11349118550618,
           366.0022515517015,
           479.20609823862713,
-          242.85460563806387
+          242.85460563806387,
+          347.9686454023634
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1413,6 +1421,7 @@ window.BENCHMARK_DATA = {
           640,
           712,
           712,
+          664,
           664,
           664,
           664,
@@ -1603,7 +1612,8 @@ window.BENCHMARK_DATA = {
           522.3913921943077,
           721.9450086593628,
           987.3341917310443,
-          520.2494353514451
+          520.2494353514451,
+          714.0956982832688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1615,6 +1625,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -2727,6 +2738,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -2886,7 +2903,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -3049,7 +3067,8 @@ window.BENCHMARK_DATA = {
           138.0016256911414,
           172.27613118489583,
           248.35408636728923,
-          123.42481372906612
+          123.42481372906612,
+          178.08983652932304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3196,6 +3215,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3388,7 +3408,8 @@ window.BENCHMARK_DATA = {
           147.66373621622722,
           200.98934360912867,
           256.0922216006688,
-          134.6471348206202
+          134.6471348206202,
+          201.13847789764404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3400,6 +3421,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -4452,6 +4474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -4601,7 +4629,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -4754,7 +4783,8 @@ window.BENCHMARK_DATA = {
           373.58027042661394,
           514.1039806774685,
           782.788984489441,
-          386.00081157684326
+          386.00081157684326,
+          525.8709332602365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4893,6 +4923,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5073,7 +5104,8 @@ window.BENCHMARK_DATA = {
           510.09454917907715,
           737.2106490135193,
           995.3872695650373,
-          496.2667764663696
+          496.2667764663696,
+          719.6934509277344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5085,6 +5117,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -6127,6 +6160,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -6276,7 +6315,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -6429,7 +6469,8 @@ window.BENCHMARK_DATA = {
           1163.7652222951253,
           1458.05278137752,
           1959.0115190233503,
-          1105.8887264545147
+          1105.8887264545147,
+          1440.406469599406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6568,6 +6609,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -6748,7 +6790,8 @@ window.BENCHMARK_DATA = {
           10220.081864493233,
           13634.141950167143,
           21642.35054321289,
-          10142.197319030762
+          10142.197319030762,
+          13552.602865600586
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6879,6 +6922,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -7802,6 +7846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -7951,7 +8001,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -8104,7 +8155,8 @@ window.BENCHMARK_DATA = {
           400.0812046686808,
           563.9472856521606,
           826.9175990649632,
-          397.07221364974976
+          397.07221364974976,
+          553.8046045303345
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8243,6 +8295,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -8423,7 +8476,8 @@ window.BENCHMARK_DATA = {
           694.5454277311053,
           1028.383648463658,
           1501.9412724812826,
-          643.3150248527527
+          643.3150248527527,
+          961.8249022165934
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8435,6 +8489,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -9477,6 +9532,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
         "message": "feat: let the equality options validate an expected value (#2090)"
+      },
+      {
+        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
+        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
       }
     ],
     "labels": [
@@ -9626,7 +9687,8 @@ window.BENCHMARK_DATA = {
       "71904262",
       "eea60aeb",
       "a9c742d3",
-      "ce025baa"
+      "ce025baa",
+      "1690b3ad"
     ],
     "datasets": [
       {
@@ -9779,7 +9841,8 @@ window.BENCHMARK_DATA = {
           775.3494510650635,
           958.8750595092773,
           1286.1388671875,
-          739.2131657600403
+          739.2131657600403,
+          985.8325730837308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9918,6 +9981,7 @@ window.BENCHMARK_DATA = {
           1440,
           1512,
           1512,
+          1464,
           1464,
           1464,
           1464,
@@ -10098,7 +10162,8 @@ window.BENCHMARK_DATA = {
           454.82737851142883,
           596.2715656573956,
           758.4231937953404,
-          407.213606766292
+          407.213606766292,
+          589.5115729059492
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10110,6 +10175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
