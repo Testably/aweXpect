@@ -370,6 +370,9 @@ public sealed partial class ThatSnapshot
 					             Expected that subject
 					             matches the snapshot "MyTests.MyTest",
 					             but it differed: 2.3 % of the pixels differ
+
+					             Snapshot options:
+					              - compare with FakeSnapshotComparer
 					             """);
 				await That(store.MismatchBytes[id]).IsEqualTo([1, 2, 3,]);
 			}
@@ -484,6 +487,9 @@ public sealed partial class ThatSnapshot
 
 					             Snapshot:
 					             Abbey Road
+
+					             Snapshot options:
+					              - compare with FakeSnapshotComparer
 					             """)
 					.Because("the description of the comparer replaces the built-in difference");
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -519,6 +525,9 @@ public sealed partial class ThatSnapshot
 
 					             Snapshot:
 					             Abbey Road
+
+					             Snapshot options:
+					              - compare with FakeSnapshotComparer
 					             """);
 			}
 

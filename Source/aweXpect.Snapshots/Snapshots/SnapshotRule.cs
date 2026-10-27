@@ -1,3 +1,5 @@
+using System;
+
 namespace aweXpect.Snapshots;
 
 /// <summary>
@@ -12,21 +14,26 @@ namespace aweXpect.Snapshots;
 /// </remarks>
 public sealed class SnapshotRule
 {
-	private SnapshotRule()
+	private readonly Func<string> _describe;
+
+	private SnapshotRule(Func<string> describe)
 	{
+		_describe = describe;
 	}
 
-	internal SnapshotRule(ValueRule rule)
+	internal SnapshotRule(ValueRule rule) : this(rule.Describe)
 	{
 		ValueRule = rule;
 	}
 
-	internal SnapshotRule(LineRule rule)
+	internal SnapshotRule(LineRule rule) : this(rule.Describe)
 	{
 		LineRule = rule;
 	}
 
-	internal SnapshotRule(TextMasking masking)
+	/// <param name="masking">The masking of the text.</param>
+	/// <param name="describe">Describes the rule for the failure, e.g. <c>mask the Guids</c>.</param>
+	internal SnapshotRule(TextMasking masking, Func<string> describe) : this(describe)
 	{
 		TextMasking = masking;
 	}
@@ -40,10 +47,16 @@ public sealed class SnapshotRule
 	/// <summary>
 	///     The rule that keeps the paths of the environment, which are masked by default.
 	/// </summary>
-	internal static SnapshotRule KeepPaths { get; } = new()
+	internal static SnapshotRule KeepPaths { get; } = new(static () => "keep the paths of the environment")
 	{
 		KeepsPaths = true,
 	};
+
+	/// <summary>
+	///     Describes the rule for the "Snapshot options" of a failure, e.g.
+	///     <c>ignore the members whose name is equal to "PlayCount"</c>.
+	/// </summary>
+	internal string Description => _describe();
 
 	internal bool KeepsPaths { get; private init; }
 

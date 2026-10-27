@@ -1,5 +1,7 @@
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using aweXpect.Core.Extending;
 using aweXpect.Options;
 
 namespace aweXpect.Snapshots;
@@ -15,15 +17,21 @@ namespace aweXpect.Snapshots;
 public class SnapshotLines<TResult>
 {
 	private readonly Func<SnapshotRule, TResult> _add;
+	private readonly Func<string>[] _descriptions;
 	private readonly Func<string, ValueTask<bool>>[] _filters;
 	private readonly Action[] _validations;
 
+	/// <param name="add">Adds the rule of an action.</param>
+	/// <param name="filters">The filters that a line has to match.</param>
+	/// <param name="validations">Throw when a filter cannot be applied.</param>
+	/// <param name="descriptions">Describe the <paramref name="filters" /> for the failure.</param>
 	internal SnapshotLines(Func<SnapshotRule, TResult> add, Func<string, ValueTask<bool>>[] filters,
-		Action[]? validations = null)
+		Action[]? validations = null, Func<string>[]? descriptions = null)
 	{
 		_add = add;
 		_filters = filters;
 		_validations = validations ?? [];
+		_descriptions = descriptions ?? [];
 	}
 
 	/// <summary>
@@ -38,7 +46,7 @@ public class SnapshotLines<TResult>
 	///     <see cref="ArgumentException" /> at the action, and a pattern that times out fails the expectation.
 	/// </remarks>
 	public SnapshotLinesContaining<TResult> Containing(string text)
-		=> new(_add, _filters, _validations, RuleArguments.ThrowIfNullOrEmpty(text, nameof(text)),
+		=> new(_add, _filters, _validations, _descriptions, RuleArguments.ThrowIfNullOrEmpty(text, nameof(text)),
 			StringEqualityOptions.Default);
 
 	/// <summary>
@@ -48,11 +56,12 @@ public class SnapshotLines<TResult>
 	///     The <paramref name="predicate" /> gets each line without its line break. An exception of the
 	///     <paramref name="predicate" /> is thrown.
 	/// </remarks>
-	public SnapshotLines<TResult> Which(Func<string, bool> predicate)
+	public SnapshotLines<TResult> Which(Func<string, bool> predicate,
+		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		RuleArguments.ThrowIfNull(predicate, nameof(predicate));
 		return new SnapshotLines<TResult>(_add, [.. _filters, line => new ValueTask<bool>(predicate(line)),],
-			_validations);
+			_validations, [.. _descriptions, () => "satisfying " + doNotPopulateThisValue.TrimCommonWhiteSpace(),]);
 	}
 
 	/// <summary>
@@ -61,11 +70,13 @@ public class SnapshotLines<TResult>
 	/// <remarks>
 	///     The <paramref name="predicate" /> is asked like in <see cref="Which" />.
 	/// </remarks>
-	public SnapshotLines<TResult> Except(Func<string, bool> predicate)
+	public SnapshotLines<TResult> Except(Func<string, bool> predicate,
+		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		RuleArguments.ThrowIfNull(predicate, nameof(predicate));
 		return new SnapshotLines<TResult>(_add, [.. _filters, line => new ValueTask<bool>(!predicate(line)),],
-			_validations);
+			_validations,
+			[.. _descriptions, () => "not satisfying " + doNotPopulateThisValue.TrimCommonWhiteSpace(),]);
 	}
 
 	/// <summary>
@@ -76,7 +87,7 @@ public class SnapshotLines<TResult>
 	///     the other lines keep theirs. It wins over every masking and converter of lines.
 	/// </remarks>
 	public TResult Ignore()
-		=> Add(LineRule.Ignore(_filters));
+		=> Add(LineRule.Ignore(_filters, _descriptions));
 
 	/// <summary>
 	///     Replaces each selected line as a whole with the <paramref name="template" />, e.g.
@@ -88,7 +99,7 @@ public class SnapshotLines<TResult>
 	///     keeps its line break. The first masking or converter that matches a line wins.
 	/// </remarks>
 	public TResult Mask(string template)
-		=> Add(LineRule.Mask(_filters, RuleArguments.ThrowIfNull(template, nameof(template))));
+		=> Add(LineRule.Mask(_filters, _descriptions, RuleArguments.ThrowIfNull(template, nameof(template))));
 
 	/// <summary>
 	///     Replaces each selected line with the text that <paramref name="convert" /> returns for it, e.g. only its
@@ -98,8 +109,10 @@ public class SnapshotLines<TResult>
 	///     The <paramref name="convert" /> gets the line without its line break, and the result keeps the line break. An
 	///     exception of <paramref name="convert" /> is thrown. The first masking or converter that matches a line wins.
 	/// </remarks>
-	public TResult Convert(Func<string, string?> convert)
-		=> Add(LineRule.Convert(_filters, RuleArguments.ThrowIfNull(convert, nameof(convert))));
+	public TResult Convert(Func<string, string?> convert,
+		[CallerArgumentExpression("convert")] string doNotPopulateThisValue = "")
+		=> Add(LineRule.Convert(_filters, _descriptions, RuleArguments.ThrowIfNull(convert, nameof(convert)),
+			"using " + doNotPopulateThisValue.TrimCommonWhiteSpace()));
 
 	private TResult Add(LineRule rule)
 	{

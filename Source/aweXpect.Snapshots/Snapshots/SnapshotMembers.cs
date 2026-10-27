@@ -1,7 +1,10 @@
 using System;
+using System.Runtime.CompilerServices;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 using aweXpect.Formatting;
 using aweXpect.Options;
+using static aweXpect.Formatting.Format;
 
 namespace aweXpect.Snapshots;
 
@@ -84,7 +87,8 @@ public class SnapshotMembers<TResult, TValue>
 	///     tracks.
 	/// </summary>
 	public SnapshotMembers<TResult, TValue> DeclaredIn<T>()
-		=> new(_add, _selection.Where(value => typeof(T).IsAssignableFrom(value.DeclaringType)));
+		=> new(_add, _selection.Where(value => typeof(T).IsAssignableFrom(value.DeclaringType),
+			() => "declared in " + Formatter.Format(typeof(T))));
 
 	/// <summary>
 	///     Filters for the members whose value is an empty collection, e.g. an empty array, list, set or dictionary.
@@ -95,7 +99,7 @@ public class SnapshotMembers<TResult, TValue>
 	///     enumerated here, as it might compute its items or only be enumerable once.
 	/// </remarks>
 	public SnapshotEmptyCollections<TResult> WhichAreEmptyCollections()
-		=> new(_add, _selection.Where(ValueFilters.IsEmptyCollection));
+		=> new(_add, _selection.Where(ValueFilters.IsEmptyCollection, () => "whose value is an empty collection"));
 
 	/// <summary>
 	///     Filters for the members for which the <paramref name="predicate" /> returns <see langword="true" />.
@@ -106,8 +110,10 @@ public class SnapshotMembers<TResult, TValue>
 	///     <see cref="FormattedValue.DeclaringType" />; the value itself is only read when it calls
 	///     <see cref="FormattedValue.GetValue()" />. An exception of the <paramref name="predicate" /> is thrown.
 	/// </remarks>
-	public SnapshotMembers<TResult, TValue> Which(Func<FormattedValue, bool> predicate)
-		=> new(_add, _selection.Where(RuleArguments.ThrowIfNull(predicate, nameof(predicate))));
+	public SnapshotMembers<TResult, TValue> Which(Func<FormattedValue, bool> predicate,
+		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
+		=> new(_add, _selection.Where(RuleArguments.ThrowIfNull(predicate, nameof(predicate)),
+			() => "satisfying " + doNotPopulateThisValue.TrimCommonWhiteSpace()));
 
 	/// <summary>
 	///     Filters for the members for which the <paramref name="predicate" /> returns <see langword="false" />.
@@ -115,10 +121,12 @@ public class SnapshotMembers<TResult, TValue>
 	/// <remarks>
 	///     The <paramref name="predicate" /> is asked like in <see cref="Which" />.
 	/// </remarks>
-	public SnapshotMembers<TResult, TValue> Except(Func<FormattedValue, bool> predicate)
+	public SnapshotMembers<TResult, TValue> Except(Func<FormattedValue, bool> predicate,
+		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		Func<FormattedValue, bool> filter = RuleArguments.ThrowIfNull(predicate, nameof(predicate));
-		return new SnapshotMembers<TResult, TValue>(_add, _selection.Where(value => !filter(value)));
+		return new SnapshotMembers<TResult, TValue>(_add, _selection.Where(value => !filter(value),
+			() => "not satisfying " + doNotPopulateThisValue.TrimCommonWhiteSpace()));
 	}
 
 	/// <summary>
@@ -158,7 +166,7 @@ public class SnapshotMembers<TResult, TValue>
 	public TResult Mask(string template)
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
-		return Add(ValueRule.Mask(_selection, _ => template));
+		return Add(ValueRule.Mask(_selection, _ => template, "with " + Formatter.Format(template)));
 	}
 
 	/// <summary>
@@ -172,10 +180,11 @@ public class SnapshotMembers<TResult, TValue>
 	///     <paramref name="template" /> is thrown. A <see langword="null" /> value is not masked. The first masking or
 	///     converter that matches a value wins.
 	/// </remarks>
-	public TResult Mask(Func<FormattedValue, string?> template)
+	public TResult Mask(Func<FormattedValue, string?> template,
+		[CallerArgumentExpression("template")] string doNotPopulateThisValue = "")
 	{
 		RuleArguments.ThrowIfNull(template, nameof(template));
-		return Add(ValueRule.Mask(_selection, template));
+		return Add(ValueRule.Mask(_selection, template, "using " + doNotPopulateThisValue.TrimCommonWhiteSpace()));
 	}
 
 	/// <summary>
@@ -192,11 +201,13 @@ public class SnapshotMembers<TResult, TValue>
 	///     The source generator of aweXpect.Core registers the members of <typeparamref name="TConverted" />, so that it
 	///     is also written member-wise in a trimmed or Native AOT build.
 	/// </remarks>
-	public TResult Convert<[RequiresMemberMetadata] TConverted>(Func<TValue, TConverted> convert)
+	public TResult Convert<[RequiresMemberMetadata] TConverted>(Func<TValue, TConverted> convert,
+		[CallerArgumentExpression("convert")] string doNotPopulateThisValue = "")
 	{
 		RuleArguments.ThrowIfNull(convert, nameof(convert));
 		return Add(ValueRule.Convert(_selection,
-			value => value is TValue typedValue ? ValueFormatting.Replace(convert(typedValue)) : null));
+			value => value is TValue typedValue ? ValueFormatting.Replace(convert(typedValue)) : null,
+			"using " + doNotPopulateThisValue.TrimCommonWhiteSpace()));
 	}
 
 	private TResult Add(ValueRule rule)

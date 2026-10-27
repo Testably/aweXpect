@@ -187,6 +187,9 @@ public sealed partial class ThatSnapshot
 
 					             Accepted snapshot:
 					             MyTests.MyTest
+
+					             Snapshot options:
+					              - accept all snapshots
 					             """);
 				await That(store.AcceptedBytes[PngId]).IsEqualTo(CoverArt);
 				await That(store.MismatchBytes).IsEmpty();

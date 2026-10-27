@@ -10,43 +10,66 @@ namespace aweXpect.Snapshots;
 /// </summary>
 internal sealed class ValueRule
 {
+	private readonly string _action;
 	private readonly Func<object, ValueFormatting?>? _convert;
+	private readonly string? _how;
 	private readonly ValueSelection _selection;
 	private readonly Func<FormattedValue, string?>? _template;
 
 	private ValueRule(ValueSelection selection, bool isIgnoring, Func<FormattedValue, string?>? template,
-		Func<object, ValueFormatting?>? convert)
+		Func<object, ValueFormatting?>? convert, string action, string? how)
 	{
 		_selection = selection;
 		IsIgnoring = isIgnoring;
 		_template = template;
 		_convert = convert;
+		_action = action;
+		_how = how;
 	}
 
 	public bool IsIgnoring { get; }
 
 	public static ValueRule Ignore(ValueSelection selection)
-		=> new(selection, true, null, null);
+		=> new(selection, true, null, null, "ignore", null);
 
 	/// <summary>
 	///     Masks the selected values with the mask that the <paramref name="template" /> returns for each, see
 	///     <see cref="SnapshotNumbering" />, or keeps a value for which it returns <see langword="null" />.
 	/// </summary>
-	public static ValueRule Mask(ValueSelection selection, Func<FormattedValue, string?> template)
-		=> new(selection, false, template, null);
+	/// <param name="selection">The selected values.</param>
+	/// <param name="template">Returns the mask of each value.</param>
+	/// <param name="how">
+	///     Describes the <paramref name="template" /> for the failure, e.g. <c>with "&lt;id&gt;"</c>.
+	/// </param>
+	public static ValueRule Mask(ValueSelection selection, Func<FormattedValue, string?> template, string how)
+		=> new(selection, false, template, null, "mask", how);
 
 	/// <summary>
 	///     Masks the selected values with a numbered placeholder named after the selection, e.g. <c>{Id_{0}}</c>.
 	/// </summary>
 	public static ValueRule Mask(ValueSelection selection)
-		=> Mask(selection, value => SnapshotNumbering.GetTemplate(selection.GetPlaceholderName(value)));
+		=> new(selection, false,
+			value => SnapshotNumbering.GetTemplate(selection.GetPlaceholderName(value)), null, "mask", null);
 
 	/// <summary>
 	///     Replaces the selected values with the result of <paramref name="convert" />, or keeps them when it returns
 	///     <see langword="null" />, e.g. for a value of another type.
 	/// </summary>
-	public static ValueRule Convert(ValueSelection selection, Func<object, ValueFormatting?> convert)
-		=> new(selection, false, null, convert);
+	/// <param name="selection">The selected values.</param>
+	/// <param name="convert">Converts each value.</param>
+	/// <param name="how">
+	///     Describes the <paramref name="convert" /> for the failure, e.g. <c>using date =&gt; date.Year</c>.
+	/// </param>
+	public static ValueRule Convert(ValueSelection selection, Func<object, ValueFormatting?> convert, string how)
+		=> new(selection, false, null, convert, "convert", how);
+
+	/// <summary>
+	///     Describes the rule for the failure, e.g. <c>ignore the members whose name is equal to "PlayCount"</c>.
+	/// </summary>
+	public string Describe()
+		=> _how is null
+			? $"{_action} {_selection.Describe()}"
+			: $"{_action} {_selection.Describe()} {_how}";
 
 	public bool Ignores(FormattedValue value)
 		=> IsIgnoring && _selection.Matches(value);

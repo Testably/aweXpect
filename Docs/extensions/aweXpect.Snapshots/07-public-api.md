@@ -58,6 +58,8 @@ writing a public API that differs from machine to machine.
 ## Options
 
 Options configure what is written, for the expectation and for `PublicApiDeclarations.GenerateFrom(…)`.
+A failure lists the options that differ from the defaults in the "Public API options" context, e.g.
+`ignore forwarded types`.
 
 ### Forwarded types
 

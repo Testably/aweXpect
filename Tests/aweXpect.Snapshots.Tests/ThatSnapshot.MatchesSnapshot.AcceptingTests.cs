@@ -56,6 +56,9 @@ public sealed partial class ThatSnapshot
 
 					             Accepted snapshot:
 					             could not be written: read-only
+
+					             Snapshot options:
+					              - accept all snapshots
 					             """);
 				await That(store.Mismatches).IsEqualTo(new Dictionary<SnapshotId, string>
 				{
@@ -92,6 +95,9 @@ public sealed partial class ThatSnapshot
 
 					             Pending snapshot:
 					             could not be written: disk full
+
+					             Snapshot options:
+					              - accept all snapshots
 					             """);
 			}
 
@@ -159,6 +165,9 @@ public sealed partial class ThatSnapshot
 
 					             Accepted snapshot:
 					             MyTests.MyTest
+
+					             Snapshot options:
+					              - accept all snapshots
 					             """)
 					.Because("an accepted snapshot must not go unnoticed");
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>
@@ -190,6 +199,9 @@ public sealed partial class ThatSnapshot
 
 					             Accepted snapshot:
 					             MyTests.MyTest
+
+					             Snapshot options:
+					              - accept all snapshots
 					             """);
 				await That(Act).DoesNotThrow()
 					.Because("the next run compares with the accepted snapshot");
@@ -304,6 +316,9 @@ public sealed partial class ThatSnapshot
 					               "foo baz"
 					               "foo bar"
 					                      ↑ (expected)
+
+					             Snapshot options:
+					              - accept new snapshots
 					             """)
 					.Because("the in-memory store describes no pending file, as without accepting");
 				await That(store.Accepted).IsEmpty()
@@ -337,6 +352,9 @@ public sealed partial class ThatSnapshot
 
 					             Accepted snapshot:
 					             MyTests.MyTest
+
+					             Snapshot options:
+					              - accept new snapshots
 					             """)
 					.Because("an added snapshot must not go unnoticed");
 				await That(store.Accepted).IsEqualTo(new Dictionary<SnapshotId, string>

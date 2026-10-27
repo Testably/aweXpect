@@ -343,14 +343,17 @@ public static partial class ThatSnapshot
 		: ConstraintResult.WithNotNullValue<T>(it, grammars),
 			IAsyncContextConstraint<T>
 	{
+		private SnapshotAcceptance _acceptance;
 		private string? _acceptError;
 		private SnapshotContent? _actualContent;
+		private SnapshotComparer? _comparer;
 		private Exception? _compareError;
 		private string? _difference;
 		private bool _hasSnapshot;
 		private bool _hasSubjectError;
 		private bool _hasWritten;
 		private bool _isAccepted;
+		private bool _isComparerForAllSnapshots;
 		private bool _isMatch;
 		private bool _isMismatch;
 		private bool _isUsedForAnotherValue;
@@ -451,6 +454,7 @@ public static partial class ThatSnapshot
 
 			SnapshotAcceptance acceptance = snapshotOptions.Acceptance ?? settings.Acceptance ??
 			                                AcceptEnvironment.GetAcceptance();
+			_acceptance = acceptance;
 			_isAccepted = acceptance == SnapshotAcceptance.All ||
 			              (acceptance == SnapshotAcceptance.New && !_hasSnapshot);
 			_isMismatch = true;
@@ -461,14 +465,17 @@ public static partial class ThatSnapshot
 
 		private void ResetState()
 		{
+			_acceptance = SnapshotAcceptance.None;
 			_acceptError = null;
 			_actualContent = null;
+			_comparer = null;
 			_compareError = null;
 			_difference = null;
 			_hasSnapshot = false;
 			_hasSubjectError = false;
 			_hasWritten = false;
 			_isAccepted = false;
+			_isComparerForAllSnapshots = false;
 			_isMatch = false;
 			_isMismatch = false;
 			_isUsedForAnotherValue = false;
@@ -583,6 +590,11 @@ public static partial class ThatSnapshot
 		{
 		}
 
+		/// <summary>
+		///     Whether the <paramref name="rule" /> applies to the subject, which the "Snapshot options" then list.
+		/// </summary>
+		protected virtual bool AppliesTo(SnapshotRule rule) => false;
+
 		protected static bool IsNotCanceled(Exception exception, CancellationToken cancellationToken)
 			=> !(exception is OperationCanceledException && cancellationToken.IsCancellationRequested);
 
@@ -634,6 +646,8 @@ public static partial class ThatSnapshot
 					return null;
 				}
 
+				_comparer = comparer;
+				_isComparerForAllSnapshots = snapshotOptions.Comparer is null;
 				return await comparer.CompareAsync(context, cancellationToken) ??
 				       throw new InvalidOperationException($"The comparer {comparer.GetType().Name} returned null.");
 			}
@@ -759,6 +773,7 @@ public static partial class ThatSnapshot
 			}
 
 			AppendValueContexts(contexts);
+			AppendOptionsContext(contexts);
 			if (!_hasWritten)
 			{
 				return;
@@ -780,6 +795,49 @@ public static partial class ThatSnapshot
 			if (mismatch is not null)
 			{
 				contexts.Add(new ResultContext.Fixed("Pending snapshot", mismatch));
+			}
+		}
+
+		/// <summary>
+		///     Adds the "Snapshot options" context, which lists the rules that apply to the subject, the comparer and
+		///     the acceptance, unless all of them are the defaults.
+		/// </summary>
+		/// <remarks>
+		///     The context comes last, like the "Equivalency options" of aweXpect, and marks the rules for all
+		///     snapshots, as they are usually set far away from the test. The comparer is the one that compared the
+		///     subject with the snapshot, or else the comparer of the expectation, as no comparer for all snapshots is
+		///     chosen while the snapshot does not exist.
+		/// </remarks>
+		private void AppendOptionsContext(ResultContextCollector contexts)
+		{
+			const string forAllSnapshots = " (for all snapshots)";
+			StringBuilder sb = new();
+			foreach (SnapshotRule rule in snapshotOptions.Rules.Where(AppliesTo))
+			{
+				sb.Append(" - ").AppendLine(rule.Description);
+			}
+
+			foreach (SnapshotRule rule in settings.Rules.Where(AppliesTo))
+			{
+				sb.Append(" - ").Append(rule.Description).AppendLine(forAllSnapshots);
+			}
+
+			if ((_comparer ?? snapshotOptions.Comparer) is { } comparer)
+			{
+				sb.Append(" - compare with ");
+				Formatter.Format(sb, comparer.GetType());
+				sb.AppendLine(_comparer is not null && _isComparerForAllSnapshots ? forAllSnapshots : "");
+			}
+
+			if (_acceptance != SnapshotAcceptance.None)
+			{
+				sb.Append(" - accept ")
+					.AppendLine(_acceptance == SnapshotAcceptance.All ? "all snapshots" : "new snapshots");
+			}
+
+			if (sb.Length > 0)
+			{
+				contexts.Add(new ResultContext.Fixed("Snapshot options", sb.ToString().TrimEnd(), int.MinValue));
 			}
 		}
 
@@ -918,6 +976,12 @@ public static partial class ThatSnapshot
 		}
 
 		protected override string ToText(byte[] snapshot) => SnapshotTextEncoding.Decode(snapshot);
+
+		/// <remarks>
+		///     Member and value rules only apply to an object, and line rules only to a <see cref="string" />.
+		/// </remarks>
+		protected override bool AppliesTo(SnapshotRule rule)
+			=> typeof(T) == typeof(string) ? rule.ValueRule is null : rule.LineRule is null;
 
 		protected override void AppendValueContexts(ResultContextCollector contexts)
 		{
