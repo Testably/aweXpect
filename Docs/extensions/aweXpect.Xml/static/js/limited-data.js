@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
-        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
-      },
-      {
         "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
-      "5c160901",
       "4f69216a",
       "64f45253",
       "996e0f28",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          728.2026928583781,
           578.1799637930734,
           698.4373151915414,
           728.6357399622599,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           720.7505145072937,
           536.206215271583,
           763.4288833141327,
-          424.80968815485636
+          424.80968815485636,
+          629.6428897564227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -427,7 +427,6 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120,
           1152,
           1152,
           1152,
@@ -452,6 +451,7 @@ window.BENCHMARK_DATA = {
           1080,
           1056,
           1056,
+          1008,
           1008,
           1008,
           1008,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          698.8283843994141,
           651.7095802852085,
           720.4231100718181,
           780.2053071339925,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           699.0403919855754,
           713.7463392530169,
           682.381157057626,
-          378.8050469080607
+          378.8050469080607,
+          633.3630669457572
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
-        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
-      },
-      {
         "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
-      "5c160901",
       "4f69216a",
       "64f45253",
       "996e0f28",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4879.691349283854,
           3705.27317276001,
           4603.945114135742,
           4566.272168673002,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3762.914385114397,
           4273.839551653181,
           4114.135534558977,
-          2746.7536712646483
+          2746.7536712646483,
+          4550.717069498698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24119,
           24119,
           24119,
           24119,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24175,
-          24175
+          24175,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5714.791927882603,
           4723.881534322103,
           5517.075213623047,
           5320.767340440017,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4442.46385345459,
           4873.264343261719,
           4738.339374835675,
-          2966.5027356828964
+          2966.5027356828964,
+          5057.934791019985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
-        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
-      },
-      {
         "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
-      "5c160901",
       "4f69216a",
       "64f45253",
       "996e0f28",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2753.4488794962567,
           2024.1622179667154,
           2596.283418782552,
           2729.5530515034993,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2405.323668416341,
           2551.4156415303546,
           2307.2437316349574,
-          1319.7208419527326
+          1319.7208419527326,
+          2551.469493103027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12780,
           12780,
-          12780,
           12856,
           12780,
           12780,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12728,
           12654,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3779.000532023112,
           2839.600579670497,
           3494.024840291341,
           3599.7156947209287,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3448.5059834798176,
           3247.2590042114257,
           3292.8712820325577,
-          2070.3576250712076
+          2070.3576250712076,
+          3369.3719120025635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "5c160901c9f9ad1fc693f1ac1a604a9a2e1ab891",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 13:18:22 2026 \u002B0200",
-        "message": "feat: nest the snapshot files under their test files in the IDE (#2010)"
-      },
-      {
         "sha": "4f69216a4f4b23f7a2b160e132fb2e482127ee1d",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 13:20:56 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
         "message": "feat: fail null items both ways in generated collection expectations with NullItemFailsBothWays (#2093)"
+      },
+      {
+        "sha": "ce025baa6e15ad4ec3bc9e3f662c4c7dbefe024b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 26 20:34:20 2026 \u002B0100",
+        "message": "feat: let the equality options validate an expected value (#2090)"
       }
     ],
     "labels": [
-      "5c160901",
       "4f69216a",
       "64f45253",
       "996e0f28",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "95843406",
       "71904262",
       "eea60aeb",
-      "a9c742d3"
+      "a9c742d3",
+      "ce025baa"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14394.753705705914,
           12250.260505167644,
           14063.342525227865,
           14528.170663452149,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           11986.123805745443,
           11481.47150857108,
           12467.705118032602,
-          7773.0810557047525
+          7773.0810557047525,
+          11252.268731253487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25494,
           25494,
-          25494,
           25568,
           25494,
           25494,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25440,
           25367,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          362973.3230143229,
           246043.58990885416,
           361166.37766927085,
           361280.78285435267,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           276980.59231770836,
           238360.96896972656,
           299235.85182291665,
-          183604.73618977863
+          183604.73618977863,
+          278299.73162434896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544246,
           544335,
           544335,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335
         ],
