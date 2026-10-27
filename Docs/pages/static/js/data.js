@@ -1338,6 +1338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -1563,7 +1569,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -1792,7 +1799,8 @@ window.BENCHMARK_DATA = {
           10581.412791325496,
           10649.13065631573,
           10981.005493164062,
-          10356.985510019156
+          10356.985510019156,
+          11667.550142415364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2016,6 +2024,7 @@ window.BENCHMARK_DATA = {
           1976,
           1976,
           1976,
+          1984,
           1984,
           1984,
           1984,
@@ -2263,7 +2272,8 @@ window.BENCHMARK_DATA = {
           365305.12552083336,
           387294.73723958334,
           363793.9384765625,
-          383944.40546875
+          383944.40546875,
+          352011.8722098214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2497,7 +2507,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590292
+          590292,
+          590290
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2734,7 +2745,8 @@ window.BENCHMARK_DATA = {
           19794.830808512368,
           21273.877155010516,
           19460.758770751952,
-          20700.15324837821
+          20700.15324837821,
+          18641.00264078776
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2746,6 +2758,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4278,6 +4291,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -4496,7 +4515,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -4718,7 +4738,8 @@ window.BENCHMARK_DATA = {
           228.96083014806112,
           247.33953313827516,
           223.88998905250006,
-          279.88351692472185
+          279.88351692472185,
+          212.97324488957722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4914,6 +4935,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5175,7 +5197,8 @@ window.BENCHMARK_DATA = {
           495.4892208099365,
           567.8351980618069,
           500.3758484033438,
-          531.7292888641357
+          531.7292888641357,
+          473.50347155791064
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5187,6 +5210,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -5632,7 +5656,8 @@ window.BENCHMARK_DATA = {
           381.1960420290629,
           411.07143812179567,
           371.46784023138196,
-          395.6136736529214
+          395.6136736529214,
+          381.7928891181946
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5644,6 +5669,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -11789,6 +11815,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -12777,7 +12809,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -13769,7 +13802,8 @@ window.BENCHMARK_DATA = {
           110.28347622553507,
           123.97251486778259,
           106.67387558732715,
-          121.6337941010793
+          121.6337941010793,
+          108.5827237708228
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14735,6 +14769,7 @@ window.BENCHMARK_DATA = {
           448,
           448,
           448,
+          320,
           320,
           320,
           320,
@@ -15766,7 +15801,8 @@ window.BENCHMARK_DATA = {
           260.4626083714621,
           274.43534007439246,
           235.38718282259427,
-          266.4050352414449
+          266.4050352414449,
+          241.32654368082683
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15959,6 +15995,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17044,7 +17081,8 @@ window.BENCHMARK_DATA = {
           235.94709606170653,
           251.88001845677692,
           226.75356256167095,
-          251.82462590535482
+          251.82462590535482,
+          232.7335284607751
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17056,6 +17094,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -18674,6 +18713,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -18899,7 +18944,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -19128,7 +19174,8 @@ window.BENCHMARK_DATA = {
           194.56592253049214,
           254.41025835673014,
           186.56122859319052,
-          210.796752342811
+          210.796752342811,
+          192.61174212183272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19333,6 +19380,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -19599,7 +19647,8 @@ window.BENCHMARK_DATA = {
           512.584239074162,
           596.4860254923502,
           500.1375148479755,
-          539.0843565622965
+          539.0843565622965,
+          487.57185881478443
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19611,6 +19660,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -20070,7 +20120,8 @@ window.BENCHMARK_DATA = {
           324.95653203328453,
           341.63826503072465,
           316.5294620807354,
-          354.55345283235823
+          354.55345283235823,
+          318.9336665017264
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20082,6 +20133,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -26234,6 +26286,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -27222,7 +27280,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -28214,7 +28273,8 @@ window.BENCHMARK_DATA = {
           698.3727942148845,
           829.6247128077915,
           664.8987370218549,
-          714.4090765635173
+          714.4090765635173,
+          672.9119856016977
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29201,6 +29261,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -30211,7 +30272,8 @@ window.BENCHMARK_DATA = {
           1321.7672046661378,
           1531.6021266937255,
           1380.2029197399434,
-          1428.00422223409
+          1428.00422223409,
+          1302.8837714876447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30404,6 +30466,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -31489,7 +31552,8 @@ window.BENCHMARK_DATA = {
           652.4206226212638,
           732.3529832703726,
           648.89015013831,
-          652.7090460459391
+          652.7090460459391,
+          636.2350999968393
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31501,6 +31565,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -37697,6 +37762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -38685,7 +38756,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -39677,7 +39749,8 @@ window.BENCHMARK_DATA = {
           691.4463864839994,
           807.3850479125977,
           668.346793238322,
-          724.5196519851685
+          724.5196519851685,
+          683.653612613678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40664,6 +40737,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -41674,7 +41748,8 @@ window.BENCHMARK_DATA = {
           27927.812162272134,
           28844.799253336587,
           27410.881810506184,
-          29136.240849421574
+          29136.240849421574,
+          27108.859639485676
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -42671,6 +42746,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -42952,7 +43028,8 @@ window.BENCHMARK_DATA = {
           799.3256331125896,
           803.5804691995893,
           791.5459552129109,
-          803.7510045369467
+          803.7510045369467,
+          783.1581976754325
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -42964,6 +43041,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -44930,6 +45008,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -45213,7 +45297,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -45500,7 +45585,8 @@ window.BENCHMARK_DATA = {
           637.2004993302481,
           676.1556984356472,
           657.1919548034668,
-          739.6696332931518
+          739.6696332931518,
+          645.9166467666626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45763,6 +45849,7 @@ window.BENCHMARK_DATA = {
           1688,
           1608,
           1608,
+          1576,
           1576,
           1576,
           1576,
@@ -46087,7 +46174,8 @@ window.BENCHMARK_DATA = {
           84099.49988606772,
           82244.42719914363,
           83301.8121500651,
-          84017.47172328403
+          84017.47172328403,
+          81336.81665039062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46376,6 +46464,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -48079,6 +48168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -48362,7 +48457,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -48649,7 +48745,8 @@ window.BENCHMARK_DATA = {
           144.67254877090454,
           187.59611945152284,
           133.07843921979267,
-          139.83271738199088
+          139.83271738199088,
+          150.25553563435872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48912,6 +49009,7 @@ window.BENCHMARK_DATA = {
           464,
           336,
           336,
+          320,
           320,
           320,
           320,
@@ -49236,7 +49334,8 @@ window.BENCHMARK_DATA = {
           31119.76460484096,
           32625.85824584961,
           31507.689115084133,
-          32569.04319545201
+          32569.04319545201,
+          31709.059659830727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49517,6 +49616,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614,
           5614,
           5614,
@@ -49809,7 +49909,8 @@ window.BENCHMARK_DATA = {
           241.93862899144492,
           253.48458562578475,
           232.36786219278972,
-          264.6024436610086
+          264.6024436610086,
+          234.137047958374
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49821,6 +49922,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -51439,6 +51541,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -51664,7 +51772,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -51893,7 +52002,8 @@ window.BENCHMARK_DATA = {
           299.4226346651713,
           314.06292085647584,
           287.864625453949,
-          307.72088731129963
+          307.72088731129963,
+          297.3447113770705
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52098,6 +52208,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -52364,7 +52475,8 @@ window.BENCHMARK_DATA = {
           375.23115253448486,
           405.59647347132363,
           359.64358053888594,
-          412.69402583440143
+          412.69402583440143,
+          384.2404969419752
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52376,6 +52488,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -52835,7 +52948,8 @@ window.BENCHMARK_DATA = {
           407.862704149882,
           425.1693227841304,
           396.2578442437308,
-          420.97771266301476
+          420.97771266301476,
+          400.78634554545084
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52847,6 +52961,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -54421,6 +54536,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -54646,7 +54767,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -54875,7 +54997,8 @@ window.BENCHMARK_DATA = {
           895.6542508443197,
           748.5419169108073,
           690.4466000284467,
-          736.2036177771432
+          736.2036177771432,
+          708.8766406377157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55080,6 +55203,7 @@ window.BENCHMARK_DATA = {
           1448,
           1376,
           1376,
+          1280,
           1280,
           1280,
           1280,
@@ -55346,7 +55470,8 @@ window.BENCHMARK_DATA = {
           1959.7608161926269,
           2057.260549545288,
           1754.6228174062876,
-          2038.9093073527017
+          2038.9093073527017,
+          1857.3877079827446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55358,6 +55483,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -55817,7 +55943,8 @@ window.BENCHMARK_DATA = {
           925.4548778533936,
           960.7354236602783,
           911.474152633122,
-          956.0184542792184
+          956.0184542792184,
+          899.8355593314537
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55829,6 +55956,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -57403,6 +57531,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -57628,7 +57762,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -57857,7 +57992,8 @@ window.BENCHMARK_DATA = {
           12047.208184378487,
           12170.218641008649,
           12350.81097957066,
-          11979.84641441932
+          11979.84641441932,
+          11598.430708665113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58062,6 +58198,7 @@ window.BENCHMARK_DATA = {
           1680,
           1752,
           1752,
+          1712,
           1712,
           1712,
           1712,
@@ -58328,7 +58465,8 @@ window.BENCHMARK_DATA = {
           40729.31407674154,
           41178.61326599121,
           41245.8612234933,
-          41155.593407264125
+          41155.593407264125,
+          40305.06870524088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58559,6 +58697,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
+          18609,
           18609,
           18609,
           18609,
@@ -58799,7 +58938,8 @@ window.BENCHMARK_DATA = {
           10593.507609049479,
           10560.199771587666,
           10534.03259059361,
-          10607.79208577474
+          10607.79208577474,
+          10432.578377356896
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58811,6 +58951,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -60385,6 +60526,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
         "message": "refactor!: hold the Json lookup option in an OptionsHolder (#2101)"
+      },
+      {
+        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
+        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
       }
     ],
     "labels": [
@@ -60610,7 +60757,8 @@ window.BENCHMARK_DATA = {
       "69ead4c3",
       "acd69449",
       "a2f72904",
-      "55068d5f"
+      "55068d5f",
+      "de6df36f"
     ],
     "datasets": [
       {
@@ -60839,7 +60987,8 @@ window.BENCHMARK_DATA = {
           11463.452015177409,
           11760.074511014498,
           11547.153645106724,
-          11331.493611262395
+          11331.493611262395,
+          11073.579542795816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61044,6 +61193,7 @@ window.BENCHMARK_DATA = {
           2160,
           2232,
           2232,
+          2192,
           2192,
           2192,
           2192,
@@ -61310,7 +61460,8 @@ window.BENCHMARK_DATA = {
           58865.85324968611,
           59404.395470252406,
           59220.62046595982,
-          58654.36075701033
+          58654.36075701033,
+          58356.82728271485
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61539,6 +61690,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -61781,7 +61933,8 @@ window.BENCHMARK_DATA = {
           21210.880385335287,
           21073.582826886857,
           20891.292957850867,
-          21284.376227242607
+          21284.376227242607,
+          20919.51668003627
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -61793,6 +61946,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
