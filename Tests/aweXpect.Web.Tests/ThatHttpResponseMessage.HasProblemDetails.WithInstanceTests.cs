@@ -17,8 +17,8 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasProblemDetailsContent().WithInstance(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("instance").And
-					.WithMessage("The 'instance' cannot be null.").AsPrefix();
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]
@@ -30,8 +30,8 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasProblemDetailsContent().WithStatus(400).WithInstance(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("instance").And
-					.WithMessage("The 'instance' cannot be null.").AsPrefix();
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]

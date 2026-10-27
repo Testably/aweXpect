@@ -9,6 +9,19 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithTitleTests
 		{
 			[Test]
+			public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
+			{
+				HttpResponseMessage subject = ResponseBuilder.WithContent("""{"title": "Not Found"}""");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("").AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' regex pattern cannot be empty.").AsPrefix().And
+					.WithParamName("expected");
+			}
+
+			[Test]
 			public async Task WhenCombiningMatchTypes_ShouldThrowInvalidOperationException()
 			{
 				HttpResponseMessage subject = ResponseBuilder.WithContent("{}");
@@ -42,8 +55,8 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasProblemDetailsContent().WithTitle(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("title").And
-					.WithMessage("The 'title' cannot be null.").AsPrefix();
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]
@@ -55,8 +68,8 @@ public sealed partial class ThatHttpResponseMessage
 					=> await That(subject).HasProblemDetailsContent().WithStatus(400).WithTitle(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("title").And
-					.WithMessage("The 'title' cannot be null.").AsPrefix();
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
 			[Test]

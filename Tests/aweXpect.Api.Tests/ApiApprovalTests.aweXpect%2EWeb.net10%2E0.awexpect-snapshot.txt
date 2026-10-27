@@ -202,19 +202,18 @@ namespace aweXpect.Web.Results
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(params string[] expected) { }
     }
-    public class ProblemDetailsResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>>
+    public class ProblemDetailsResult<TType, TThat> : aweXpect.Web.Results.ProblemDetailsResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>>
     {
-        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
-        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
-        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
-        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
-        public class String : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+        public class String : aweXpect.Web.Results.ProblemDetailsResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
         {
-            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
-            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
-            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
-            public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
         }
+    }
+    public class ProblemDetailsResult<TType, TThat, TSelf> : aweXpect.Results.AndOrResult<TType, TThat, TSelf> where TSelf : aweXpect.Web.Results.ProblemDetailsResult<TType, TThat, TSelf>
+    {
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string expected) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string expected) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int expected) { }
+        public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string expected) { }
     }
 }
 

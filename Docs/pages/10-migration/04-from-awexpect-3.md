@@ -216,6 +216,9 @@ Suppress it in test projects that use a virtual time system.
 - `HasProblemDetailsContent()` without a type no longer offers string options or match types, and
   `HasProblemDetailsContent(…)` requires a non-null type. A content without a `type` member has the type
   `"about:blank"` instead of failing.
+- The expected values of `HasProblemDetailsContent(…)` and its `WithTitle`, `WithStatus`, `WithDetail` and
+  `WithInstance` are named `expected` instead of `type`, `title`, `status`, `detail` and `instance`. This only affects
+  calls with named arguments.
 
 ### Namespaces
 

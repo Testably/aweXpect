@@ -67,16 +67,16 @@ internal class ProblemDetailsOptions
 	public string? Instance { get; private set; }
 
 	/// <summary>
-	///     Sets the expected <paramref name="title" />.
+	///     Sets the <paramref name="expected" /> title.
 	/// </summary>
 	/// <remarks>
 	///     A later title replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public OptionsHolder<StringEqualityOptions> WithTitle(string title)
+	public OptionsHolder<StringEqualityOptions> WithTitle(string expected)
 	{
-		ThrowHelper.ThrowIfNull(title, nameof(title));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		bool isFirst = Title is null;
-		Title = title;
+		Title = expected;
 		OptionsHolder<StringEqualityOptions> titleOptions = new(StringEqualityOptions.Default);
 		_titleOptions = titleOptions;
 		if (isFirst)
@@ -88,15 +88,15 @@ internal class ProblemDetailsOptions
 	}
 
 	/// <summary>
-	///     Sets the expected <paramref name="status" />.
+	///     Sets the <paramref name="expected" /> status.
 	/// </summary>
 	/// <remarks>
 	///     A later status replaces the earlier one, and keeps its place in the description.
 	/// </remarks>
-	public void WithStatus(int status)
+	public void WithStatus(int expected)
 	{
 		bool isFirst = Status is null;
-		Status = status;
+		Status = expected;
 		if (isFirst)
 		{
 			_parts.Add(() => $"status {Formatter.Format(Status)}");
@@ -104,16 +104,16 @@ internal class ProblemDetailsOptions
 	}
 
 	/// <summary>
-	///     Sets the expected <paramref name="detail" />.
+	///     Sets the <paramref name="expected" /> detail.
 	/// </summary>
 	/// <remarks>
 	///     A later detail replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public OptionsHolder<StringEqualityOptions> WithDetail(string detail)
+	public OptionsHolder<StringEqualityOptions> WithDetail(string expected)
 	{
-		ThrowHelper.ThrowIfNull(detail, nameof(detail));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		bool isFirst = Detail is null;
-		Detail = detail;
+		Detail = expected;
 		OptionsHolder<StringEqualityOptions> detailOptions = new(StringEqualityOptions.Default);
 		_detailOptions = detailOptions;
 		if (isFirst)
@@ -125,16 +125,16 @@ internal class ProblemDetailsOptions
 	}
 
 	/// <summary>
-	///     Sets the expected <paramref name="instance" />.
+	///     Sets the <paramref name="expected" /> instance.
 	/// </summary>
 	/// <remarks>
 	///     A later instance replaces the earlier one together with its options, and keeps its place in the description.
 	/// </remarks>
-	public OptionsHolder<StringEqualityOptions> WithInstance(string instance)
+	public OptionsHolder<StringEqualityOptions> WithInstance(string expected)
 	{
-		ThrowHelper.ThrowIfNull(instance, nameof(instance));
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		bool isFirst = Instance is null;
-		Instance = instance;
+		Instance = expected;
 		OptionsHolder<StringEqualityOptions> instanceOptions = new(StringEqualityOptions.Default);
 		_instanceOptions = instanceOptions;
 		if (isFirst)
@@ -253,8 +253,8 @@ internal class ProblemDetailsOptions
 		=> actual is null && options?.Value.InspectsSubject == true;
 
 	/// <remarks>
-	///     An unusable <paramref name="expected" /> value is reported against the parameter named like the
-	///     <paramref name="member" />, e.g. <c>title</c>.
+	///     An unusable <paramref name="expected" /> value is reported against the <c>expected</c> parameter of the
+	///     method that specified it, e.g. <c>WithTitle(expected)</c>.
 	/// </remarks>
 	private static async ValueTask<string?> GetFailure(IReadOnlyOptionsHolder<StringEqualityOptions>? optionsHolder,
 		string it, string member, ExpectationGrammars grammars, string? actual, string? expected)
@@ -265,7 +265,7 @@ internal class ProblemDetailsOptions
 		}
 
 		StringEqualityOptions options = optionsHolder.Value;
-		MatchResult result = await options.MatchWithExplanation(actual, expected, member);
+		MatchResult result = await options.MatchWithExplanation(actual, expected, "expected");
 		return result.IsMatch
 			? null
 			: options.GetExtendedMemberFailure(it, member, grammars, actual, expected, result);
