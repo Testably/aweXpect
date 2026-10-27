@@ -123,9 +123,47 @@ public sealed partial class ThatJsonNode
 
 				async Task Act()
 					=> await That(subject).IsObject().WhoseProperties
-						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+						.All().Satisfy(p => p.Value?.GetValueKind() == JsonValueKind.String);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task All_WhenSomeNamesDoNotSatisfyThePredicate_ShouldFail()
+			{
+				JsonObject subject = new()
+				{
+					["x-title"] = "Hey Jude",
+					["artist"] = new JsonObject
+					{
+						["name"] = "The Beatles",
+					},
+					["label"] = null,
+				};
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.All().Satisfy(p => p.Key.StartsWith("x-"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties satisfy p => p.Key.StartsWith("x-") for all items,
+					             but only 1 of 3 did
+
+					             Not matching items (properties):
+					             [
+					               "artist":{"name":"The Beatles"},
+					               "label":null
+					             ]
+
+					             Collection (properties):
+					             [
+					               "x-title":"Hey Jude",
+					               "artist":{"name":"The Beatles"},
+					               "label":null
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -139,12 +177,12 @@ public sealed partial class ThatJsonNode
 
 				async Task Act()
 					=> await That(subject).IsObject().WhoseProperties
-						.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String);
+						.All().Satisfy(p => p.Value?.GetValueKind() == JsonValueKind.String);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             is an object whose properties satisfy p => p.Value.ValueKind == JsonValueKind.String for all items,
+					             is an object whose properties satisfy p => p.Value?.GetValueKind() == JsonValueKind.String for all items,
 					             but only 1 of 2 did
 
 					             Not matching items (properties):
@@ -158,6 +196,39 @@ public sealed partial class ThatJsonNode
 					               "durationSeconds":431
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task Contains_WhenPropertiesContainTheNameWithTheNode_ShouldSucceed()
+			{
+				JsonObject subject = new()
+				{
+					["title"] = "Let It Be",
+				};
+				JsonNode? title = subject["title"];
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.Contains(new KeyValuePair<string, JsonNode?>("title", title));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task HasItemThat_WhenValueIsTheSameNode_ShouldSucceed()
+			{
+				JsonObject subject = new()
+				{
+					["artist"] = "The Beatles",
+					["title"] = "Let It Be",
+				};
+				JsonNode? title = subject["title"];
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties
+						.HasItemThat(p => p.Whose(x => x.Value, v => v.IsSameAs(title))).AtIndex(1);
+
+				await That(Act).DoesNotThrow();
 			}
 
 			[Test]
@@ -187,7 +258,7 @@ public sealed partial class ThatJsonNode
 				{
 					["a"] = 1,
 				};
-				IThat<IEnumerable<JsonProperty>> expectation = That(subject).IsObject().WhoseProperties;
+				IThat<IEnumerable<KeyValuePair<string, JsonNode?>>> expectation = That(subject).IsObject().WhoseProperties;
 
 				subject["b"] = 2;
 
@@ -196,6 +267,29 @@ public sealed partial class ThatJsonNode
 
 				await That(Act).DoesNotThrow()
 					.Because("the expectation is only evaluated when it is awaited");
+			}
+
+			[Test]
+			public async Task WhenObjectContainsANameTwice_ShouldKeepBothProperties()
+			{
+				JsonNode? subject = FromString("""{"title": "Let It Be", "title": "Hey Jude"}""");
+
+				async Task Act()
+					=> await That(subject).IsObject().WhoseProperties.HasCount(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object whose properties have exactly one item,
+					             but properties had 2 items
+
+					             Collection (properties):
+					             [
+					               "title":"Let It Be",
+					               "title":"Hey Jude"
+					             ]
+					             """)
+					.Because("the parsed object keeps every property of the document");
 			}
 
 			[Test]

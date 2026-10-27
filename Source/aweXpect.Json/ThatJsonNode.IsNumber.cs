@@ -65,7 +65,8 @@ public static partial class ThatJsonNode
 	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
 	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
-	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
+	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument; a
+	///     <see cref="JsonValue" /> subject has an overload of its own, which keeps its type.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	[GuaranteesNotNull]
@@ -88,7 +89,8 @@ public static partial class ThatJsonNode
 	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
 	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
-	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
+	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument; a
+	///     <see cref="JsonValue" /> subject has an overload of its own, which keeps its type.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	[GuaranteesNotNull]
@@ -121,7 +123,8 @@ public static partial class ThatJsonNode
 	///     <see langword="double" /> and <see langword="decimal" />, and on .NET 8 or later also <see langword="nint" />,
 	///     <see langword="nuint" />, <c>Int128</c>, <c>UInt128</c> and <c>Half</c>.
 	///     <para />
-	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument.
+	///     The subject is a <see cref="JsonNode" /> of any type, so that the number type is the only type argument; a
+	///     <see cref="JsonValue" /> subject has an overload of its own, which keeps its type.
 	/// </remarks>
 	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
 	[GuaranteesNotNull]
@@ -132,12 +135,87 @@ public static partial class ThatJsonNode
 #else
 		where TNumber : struct, IComparable<TNumber>
 #endif
+		=> IsNumberEqualTo(subject, expected);
+
+	/// <inheritdoc cref="IsNumber{TNumber}(IThat{JsonNode}, TNumber)" />
+	/// <remarks>
+	///     The number type follows the <paramref name="expected" /> value, so <c>IsNumber(42)</c> reads the number as
+	///     <see langword="int" />. This overload keeps the type of the subject, e.g. a <see cref="JsonObject" />, while
+	///     <see cref="IsNumber{TNumber}(IThat{JsonNode}, TNumber)" /> applies when the number type is specified.
+	/// </remarks>
+	/// <exception cref="NotSupportedException">The <typeparamref name="TNumber" /> is not supported.</exception>
+	[GuaranteesNotNull]
+	public static NumberToleranceResult<TNode, IThat<TNode?>, TNumber> IsNumber<TNode, TNumber>(
+		this IThat<TNode?> subject, TNumber expected)
+		where TNode : JsonNode
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> IsNumberEqualTo(subject, expected);
+
+	/// <inheritdoc cref="IsNumber{TNumber}(IThat{JsonNode})" />
+	/// <remarks>
+	///     This overload keeps the type of a <see cref="JsonValue" /> subject, as the number type is the only type
+	///     argument.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonValue, IThat<JsonValue?>> IsNumber<TNumber>(this IThat<JsonValue?> subject)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), null);
+
+	/// <inheritdoc cref="IsNumber{TNumber}(IThat{JsonNode}, Action{IThatSubject{TNumber}})" />
+	/// <remarks>
+	///     This overload keeps the type of a <see cref="JsonValue" /> subject, as the number type is the only type
+	///     argument.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static AndOrResult<JsonValue, IThat<JsonValue?>> IsNumber<TNumber>(this IThat<JsonValue?> subject,
+		Action<IThatSubject<TNumber>> expectations)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		return IsValue(subject, JsonValueReaders.GetNumber<TNumber>(), expectations);
+	}
+
+	/// <inheritdoc cref="IsNumber{TNumber}(IThat{JsonNode}, TNumber)" />
+	/// <remarks>
+	///     This overload keeps the type of a <see cref="JsonValue" /> subject, also when the number type is specified,
+	///     e.g. <c>IsNumber&lt;double&gt;(42)</c>.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static NumberToleranceResult<JsonValue, IThat<JsonValue?>, TNumber> IsNumber<TNumber>(
+		this IThat<JsonValue?> subject, TNumber expected)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+		=> IsNumberEqualTo(subject, expected);
+
+	private static NumberToleranceResult<TNode, IThat<TNode?>, TNumber> IsNumberEqualTo<TNode, TNumber>(
+		IThat<TNode?> subject, TNumber expected)
+		where TNode : JsonNode
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
 	{
 		JsonValueReader<TNumber> reader = JsonValueReaders.GetNumber<TNumber>();
 		OptionsHolder<NumberTolerance<TNumber>> options = new(JsonValueReaders.CreateNumberTolerance<TNumber>());
-		return new NumberToleranceResult<JsonNode, IThat<JsonNode?>, TNumber>(
+		return new NumberToleranceResult<TNode, IThat<TNode?>, TNumber>(
 			subject.Get().ExpectationBuilder.AddConstraint((Reader: reader, Expected: expected, Options: options),
-				static (state, it, grammars) => new JsonNodeConstraint<JsonNode>(
+				static (state, it, grammars) => new JsonNodeConstraint<TNode>(
 					new IsJsonNumberEqualToConstraint<TNumber>(it, grammars, state.Reader, state.Expected,
 						state.Options))),
 			subject,

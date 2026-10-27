@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using aweXpect.Core;
 using aweXpect.Customization;
 
@@ -14,6 +16,7 @@ public static class JsonFormatting
 {
 	private static readonly IValueFormatter ElementValueFormatter = new JsonElementValueFormatter();
 	private static readonly IValueFormatter PropertyValueFormatter = new JsonPropertyValueFormatter();
+	private static readonly IValueFormatter NodeValueFormatter = new JsonNodeValueFormatter();
 
 	/// <summary>
 	///     Returns the according to the <paramref name="options" /> formatted <paramref name="value" />.
@@ -52,23 +55,25 @@ public static class JsonFormatting
 	}
 
 	/// <summary>
-	///     Formats <see cref="JsonElement" /> and <see cref="JsonProperty" /> values that aweXpect formats as
-	///     <see langword="object" />, e.g. the items of a collection, within the expectation of the
-	///     <paramref name="expectationBuilder" />.
+	///     Formats <see cref="JsonElement" />, <see cref="JsonProperty" /> and <see cref="JsonNode" /> values and the
+	///     properties of a <see cref="JsonNode" /> that aweXpect formats as <see langword="object" />, e.g. the items of a
+	///     collection, within the expectation of the <paramref name="expectationBuilder" />.
 	/// </summary>
 	/// <remarks>
 	///     Without it, aweXpect formats a <see cref="JsonElement" /> with its <see cref="JsonElement.ToString()" />,
-	///     which omits the quotes of strings and writes <see langword="null" /> as an empty string, and a
-	///     <see cref="JsonProperty" /> with its raw text, which keeps the line breaks of the document. Formatting outside
-	///     of the expectation stays unchanged.
+	///     which omits the quotes of strings and writes <see langword="null" /> as an empty string, a
+	///     <see cref="JsonProperty" /> with its raw text, which keeps the line breaks of the document, and a
+	///     <see cref="JsonObject" /> or <see cref="JsonArray" /> as a dictionary or a collection. Formatting outside of
+	///     the expectation stays unchanged.
 	///     <para />
-	///     The element is written in a single line, like the raw text of an array or object that
+	///     The element or node is written in a single line, like the raw text of an array or object that
 	///     <see cref="JsonElement.ToString()" /> returns, and the property as it is written within such an object.
 	/// </remarks>
 	internal static void AddValueFormatters(ExpectationBuilder expectationBuilder)
 		=> expectationBuilder
 			.AddFormatter(ElementValueFormatter)
-			.AddFormatter(PropertyValueFormatter);
+			.AddFormatter(PropertyValueFormatter)
+			.AddFormatter(NodeValueFormatter);
 
 	private static string Write(JsonElement value, FormattingOptions? options)
 		=> Write(value.WriteTo, options);
@@ -113,6 +118,35 @@ public static class JsonFormatting
 
 			stringBuilder.Append(Write(jsonElement, FormattingOptions.SingleLine));
 			return true;
+		}
+	}
+
+	private sealed class JsonNodeValueFormatter : IValueFormatter
+	{
+		public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+		{
+			switch (value)
+			{
+				case JsonNode jsonNode:
+					stringBuilder.Append(Write(writer => jsonNode.WriteTo(writer), FormattingOptions.SingleLine));
+					return true;
+				case KeyValuePair<string, JsonNode?> property:
+					stringBuilder.Append(Write(writer =>
+					{
+						writer.WritePropertyName(property.Key);
+						if (property.Value is null)
+						{
+							writer.WriteNullValue();
+						}
+						else
+						{
+							property.Value.WriteTo(writer);
+						}
+					}, FormattingOptions.SingleLine));
+					return true;
+				default:
+					return false;
+			}
 		}
 	}
 

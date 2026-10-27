@@ -197,6 +197,16 @@ public sealed partial class ThatJsonNode
 			}
 
 			[Test]
+			public async Task WhenSubjectIsAJsonValue_ShouldKeepItsType()
+			{
+				JsonValue duration = JsonValue.Create(243);
+
+				JsonValue result = await That(duration).IsNumber<int>().And.IsNumber<long>(n => n.IsPositive());
+
+				await That(result).IsSameAs(duration);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				JsonNode? subject = null;
@@ -226,6 +236,39 @@ public sealed partial class ThatJsonNode
 				await That(Act).Throws<NotSupportedException>()
 					.WithMessage(
 						$"The number type char is not supported. Use {ThatJsonElement.SupportedNumberTypes}.");
+			}
+		}
+
+		public sealed class OfTypeNegatedTests
+		{
+			[Test]
+			public async Task WhenNumberDoesNotFit_ShouldSucceed()
+			{
+				JsonValue subject = JsonValue.Create(1.5);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber<int>());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenNumberFits_ShouldFail()
+			{
+				JsonValue subject = JsonValue.Create(243);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsNumber<int>());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not an int,
+					             but it was 243
+
+					             Actual:
+					             243
+					             """);
 			}
 		}
 
@@ -399,6 +442,16 @@ public sealed partial class ThatJsonNode
 					             Actual:
 					             1.5
 					             """);
+			}
+
+			[Test]
+			public async Task WhenSubjectIsAJsonValue_ShouldKeepItsType()
+			{
+				JsonValue duration = JsonValue.Create(243);
+
+				JsonValue result = await That(duration).IsNumber<double>(243).Within(0.5).And.IsNumber(243);
+
+				await That(result).IsSameAs(duration);
 			}
 
 			[Test]

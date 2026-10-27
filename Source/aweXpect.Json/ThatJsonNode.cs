@@ -54,6 +54,9 @@ public static partial class ThatJsonNode
 		return JsonElement.ParseValue(ref reader);
 	}
 
+	private static JsonNode? ToJsonNode(JsonElement element)
+		=> JsonNode.Parse(element.GetRawText());
+
 	/// <inheritdoc cref="ToJsonElement(JsonNode?)" />
 	/// <remarks>
 	///     A root object or array is converted once per evaluation in the <paramref name="context" />, as every

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using aweXpect.Core;
 using aweXpect.Formatting;
 using aweXpect.Results;
@@ -9,38 +9,40 @@ using aweXpect.Results;
 namespace aweXpect.Json.Results;
 
 /// <summary>
-///     The result for verifying that a <see cref="JsonElement" /> is an <see cref="JsonValueKind.Array" />.
+///     The result for verifying that a <see cref="JsonElement" /> or a <see cref="JsonNode" /> is an
+///     <see cref="JsonValueKind.Array" /> with elements of type <typeparamref name="TItem" />.
 /// </summary>
 /// <remarks>
 ///     <seealso cref="AndOrResult{TType,TThat}" />
 /// </remarks>
-public class IsArrayResult<TType, TThat> : AndOrResult<TType, TThat>
+public class IsArrayResult<TType, TThat, TItem> : AndOrResult<TType, TThat>
 {
-	private readonly Func<TType, JsonElement> _arrayAccessor;
+	private readonly Func<TType, IEnumerable<TItem>> _elementsAccessor;
 
 	internal IsArrayResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		Func<TType, JsonElement> arrayAccessor)
+		Func<TType, IEnumerable<TItem>> elementsAccessor)
 		: base(expectationBuilder, returnValue)
 	{
-		_arrayAccessor = arrayAccessor;
+		_elementsAccessor = elementsAccessor;
 	}
 
 	/// <summary>
 	///     Further expectations on the elements of the array.
 	/// </summary>
 	/// <remarks>
-	///     A <see cref="JsonElement" /> has no value equality, so verify the elements with expectations like
+	///     The elements of a <see cref="JsonNode" /> are the nodes themselves, e.g. for <c>Contains(node)</c>. A
+	///     <see cref="JsonElement" /> has no value equality, so verify its elements with expectations like
 	///     <c>ComplyWith(e => e.Matches(…))</c> or with predicates instead of comparing them to other elements.
 	/// </remarks>
-	public IThatSubject<IEnumerable<JsonElement>> WhoseElements
+	public IThatSubject<IEnumerable<TItem>> WhoseElements
 	{
 		get
 		{
 			JsonFormatting.AddValueFormatters(ExpectationBuilder);
-			return new ThatSubject<IEnumerable<JsonElement>>(ExpectationBuilder.ForWhich<TType, IEnumerable<JsonElement>>(
-				subject => _arrayAccessor(subject).EnumerateArray().ToArray(),
+			return new ThatSubject<IEnumerable<TItem>>(ExpectationBuilder.ForWhich(
+				_elementsAccessor,
 				" whose elements ",
 				"elements",
 				grammars => grammars | ExpectationGrammars.Plural | ExpectationGrammars.Introduced));

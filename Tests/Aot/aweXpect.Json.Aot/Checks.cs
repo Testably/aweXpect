@@ -123,11 +123,11 @@ internal static partial class Checks
 			() => ShouldFail(async () => await That((JsonNode?)null).IsObject(), "is an object", "but it was null")),
 		new("the elements of a node array fail with their JSON representation",
 			() => ShouldFail(async () => await That(new JsonArray("a", null)).IsArray().WhoseElements
-					.All().Satisfy(e => e.ValueKind == JsonValueKind.Number),
-				"whose elements satisfy", "  \"a\",", "  null")),
+					.All().Satisfy(e => e?.GetValueKind() == JsonValueKind.Number),
+				"whose elements satisfy", "  \"a\",", "  <null>")),
 		new("the properties of a node object fail with their JSON representation",
 			() => ShouldFail(async () => await That(new JsonObject { ["a"] = 1, }).IsObject().WhoseProperties
-					.All().Satisfy(p => p.Value.ValueKind == JsonValueKind.String),
+					.All().Satisfy(p => p.Value?.GetValueKind() == JsonValueKind.String),
 				"whose properties satisfy", "  \"a\":1")),
 		new("a node matching an expected object fails loudly",
 			() => ShouldFailLoudly(async () => await That(new JsonObject { ["a"] = 1, }).Matches(new
