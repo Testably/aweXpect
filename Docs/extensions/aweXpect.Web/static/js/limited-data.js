@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
-      {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          322.12665625980924,
           333.3498914718628,
           443.284740788596,
           473.61520971570695,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           486.36500345865886,
           223.5864475795201,
           462.89923133850095,
-          352.1508848508199
+          352.1508848508199,
+          334.1013118823369
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -424,40 +424,40 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          712,
+          712,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
           640,
-          712,
-          712,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          780.0579935709635,
           756.0640653882708,
           997.437248357137,
           1040.2071514129639,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           929.5945545832316,
           512.6541816847665,
           963.3389231363932,
-          807.728419303894
+          807.728419303894,
+          752.383396911621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
-      {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          149.8464255809784,
           148.81296792030335,
           190.5131387252074,
           203.5969430287679,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           250.16857674916585,
           123.39553442001343,
           273.8161085764567,
-          179.8098295688629
+          179.8098295688629,
+          169.15943902333578
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,9 +1030,9 @@ window.BENCHMARK_DATA = {
         "data": [
           440,
           440,
-          440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          206.60582750638326,
           204.82062886555988,
           249.86850833892822,
           259.0244422594706,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           248.4758246285575,
           130.65717989206314,
           249.7723609606425,
-          210.57789204915363
+          210.57789204915363,
+          203.72975311960494
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
-      {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          493.0865804036458,
           463.74710944720675,
           667.5164126668658,
           724.1171142714364,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           736.819604365031,
           374.3287629347581,
           797.5961325963339,
-          515.6820469636184
+          515.6820469636184,
+          517.1180922826131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1640,9 +1640,9 @@ window.BENCHMARK_DATA = {
           1016,
           1016,
           1016,
-          1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          704.9904736738938,
           739.8306879679362,
           972.1975123087565,
           1093.818478175572,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1021.7144416809082,
           472.1112215360006,
           988.8625738961356,
-          742.9681043624878
+          742.9681043624878,
+          746.5553225003756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
-      {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1441.9847657521566,
           1437.3505348478045,
           1869.7658073425293,
           1989.6977078755697,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1858.7134050641741,
           1058.938818522862,
           1859.921594619751,
-          1489.384662882487
+          1489.384662882487,
+          1458.4528450012208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2248,9 +2248,9 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13420.457884568434,
           14281.488869222005,
           21278.4398050944,
           21309.884519449868,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22040.96430460612,
           9506.014527384441,
           21547.44328090123,
-          13856.134032185872
+          13856.134032185872,
+          14278.819517008464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2406,11 +2406,11 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
       {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          511.7536630630493,
           512.7408947577843,
           711.0036806106567,
           750.0997101238796,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           815.0018540791103,
           389.4335874239604,
           834.0550672824567,
-          575.5524276097616
+          575.5524276097616,
+          553.629864011492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2856,9 +2856,9 @@ window.BENCHMARK_DATA = {
           1120,
           1120,
           1120,
-          1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          984.3990477244059,
           986.4640602111816,
           1291.8618924458822,
           1348.3694526672364,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1282.5236325945173,
           666.4958557764689,
           1314.3172190348307,
-          1041.6467595418294
+          1041.6467595418294,
+          1005.5401215871175
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "7d0dbd4c723b7254b9dc7c970552922fc70788a5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Oct 25 17:32:31 2026 \u002B0100",
-        "message": "fix: use the collection \u0022more\u0022 marker in the JSON and XML difference lists (#2061)"
-      },
-      {
         "sha": "6224bbcefcb2827e002e95a3cb6a30e95208efb4",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 25 17:46:28 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
-      "7d0dbd4c",
       "6224bbce",
       "359002f3",
       "f760ae08",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          862.8791766484578,
           882.310468864441,
           1166.46011428833,
           1235.0842673437935,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1287.7322060902914,
           728.2057986940656,
           1281.492359161377,
-          1023.9611812319074
+          1023.9611812319074,
+          988.8656174341837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3464,40 +3464,40 @@ window.BENCHMARK_DATA = {
           1440,
           1440,
           1440,
+          1512,
+          1512,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
+          1464,
           1440,
-          1512,
-          1512,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
-          1464,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          600.7302974065145,
           598.4431247711182,
           731.105255317688,
           776.6723345438639,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           786.7034755071004,
           404.8780078206743,
           734.9104886054993,
-          647.6953303997333
+          647.6953303997333,
+          614.9810211181641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
