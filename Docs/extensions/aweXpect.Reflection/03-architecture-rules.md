@@ -14,6 +14,8 @@ The dependency filters and expectations follow the familiar filter/expect pairin
 |------------------------------|-----------------------------------------|-----------------------------------|------------------------------------|
 | depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`              | `.DependOn("x", …)`                |
 | does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`        | `.DoNotDependOn("x", …)`           |
+| depends on type              | `.WhichDependOn<T>()`                   | `.DependsOn<T>()`                 | `.DependOn<T>()`                   |
+| does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`           | `.DoNotDependOn<T>()`              |
 | depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`          | `.DependOnlyOn("x", …)`            |
 | has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
 
@@ -87,7 +89,7 @@ await Expect.That(typeof(LegacyImportService))
 `DependsOn` and `DoesNotDependOn` also accept a **specific type** via `<T>()` or `(Type)`, with
 `.OrOn<T>()` / `.OrOn(Type)` to widen. For collections of types, `DependOn` and `DoNotDependOn` accept the
 same forms and verify that every type, or none of them, depends on the specific type. The `WhichDependOn` /
-`WhichDoNotDependOn` filters take a single type as a type selection, `In.Type<T>()` or `In.Type(type)`:
+`WhichDoNotDependOn` filters accept the same forms, including `.OrOn<T>()` / `.OrOn(Type)`:
 
 ```csharp
 await Expect.That(typeof(Album)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
@@ -102,7 +104,7 @@ await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
     .DoNotDependOn(dbContextType);
 
 // Filter for the types that reference the DbContext
-In.AllLoadedAssemblies().Types().WhichDependOn(In.Type(dbContextType))
+In.AllLoadedAssemblies().Types().WhichDependOn(dbContextType)
 ```
 
 All dependency families additionally accept a reusable `Filtered.Types` selection as target; see

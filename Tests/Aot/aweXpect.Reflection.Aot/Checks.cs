@@ -92,6 +92,12 @@ internal static class Checks
 		new("the domain fails to not depend on the customer type",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(DomainTypes()).DoNotDependOn<Customer>(), "Order")),
+		new("the infrastructure types filtered by their dependency on the order type contain the repository",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(InfrastructureTypes().WhichDependOn<Order>()).Contains(typeof(Repository)))),
+		new("the types filtered by an operator they do not have contain the order type",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Order>().WhichDoNotHaveOperator(Operator.Addition)).Contains(typeof(Order)))),
 		new("a property found statically is not of another type",
 			() => ShouldPass(async ()
 				=> await That(typeof(Order).GetProperty(nameof(Order.Id))).IsNotOfType<string>())),

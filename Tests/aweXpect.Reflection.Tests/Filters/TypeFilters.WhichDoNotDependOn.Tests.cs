@@ -1,5 +1,7 @@
 ﻿using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2;
 
 namespace aweXpect.Reflection.Tests.Filters;
 
@@ -42,6 +44,55 @@ public sealed partial class TypeFilters
 
 				await That(types).Contains(typeof(ViaField));
 				await That(types).Contains(typeof(FrameworkConsumer));
+			}
+		}
+
+		public sealed class SpecificTypeTests
+		{
+			[Test]
+			public async Task ShouldFilterForTypesNotDependingOnType()
+			{
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDoNotDependOn<TargetA>();
+
+				await That(types).IsEqualTo([typeof(OnlyLayer2), typeof(FrameworkConsumer),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task ShouldIncludeDescriptionInFailureMessage()
+			{
+				async Task Act()
+				{
+					await That(Types.InNamespace(ConsumersNamespace).WhichDoNotDependOn<TargetA>())
+						.DoesNotContain(typeof(FrameworkConsumer));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers" which do not depend on type TargetA in all loaded assemblies
+					             does not contain an item equal to FrameworkConsumer,
+					             but it contained FrameworkConsumer at least once
+					             """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenTypeIsSpecifiedAtRuntime_ShouldFilterForTypesNotDependingOnIt()
+			{
+				Type target = typeof(TargetB);
+
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDoNotDependOn(target);
+
+				await That(types).IsEqualTo([typeof(ViaField), typeof(FrameworkConsumer),]).InAnyOrder();
+			}
+
+			[Test]
+			public async Task WhenWidenedWithOrOn_ShouldExcludeTypesDependingOnEither()
+			{
+				Filtered.Types types = In.Types<ViaField, OnlyLayer2, FrameworkConsumer>()
+					.WhichDoNotDependOn<TargetA>().OrOn<TargetB>();
+
+				await That(types).IsEqualTo([typeof(FrameworkConsumer),]).InAnyOrder();
 			}
 		}
 	}

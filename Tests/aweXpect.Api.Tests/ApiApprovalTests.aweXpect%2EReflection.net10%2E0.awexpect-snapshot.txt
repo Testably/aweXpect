@@ -3285,14 +3285,25 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.TypeFilters.TypesContainingMembersScopeResult WhichContainProperties(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Func<aweXpect.Reflection.Collections.Filtered.Properties, aweXpect.Reflection.Collections.Filtered.Properties> filter) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, params string[] namespaces) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult WhichDependOn<T>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.TypeSetDependencyFilterResult WhichDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOnlyOnFilterResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Types @this, params string[] namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.TypeSetDependencyOnlyOnFilterResult WhichDependOnlyOn(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyFilterResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, params string[] namespaces) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type type) { }
+        public static aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult WhichDoNotDependOn<T>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.TypeSetDependencyFilterResult WhichDoNotDependOn(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
         public static aweXpect.Reflection.Collections.Filtered.Types WhichDoNotHaveADefaultConstructor(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveExplicitConversionOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type source, System.Type target) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveExplicitConversionOperator<TSource, TTarget>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveImplicitConversionOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type source, System.Type target) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator, System.Type operand) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotHaveOperator<TOperand>(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotImplement(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type interfaceType) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotImplement<TInterface>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichDoNotInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType) { }
@@ -3301,6 +3312,13 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult WhichHaveDependenciesOutside(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Collections.Generic.IEnumerable<string> namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.NamespaceDependencyOutsideFilterResult WhichHaveDependenciesOutside(this aweXpect.Reflection.Collections.Filtered.Types @this, params string[] namespaces) { }
         public static aweXpect.Reflection.Collections.Filtered.Types.TypeSetDependencyOutsideFilterResult WhichHaveDependenciesOutside(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Collections.Filtered.Types target, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveExplicitConversionOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type source, System.Type target) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveExplicitConversionOperator<TSource, TTarget>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveImplicitConversionOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type source, System.Type target) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveImplicitConversionOperator<TSource, TTarget>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveOperator(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator, System.Type operand) { }
+        public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichHaveOperator<TOperand>(this aweXpect.Reflection.Collections.Filtered.Types @this, aweXpect.Reflection.Operator @operator) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichImplement(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type interfaceType) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichImplement<TInterface>(this aweXpect.Reflection.Collections.Filtered.Types @this) { }
         public static aweXpect.Reflection.TypeFilters.InheritanceScopeResult WhichInheritFrom(this aweXpect.Reflection.Collections.Filtered.Types @this, System.Type baseType) { }
@@ -3495,6 +3513,11 @@ namespace aweXpect.Reflection.Collections
             }
             public class StringEqualityResult : aweXpect.Reflection.Collections.Filtered.Types, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
             {
+            }
+            public sealed class TypeDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
+            {
+                public aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult OrOn(System.Type type) { }
+                public aweXpect.Reflection.Collections.Filtered.Types.TypeDependencyFilterResult OrOn<T>() { }
             }
             public sealed class TypeSetDependencyFilterResult : aweXpect.Reflection.Collections.Filtered.Types
             {
