@@ -1080,6 +1080,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -1262,7 +1268,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -1448,7 +1455,8 @@ window.BENCHMARK_DATA = {
           486.36500345865886,
           223.5864475795201,
           462.89923133850095,
-          352.1508848508199
+          352.1508848508199,
+          334.1013118823369
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1628,6 +1636,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1833,7 +1842,8 @@ window.BENCHMARK_DATA = {
           929.5945545832316,
           512.6541816847665,
           963.3389231363932,
-          807.728419303894
+          807.728419303894,
+          752.383396911621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1845,6 +1855,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3118,6 +3129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -3300,7 +3317,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -3486,7 +3504,8 @@ window.BENCHMARK_DATA = {
           250.16857674916585,
           123.39553442001343,
           273.8161085764567,
-          179.8098295688629
+          179.8098295688629,
+          169.15943902333578
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3633,6 +3652,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -3871,7 +3891,8 @@ window.BENCHMARK_DATA = {
           248.4758246285575,
           130.65717989206314,
           249.7723609606425,
-          210.57789204915363
+          210.57789204915363,
+          203.72975311960494
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3883,6 +3904,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5096,6 +5118,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -5268,7 +5296,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -5444,7 +5473,8 @@ window.BENCHMARK_DATA = {
           736.819604365031,
           374.3287629347581,
           797.5961325963339,
-          515.6820469636184
+          515.6820469636184,
+          517.1180922826131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5583,6 +5613,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -5809,7 +5840,8 @@ window.BENCHMARK_DATA = {
           1021.7144416809082,
           472.1112215360006,
           988.8625738961356,
-          742.9681043624878
+          742.9681043624878,
+          746.5553225003756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5821,6 +5853,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -7024,6 +7057,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -7196,7 +7235,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -7372,7 +7412,8 @@ window.BENCHMARK_DATA = {
           1858.7134050641741,
           1058.938818522862,
           1859.921594619751,
-          1489.384662882487
+          1489.384662882487,
+          1458.4528450012208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7511,6 +7552,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -7737,7 +7779,8 @@ window.BENCHMARK_DATA = {
           22040.96430460612,
           9506.014527384441,
           21547.44328090123,
-          13856.134032185872
+          13856.134032185872,
+          14278.819517008464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7911,6 +7954,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -8952,6 +8996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -9124,7 +9174,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -9300,7 +9351,8 @@ window.BENCHMARK_DATA = {
           815.0018540791103,
           389.4335874239604,
           834.0550672824567,
-          575.5524276097616
+          575.5524276097616,
+          553.629864011492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9439,6 +9491,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -9665,7 +9718,8 @@ window.BENCHMARK_DATA = {
           1282.5236325945173,
           666.4958557764689,
           1314.3172190348307,
-          1041.6467595418294
+          1041.6467595418294,
+          1005.5401215871175
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9677,6 +9731,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -10880,6 +10935,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
         "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
+      },
+      {
+        "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
+        "message": "test: drop the trailing space from the expected operator filter descriptions (#2120)"
       }
     ],
     "labels": [
@@ -11052,7 +11113,8 @@ window.BENCHMARK_DATA = {
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
-      "cda17b83"
+      "cda17b83",
+      "3c243dad"
     ],
     "datasets": [
       {
@@ -11228,7 +11290,8 @@ window.BENCHMARK_DATA = {
           1287.7322060902914,
           728.2057986940656,
           1281.492359161377,
-          1023.9611812319074
+          1023.9611812319074,
+          988.8656174341837
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11398,6 +11461,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -11593,7 +11657,8 @@ window.BENCHMARK_DATA = {
           786.7034755071004,
           404.8780078206743,
           734.9104886054993,
-          647.6953303997333
+          647.6953303997333,
+          614.9810211181641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11605,6 +11670,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
