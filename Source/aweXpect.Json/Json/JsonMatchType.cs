@@ -12,6 +12,14 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 	private static readonly MatchPhrase SharedPhrase =
 		MatchPhrase.Being("JSON equivalent to").WithName(" as JSON").WithUnformattedExpected();
 
+	/// <summary>
+	///     The value of the last comparison, or the <see cref="KeptExpected" /> when it was compared more than once.
+	/// </summary>
+	/// <remarks>
+	///     One field for both, as the match type is created for every expectation.
+	/// </remarks>
+	private object? _comparedExpected;
+
 	private string? _validatedExpected;
 
 	/// <inheritdoc />
@@ -19,10 +27,12 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 
 	/// <inheritdoc />
 	public override StringMatcher ForEvaluation(MatchEnvironment environment, StringMatchSettings settings)
-		=> new JsonMatcher(options);
+		=> new JsonMatcher(this);
 
 	/// <inheritdoc />
 	public override MatchPhrase Phrase => SharedPhrase;
+
+	private JsonOptions Options => options;
 
 	/// <inheritdoc />
 	/// <remarks>
@@ -39,6 +49,42 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 
 		ParseExpected(expected, parameterName, options.DocumentOptions).Dispose();
 		_validatedExpected = expected;
+	}
+
+	/// <summary>
+	///     Gets the <paramref name="rootElement" /> of the <paramref name="expected" /> JSON to compare with, and the
+	///     document the caller must dispose after the comparison, if it was parsed for this comparison only.
+	/// </summary>
+	/// <remarks>
+	///     The first comparison with a value uses the pooled document, so that a single expectation allocates no clone.
+	///     A clone of the root element is kept only when the same value is compared again, e.g. for the next item of a
+	///     collection or in another evaluation, so that the later comparisons need not parse it at all.
+	/// </remarks>
+	private JsonDocument? GetExpected(string? expected, string parameterName, out JsonElement rootElement)
+	{
+		object? comparedExpected = _comparedExpected;
+		if (comparedExpected is KeptExpected keptExpected &&
+		    string.Equals(expected, keptExpected.Json, StringComparison.Ordinal))
+		{
+			rootElement = keptExpected.RootElement;
+			return null;
+		}
+
+		JsonDocument document = ParseExpected(expected, parameterName, options.DocumentOptions);
+		if (comparedExpected is string json && string.Equals(expected, json, StringComparison.Ordinal))
+		{
+			using (document)
+			{
+				rootElement = document.RootElement.Clone();
+			}
+
+			_comparedExpected = new KeptExpected(expected!, rootElement);
+			return null;
+		}
+
+		_comparedExpected = expected;
+		rootElement = document.RootElement;
+		return document;
 	}
 
 	/// <summary>
@@ -68,10 +114,22 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		}
 	}
 
+	/// <remarks>
+	///     Immutable, so that it can be replaced as a whole while another evaluation reads it.
+	/// </remarks>
+	private sealed class KeptExpected(string json, JsonElement rootElement)
+	{
+		public string Json { get; } = json;
+		public JsonElement RootElement { get; } = rootElement;
+	}
+
 	/// <summary>
 	///     Compares the JSON strings of one evaluation and keeps the members to ignore that matched no member.
 	/// </summary>
-	private sealed class JsonMatcher(JsonOptions options) : StringMatcher
+	/// <remarks>
+	///     It reads the options from the <paramref name="matchType" />, so that it needs no field of its own for them.
+	/// </remarks>
+	private sealed class JsonMatcher(JsonMatchType matchType) : StringMatcher
 	{
 		private Dictionary<string, string?>? _unmatchedMembersToIgnore;
 
@@ -80,7 +138,8 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
 		public override async ValueTask<MatchResult> Match(string? actual, string? expected)
 		{
-			using JsonDocument expectedJson = ParseExpected(expected, nameof(expected), options.DocumentOptions);
+			using JsonDocument? expectedJson =
+				matchType.GetExpected(expected, nameof(expected), out JsonElement expectedElement);
 			if (actual is null)
 			{
 				return MatchResult.NoMatch;
@@ -89,7 +148,7 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 			JsonDocument actualJson;
 			try
 			{
-				actualJson = JsonDocument.Parse(actual, options.DocumentOptions);
+				actualJson = JsonDocument.Parse(actual, matchType.Options.DocumentOptions);
 			}
 			catch (JsonException e)
 			{
@@ -101,8 +160,8 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 			{
 				JsonElementValidator.JsonComparisonResult comparisonResult = await JsonElementValidator.Compare(
 					actualJson.RootElement,
-					expectedJson.RootElement,
-					options);
+					expectedElement,
+					matchType.Options);
 				_unmatchedMembersToIgnore = MembersToIgnoreTracker.Keep(_unmatchedMembersToIgnore,
 					comparisonResult.GetUnmatchedMembersToIgnore());
 				return comparisonResult.HasError
@@ -132,7 +191,7 @@ internal sealed class JsonMatchType(JsonOptions options) : StringMatchType
 		///     of every failed comparison are kept, and a suggestion found for an item is not lost to a later item.
 		/// </remarks>
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AddContext(contexts, _unmatchedMembersToIgnore);
+			=> matchType.Options.AddContext(contexts, _unmatchedMembersToIgnore);
 	}
 
 	/// <summary>

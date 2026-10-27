@@ -49,14 +49,10 @@ public static partial class ThatJsonString
 		Func<JsonOptions, JsonOptions>? options = null)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		JsonDocumentOptions documentOptions = GetDocumentOptions(options);
-		return new AndOrResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(documentOptions,
+		return new AndOrResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
+					GetDocumentOptions(options),
 					static (o, it, grammar) => new IsValidJsonConstraint(it, grammar, o, true))
-				.ForMember(MemberAccessor<string, JsonElement>.FromFuncWithName(jsonString =>
-					{
-						using JsonDocument jsonDocument = JsonDocument.Parse(jsonString, documentOptions);
-						return jsonDocument.RootElement.Clone();
-					}, "it"),
+				.ForMember(MemberAccessor<JsonElement, JsonElement>.FromFuncWithName(rootElement => rootElement, "it"),
 					(_, stringBuilder) => stringBuilder.Append(" which "))
 				.AddExpectations(expectations),
 			subject);
@@ -94,11 +90,13 @@ public static partial class ThatJsonString
 			IValueConstraint<string?>
 	{
 		private string? _deserializationError;
+		private JsonElement? _rootElement;
 
 		public ConstraintResult IsMetBy(string? actual)
 		{
 			Actual = actual;
 			_deserializationError = null;
+			_rootElement = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;
@@ -108,6 +106,10 @@ public static partial class ThatJsonString
 			try
 			{
 				using JsonDocument jsonDocument = JsonDocument.Parse(actual, options);
+				if (hasExpectations)
+				{
+					_rootElement = jsonDocument.RootElement.Clone();
+				}
 			}
 			catch (JsonException jsonException)
 			{
@@ -119,6 +121,20 @@ public static partial class ThatJsonString
 
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		/// <remarks>
+		///     Stores the root element of the parsed subject, so that the expectations on it do not parse the subject again.
+		/// </remarks>
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			if (_rootElement is TValue rootElement)
+			{
+				value = rootElement;
+				return true;
+			}
+
+			return base.TryGetStoredValue(out value);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

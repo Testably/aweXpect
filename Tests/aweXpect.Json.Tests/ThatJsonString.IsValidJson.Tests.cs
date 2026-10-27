@@ -131,8 +131,7 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches [1, 2,],
-					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5. and it did throw a JsonReaderException:
-					               '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
+					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
 					             """);
 			}
 
@@ -246,8 +245,7 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is not valid JSON which matches [1, 3,],
-					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5. and it did throw a JsonReaderException:
-					               '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
+					             but it could not be parsed: '2' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 5.
 					             """)
 					.Because("the expectations on the root element cannot be verified on a subject that is no JSON, so the negation must not be met either");
 			}
@@ -296,8 +294,7 @@ public sealed partial class ThatJsonString
 					.WithMessage("""
 					             Expected that subject
 					             is valid JSON which matches [1, 2,],
-					             but it could not be parsed: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6. and it did throw a JsonReaderException:
-					               The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
+					             but it could not be parsed: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
 					             """);
 			}
 
