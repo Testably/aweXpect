@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
-      {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          502.4869992392404,
           715.4485103062221,
           656.0633188247681,
           356.174617099762,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           664.9107264836629,
           652.548350921044,
           649.6398866517203,
-          361.48864084879557
+          361.48864084879557,
+          371.8360306535448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -425,7 +425,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
-          464,
+          368,
           368,
           368,
           368,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          692.9500990595136,
           794.6288106918335,
           888.5572644869486,
           536.8183043162028,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           914.3311543782552,
           925.2037527720133,
           924.0910236494882,
-          535.7584282330105
+          535.7584282330105,
+          538.7823316867535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
-      {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          76.32721045811971,
           112.69869488080343,
           114.66328901510973,
           58.143421300819945,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           112.72798475424449,
           113.32602600867932,
           99.52392819294563,
-          57.29377517529896
+          57.29377517529896,
+          58.84064237276713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          165.79196189244587,
           257.97272974650065,
           215.35406255722046,
           122.15644100734166,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           205.00154617627462,
           220.2185204188029,
           202.4032393137614,
-          130.66755592823029
+          130.66755592823029,
+          124.99929022789001
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
-      {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1463.3685356140136,
           1411.1039389201574,
           1838.6320939745221,
           877.4776200612386,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1924.6272258758545,
           1844.407607014974,
           1876.4318199157715,
-          974.9345914522806
+          974.9345914522806,
+          996.1595478057861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1680,7 +1680,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1060.8135719299316,
           1312.3308497111002,
           1354.369742711385,
           790.3319710413615,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1446.0350646972656,
           1500.9760232652936,
           1468.9527173360188,
-          887.871327273051
+          887.871327273051,
+          811.8647864977519
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1952,
           1864,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
       {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2034.700079697829,
           2151.8225588117325,
           2642.3334612165177,
           1403.0971938451132,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2814.40004196167,
           2715.5166798909504,
           2788.4596118927,
-          1407.002833557129
+          1407.002833557129,
+          1519.6138274329048
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2288,7 +2288,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2906.4009140559606,
           3378.733670454759,
           3859.4906572614395,
           2185.3293940226235,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3814.9808616638184,
           3877.3625057765416,
           3695.4380986349925,
-          2330.305312523475
+          2330.305312523475,
+          2333.6141204833984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3977,
           3980,
           3981,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
       {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          266.5842892101833,
           355.14465500758246,
           339.7191134770711,
           186.8432778040568,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           371.9933384827205,
           406.6761632919312,
           370.41011766024997,
-          207.92194836934408
+          207.92194836934408,
+          207.12831432478768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1691.443691117423,
           1988.174253845215,
           2213.8134574890137,
           1231.1973390579224,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2206.2890281677246,
           2339.105630141038,
           2216.697884877523,
-          1346.5243061610631
+          1346.5243061610631,
+          1325.7920325142998
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "0f3856d6c7cdf02b996cb29eea31682de7088183",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 09:35:02 2026 \u002B0100",
-        "message": "test: run the source cancellation tests of async enumerables on a virtual clock (#2079)"
-      },
-      {
         "sha": "cb6172413257799b1cfc99b6708a851f4cbf71fb",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 10:12:06 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
         "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
+      },
+      {
+        "sha": "7a6e19617e9c8ee5464332377e26992643973135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
+        "message": "refactor!: name the expected values of problem details \u0060expected\u0060 (#2126)"
       }
     ],
     "labels": [
-      "0f3856d6",
       "cb617241",
       "7294afca",
       "20357097",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "630e8f0a",
       "76bf298b",
       "26a49595",
-      "6f944ab7"
+      "6f944ab7",
+      "7a6e1961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2206.4882451375324,
           2327.8528725550723,
           2930.2676840562085,
           1460.6088209885818,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2920.9518320719403,
           2864.680062157767,
           2818.4000096638997,
-          1602.653688812256
+          1602.653688812256,
+          1454.1926074981689
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3465,7 +3465,6 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
-          3232,
           3200,
           3200,
           3200,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
+          3248,
           3248,
           3248,
           3248,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241591.6001674107,
           260116.4959716797,
           298482.9997907366,
           169174.7233561198,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           277738.87561035156,
           281847.8198893229,
           277988.83161808894,
-          163594.33670748197
+          163594.33670748197,
+          165075.92091471356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17707,
           17528,
           17577,
           17576,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17576
+          17576,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
