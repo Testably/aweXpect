@@ -400,6 +400,28 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
+			public async Task WithExtension_OfASourceFile_ShouldReadTheCommittedSnapshotWithoutCompilingIt()
+			{
+				string subject = """
+				                 namespace Discography
+				                 {
+				                     public class Album
+				                     {
+				                         public Album(string title);
+				                         public string Title { get; }
+				                     }
+				                 }
+				                 """;
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot().WithExtension("cs");
+
+				await That(Act).DoesNotThrow()
+					.Because(
+						"the snapshot 'ThatSnapshot.MatchesSnapshot.DiskStoreTests.WithExtension_OfASourceFile_ShouldReadTheCommittedSnapshotWithoutCompilingIt.awexpect-snapshot.cs' is committed next to this test file and would break the build if it were compiled");
+			}
+
+			[Test]
 			public async Task WithExtension_ShouldReadTheCommittedSnapshotWithTheExtension()
 			{
 				string subject = """

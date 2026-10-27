@@ -66,6 +66,19 @@
 	</Target>
 
 	<!--
+	    Never compiles a snapshot, also when it has the extension of a source file, e.g. with `.WithExtension("cs")`, which
+	    the default items of the SDK include as `Compile` item. It is kept as `None` item instead, so that it stays visible
+	    in the IDE and is nested like any other snapshot. The snapshots are taken from the `Compile` items instead of
+	    searching the project directory again, which would slow down every build.
+	-->
+	<ItemGroup>
+		<_AweXpectSnapshotsCompile Include="@(Compile)"/>
+		<Compile Remove="**/*.awexpect-snapshot.*"/>
+		<None Include="@(_AweXpectSnapshotsCompile)" Exclude="@(Compile)"/>
+		<_AweXpectSnapshotsCompile Remove="@(_AweXpectSnapshotsCompile)"/>
+	</ItemGroup>
+
+	<!--
 	    Nests each snapshot under its test file in Rider and Visual Studio, which take the nesting from the evaluation of
 	    the project, so it is set on the items and not in a target. Test file names and snapshot names both contain dots,
 	    so the test file is the longest prefix of up to eight parts of the file name for which a `.cs` file exists in the
