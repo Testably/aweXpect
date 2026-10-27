@@ -87,10 +87,10 @@ Pending snapshot:
 
 Expectations for `string` and any other object:
 
-| Expectation                                             | Negated | Summary                                               |
-|---------------------------------------------------------|---------|-------------------------------------------------------|
-| [`MatchesSnapshot`](./01-matching-snapshots.md#strings) |         | a string matches the snapshot stored next to the test |
-| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) |         | an object matches its snapshot, written by aweXpect   |
+| Expectation                                             | Negated | Summary                                                                                  |
+|---------------------------------------------------------|---------|------------------------------------------------------------------------------------------|
+| [`MatchesSnapshot`](./01-matching-snapshots.md#strings) |         | a string matches the snapshot stored next to the test, with rules for its lines and text |
+| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) |         | an object matches its snapshot, written by aweXpect, with rules for its members and text |
 
 Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 

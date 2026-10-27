@@ -5,11 +5,40 @@ using aweXpect.Results;
 namespace aweXpect.Snapshots.Results;
 
 /// <summary>
-///     The result of a snapshot expectation, which allows setting its options.
+///     The result of a snapshot expectation of a <see cref="string" />, which allows setting its options.
 /// </summary>
-public class SnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, SnapshotResult<TType, TThat>>
+public class StringSnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, StringSnapshotResult<TType, TThat>>
 {
-	internal SnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
+	internal StringSnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
+		: base(expectationBuilder, returnValue, options)
+	{
+	}
+
+	/// <summary>
+	///     Adds a rule for values that change from run to run or are irrelevant for the test, e.g.
+	///     <c>.For.Lines().Containing("elapsed").Ignore()</c> or <c>.For.Guids().Mask()</c>.
+	/// </summary>
+	/// <remarks>
+	///     A rule selects what it applies to, filters it, then ends with one action: <c>Ignore()</c>, <c>Mask()</c>,
+	///     <c>Mask("…")</c>, <c>Convert(…)</c> or <c>Keep()</c>. It is written like a rule for all snapshots,
+	///     <c>SnapshotRule.For.…</c>, and applied before those. A <see cref="string" /> is compared as raw text, so it
+	///     offers no member or value rules.
+	/// </remarks>
+	public StringSnapshotFor<StringSnapshotResult<TType, TThat>> For => new(AddRule);
+
+	private StringSnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
+	{
+		Options.Rules.Add(rule);
+		return this;
+	}
+}
+
+/// <summary>
+///     The result of a snapshot expectation of an object, which allows setting its options.
+/// </summary>
+public class ObjectSnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, ObjectSnapshotResult<TType, TThat>>
+{
+	internal ObjectSnapshotResult(ExpectationBuilder expectationBuilder, TThat returnValue, SnapshotOptions options)
 		: base(expectationBuilder, returnValue, options)
 	{
 	}
@@ -21,12 +50,12 @@ public class SnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, Snapsho
 	/// <remarks>
 	///     A rule selects what it applies to, filters it, then ends with one action: <c>Ignore()</c>, <c>Mask()</c>,
 	///     <c>Mask("…")</c>, <c>Convert(…)</c> or <c>Keep()</c>. It is written like a rule for all snapshots,
-	///     <c>SnapshotRule.For.…</c>, and applied before those. A member or value rule throws on a <see cref="string" />
-	///     subject, which is compared as raw text, and a line rule on any other subject.
+	///     <c>SnapshotRule.For.…</c>, and applied before those. An object is written by the formatter, so it offers no
+	///     line rules.
 	/// </remarks>
-	public SnapshotFor<SnapshotResult<TType, TThat>> For => new(AddRule);
+	public ObjectSnapshotFor<ObjectSnapshotResult<TType, TThat>> For => new(AddRule);
 
-	private SnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
+	private ObjectSnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
 	{
 		StructuralRules.ThrowIfNotApplicable<TType>(rule);
 		Options.Rules.Add(rule);

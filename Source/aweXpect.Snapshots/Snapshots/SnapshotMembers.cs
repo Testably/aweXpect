@@ -138,7 +138,7 @@ public class SnapshotMembers<TResult, TValue>
 	///     The placeholder is named after the type of a selection that is filtered by its type, but not by its name or path, e.g.
 	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, or with alternative types after the first
 	///     one that the value matches, and otherwise after the member. It shares its numbers with
-	///     the other placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TResult}.Guids" />. A
+	///     the other placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotTextFor{TResult}.Guids" />. A
 	///     <see langword="null" /> value is not masked. The first masking or converter that matches a value wins.
 	/// </remarks>
 	public TResult Mask()

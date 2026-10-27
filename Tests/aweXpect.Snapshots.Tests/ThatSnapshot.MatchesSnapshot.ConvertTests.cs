@@ -467,12 +467,12 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenSubjectIsAString_ShouldThrowInvalidOperationException()
+			public async Task WhenSubjectIsAGenericString_ShouldThrowInvalidOperationException()
 			{
 				string subject = "foo";
 
 				async Task Act()
-					=> await That(subject).MatchesSnapshot(Id.SourceFile, Id.MemberName)
+					=> await That(subject).MatchesSnapshot<string?>(Id.SourceFile, Id.MemberName)
 						.For.Members().OfType<DateTime>().Convert(released => released.Year);
 
 				await That(Act).Throws<InvalidOperationException>()

@@ -68,11 +68,15 @@ public static partial class ThatSnapshot
 	/// </param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static SnapshotResult<string, IThat<string?>> MatchesSnapshot(
+	public static StringSnapshotResult<string, IThat<string?>> MatchesSnapshot(
 		this IThat<string?> subject,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
-		=> AddSnapshot<string, string?>(subject, callerFilePath, callerMemberName, static (value, _) => value!);
+	{
+		SnapshotOptions options = new(GetSourceFile(callerFilePath), callerMemberName);
+		return new StringSnapshotResult<string, IThat<string?>>(
+			AddSnapshot<string?>(subject, options, static (value, _) => value!), subject, options);
+	}
 
 	/// <summary>
 	///     Verifies that the subject, written by the aweXpect formatter, matches the snapshot
@@ -100,7 +104,7 @@ public static partial class ThatSnapshot
 	/// </param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static SnapshotResult<T, IThat<T>> MatchesSnapshot<[RequiresMemberMetadata] T>(
+	public static ObjectSnapshotResult<T, IThat<T>> MatchesSnapshot<[RequiresMemberMetadata] T>(
 		this IThat<T> subject,
 		[CallerFilePath] string callerFilePath = "",
 		[CallerMemberName] string callerMemberName = "")
@@ -111,13 +115,15 @@ public static partial class ThatSnapshot
 				$"A {typeof(T).Name} is compared as binary data, but before C# 13 a type derived from Stream chooses the snapshot of an object. Declare the subject as a Stream, e.g. Expect.That<Stream>(stream), or use C# 13 or later."));
 		}
 
-		return AddSnapshot<T, T>(subject, callerFilePath, callerMemberName,
-			static (value, formatValue) => Formatter.Format(value, formatValue is null
-				? SnapshotFormatting
-				: SnapshotFormatting with
-				{
-					FormatValue = formatValue,
-				}));
+		SnapshotOptions options = new(GetSourceFile(callerFilePath), callerMemberName);
+		return new ObjectSnapshotResult<T, IThat<T>>(AddSnapshot<T>(subject, options,
+				static (value, formatValue) => Formatter.Format(value, formatValue is null
+					? SnapshotFormatting
+					: SnapshotFormatting with
+					{
+						FormatValue = formatValue,
+					})),
+			subject, options);
 	}
 
 	/// <summary>
@@ -226,8 +232,8 @@ public static partial class ThatSnapshot
 	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />
 	///     A snapshot that was already used with another extension in the same test run fails.
 	/// </remarks>
-	public static SnapshotResult<TType, IThat<string?>> WithExtension<TType>(
-		this SnapshotResult<TType, IThat<string?>> result, string extension)
+	public static StringSnapshotResult<TType, IThat<string?>> WithExtension<TType>(
+		this StringSnapshotResult<TType, IThat<string?>> result, string extension)
 	{
 		SnapshotExtension.ThrowIfInvalid(extension);
 		result.Options.Extension = extension;
@@ -294,23 +300,17 @@ public static partial class ThatSnapshot
 	}
 
 	/// <param name="subject">The subject.</param>
-	/// <param name="callerFilePath">The path of the test file.</param>
-	/// <param name="callerMemberName">The name of the test method.</param>
+	/// <param name="options">The options of the snapshot.</param>
 	/// <param name="format">
 	///     Writes the subject as text, with the decision about each nested value from the member and type rules, which
 	///     is <see langword="null" /> without such rules and which a <see cref="string" /> subject ignores.
 	/// </param>
-	private static SnapshotResult<TType, IThat<T>> AddSnapshot<TType, T>(IThat<T> subject, string callerFilePath,
-		string callerMemberName, Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
-	{
-		SnapshotOptions options = new(GetSourceFile(callerFilePath), callerMemberName);
-		return new SnapshotResult<TType, IThat<T>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(Options: options, Format: format),
-				static (state, it, grammars) => new MatchesSnapshotConstraint<T>(it, grammars, SnapshotSettings.Read(),
-					state.Options, state.Format)),
-			subject,
-			options);
-	}
+	private static ExpectationBuilder AddSnapshot<T>(IThat<T> subject, SnapshotOptions options,
+		Func<T, Func<FormattedValue, ValueFormatting>?, string> format)
+		=> subject.Get().ExpectationBuilder.AddConstraint(
+			(Options: options, Format: format),
+			static (state, it, grammars) => new MatchesSnapshotConstraint<T>(it, grammars, SnapshotSettings.Read(),
+				state.Options, state.Format));
 
 	/// <param name="subject">The subject.</param>
 	/// <param name="options">The options of the snapshot.</param>

@@ -12,7 +12,8 @@ internal static class ApiParity
 	/// <summary>
 	///     Returns the public methods and implemented interfaces of the <paramref name="entry" /> type and of every
 	///     selection type that its methods return, recursively, with the type that an action returns written as
-	///     <c>TReturn</c>.
+	///     <c>TReturn</c> and the <paramref name="entry" /> type as <c>For</c>, as each kind of snapshot selects its rules
+	///     with its own entry type.
 	/// </summary>
 	public static string[] GetSurface(System.Type entry, System.Type returnType)
 	{
@@ -22,7 +23,7 @@ internal static class ApiParity
 		while (pending.Count > 0)
 		{
 			System.Type type = pending.Dequeue();
-			string typeName = Name(type, returnType);
+			string typeName = type == entry ? "For" : Name(type, returnType);
 			if (!visited.Add(typeName))
 			{
 				continue;

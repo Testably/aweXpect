@@ -127,7 +127,7 @@ public class SnapshotValues<TResult, TValue>
 	///     <c>{Guid_1}</c> for <c>.OfType&lt;Guid&gt;()</c>, or with alternative types after the first
 	///     one that the value matches, and otherwise after the member or tuple item, or <c>Item</c>
 	///     for an item of a collection or the value of a dictionary entry. It shares its numbers with the other
-	///     placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotFor{TResult}.Guids" />. A
+	///     placeholders of that name, e.g. <c>{Guid_1}</c> with <see cref="SnapshotTextFor{TResult}.Guids" />. A
 	///     <see langword="null" /> value is not masked. The first masking or converter that matches a value wins.
 	/// </remarks>
 	public TResult Mask()

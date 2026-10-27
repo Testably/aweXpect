@@ -13,9 +13,9 @@ await Expect.That(album).MatchesSnapshot()
 The filters are combined, so a value has to match all of them. After the action, the next rule starts with
 `.For` again, or the expectation continues with `.Named(…)`, `.UniqueFor` or `.Accepting(…)`.
 
-`.For.Members()` and `.For.Values()` only apply to a [snapshot of an object](01-matching-snapshots.md#objects), and
-`.For.Lines()` only to a snapshot of a `string`. The text selections apply to every snapshot. The
-[overview](#overview) at the end lists all selections, filters and actions.
+`.For.Members()` and `.For.Values()` are only offered for a [snapshot of an object](01-matching-snapshots.md#objects),
+and `.For.Lines()` only for a snapshot of a `string`, so a rule that cannot apply does not compile. The text selections
+apply to every snapshot. The [overview](#overview) at the end lists all selections, filters and actions.
 
 ## Members and values
 
@@ -436,16 +436,16 @@ Numbered placeholders share their counters across all these steps, so e.g. `.For
 
 The selections and their filters:
 
-| Selection                                                | Filters                                                                                 |
-|----------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| `.For.Members()`                                         | `WithName`, `WithPath`, `OfType<T>`, `OfExactType<T>`, `DeclaredIn<T>`, `Which`, `Except` |
-| `.For.Members().OfType<T>()`, `.OfExactType<T>()`        | `OrOfType<T>`, `OrOfExactType<T>`, and the filters of `Members()`                        |
-| `.For.Members().WhichAreEmptyCollections()`              | the filters of `Members()` before it                                                    |
-| `.For.Values()`                                          | like `Members()`, without `WhichAreEmptyCollections`                                    |
-| `.For.Lines()`                                           | `Containing(text)`, `Which`, `Except`                                                   |
-| `.For.Text(text)`                                        | `IgnoringCase()`, `AsWildcard()`, `AsRegex()`                                           |
-| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      |                                                                                         |
-| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  |                                                                                         |
+| Selection                                                | Snapshots of     | Filters                                                                                 |
+|----------------------------------------------------------|------------------|-----------------------------------------------------------------------------------------|
+| `.For.Members()`                                         | objects          | `WithName`, `WithPath`, `OfType<T>`, `OfExactType<T>`, `DeclaredIn<T>`, `Which`, `Except` |
+| `.For.Members().OfType<T>()`, `.OfExactType<T>()`        | objects          | `OrOfType<T>`, `OrOfExactType<T>`, and the filters of `Members()`                        |
+| `.For.Members().WhichAreEmptyCollections()`              | objects          | the filters of `Members()` before it                                                    |
+| `.For.Values()`                                          | objects          | like `Members()`, without `WhichAreEmptyCollections`                                    |
+| `.For.Lines()`                                           | strings          | `Containing(text)`, `Which`, `Except`                                                   |
+| `.For.Text(text)`                                        | strings, objects | `IgnoringCase()`, `AsWildcard()`, `AsRegex()`                                           |
+| `.For.Regex(regex)`, `.For.Guids()`, `.For.Dates()`      | strings, objects |                                                                                         |
+| `.For.MachineName()`, `.For.UserName()`, `.For.Paths()`  | strings, objects |                                                                                         |
 
 The actions that each selection offers:
 
