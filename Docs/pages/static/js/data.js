@@ -1440,6 +1440,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -1682,7 +1688,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -1928,7 +1935,8 @@ window.BENCHMARK_DATA = {
           10669.820510864258,
           10579.766005295973,
           11129.638954749475,
-          5588.278465270996
+          5588.278465270996,
+          5424.505611419678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2164,6 +2172,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2433,7 +2442,8 @@ window.BENCHMARK_DATA = {
           358646.58956473216,
           373680.03076171875,
           387097.0216145833,
-          195948.40926106772
+          195948.40926106772,
+          194503.5662923177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2684,7 +2694,8 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
-          590288
+          590288,
+          590286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2938,7 +2949,8 @@ window.BENCHMARK_DATA = {
           19183.805079142254,
           19347.58364054362,
           19565.5361521403,
-          10748.614271981376
+          10748.614271981376,
+          10967.85160936628
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2950,6 +2962,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4601,6 +4614,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -4836,7 +4855,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -5075,7 +5095,8 @@ window.BENCHMARK_DATA = {
           216.92249941825867,
           245.36239943137537,
           241.27642164230346,
-          123.10455508232117
+          123.10455508232117,
+          123.62745594978333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5271,6 +5292,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5566,7 +5588,8 @@ window.BENCHMARK_DATA = {
           508.6123274289645,
           544.3416514714559,
           572.512380472819,
-          280.3017477648599
+          280.3017477648599,
+          282.8778758684794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5578,6 +5601,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6057,7 +6081,8 @@ window.BENCHMARK_DATA = {
           389.5517812728882,
           393.9096405029297,
           412.7439357757568,
-          218.51200648943583
+          218.51200648943583,
+          205.88770232200622
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6069,6 +6094,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12333,6 +12359,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -13338,7 +13370,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -14347,7 +14380,8 @@ window.BENCHMARK_DATA = {
           102.9668372954641,
           112.3498339732488,
           111.53625667095184,
-          60.998819393771036
+          60.998819393771036,
+          57.70954294715609
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15346,6 +15380,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16378,7 +16413,8 @@ window.BENCHMARK_DATA = {
           244.05193662643433,
           255.03752769742692,
           264.72944940839494,
-          142.56300609452384
+          142.56300609452384,
+          136.00684928894043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16571,6 +16607,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17690,7 +17727,8 @@ window.BENCHMARK_DATA = {
           239.59491583506266,
           253.0546199162801,
           256.20519806543984,
-          137.21263512543268
+          137.21263512543268,
+          137.0595386981964
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -17702,6 +17740,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -19439,6 +19478,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -19681,7 +19726,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -19927,7 +19973,8 @@ window.BENCHMARK_DATA = {
           199.7942601782935,
           226.98383089701335,
           214.99728854497275,
-          119.53209295639626
+          119.53209295639626,
+          110.19677471263068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20132,6 +20179,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -20432,7 +20480,8 @@ window.BENCHMARK_DATA = {
           502.31948108673095,
           543.7638500077384,
           582.0438541412353,
-          305.0486827214559
+          305.0486827214559,
+          267.0122317717626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20444,6 +20493,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -20937,7 +20987,8 @@ window.BENCHMARK_DATA = {
           327.9570531527201,
           344.855140209198,
           338.9580075263977,
-          203.95999769064096
+          203.95999769064096,
+          184.54314506848652
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20949,6 +21000,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -27220,6 +27272,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -28225,7 +28283,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -29234,7 +29293,8 @@ window.BENCHMARK_DATA = {
           711.7673157964434,
           785.2252245585124,
           710.9551493780954,
-          384.95690269470214
+          384.95690269470214,
+          355.96817350387573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30221,6 +30281,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -31265,7 +31326,8 @@ window.BENCHMARK_DATA = {
           1373.8708547864642,
           1442.720152282715,
           1391.3739382425945,
-          799.7334999356951
+          799.7334999356951,
+          679.9645639147077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31458,6 +31520,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -32577,7 +32640,8 @@ window.BENCHMARK_DATA = {
           635.3209360667637,
           669.6476388931275,
           725.7503536860148,
-          374.2314715385437
+          374.2314715385437,
+          337.31695093427385
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32589,6 +32653,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -38904,6 +38969,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -39909,7 +39980,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -40918,7 +40990,8 @@ window.BENCHMARK_DATA = {
           694.1066106649546,
           780.200102742513,
           697.4695896784465,
-          379.51478539980377
+          379.51478539980377,
+          345.9251742998759
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -41905,6 +41978,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -42949,7 +43023,8 @@ window.BENCHMARK_DATA = {
           27462.130232747397,
           28420.87986653646,
           28512.240528651648,
-          11533.809481107271
+          11533.809481107271,
+          10671.081660970052
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -43963,6 +44038,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -44261,7 +44337,8 @@ window.BENCHMARK_DATA = {
           758.9122106688363,
           776.5138913472493,
           807.9473032633464,
-          467.8777818339212
+          467.8777818339212,
+          406.64245826857433
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44273,6 +44350,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -46358,6 +46436,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -46658,7 +46742,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -46962,7 +47047,8 @@ window.BENCHMARK_DATA = {
           642.3389695485433,
           646.4320730845134,
           679.2421461741129,
-          385.55329717908586
+          385.55329717908586,
+          347.2910423960005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47256,6 +47342,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -47583,7 +47670,8 @@ window.BENCHMARK_DATA = {
           82961.81638009207,
           82145.40063476562,
           85207.63401692708,
-          30455.763979085288
+          30455.763979085288,
+          29416.95850078876
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47892,6 +47980,7 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -49694,6 +49783,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -49994,7 +50089,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -50298,7 +50394,8 @@ window.BENCHMARK_DATA = {
           126.60137798235966,
           138.47056579589844,
           152.3007821559906,
-          77.83048876126607
+          77.83048876126607,
+          72.79545834859212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50592,6 +50689,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -50919,7 +51017,8 @@ window.BENCHMARK_DATA = {
           31510.571561373195,
           31827.609755452475,
           32859.930363581734,
-          11113.430218287876
+          11113.430218287876,
+          10069.468173217774
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51228,6 +51327,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -51526,7 +51626,8 @@ window.BENCHMARK_DATA = {
           238.0489538192749,
           243.07633110193106,
           248.2010625521342,
-          139.86217216082983
+          139.86217216082983,
+          128.34025293986002
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51538,6 +51639,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -53275,6 +53377,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -53517,7 +53625,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -53763,7 +53872,8 @@ window.BENCHMARK_DATA = {
           292.27979977925617,
           299.81553670338224,
           315.30397198994956,
-          168.62341139997756
+          168.62341139997756,
+          161.63454699516296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53968,6 +54078,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -54268,7 +54379,8 @@ window.BENCHMARK_DATA = {
           366.23903747967313,
           385.0043716430664,
           408.4983763694763,
-          243.32398802893502
+          243.32398802893502,
+          207.15134699528033
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54280,6 +54392,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -54773,7 +54886,8 @@ window.BENCHMARK_DATA = {
           406.4514482021332,
           413.7062550544739,
           419.894111266503,
-          228.2763935838427
+          228.2763935838427,
+          216.31448694637842
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54785,6 +54899,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -56478,6 +56593,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -56720,7 +56841,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -56966,7 +57088,8 @@ window.BENCHMARK_DATA = {
           709.2360028486985,
           721.0766134262085,
           754.6803262710571,
-          377.4830561002096
+          377.4830561002096,
+          367.79963426589967
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57202,6 +57325,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -57471,7 +57595,8 @@ window.BENCHMARK_DATA = {
           1819.8828868865967,
           1997.1423573811849,
           1976.3256334940593,
-          1153.157917703901
+          1153.157917703901,
+          1032.7291742960613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57483,6 +57608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -57976,7 +58102,8 @@ window.BENCHMARK_DATA = {
           915.4479080835978,
           951.3066059112549,
           967.273912302653,
-          546.6596738951547
+          546.6596738951547,
+          488.47260243552074
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57988,6 +58115,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -59681,6 +59809,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -59923,7 +60057,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -60169,7 +60304,8 @@ window.BENCHMARK_DATA = {
           12273.967716761998,
           11922.093299865723,
           12008.909748957707,
-          6204.468986002604
+          6204.468986002604,
+          6058.458133443197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60408,6 +60544,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -60674,7 +60811,8 @@ window.BENCHMARK_DATA = {
           40518.84923377404,
           41026.02633901743,
           41094.07517089844,
-          19465.606529822715
+          19465.606529822715,
+          18413.323373647836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60913,6 +61051,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -61179,7 +61318,8 @@ window.BENCHMARK_DATA = {
           10529.6439842811,
           10561.484159029447,
           10608.364980425153,
-          5884.204850260417
+          5884.204850260417,
+          5703.478992462158
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -61191,6 +61331,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -62884,6 +63025,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
         "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
+      },
+      {
+        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
+        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
       }
     ],
     "labels": [
@@ -63126,7 +63273,8 @@ window.BENCHMARK_DATA = {
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
-      "2ba23029"
+      "2ba23029",
+      "630e8f0a"
     ],
     "datasets": [
       {
@@ -63372,7 +63520,8 @@ window.BENCHMARK_DATA = {
           11511.122253417969,
           11567.030694144112,
           11641.974334716797,
-          5920.641035897391
+          5920.641035897391,
+          5823.725898742676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -63611,6 +63760,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -63877,7 +64027,8 @@ window.BENCHMARK_DATA = {
           57760.91309407552,
           60272.29396878756,
           60230.56652832031,
-          28401.118247477214
+          28401.118247477214,
+          26683.57372233073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -64106,6 +64257,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -64382,7 +64534,8 @@ window.BENCHMARK_DATA = {
           21163.664080810548,
           20816.230531964982,
           21299.58698817662,
-          11541.8227255685
+          11541.8227255685,
+          11616.01400756836
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -64394,6 +64547,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
