@@ -52,7 +52,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(OperatorBaseClass),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which declare an implicit conversion operator from OperatorBaseClass to int ").AsSuffix();
+					.IsEqualTo("which declare an implicit conversion operator from OperatorBaseClass to int").AsSuffix();
 			}
 
 			[Test]
@@ -106,7 +106,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(OperatorDerivedClass),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which do not declare an implicit conversion operator from OperatorBaseClass to int ").AsSuffix();
+					.IsEqualTo("which do not declare an implicit conversion operator from OperatorBaseClass to int").AsSuffix();
 			}
 
 			[Test]
@@ -167,7 +167,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(Money),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which declare an explicit conversion operator from Money to int ").AsSuffix();
+					.IsEqualTo("which declare an explicit conversion operator from Money to int").AsSuffix();
 			}
 		}
 	}
@@ -220,7 +220,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(ClassWithoutOperators),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which do not declare an explicit conversion operator from Money to int ").AsSuffix();
+					.IsEqualTo("which do not declare an explicit conversion operator from Money to int").AsSuffix();
 			}
 		}
 	}

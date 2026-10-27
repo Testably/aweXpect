@@ -42,7 +42,7 @@ public sealed partial class TypeFilters
 					.WhichHaveOperator(Operator.Subtraction).Directly();
 
 				await That(types).IsEqualTo([typeof(OperatorBaseClass),]).InAnyOrder();
-				await That(types.GetDescription()).IsEqualTo("which declare the operator Subtraction ").AsSuffix();
+				await That(types.GetDescription()).IsEqualTo("which declare the operator Subtraction").AsSuffix();
 			}
 
 			[Test]
@@ -64,7 +64,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(Money),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which have the operator Addition with operand int ").AsSuffix();
+					.IsEqualTo("which have the operator Addition with operand int").AsSuffix();
 			}
 
 			[Test]
@@ -126,7 +126,7 @@ public sealed partial class TypeFilters
 					.WhichDoNotHaveOperator(Operator.Subtraction).Directly();
 
 				await That(types).IsEqualTo([typeof(OperatorDerivedClass),]).InAnyOrder();
-				await That(types.GetDescription()).IsEqualTo("which do not declare the operator Subtraction ").AsSuffix();
+				await That(types.GetDescription()).IsEqualTo("which do not declare the operator Subtraction").AsSuffix();
 			}
 
 			[Test]
@@ -148,7 +148,7 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEqualTo([typeof(ClassWithoutOperators),]).InAnyOrder();
 				await That(types.GetDescription())
-					.IsEqualTo("which do not have the operator Addition with operand int ").AsSuffix();
+					.IsEqualTo("which do not have the operator Addition with operand int").AsSuffix();
 			}
 
 			[Test]
