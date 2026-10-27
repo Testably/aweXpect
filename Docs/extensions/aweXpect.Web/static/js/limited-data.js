@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
-      {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          224.25309686660768,
           443.32357464517867,
           344.2021641364464,
           455.8983209133148,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           475.11523383458456,
           409.07895781199136,
           229.30270613156833,
-          501.08385056715747
+          501.08385056715747,
+          243.95742290360587
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -430,40 +430,40 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          712,
+          712,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
+          664,
           640,
-          712,
-          712,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
-          664,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          541.2572590192159,
           1042.5549468358358,
           809.4281631878445,
           1071.424160385132,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           943.4061141380897,
           954.0227118174236,
           535.0919495991299,
-          1055.40873840877
+          1055.40873840877,
+          508.508009161268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
-      {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          98.38461604485146,
           207.6552509466807,
           158.13208064011164,
           201.2619744737943,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           245.242271232605,
           232.44820243517557,
           137.56965975761415,
-          268.5558290799459
+          268.5558290799459,
+          144.42747661045618
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1036,9 +1036,9 @@ window.BENCHMARK_DATA = {
           440,
           440,
           440,
-          440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          128.47140565285315,
           272.7280724525452,
           210.02251165253776,
           259.7179159096309,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           244.22368756930032,
           257.37823670251026,
           148.23730926513673,
-          279.078387705485
+          279.078387705485,
+          147.87248187405723
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
-      {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          343.43377952575685,
           656.834012667338,
           518.2152183396475,
           652.5665302276611,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           746.1851156779697,
           652.6387585957845,
           405.7758544286092,
-          831.4142941792805
+          831.4142941792805,
+          393.1221553166707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1639,7 +1639,6 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008,
           1016,
           1016,
           1016,
@@ -1649,6 +1648,7 @@ window.BENCHMARK_DATA = {
           1016,
           1088,
           1088,
+          1032,
           1032,
           1032,
           1032,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          540.798643175761,
           1055.6800371805828,
           748.4247174629799,
           1003.1172813415527,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           924.3652637004852,
           933.8703877585275,
           488.77961564064026,
-          1034.8188137054444
+          1034.8188137054444,
+          499.79274008824274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
-      {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1132.7578959147136,
           1932.4807571411134,
           1450.3247194925943,
           1874.5765302022298,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1900.61237894694,
           1547.4663707733155,
           1133.1822125361516,
-          1926.0909589131672
+          1926.0909589131672,
+          1177.2920851026263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2254,9 +2254,9 @@ window.BENCHMARK_DATA = {
           1688,
           1688,
           1688,
-          1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10550.635846964518,
           22519.038431020883,
           14781.99289449056,
           22242.81704305013,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           20605.44338285006,
           15618.068280537924,
           9900.679490152996,
-          21972.503662109375
+          21972.503662109375,
+          10465.854170663017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,7 +2372,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
       {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          373.5467294546274,
           740.1206101008823,
           532.6241367340087,
           764.156905907851,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           763.7747718811036,
           690.80318238185,
           410.69397364343916,
-          866.7201562608991
+          866.7201562608991,
+          433.6317463602339
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2855,7 +2855,6 @@ window.BENCHMARK_DATA = {
           1112,
           1112,
           1112,
-          1112,
           1120,
           1120,
           1120,
@@ -2865,6 +2864,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          682.034325327192,
           1413.3773554484048,
           1039.9940446217854,
           1282.3451031904954,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1278.8678690592449,
           1239.7863914489747,
           680.9078979492188,
-          1371.1180374962944
+          1371.1180374962944,
+          737.3961765766144
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "5357eeb15703078a59ba1144194948bff769f953",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 24 21:54:30 2026 \u002B0200",
-        "message": "feat!: accept an enumerable of expected dependencies on assemblies (#2028)"
-      },
-      {
         "sha": "d5b93f89eced5928ceb859bf4da421047f025382",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 24 21:56:24 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
-      "5357eeb1",
       "d5b93f89",
       "44ad4465",
       "9dc4e7bb",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          614.9718951543172,
           1139.8622458140055,
           884.6531737872532,
           1158.7658834457397,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1281.0242557525635,
           1062.8954622268677,
           767.6678476333618,
-          1387.4547334035237
+          1387.4547334035237,
+          807.4877299528855
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3463,7 +3463,6 @@ window.BENCHMARK_DATA = {
           1456,
           1456,
           1456,
-          1456,
           1440,
           1440,
           1440,
@@ -3504,6 +3503,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          406.72581369536266,
           809.9563345591228,
           605.2539518356323,
           788.990642956325,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           808.0055464426677,
           747.9362820943196,
           450.775159962972,
-          797.6576168060303
+          797.6576168060303,
+          442.80978135267895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
