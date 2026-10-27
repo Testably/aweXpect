@@ -61,6 +61,47 @@ JsonNode.DeepEquals(JsonNode.Parse(_jsonString), JsonNode.Parse(_expectedJsonStr
 
 </TabItem>
 
+<TabItem value="JsonStringExpectations" label="JSON string expectations">
+
+Verifies that a JSON `string` is valid JSON whose title has the expected value.
+FluentAssertions parses the string into a `JsonNode`.
+
+<BenchmarkResult package="aweXpect.Json" name="JsonStringExpectations" />
+
+```csharp title="aweXpect"
+await Expect.That(_jsonString).IsValidJson(json => json.HasProperty("title", t => t.IsString("Let It Be")));
+```
+
+```csharp title="FluentAssertions"
+JsonNode.Parse(_jsonString)!.Should().HaveProperty("title").Which.GetValue<string>().Should()
+    .Be("Let It Be");
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Json.Benchmarks/HappyCaseBenchmarks.JsonStringExpectations.cs)
+
+</TabItem>
+
+<TabItem value="JsonStringCollection" label="Collection of JSON strings">
+
+Verifies that all 100 JSON strings of a collection are equal to an expected JSON string with a different property order and formatting.
+FluentAssertions parses the expected string once and verifies the result of `JsonNode.DeepEquals` for every item.
+
+<BenchmarkResult package="aweXpect.Json" name="JsonStringCollection" />
+
+```csharp title="aweXpect"
+await Expect.That(_jsonStrings).All().AreEqualTo(_expectedJsonString).AsJson();
+```
+
+```csharp title="FluentAssertions"
+JsonNode? expected = JsonNode.Parse(_expectedJsonString);
+_jsonStrings.Should()
+    .AllSatisfy(jsonString => JsonNode.DeepEquals(JsonNode.Parse(jsonString), expected).Should().BeTrue());
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Json.Benchmarks/HappyCaseBenchmarks.JsonStringCollection.cs)
+
+</TabItem>
+
 <TabItem value="ParsedJson" label="Parsed JSON">
 
 Verifies that parsed JSON matches an expected object.
