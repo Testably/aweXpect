@@ -1020,6 +1020,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -1192,7 +1198,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -1368,7 +1375,8 @@ window.BENCHMARK_DATA = {
           683.7838911692302,
           666.6127347264971,
           665.8043145452227,
-          489.17134523391724
+          489.17134523391724,
+          361.46874226842607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1524,6 +1532,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -1733,7 +1742,8 @@ window.BENCHMARK_DATA = {
           888.4635460036142,
           895.483428700765,
           924.3699908574422,
-          705.753936735789
+          705.753936735789,
+          565.8328073501586
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1745,6 +1755,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -2948,6 +2959,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -3120,7 +3137,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -3296,7 +3314,8 @@ window.BENCHMARK_DATA = {
           127.94034349918365,
           110.38219611644745,
           104.73018941708973,
-          81.86474782625834
+          81.86474782625834,
+          55.606783477465314
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3443,6 +3462,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -3661,7 +3681,8 @@ window.BENCHMARK_DATA = {
           222.4375822385152,
           203.17515718142192,
           208.81318254470824,
-          181.1204728603363
+          181.1204728603363,
+          130.05307965278627
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3673,6 +3694,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -4876,6 +4898,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -5048,7 +5076,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -5224,7 +5253,8 @@ window.BENCHMARK_DATA = {
           1871.1344306128365,
           1849.2000342777797,
           1765.0012737001691,
-          1453.3621735890706
+          1453.3621735890706,
+          1017.8286776224772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5371,6 +5401,7 @@ window.BENCHMARK_DATA = {
           1888,
           1888,
           1888,
+          1808,
           1808,
           1808,
           1808,
@@ -5589,7 +5620,8 @@ window.BENCHMARK_DATA = {
           1474.2612149374825,
           1461.2678910573325,
           1502.0768995920816,
-          1148.5390441258749
+          1148.5390441258749,
+          892.7940050271841
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5770,7 +5802,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6744,6 +6777,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -6906,7 +6945,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -7072,7 +7112,8 @@ window.BENCHMARK_DATA = {
           2753.8066532428447,
           2744.6297828674315,
           2652.938941683088,
-          2166.4732570648193
+          2166.4732570648193,
+          1467.018680826823
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7209,6 +7250,7 @@ window.BENCHMARK_DATA = {
           3184,
           3184,
           3184,
+          3104,
           3104,
           3104,
           3104,
@@ -7417,7 +7459,8 @@ window.BENCHMARK_DATA = {
           3891.0896694476787,
           3747.2123440333776,
           3889.462844848633,
-          3021.682448523385
+          3021.682448523385,
+          2300.1148891448975
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7588,6 +7631,7 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -8562,6 +8606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -8724,7 +8774,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -8890,7 +8941,8 @@ window.BENCHMARK_DATA = {
           415.663347752889,
           430.3165431658427,
           390.14111406462536,
-          281.0942595163981
+          281.0942595163981,
+          209.41956946055095
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9027,6 +9079,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -9235,7 +9288,8 @@ window.BENCHMARK_DATA = {
           2293.051630147298,
           2371.6556992164024,
           2314.8307098388673,
-          1778.823710123698
+          1778.823710123698,
+          1349.8916042872838
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9247,6 +9301,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -10380,6 +10435,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
         "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
+      },
+      {
+        "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
+        "message": "refactor!: move AccessModifiers to the aweXpect.Reflection namespace (#2111)"
       }
     ],
     "labels": [
@@ -10542,7 +10603,8 @@ window.BENCHMARK_DATA = {
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
-      "031fdf5a"
+      "031fdf5a",
+      "67f30838"
     ],
     "datasets": [
       {
@@ -10708,7 +10770,8 @@ window.BENCHMARK_DATA = {
           2892.35730273907,
           3117.1435152689614,
           2880.7348442077637,
-          2257.7525494893393
+          2257.7525494893393,
+          1633.9910162517003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10854,6 +10917,7 @@ window.BENCHMARK_DATA = {
           3232,
           3232,
           3232,
+          3200,
           3200,
           3200,
           3200,
@@ -11053,7 +11117,8 @@ window.BENCHMARK_DATA = {
           278114.8661733774,
           279421.47138671874,
           279200.60117885045,
-          239771.20134626116
+          239771.20134626116,
+          179446.46763102213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11224,6 +11289,7 @@ window.BENCHMARK_DATA = {
           17727,
           17577,
           17577,
+          17576,
           17576
         ],
         "borderColor": "#FF671B",
