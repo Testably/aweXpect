@@ -1032,6 +1032,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -1206,7 +1212,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -1384,7 +1391,8 @@ window.BENCHMARK_DATA = {
           558.5206277211507,
           914.548518385206,
           821.276523844401,
-          894.2884833472116
+          894.2884833472116,
+          991.1092564900716
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1565,6 +1573,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000
@@ -1753,7 +1762,8 @@ window.BENCHMARK_DATA = {
           574.5839573996408,
           752.0956639562335,
           677.9159244390635,
-          701.3189781188964
+          701.3189781188964,
+          727.8085537637983
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1765,6 +1775,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -2982,6 +2993,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -3156,7 +3173,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -3334,7 +3352,8 @@ window.BENCHMARK_DATA = {
           3322.3321614583333,
           4719.634000651042,
           4364.461219787598,
-          4540.665985107422
+          4540.665985107422,
+          4842.084578450521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3517,7 +3536,8 @@ window.BENCHMARK_DATA = {
           24172,
           24172,
           24179,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3703,7 +3723,8 @@ window.BENCHMARK_DATA = {
           3923.565017191569,
           5541.623286655971,
           4863.353251902262,
-          5281.758043729342
+          5281.758043729342,
+          5589.4507507324215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3715,6 +3736,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -4872,6 +4894,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -5036,7 +5064,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -5204,7 +5233,8 @@ window.BENCHMARK_DATA = {
           1950.4946624210902,
           2629.016909154256,
           2367.8149983542307,
-          2572.0728040059407
+          2572.0728040059407,
+          2783.576471455892
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5377,6 +5407,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -5553,7 +5584,8 @@ window.BENCHMARK_DATA = {
           2665.141414097377,
           3840.422245319073,
           3378.5948941548663,
-          3589.527540588379
+          3589.527540588379,
+          3886.4850867135183
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5565,6 +5597,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -6712,6 +6745,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
         "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
+      },
+      {
+        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
+        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
       }
     ],
     "labels": [
@@ -6876,7 +6915,8 @@ window.BENCHMARK_DATA = {
       "67f30838",
       "2e0f7001",
       "fa3e0676",
-      "144c7b56"
+      "144c7b56",
+      "b091e811"
     ],
     "datasets": [
       {
@@ -7044,7 +7084,8 @@ window.BENCHMARK_DATA = {
           10673.236022949219,
           14267.907149251301,
           13138.657448323567,
-          13801.574124145507
+          13801.574124145507,
+          14078.57225748698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7217,6 +7258,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -7393,7 +7435,8 @@ window.BENCHMARK_DATA = {
           212926.37643229167,
           371167.7600097656,
           313904.3671123798,
-          360950.58902994794
+          360950.58902994794,
+          363622.49820963544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7564,6 +7607,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544178,
+          544335,
           544335,
           544335,
           544335
