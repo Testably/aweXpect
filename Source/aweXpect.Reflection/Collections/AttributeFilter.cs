@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace aweXpect.Reflection.Collections;
@@ -33,8 +34,8 @@ internal sealed class AttributeFilter<TEntity> : IFilter<TEntity>
 		_isDirect = isDirect;
 	}
 
-	/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity)" />
-	public ValueTask<bool> Applies(TEntity value)
+	/// <inheritdoc cref="IFilter{TEntity}.Applies(TEntity, CancellationToken)" />
+	public ValueTask<bool> Applies(TEntity value, CancellationToken cancellationToken)
 	{
 		bool inherit = !_isDirect;
 		foreach (Alternative alternative in _alternatives)

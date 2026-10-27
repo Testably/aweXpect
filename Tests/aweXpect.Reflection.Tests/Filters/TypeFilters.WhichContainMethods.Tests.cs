@@ -1,4 +1,10 @@
 ﻿using aweXpect.Reflection.Collections;
+#if NET8_0_OR_GREATER
+using System.Collections.Generic;
+using System.Reflection;
+using System.Threading;
+using aweXpect.Reflection.Tests.TestHelpers;
+#endif
 
 using aweXpect.Reflection.Tests.TestHelpers.Types;
 
@@ -336,6 +342,26 @@ public sealed partial class TypeFilters
 
 				await That(types).IsEmpty();
 			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task WhenEnumeratedWithACancellationToken_ShouldPassTheTokenToTheInnerFilter()
+			{
+				using CancellationTokenSource cts = new();
+				TokenRecordingFilter<MethodInfo> filter = new();
+				Filtered.Types types = In.Type<TaggedClass>().WhichContainMethods(methods => methods.Which(filter));
+
+				List<Type> result = [];
+				await foreach (Type type in types.WithCancellation(cts.Token))
+				{
+					result.Add(type);
+				}
+
+				await That(result).IsEqualTo([typeof(TaggedClass),]);
+				await That(filter.Tokens).IsNotEmpty();
+				await That(filter.Tokens).All().AreEqualTo(cts.Token);
+			}
+#endif
 
 			[Test]
 			public async Task WhenIncludingObjectMembers_AfterAQuantifier_ShouldKeepTheQuantifier()

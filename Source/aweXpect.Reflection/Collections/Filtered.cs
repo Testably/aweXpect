@@ -1,5 +1,5 @@
-﻿#if NET8_0_OR_GREATER
-using System.Threading;
+﻿using System.Threading;
+#if NET8_0_OR_GREATER
 using System.Threading.Tasks;
 #else
 using System.Collections;
@@ -80,7 +80,7 @@ public abstract class Filtered<T, TFiltered>
 			bool applies = true;
 			for (int index = 0; index < Filters.Count; index++)
 			{
-				if (!await Filters[index].Applies(item))
+				if (!await Filters[index].Applies(item, cancellationToken))
 				{
 					applies = false;
 					break;
@@ -96,7 +96,7 @@ public abstract class Filtered<T, TFiltered>
 #else
 	/// <inheritdoc />
 	public IEnumerator<T> GetEnumerator()
-		=> _source.Where(a => Filters.All(f => SynchronousBoundary.Wait(() => f.Applies(a)))).GetEnumerator();
+		=> _source.Where(a => Filters.All(f => SynchronousBoundary.Wait(() => f.Applies(a, CancellationToken.None)))).GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 #endif

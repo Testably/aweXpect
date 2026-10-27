@@ -3541,7 +3541,7 @@ namespace aweXpect.Reflection.Collections
     }
     public interface IFilter<in TEntity>
     {
-        System.Threading.Tasks.ValueTask<bool> Applies(TEntity value);
+        System.Threading.Tasks.ValueTask<bool> Applies(TEntity value, System.Threading.CancellationToken cancellationToken);
         string Describes(string text);
     }
     public interface ILimitedAbstractSealedMembers

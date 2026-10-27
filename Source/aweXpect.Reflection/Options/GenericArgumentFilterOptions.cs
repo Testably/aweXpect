@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Reflection.Helpers;
 
 namespace aweXpect.Reflection.Options;
 

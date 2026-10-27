@@ -178,15 +178,15 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
+			=> await SetAsyncValue(actual, context, type => Matches(type, cancellationToken), cancellationToken);
 #endif
 
 		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, context, Matches, cancellationToken);
+			=> await SetValue(actual, context, type => Matches(type, cancellationToken), cancellationToken);
 
-		private ValueTask<bool> Matches(Type? type)
-			=> type is null ? new ValueTask<bool>(false) : memberFilter.Applies(type);
+		private ValueTask<bool> Matches(Type? type, CancellationToken cancellationToken)
+			=> type is null ? new ValueTask<bool>(false) : memberFilter.Applies(type, cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendMembers(stringBuilder.Append(scope?.Value.IsDirect() == true ? "all declare " : "all contain "));

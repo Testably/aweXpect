@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using aweXpect.Reflection.Helpers;
 #if NET8_0_OR_GREATER
+using System.Runtime.CompilerServices;
+using System.Threading;
 #endif
 
 namespace aweXpect.Reflection.Internal.Tests.Helpers;
@@ -24,6 +27,28 @@ public sealed class LinqAsyncHelpersTests
 
 		await That(result).IsEqualTo(['a', 'b', 'c',]);
 	}
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task SelectManyNotNull_WhenCanceled_ShouldStopTheEnumeration()
+	{
+		using CancellationTokenSource cts = new();
+		string?[] source = ["ab", null, "c",];
+		List<char> result = [];
+
+		async Task Act()
+		{
+			await foreach (char item in source.SelectManyNotNull(s => s).WithCancellation(cts.Token))
+			{
+				result.Add(item);
+				cts.Cancel();
+			}
+		}
+
+		await That(Act).Throws<OperationCanceledException>().WithMessage("The operation was canceled.");
+		await That(result).IsEqualTo(['a',]);
+	}
+#endif
 
 	[Test]
 	public async Task SplitWhereAnyAsync_ShouldSeparateBasedOnGeneratedItems()
@@ -86,6 +111,26 @@ public sealed class LinqAsyncHelpersTests
 	}
 
 	[Test]
+	public async Task Where_WhenCanceled_ShouldPassTheTokenToTheSource()
+	{
+		using CancellationTokenSource cts = new();
+		int[] source = [1, 2, 3, 4,];
+		List<int> result = [];
+
+		async Task Act()
+		{
+			await foreach (int item in LinqAsyncHelpers.Where(ToAsync(source), _ => true).WithCancellation(cts.Token))
+			{
+				result.Add(item);
+				cts.Cancel();
+			}
+		}
+
+		await That(Act).Throws<OperationCanceledException>().WithMessage("The operation was canceled.");
+		await That(result).IsEqualTo([1,]);
+	}
+
+	[Test]
 	public async Task WhereNotNull_FromEnumerable_ShouldYieldOnlyNonNullItems()
 	{
 		int?[] source = [1, null, 2, null, 3,];
@@ -97,6 +142,26 @@ public sealed class LinqAsyncHelpersTests
 		}
 
 		await That(result).IsEqualTo([1, 2, 3,]).InAnyOrder();
+	}
+
+	[Test]
+	public async Task WhereNotNull_FromEnumerable_WhenCanceled_ShouldStopTheEnumeration()
+	{
+		using CancellationTokenSource cts = new();
+		int?[] source = [1, null, 2, 3,];
+		List<int> result = [];
+
+		async Task Act()
+		{
+			await foreach (int? item in source.WhereNotNull().WithCancellation(cts.Token))
+			{
+				result.Add(item!.Value);
+				cts.Cancel();
+			}
+		}
+
+		await That(Act).Throws<OperationCanceledException>().WithMessage("The operation was canceled.");
+		await That(result).IsEqualTo([1,]);
 	}
 
 	[Test]
@@ -114,10 +179,12 @@ public sealed class LinqAsyncHelpersTests
 		await That(result).HasCount(3);
 	}
 
-	private static async IAsyncEnumerable<T> ToAsync<T>(IEnumerable<T> source)
+	private static async IAsyncEnumerable<T> ToAsync<T>(IEnumerable<T> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken = default)
 	{
 		foreach (T item in source)
 		{
+			cancellationToken.ThrowIfCancellationRequested();
 			await Task.Yield();
 			yield return item;
 		}
