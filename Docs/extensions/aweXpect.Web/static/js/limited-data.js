@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
-      {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          424.6598010796767,
           365.38320501645404,
           364.03650416646684,
           274.2593930134407,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           454.9328867594401,
           480.2029307229178,
           453.2711669286092,
-          467.0879783630371
+          467.0879783630371,
+          455.24834285463606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -439,7 +439,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1025.9886810302735,
           773.4784679412842,
           811.067847442627,
           603.0536935670035,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1004.6667348316738,
           1076.5203336988177,
           970.0906133651733,
-          1072.214764050075
+          1072.214764050075,
+          975.5429316929409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
-      {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          237.4439147435702,
           173.4931628704071,
           185.07311277389528,
           133.26832509040833,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           247.38296123913355,
           246.07338156018938,
           273.4376969973246,
-          253.02777807529156
+          253.02777807529156,
+          286.99714143459613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241.46031297047932,
           202.38619193663965,
           206.12943218151727,
           140.58361787455422,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           266.0521447317941,
           275.4768298222468,
           258.9641146977743,
-          273.80066193853105
+          273.80066193853105,
+          247.24771033800565
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
-      {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          722.5915974889483,
           494.4264338357108,
           536.6642543792725,
           424.7720924890958,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           883.3648537855881,
           1104.9444580811721,
           982.8758127848307,
-          979.0195956596962
+          979.0195956596962,
+          1025.7843687693278
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1677,7 +1677,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
-          1032,
+          1192,
           1192,
           1192,
           1192,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          934.5653817313058,
           736.5054408391317,
           775.6323823928833,
           475.18969110342175,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           982.2797829945882,
           1017.240454228719,
           947.1246480941772,
-          1027.860305932852
+          1027.860305932852,
+          937.1546414693197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
-      {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1839.951716014317,
           1466.3045243581137,
           1498.0231898171562,
           1127.3268191997822,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1914.5855023066204,
           1931.6328745524088,
           1870.5461195537023,
-          2007.5199420635518
+          2007.5199420635518,
+          1883.6405279795329
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20571.765236409505,
           14432.61992938702,
           15563.411768086751,
           11054.930619376046,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           18786.086873372395,
           22259.949120154746,
           20333.036416860727,
-          21958.438153948104
+          21958.438153948104,
+          21715.138553873698
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2388,7 +2388,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2411,6 +2410,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
       {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          733.2115015616783,
           556.690922609965,
           602.8258855183919,
           414.2957160656269,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           719.9084849675496,
           869.9114283879597,
           758.7382371266683,
-          907.2899378263033
+          907.2899378263033,
+          770.6974012374878
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1308.493728129069,
           1016.3863337834676,
           1043.1493726094563,
           673.9035356521606,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1316.4993698120118,
           1355.2906568967378,
           1304.1272168477376,
-          1423.5067085538592
+          1423.5067085538592,
+          1329.6421001434326
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
-        "message": "chore: Bump System.Collections.Immutable from 10.0.13 to 10.0.14 (#2087)"
-      },
-      {
         "sha": "f34312fa49a5887092f8d2afb46b06d8091b6490",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 16:18:26 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
-      "1b028951",
       "f34312fa",
       "37b17490",
       "faf8259e",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1245.7187638600667,
           944.9470197677613,
           965.5413269315447,
           766.2229170432457,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1279.2880212238856,
           1346.1458651678902,
           1269.948884646098,
-          1378.3229776109968
+          1378.3229776109968,
+          1323.4745032446724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3479,7 +3479,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
-          1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          741.7925015177045,
           587.7655124664307,
           613.0422325770061,
           411.7090767621994,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           772.4098425547282,
           807.9884814580281,
           731.0361295846792,
-          792.1811717351278
+          792.1811717351278,
+          750.3739574432373
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
