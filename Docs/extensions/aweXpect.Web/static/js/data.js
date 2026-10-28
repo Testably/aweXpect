@@ -1158,6 +1158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -1353,7 +1359,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -1552,7 +1559,8 @@ window.BENCHMARK_DATA = {
           456.01056003570557,
           212.62073295457023,
           478.6094778060913,
-          457.49622230529786
+          457.49622230529786,
+          488.1308433532715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1732,6 +1740,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1963,7 +1972,8 @@ window.BENCHMARK_DATA = {
           1136.7805593930757,
           474.0762982368469,
           1070.9929101126534,
-          1021.4798039027622
+          1021.4798039027622,
+          925.5554426738194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1975,6 +1985,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3339,6 +3350,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -3534,7 +3551,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -3733,7 +3751,8 @@ window.BENCHMARK_DATA = {
           269.49409039815265,
           113.97554241759437,
           249.41025761195593,
-          259.32427620887756
+          259.32427620887756,
+          231.6196001493014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3880,6 +3899,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4144,7 +4164,8 @@ window.BENCHMARK_DATA = {
           320.31061731974285,
           122.06529651369367,
           273.7050013175377,
-          267.05627039500644
+          267.05627039500644,
+          247.11147050857545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4156,6 +4177,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5460,6 +5482,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -5645,7 +5673,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -5834,7 +5863,8 @@ window.BENCHMARK_DATA = {
           744.1217367989676,
           475.842946879069,
           1032.5758972167969,
-          976.4981702168783
+          976.4981702168783,
+          970.3885461262295
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6026,6 +6056,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192
@@ -6225,7 +6256,8 @@ window.BENCHMARK_DATA = {
           1102.59083543505,
           454.2289246045626,
           1101.2028221130372,
-          1027.4066754659018
+          1027.4066754659018,
+          926.7154275349209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6237,6 +6269,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -7531,6 +7564,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -7716,7 +7755,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -7905,7 +7945,8 @@ window.BENCHMARK_DATA = {
           1676.5335039774577,
           1048.671103922526,
           1958.8783255985804,
-          1910.9118482149565
+          1910.9118482149565,
+          1955.3485249110631
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8044,6 +8085,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -8296,7 +8338,8 @@ window.BENCHMARK_DATA = {
           17193.50115356445,
           9380.347384134928,
           22459.962811279296,
-          22429.298300606864
+          22429.298300606864,
+          20191.194490559898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8488,6 +8531,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -9602,6 +9646,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -9787,7 +9837,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -9976,7 +10027,8 @@ window.BENCHMARK_DATA = {
           750.5178563044622,
           410.72088912328087,
           790.5419354120891,
-          798.5347500528608
+          798.5347500528608,
+          732.9516418163593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10115,6 +10167,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -10367,7 +10420,8 @@ window.BENCHMARK_DATA = {
           1474.2933091481527,
           688.5845597130912,
           1437.2649509429932,
-          1410.389205796378
+          1410.389205796378,
+          1255.4042546198918
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10379,6 +10433,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -11673,6 +11728,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
@@ -11858,7 +11919,8 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
@@ -12047,7 +12109,8 @@ window.BENCHMARK_DATA = {
           1151.0647342999775,
           744.3508659998575,
           1373.2333023364727,
-          1326.3084732055663
+          1326.3084732055663,
+          1237.9065493070161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12217,6 +12280,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -12438,7 +12502,8 @@ window.BENCHMARK_DATA = {
           924.860945447286,
           377.19361083848133,
           836.3457184473674,
-          862.400163430434
+          862.400163430434,
+          740.1350386483329
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12450,6 +12515,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
