@@ -120,11 +120,24 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a string content equal to "foo",
-					             but it had a <null> content
+					             but it had string content "" with a length of 0, which is shorter than the expected length of 3 and misses:
+					               "foo"
 
 					             HTTP-Request:
 					               GET https://awexpect.com/ HTTP/1.1
 					             """);
+			}
+
+			[Test]
+			public async Task WhenContentIsNull_ShouldTreatItAsEmpty()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
+
+				async Task Act()
+					=> await That(subject).HasContent("");
+
+				await That(Act).DoesNotThrow()
+					.Because("HTTP does not distinguish a missing body from an empty one");
 			}
 
 			[Test]

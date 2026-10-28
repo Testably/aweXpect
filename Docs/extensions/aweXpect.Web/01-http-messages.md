@@ -177,8 +177,8 @@ await Expect.That(request).DoesNotHaveContent("");
 
 The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. A request without
-content does not have the unexpected content. To negate the nested expectations, use
-`DoesNotComplyWith(it => it.HasContent(content => ...))`.
+content has an empty content, like a response, as HTTP does not distinguish a missing body from an empty one. To
+negate the nested expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`.
 
 ## `HttpResponseMessage`
 
