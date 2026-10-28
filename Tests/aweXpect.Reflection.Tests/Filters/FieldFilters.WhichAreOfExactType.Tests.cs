@@ -4,22 +4,21 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class FieldFilters
 {
-	public sealed class OfType
+	public sealed class WhichAreOfExactType
 	{
 		public sealed class GenericTests
 		{
 			[Test]
-			public async Task ShouldFilterForFieldsWhichImplementType()
+			public async Task ShouldFilterForFieldsWithType()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfType<DummyBase>();
+					.Fields().WhichAreOfExactType<DummyBase>();
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
-					.IsEqualTo("fields of type FieldFilters.OfType.DummyBase in assembly")
+					.IsEqualTo("fields of exact type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}
@@ -28,17 +27,16 @@ public sealed partial class FieldFilters
 		public sealed class TypeTests
 		{
 			[Test]
-			public async Task ShouldFilterForFieldsWhichImplementType()
+			public async Task ShouldFilterForFieldsWithType()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfType(typeof(DummyBase));
+					.Fields().WhichAreOfExactType(typeof(DummyBase));
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
-					.IsEqualTo("fields of type FieldFilters.OfType.DummyBase in assembly")
+					.IsEqualTo("fields of exact type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}
@@ -47,19 +45,18 @@ public sealed partial class FieldFilters
 		public sealed class OrOfTypeGenericTests
 		{
 			[Test]
-			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
+			public async Task FirstCheckIsOfType_ShouldNotAllowDerivedTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfExactType<OtherDummy>().OrOfType<DummyBase>();
+					.Fields().WhichAreOfType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 					typeof(TestClass).GetField(nameof(TestClass.OtherDummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields of exact type FieldFilters.OfType.OtherDummy or of type FieldFilters.OfType.DummyBase in assembly")
+						"fields of type FieldFilters.WhichAreOfExactType.OtherDummy or of exact type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 
@@ -67,16 +64,15 @@ public sealed partial class FieldFilters
 			public async Task ShouldFilterForFieldsWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfType<OtherDummy>().OrOfType<DummyBase>();
+					.Fields().WhichAreOfExactType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 					typeof(TestClass).GetField(nameof(TestClass.OtherDummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields of type FieldFilters.OfType.OtherDummy or of type FieldFilters.OfType.DummyBase in assembly")
+						"fields of exact type FieldFilters.WhichAreOfExactType.OtherDummy or of exact type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}
@@ -88,7 +84,7 @@ public sealed partial class FieldFilters
 			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfExactType(typeof(OtherDummy)).OrOfType(typeof(DummyBase));
+					.Fields().WhichAreOfExactType(typeof(OtherDummy)).OrOfType(typeof(DummyBase));
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
@@ -97,7 +93,7 @@ public sealed partial class FieldFilters
 				]).InAnyOrder();
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields of exact type FieldFilters.OfType.OtherDummy or of type FieldFilters.OfType.DummyBase in assembly")
+						"fields of exact type FieldFilters.WhichAreOfExactType.OtherDummy or of type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 
@@ -105,7 +101,7 @@ public sealed partial class FieldFilters
 			public async Task ShouldFilterForFieldsWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Fields fields = In.AssemblyContaining<AssemblyFilters>()
-					.Fields().OfType<OtherDummy>().OrOfType(typeof(DummyBase));
+					.Fields().WhichAreOfType<OtherDummy>().OrOfType(typeof(DummyBase));
 
 				await That(fields).IsEqualTo([
 					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
@@ -114,7 +110,7 @@ public sealed partial class FieldFilters
 				]).InAnyOrder();
 				await That(fields.GetDescription())
 					.IsEqualTo(
-						"fields of type FieldFilters.OfType.OtherDummy or of type FieldFilters.OfType.DummyBase in assembly")
+						"fields of type FieldFilters.WhichAreOfExactType.OtherDummy or of type FieldFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}

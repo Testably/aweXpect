@@ -10,13 +10,13 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Filter for fields of type <typeparamref name="TField" />.
 	/// </summary>
-	public static FieldsOfType OfType<TField>(this Filtered.Fields @this)
-		=> OfType(@this, typeof(TField));
+	public static FieldsOfType WhichAreOfType<TField>(this Filtered.Fields @this)
+		=> WhichAreOfType(@this, typeof(TField));
 
 	/// <summary>
 	///     Filter for fields of type <paramref name="fieldType" />.
 	/// </summary>
-	public static FieldsOfType OfType(this Filtered.Fields @this,
+	public static FieldsOfType WhichAreOfType(this Filtered.Fields @this,
 		Type fieldType)
 	{
 		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
@@ -28,13 +28,13 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Filter for fields not of type <typeparamref name="TField" />.
 	/// </summary>
-	public static Filtered.Fields NotOfType<TField>(this Filtered.Fields @this)
-		=> NotOfType(@this, typeof(TField));
+	public static Filtered.Fields WhichAreNotOfType<TField>(this Filtered.Fields @this)
+		=> WhichAreNotOfType(@this, typeof(TField));
 
 	/// <summary>
 	///     Filter for fields not of type <paramref name="fieldType" />.
 	/// </summary>
-	public static Filtered.Fields NotOfType(this Filtered.Fields @this,
+	public static Filtered.Fields WhichAreNotOfType(this Filtered.Fields @this,
 		Type fieldType)
 		=> @this.Which(Filter.Suffix<FieldInfo>(
 			fieldInfo => !fieldInfo.FieldType.IsOrInheritsFrom(fieldType),

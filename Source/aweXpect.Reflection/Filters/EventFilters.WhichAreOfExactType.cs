@@ -10,13 +10,13 @@ public static partial class EventFilters
 	/// <summary>
 	///     Filter for events with a handler of exact type <typeparamref name="THandler" />.
 	/// </summary>
-	public static EventsOfType OfExactType<THandler>(this Filtered.Events @this)
-		=> OfExactType(@this, typeof(THandler));
+	public static EventsOfType WhichAreOfExactType<THandler>(this Filtered.Events @this)
+		=> WhichAreOfExactType(@this, typeof(THandler));
 
 	/// <summary>
 	///     Filter for events with a handler of exact type <paramref name="handlerType" />.
 	/// </summary>
-	public static EventsOfType OfExactType(this Filtered.Events @this,
+	public static EventsOfType WhichAreOfExactType(this Filtered.Events @this,
 		Type handlerType)
 	{
 		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
@@ -28,13 +28,13 @@ public static partial class EventFilters
 	/// <summary>
 	///     Filter for events without a handler of exact type <typeparamref name="THandler" />.
 	/// </summary>
-	public static Filtered.Events NotOfExactType<THandler>(this Filtered.Events @this)
-		=> NotOfExactType(@this, typeof(THandler));
+	public static Filtered.Events WhichAreNotOfExactType<THandler>(this Filtered.Events @this)
+		=> WhichAreNotOfExactType(@this, typeof(THandler));
 
 	/// <summary>
 	///     Filter for events without a handler of exact type <paramref name="handlerType" />.
 	/// </summary>
-	public static Filtered.Events NotOfExactType(this Filtered.Events @this,
+	public static Filtered.Events WhichAreNotOfExactType(this Filtered.Events @this,
 		Type handlerType)
 		=> @this.Which(Filter.Suffix<EventInfo>(
 			eventInfo => !eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType, true),

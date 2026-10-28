@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class MethodFilters
 {
-	public sealed class WithoutParameters
+	public sealed class WithNoParameters
 	{
 		public sealed class Tests
 		{
@@ -12,7 +12,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldFilterForMethodsWithoutParameters()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithoutParameters();
+					.Methods().WithNoParameters();
 
 				await That(methods).Contains(ExpectedParameterlessMethodInfo());
 				await That(methods.GetDescription())
@@ -24,7 +24,7 @@ public sealed partial class MethodFilters
 			public async Task ShouldNotIncludeMethodsWithParameters()
 			{
 				Filtered.Methods methods = In.AssemblyContaining<AssemblyFilters>()
-					.Methods().WithoutParameters();
+					.Methods().WithNoParameters();
 
 				await That(methods).DoesNotContain(ExpectedSingleParameterMethodInfo());
 				await That(methods).DoesNotContain(ExpectedMultipleParameterMethodInfo());

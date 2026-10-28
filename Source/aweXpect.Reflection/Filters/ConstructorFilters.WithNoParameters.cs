@@ -7,6 +7,6 @@ public static partial class ConstructorFilters
 	/// <summary>
 	///     Filter for constructors without parameters.
 	/// </summary>
-	public static Filtered.Constructors WithoutParameters(this Filtered.Constructors @this)
+	public static Filtered.Constructors WithNoParameters(this Filtered.Constructors @this)
 		=> @this.WithParameterCount(0);
 }

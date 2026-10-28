@@ -7,6 +7,6 @@ public static partial class MethodFilters
 	/// <summary>
 	///     Filter for methods without parameters.
 	/// </summary>
-	public static Filtered.Methods WithoutParameters(this Filtered.Methods @this)
+	public static Filtered.Methods WithNoParameters(this Filtered.Methods @this)
 		=> @this.WithParameterCount(0);
 }

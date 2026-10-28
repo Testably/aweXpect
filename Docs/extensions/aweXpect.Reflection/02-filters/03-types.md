@@ -93,7 +93,7 @@ In.AllLoadedAssemblies().Types()
     .WhichContainProperties(properties => properties.With<RequiredAttribute>())
     .WhichContainFields(fields => fields.WithName("_").AsPrefix())
     .WhichContainEvents(events => events.With<ObsoleteAttribute>())
-    .WhichContainConstructors(constructors => constructors.WithoutParameters())
+    .WhichContainConstructors(constructors => constructors.WithNoParameters())
 ```
 
 By default a type matches when it contains **at least one** matching member. Append a quantifier (the same
@@ -102,7 +102,7 @@ specific count:
 
 ```csharp
 In.AllLoadedAssemblies().Types()
-    .WhichContainConstructors(c => c.WithoutParameters()).Exactly(1)
+    .WhichContainConstructors(c => c.WithNoParameters()).Exactly(1)
     .WhichContainMethods(m => m.With<ObsoleteAttribute>()).Never()
     .WhichContainProperties(p => p.With<RequiredAttribute>()).AtLeast(2)
     .WhichContainFields(f => f.WhichArePrivate()).Between(1).And(5)
@@ -132,7 +132,7 @@ await Expect.That(typeof(PlaylistServiceTests))
 
 // …with exactly one parameterless constructor
 await Expect.That(typeof(PlaylistService))
-    .ContainsConstructors(constructors => constructors.WithoutParameters()).Exactly(1);
+    .ContainsConstructors(constructors => constructors.WithNoParameters()).Exactly(1);
 
 // Every type in a collection contains a matching property
 await Expect.That(types)

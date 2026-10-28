@@ -102,7 +102,7 @@ public sealed partial class TypeFilters
 				[Test]
 				public async Task WhenTypeMatchesTheTypeExactlyAtTheGivenIndex_ShouldNotChangeTheFilterItWasCalledOn()
 				{
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument withArgument = In
+					Reflection.TypeFilters.GenericTypesWithArgument withArgument = In
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
@@ -138,7 +138,7 @@ public sealed partial class TypeFilters
 				[Test]
 				public async Task WhenTypeMatchesTheTypeExactlyAtTheGivenIndexFromEnd_ShouldNotChangeTheFilterItWasCalledOn()
 				{
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument withArgument = In
+					Reflection.TypeFilters.GenericTypesWithArgument withArgument = In
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
@@ -430,14 +430,14 @@ public sealed partial class TypeFilters
 				[Test]
 				public async Task WhenAStoredFilterIsContinuedTwice_ShouldKeepTheOptionsApart()
 				{
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument stored = In
+					Reflection.TypeFilters.GenericTypesWithNamedArgument stored = In
 						.AssemblyContaining<WhichAreGeneric>()
 						.Types().WithName("MyGenericTestClass").AsPrefix()
 						.WhichAreGeneric()
 						.WithArgument("T").AsPrefix();
 
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument atIndex1 = stored.AtIndex(1);
-					Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument fromEnd1 = stored.AtIndexFromEnd(1);
+					Reflection.TypeFilters.GenericTypesWithNamedArgument atIndex1 = stored.AtIndex(1);
+					Reflection.TypeFilters.GenericTypesWithNamedArgument fromEnd1 = stored.AtIndexFromEnd(1);
 
 					await That(stored).HasCount(2)
 						.Because("AtIndex and AtIndexFromEnd must return a new filter instead of changing the one they were called on");

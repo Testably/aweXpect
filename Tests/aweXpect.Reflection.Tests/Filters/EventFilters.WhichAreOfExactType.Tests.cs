@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class EventFilters
 {
-	public sealed class OfExactType
+	public sealed class WhichAreOfExactType
 	{
 		public delegate void CustomHandler();
 
@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 			public async Task ShouldFilterForEventsWithExactHandlerType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().OfExactType<EventHandler>();
+					.Events().WhichAreOfExactType<EventHandler>();
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
@@ -28,7 +28,7 @@ public sealed partial class EventFilters
 			public async Task ShouldNotFilterForEventsWhichOnlyInheritTheType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().OfExactType<MulticastDelegate>();
+					.Events().WhichAreOfExactType<MulticastDelegate>();
 
 				await That(events).IsEmpty();
 				await That(events.GetDescription())
@@ -52,7 +52,7 @@ public sealed partial class EventFilters
 			public async Task ShouldFilterForEventsWithExactHandlerType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().OfExactType(typeof(EventHandler));
+					.Events().WhichAreOfExactType(typeof(EventHandler));
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
@@ -69,7 +69,7 @@ public sealed partial class EventFilters
 			public async Task ShouldFilterForEventsWhichMatchAnyOfTheGivenExactTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().OfExactType<EventHandler>().OrOfExactType<CustomHandler>();
+					.Events().WhichAreOfExactType<EventHandler>().OrOfExactType<CustomHandler>();
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
@@ -77,7 +77,7 @@ public sealed partial class EventFilters
 				]).InAnyOrder();
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events of exact type EventHandler or of exact type EventFilters.OfExactType.CustomHandler in type")
+						"events of exact type EventHandler or of exact type EventFilters.WhichAreOfExactType.CustomHandler in type")
 					.AsPrefix();
 			}
 		}
@@ -88,7 +88,7 @@ public sealed partial class EventFilters
 			public async Task ShouldFilterForEventsWhichMatchAnyOfTheGivenExactTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().OfExactType<EventHandler>().OrOfExactType(typeof(CustomHandler));
+					.Events().WhichAreOfExactType<EventHandler>().OrOfExactType(typeof(CustomHandler));
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.EventHandlerEvent))!,
@@ -96,7 +96,7 @@ public sealed partial class EventFilters
 				]).InAnyOrder();
 				await That(events.GetDescription())
 					.IsEqualTo(
-						"events of exact type EventHandler or of exact type EventFilters.OfExactType.CustomHandler in type")
+						"events of exact type EventHandler or of exact type EventFilters.WhichAreOfExactType.CustomHandler in type")
 					.AsPrefix();
 			}
 		}

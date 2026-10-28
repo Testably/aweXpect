@@ -11,8 +11,8 @@ In addition to [access modifiers](./01-common-filters.md#access-modifiers),
 
 |                                        | Filter                                      | Expect (single)                 | Expect (many)                     | Negated                                                                                                       |
 |----------------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------|
-| of type (or a subtype)                 | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `NotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                           |
-| of exact type                          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `NotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                            |
+| of type (or a subtype)                 | `.WhichAreOfType<T>()`                      | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `WhichAreNotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                   |
+| of exact type                          | `.WhichAreOfExactType<T>()`                 | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `WhichAreNotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                    |
 | static *(properties & fields)*         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                                                            |
 | nullable *(properties & fields)*       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  | `WhichAreNotNullable`, `IsNotNullable`, `AreNotNullable`                                                      |
 | abstract / sealed *(properties only)*  | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` | `WhichAreNotAbstract`, `IsNotAbstract`, `AreNotAbstract` / `WhichAreNotSealed`, `IsNotSealed`, `AreNotSealed` |
@@ -42,19 +42,19 @@ the plural forms). A property that is *not read-write* is either read-only or wr
 `WhichAreExtensionProperties()`, `IsAnExtensionProperty()` and `AreExtensionProperties()` match extension properties
 declared with the C# extension block syntax (`extension(...) { … }`), both instance and static.
 
-Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types. The negations `NotOfType` / `IsNotOfType` /
-`AreNotOfType` (and the `…ExactType` forms) have no `Or…` companion: chain `.NotOfType<T1>().NotOfType<T2>()` (or
-combine expectations with `.And`) to exclude several types. On a collection, `AreNotOfType<T>()` verifies that
-*none* of the items is of the type.
+Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several types. The negations `WhichAreNotOfType` /
+`IsNotOfType` / `AreNotOfType` (and the `…ExactType` forms) have no `Or…` companion: chain
+`.WhichAreNotOfType<T1>().WhichAreNotOfType<T2>()` (or combine expectations with `.And`) to exclude several types.
+On a collection, `AreNotOfType<T>()` verifies that *none* of the items is of the type.
 
 ```csharp
 In.AllLoadedAssemblies().Public.Properties()
-    .OfType<string>()
+    .WhichAreOfType<string>()
     .WithName("Id").AsSuffix()
     .With<RequiredAttribute>()
 
 In.AllLoadedAssemblies().Private.Fields()
-    .OfType<ILogger>()
+    .WhichAreOfType<ILogger>()
     .WithName("_").AsPrefix()
 ```
 
@@ -94,18 +94,18 @@ In addition to [access modifiers](./01-common-filters.md#access-modifiers),
 
 |                                | Filter                                      | Expect (single)                 | Expect (many)                     | Negated                                                                                                       |
 |--------------------------------|---------------------------------------------|---------------------------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------|
-| handler of type (or a subtype) | `.OfType<T>()`                              | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `NotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                           |
-| handler of exact type          | `.OfExactType<T>()`                         | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `NotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                            |
+| handler of type (or a subtype) | `.WhichAreOfType<T>()`                      | `.IsOfType<T>()`                | `.AreOfType<T>()`                 | `WhichAreNotOfType<T>`, `IsNotOfType<T>`, `AreNotOfType<T>`                                                   |
+| handler of exact type          | `.WhichAreOfExactType<T>()`                 | `.IsOfExactType<T>()`           | `.AreOfExactType<T>()`            | `WhichAreNotOfExactType<T>`, `IsNotOfExactType<T>`, `AreNotOfExactType<T>`                                    |
 | abstract / sealed              | `.WhichAreAbstract()` / `.WhichAreSealed()` | `.IsAbstract()` / `.IsSealed()` | `.AreAbstract()` / `.AreSealed()` | `WhichAreNotAbstract`, `IsNotAbstract`, `AreNotAbstract` / `WhichAreNotSealed`, `IsNotSealed`, `AreNotSealed` |
 | static                         | `.WhichAreStatic()`                         | `.IsStatic()`                   | `.AreStatic()`                    | `WhichAreNotStatic`, `IsNotStatic`, `AreNotStatic`                                                            |
 | virtual                        | `.WhichAreVirtual()`                        | `.IsVirtual()`                  | `.AreVirtual()`                   | `WhichAreNotVirtual`, `IsNotVirtual`, `AreNotVirtual`                                                         |
 | override                       | `.WhichOverride()`                          | `.Overrides()`                  | `.Override()`                     | `WhichDoNotOverride`, `DoesNotOverride`, `DoNotOverride`                                                      |
 | nullable                       | `.WhichAreNullable()`                       | `.IsNullable()`                 | `.AreNullable()`                  | `WhichAreNotNullable`, `IsNotNullable`, `AreNotNullable`                                                      |
 
-The `OfType` / `IsOfType` / `AreOfType` filters and expectations match the event's handler type (its
+The `WhichAreOfType` / `IsOfType` / `AreOfType` filters and expectations match the event's handler type (its
 `EventHandlerType`, e.g. `EventHandler<T>`); the `…ExactType` variants match only the exact handler type.
 Use `OrOfType<T>()` / `OrOfExactType<T>()` to allow several handler types, and chain
-`.NotOfType<T1>().NotOfType<T2>()` to exclude several.
+`.WhichAreNotOfType<T1>().WhichAreNotOfType<T2>()` to exclude several.
 
 An event counts as *nullable* when its handler type is annotated as nullable
 (e.g. `event EventHandler? Changed;`), following the same [nullability](#nullability) rules as
@@ -117,7 +117,7 @@ await Expect.That(In.AllLoadedAssemblies().Public.Events())
     .AreOfType(typeof(EventHandler<>));
 
 In.AllLoadedAssemblies().Public.Events()
-    .OfType<EventHandler>()
+    .WhichAreOfType<EventHandler>()
     .WithName("Changed").AsSuffix()
     .With<ObsoleteAttribute>()
 ```

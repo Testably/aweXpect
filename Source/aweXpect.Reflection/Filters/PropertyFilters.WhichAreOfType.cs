@@ -10,13 +10,13 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Filter for properties of type <typeparamref name="TProperty" />.
 	/// </summary>
-	public static PropertiesOfType OfType<TProperty>(this Filtered.Properties @this)
-		=> OfType(@this, typeof(TProperty));
+	public static PropertiesOfType WhichAreOfType<TProperty>(this Filtered.Properties @this)
+		=> WhichAreOfType(@this, typeof(TProperty));
 
 	/// <summary>
 	///     Filter for properties of type <paramref name="propertyType" />.
 	/// </summary>
-	public static PropertiesOfType OfType(this Filtered.Properties @this,
+	public static PropertiesOfType WhichAreOfType(this Filtered.Properties @this,
 		Type propertyType)
 	{
 		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
@@ -28,13 +28,13 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Filter for properties not of type <typeparamref name="TProperty" />.
 	/// </summary>
-	public static Filtered.Properties NotOfType<TProperty>(this Filtered.Properties @this)
-		=> NotOfType(@this, typeof(TProperty));
+	public static Filtered.Properties WhichAreNotOfType<TProperty>(this Filtered.Properties @this)
+		=> WhichAreNotOfType(@this, typeof(TProperty));
 
 	/// <summary>
 	///     Filter for properties not of type <paramref name="propertyType" />.
 	/// </summary>
-	public static Filtered.Properties NotOfType(this Filtered.Properties @this,
+	public static Filtered.Properties WhichAreNotOfType(this Filtered.Properties @this,
 		Type propertyType)
 		=> @this.Which(Filter.Suffix<PropertyInfo>(
 			propertyInfo => !propertyInfo.PropertyType.IsOrInheritsFrom(propertyType),

@@ -10,13 +10,13 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Filter for fields of exact type <typeparamref name="TField" />.
 	/// </summary>
-	public static FieldsOfType OfExactType<TField>(this Filtered.Fields @this)
-		=> OfExactType(@this, typeof(TField));
+	public static FieldsOfType WhichAreOfExactType<TField>(this Filtered.Fields @this)
+		=> WhichAreOfExactType(@this, typeof(TField));
 
 	/// <summary>
 	///     Filter for fields of exact type <paramref name="fieldType" />.
 	/// </summary>
-	public static FieldsOfType OfExactType(this Filtered.Fields @this,
+	public static FieldsOfType WhichAreOfExactType(this Filtered.Fields @this,
 		Type fieldType)
 	{
 		Filter.GenericFilter<FieldInfo> filter = Filter.Suffix<FieldInfo>(
@@ -28,13 +28,13 @@ public static partial class FieldFilters
 	/// <summary>
 	///     Filter for fields not of exact type <typeparamref name="TField" />.
 	/// </summary>
-	public static Filtered.Fields NotOfExactType<TField>(this Filtered.Fields @this)
-		=> NotOfExactType(@this, typeof(TField));
+	public static Filtered.Fields WhichAreNotOfExactType<TField>(this Filtered.Fields @this)
+		=> WhichAreNotOfExactType(@this, typeof(TField));
 
 	/// <summary>
 	///     Filter for fields not of exact type <paramref name="fieldType" />.
 	/// </summary>
-	public static Filtered.Fields NotOfExactType(this Filtered.Fields @this,
+	public static Filtered.Fields WhichAreNotOfExactType(this Filtered.Fields @this,
 		Type fieldType)
 		=> @this.Which(Filter.Suffix<FieldInfo>(
 			fieldInfo => !fieldInfo.FieldType.IsOrInheritsFrom(fieldType, true),

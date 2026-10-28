@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class EventFilters
 {
-	public sealed class NotOfType
+	public sealed class WhichAreNotOfType
 	{
 		public delegate void CustomHandler();
 
@@ -14,7 +14,7 @@ public sealed partial class EventFilters
 			public async Task ShouldFilterForEventsNotOfType()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().NotOfType<EventHandler>();
+					.Events().WhichAreNotOfType<EventHandler>();
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.CustomHandlerEvent))!,
@@ -28,7 +28,7 @@ public sealed partial class EventFilters
 			public async Task ShouldIncludeDerivedHandlerTypes()
 			{
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().NotOfType<Delegate>();
+					.Events().WhichAreNotOfType<Delegate>();
 
 				await That(events).IsEmpty();
 			}
@@ -38,7 +38,7 @@ public sealed partial class EventFilters
 			{
 				Type unexpectedType = typeof(EventHandler);
 				Filtered.Events events = In.Type<TestClass>()
-					.Events().NotOfType(unexpectedType);
+					.Events().WhichAreNotOfType(unexpectedType);
 
 				await That(events).IsEqualTo([
 					typeof(TestClass).GetEvent(nameof(TestClass.CustomHandlerEvent))!,

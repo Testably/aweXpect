@@ -83,7 +83,7 @@ await Expect.That(In.AssemblyContaining<Playlist>()
 // Verify each serializable type has exactly one parameterless constructor
 await Expect.That(In.AllLoadedAssemblies()
         .Types().With<SerializableAttribute>())
-    .ContainConstructors(c => c.WithoutParameters()).Exactly(1);
+    .ContainConstructors(c => c.WithNoParameters()).Exactly(1);
 ```
 
 ## Overview
@@ -100,13 +100,13 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 - [Methods, operators and constructors](./02-filters/04-methods.md): return types and parameters, e.g.
   `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>` or `WithParameter<T>` / `HasParameter<T>`
 - [Properties, fields and events](./02-filters/05-properties-fields-and-events.md): member types, nullability and
-  accessors, e.g. `OfType<T>` / `IsOfType<T>` or `WhichAreRequired` / `IsRequired`
+  accessors, e.g. `WhichAreOfType<T>` / `IsOfType<T>` or `WhichAreRequired` / `IsRequired`
 
 The [overview](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#overview) lists all topics,
 including combined filters, custom predicates (`Which` / `Satisfies`, `Except`) and quantifiers.
 
 Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
-`WithoutNamespace` / `DoesNotHaveNamespace`, `NotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
+`WithoutNamespace` / `DoesNotHaveNamespace`, `WhichAreNotOfType<T>` / `IsNotOfType<T>`, `WhichDoNotReturn<T>` /
 `DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
 On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
 match. The tables in

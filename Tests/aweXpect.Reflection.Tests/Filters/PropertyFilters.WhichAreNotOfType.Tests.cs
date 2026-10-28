@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class PropertyFilters
 {
-	public sealed class NotOfType
+	public sealed class WhichAreNotOfType
 	{
 		public sealed class Tests
 		{
@@ -12,13 +12,13 @@ public sealed partial class PropertyFilters
 			public async Task ShouldFilterForPropertiesNotOfType()
 			{
 				Filtered.Properties properties = In.Type<TestClass>()
-					.Properties().NotOfType<DummyBase>();
+					.Properties().WhichAreNotOfType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties not of type PropertyFilters.NotOfType.DummyBase in")
+					.IsEqualTo("properties not of type PropertyFilters.WhichAreNotOfType.DummyBase in")
 					.AsPrefix();
 			}
 
@@ -26,14 +26,14 @@ public sealed partial class PropertyFilters
 			public async Task ShouldSupportChainingToExcludeSeveralTypes()
 			{
 				Filtered.Properties properties = In.Type<TestClass>()
-					.Properties().NotOfType<Dummy>().NotOfType<OtherDummy>();
+					.Properties().WhichAreNotOfType<Dummy>().WhichAreNotOfType<OtherDummy>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties not of type PropertyFilters.NotOfType.Dummy not of type PropertyFilters.NotOfType.OtherDummy in")
+						"properties not of type PropertyFilters.WhichAreNotOfType.Dummy not of type PropertyFilters.WhichAreNotOfType.OtherDummy in")
 					.AsPrefix();
 			}
 
@@ -42,13 +42,13 @@ public sealed partial class PropertyFilters
 			{
 				Type unexpectedType = typeof(DummyBase);
 				Filtered.Properties properties = In.Type<TestClass>()
-					.Properties().NotOfType(unexpectedType);
+					.Properties().WhichAreNotOfType(unexpectedType);
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties not of type PropertyFilters.NotOfType.DummyBase in")
+					.IsEqualTo("properties not of type PropertyFilters.WhichAreNotOfType.DummyBase in")
 					.AsPrefix();
 			}
 		}

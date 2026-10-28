@@ -4,51 +4,38 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class FieldFilters
 {
-	public sealed class NotOfType
+	public sealed class WhichAreNotOfExactType
 	{
 		public sealed class Tests
 		{
 			[Test]
-			public async Task ShouldFilterForFieldsNotOfType()
+			public async Task ShouldFilterForFieldsNotOfExactType()
 			{
 				Filtered.Fields fields = In.Type<TestClass>()
-					.Fields().NotOfType<DummyBase>();
+					.Fields().WhichAreNotOfExactType<DummyBase>();
 
 				await That(fields).IsEqualTo([
+					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 					typeof(TestClass).GetField(nameof(TestClass.OtherDummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
-					.IsEqualTo("fields not of type FieldFilters.NotOfType.DummyBase in")
+					.IsEqualTo("fields not of exact type FieldFilters.WhichAreNotOfExactType.DummyBase in")
 					.AsPrefix();
 			}
 
 			[Test]
-			public async Task ShouldSupportChainingToExcludeSeveralTypes()
-			{
-				Filtered.Fields fields = In.Type<TestClass>()
-					.Fields().NotOfType<Dummy>().NotOfType<OtherDummy>();
-
-				await That(fields).IsEqualTo([
-					typeof(TestClass).GetField(nameof(TestClass.DummyBaseField))!,
-				]).InAnyOrder();
-				await That(fields.GetDescription())
-					.IsEqualTo(
-						"fields not of type FieldFilters.NotOfType.Dummy not of type FieldFilters.NotOfType.OtherDummy in")
-					.AsPrefix();
-			}
-
-			[Test]
-			public async Task WithType_ShouldFilterForFieldsNotOfType()
+			public async Task WithType_ShouldFilterForFieldsNotOfExactType()
 			{
 				Type unexpectedType = typeof(DummyBase);
 				Filtered.Fields fields = In.Type<TestClass>()
-					.Fields().NotOfType(unexpectedType);
+					.Fields().WhichAreNotOfExactType(unexpectedType);
 
 				await That(fields).IsEqualTo([
+					typeof(TestClass).GetField(nameof(TestClass.DummyField))!,
 					typeof(TestClass).GetField(nameof(TestClass.OtherDummyField))!,
 				]).InAnyOrder();
 				await That(fields.GetDescription())
-					.IsEqualTo("fields not of type FieldFilters.NotOfType.DummyBase in")
+					.IsEqualTo("fields not of exact type FieldFilters.WhichAreNotOfExactType.DummyBase in")
 					.AsPrefix();
 			}
 		}

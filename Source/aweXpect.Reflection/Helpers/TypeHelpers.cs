@@ -769,7 +769,7 @@ internal static class TypeHelpers
 	///     (a base class) or implements it (an interface), anywhere in the inheritance tree.
 	/// </summary>
 	/// <remarks>
-	///     Used for member-type assignability matching (e.g. <c>OfType</c>); for the base-class-only inheritance check
+	///     Used for member-type assignability matching (e.g. <c>WhichAreOfType</c>); for the base-class-only inheritance check
 	///     used by type assertions see <see cref="InheritsFromClass" />.
 	/// </remarks>
 	/// <param name="type">The <see cref="Type" />.</param>

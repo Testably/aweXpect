@@ -10,13 +10,13 @@ public static partial class EventFilters
 	/// <summary>
 	///     Filter for events with a handler of type <typeparamref name="THandler" />.
 	/// </summary>
-	public static EventsOfType OfType<THandler>(this Filtered.Events @this)
-		=> OfType(@this, typeof(THandler));
+	public static EventsOfType WhichAreOfType<THandler>(this Filtered.Events @this)
+		=> WhichAreOfType(@this, typeof(THandler));
 
 	/// <summary>
 	///     Filter for events with a handler of type <paramref name="handlerType" />.
 	/// </summary>
-	public static EventsOfType OfType(this Filtered.Events @this,
+	public static EventsOfType WhichAreOfType(this Filtered.Events @this,
 		Type handlerType)
 	{
 		Filter.GenericFilter<EventInfo> filter = Filter.Suffix<EventInfo>(
@@ -28,13 +28,13 @@ public static partial class EventFilters
 	/// <summary>
 	///     Filter for events without a handler of type <typeparamref name="THandler" />.
 	/// </summary>
-	public static Filtered.Events NotOfType<THandler>(this Filtered.Events @this)
-		=> NotOfType(@this, typeof(THandler));
+	public static Filtered.Events WhichAreNotOfType<THandler>(this Filtered.Events @this)
+		=> WhichAreNotOfType(@this, typeof(THandler));
 
 	/// <summary>
 	///     Filter for events without a handler of type <paramref name="handlerType" />.
 	/// </summary>
-	public static Filtered.Events NotOfType(this Filtered.Events @this,
+	public static Filtered.Events WhichAreNotOfType(this Filtered.Events @this,
 		Type handlerType)
 		=> @this.Which(Filter.Suffix<EventInfo>(
 			eventInfo => !eventInfo.EventHandlerType!.IsOrInheritsFrom(handlerType),
