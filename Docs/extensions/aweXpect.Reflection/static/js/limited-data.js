@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
-      {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          510.8457384109497,
           352.4883561770121,
           485.7919549624125,
           680.1379316647848,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           500.8716677983602,
           614.3767366409302,
           656.0288326263428,
-          342.4948868433634
+          342.4948868433634,
+          347.6062619345529
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          674.7714883804322,
           517.434481547429,
           686.9909416834513,
           933.5449281839224,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           708.7865483601888,
           882.9032936096191,
           983.1232933044433,
-          487.0153755187988
+          487.0153755187988,
+          511.8779330934797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
-      {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          79.48857587178549,
           54.09268499697958,
           77.14158741065434,
           106.55110574563345,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           84.66997290574588,
           104.55142676035562,
           107.19626475175222,
-          54.710572803020476
+          54.710572803020476,
+          53.70245317476137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          163.58828633626302,
           129.4458199818929,
           165.2982189105107,
           241.3693735940116,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           166.99938894907635,
           219.3249032497406,
           253.21939550127303,
-          120.28429956436158
+          120.28429956436158,
+          119.4272324187415
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
-      {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1414.071137491862,
           968.0383640289307,
           1392.1435402461461,
           1913.842772263747,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1359.685546239217,
           1845.0904158274332,
           1805.63905275785,
-          942.0844794591268
+          942.0844794591268,
+          911.125733311971
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1664,7 +1664,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1049.9497627258302,
           849.8805862835476,
           1062.1297046661377,
           1479.2701263427734,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1103.1886461893716,
           1399.0184700305645,
           1503.6241540908813,
-          845.1625427246094
+          845.1625427246094,
+          876.3808537165324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1864,
-          1864,
           1953,
           1864,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
       {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1980.77556737264,
           1527.3868714650473,
           2107.8079149882,
           2943.847755704607,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2046.8140335083008,
           2588.9653475625173,
           2563.8966729300364,
-          1374.5715264638266
+          1374.5715264638266,
+          1389.655174255371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2272,7 +2272,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2999.7583722432455,
           2311.443398108849,
           2976.01773584806,
           3896.461219200721,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3012.151653289795,
           3856.8591782706126,
           3923.106797354562,
-          2170.910491434733
+          2170.910491434733,
+          2190.125603267125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3978,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
       {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          271.7017094067165,
           182.9318326632182,
           279.65377289908275,
           396.8604276730464,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           274.1447158495585,
           360.8480878898076,
           452.79995121274675,
-          182.54585393269858
+          182.54585393269858,
+          182.38411378860474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1679.3286024729412,
           1335.615485872541,
           1710.1219693501791,
           2371.8510081951435,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1761.8357459477015,
           2250.60019329616,
           2440.501351220267,
-          1275.5570963541666
+          1275.5570963541666,
+          1304.7158854166667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "eea60aebfea38871d55386e255556dd92f4fbf5e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:53:47 2026 \u002B0100",
-        "message": "docs: focus the documentation on users and extension authors (#2094)"
-      },
-      {
         "sha": "a9c742d3d43107ab5e9fd240af03916f66240876",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 19:17:14 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
-      "eea60aeb",
       "a9c742d3",
       "ce025baa",
       "1690b3ad",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2169.3929059164866,
           1685.307834489005,
           2200.0262672424315,
           3006.8011205037433,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2131.0291979653493,
           2862.6179227193197,
           2851.834618159703,
-          1500.3998168064998
+          1500.3998168064998,
+          1574.9868636812482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3488,7 +3488,6 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
           3248,
           3248,
           3248,
@@ -3503,6 +3502,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243313.63577706474,
           183877.80178222657,
           240230.03211388222,
           287825.48603515624,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           240105.06124441963,
           302061.569148137,
           279888.1878580729,
-          152993.37360839843
+          152993.37360839843,
+          167452.27479771205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17574,
           17707,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17558,
-          17576
+          17576,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
