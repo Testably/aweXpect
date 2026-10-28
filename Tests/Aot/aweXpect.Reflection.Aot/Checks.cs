@@ -116,7 +116,7 @@ internal static class Checks
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).DoNotReturnVoid())),
 		new("the properties of a type not of a type are of the other type",
 			() => ShouldPassOrFailLoudly(async ()
-				=> await That(In.Type<Order>().Properties().NotOfType<int>()).AreOfType<Customer>())),
+				=> await That(In.Type<Order>().Properties().WhichAreNotOfType<int>()).AreOfType<Customer>())),
 	];
 
 	private static Filtered.Types DomainTypes()

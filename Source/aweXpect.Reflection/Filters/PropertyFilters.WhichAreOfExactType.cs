@@ -10,13 +10,13 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Filter for properties of exact type <typeparamref name="TProperty" />.
 	/// </summary>
-	public static PropertiesOfType OfExactType<TProperty>(this Filtered.Properties @this)
-		=> OfExactType(@this, typeof(TProperty));
+	public static PropertiesOfType WhichAreOfExactType<TProperty>(this Filtered.Properties @this)
+		=> WhichAreOfExactType(@this, typeof(TProperty));
 
 	/// <summary>
 	///     Filter for properties of exact type <paramref name="propertyType" />.
 	/// </summary>
-	public static PropertiesOfType OfExactType(this Filtered.Properties @this,
+	public static PropertiesOfType WhichAreOfExactType(this Filtered.Properties @this,
 		Type propertyType)
 	{
 		Filter.GenericFilter<PropertyInfo> filter = Filter.Suffix<PropertyInfo>(
@@ -28,13 +28,13 @@ public static partial class PropertyFilters
 	/// <summary>
 	///     Filter for properties not of exact type <typeparamref name="TProperty" />.
 	/// </summary>
-	public static Filtered.Properties NotOfExactType<TProperty>(this Filtered.Properties @this)
-		=> NotOfExactType(@this, typeof(TProperty));
+	public static Filtered.Properties WhichAreNotOfExactType<TProperty>(this Filtered.Properties @this)
+		=> WhichAreNotOfExactType(@this, typeof(TProperty));
 
 	/// <summary>
 	///     Filter for properties not of exact type <paramref name="propertyType" />.
 	/// </summary>
-	public static Filtered.Properties NotOfExactType(this Filtered.Properties @this,
+	public static Filtered.Properties WhichAreNotOfExactType(this Filtered.Properties @this,
 		Type propertyType)
 		=> @this.Which(Filter.Suffix<PropertyInfo>(
 			propertyInfo => !propertyInfo.PropertyType.IsOrInheritsFrom(propertyType, true),

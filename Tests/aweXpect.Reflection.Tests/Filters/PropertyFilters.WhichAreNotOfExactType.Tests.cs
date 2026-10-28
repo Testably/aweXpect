@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class PropertyFilters
 {
-	public sealed class NotOfExactType
+	public sealed class WhichAreNotOfExactType
 	{
 		public sealed class Tests
 		{
@@ -12,14 +12,14 @@ public sealed partial class PropertyFilters
 			public async Task ShouldFilterForPropertiesNotOfExactType()
 			{
 				Filtered.Properties properties = In.Type<TestClass>()
-					.Properties().NotOfExactType<DummyBase>();
+					.Properties().WhichAreNotOfExactType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties not of exact type PropertyFilters.NotOfExactType.DummyBase in")
+					.IsEqualTo("properties not of exact type PropertyFilters.WhichAreNotOfExactType.DummyBase in")
 					.AsPrefix();
 			}
 
@@ -28,14 +28,14 @@ public sealed partial class PropertyFilters
 			{
 				Type unexpectedType = typeof(DummyBase);
 				Filtered.Properties properties = In.Type<TestClass>()
-					.Properties().NotOfExactType(unexpectedType);
+					.Properties().WhichAreNotOfExactType(unexpectedType);
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties not of exact type PropertyFilters.NotOfExactType.DummyBase in")
+					.IsEqualTo("properties not of exact type PropertyFilters.WhichAreNotOfExactType.DummyBase in")
 					.AsPrefix();
 			}
 		}

@@ -4,22 +4,21 @@ namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class PropertyFilters
 {
-	public sealed class OfType
+	public sealed class WhichAreOfExactType
 	{
 		public sealed class GenericTests
 		{
 			[Test]
-			public async Task ShouldFilterForPropertiesWhichImplementType()
+			public async Task ShouldFilterForPropertiesWithType()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType<DummyBase>();
+					.Properties().WhichAreOfExactType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties of type PropertyFilters.OfType.DummyBase in assembly")
+					.IsEqualTo("properties of exact type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}
@@ -28,17 +27,16 @@ public sealed partial class PropertyFilters
 		public sealed class TypeTests
 		{
 			[Test]
-			public async Task ShouldFilterForPropertiesWhichImplementType()
+			public async Task ShouldFilterForPropertiesWithType()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType(typeof(DummyBase));
+					.Properties().WhichAreOfExactType(typeof(DummyBase));
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
-					.IsEqualTo("properties of type PropertyFilters.OfType.DummyBase in assembly")
+					.IsEqualTo("properties of exact type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}
@@ -47,19 +45,18 @@ public sealed partial class PropertyFilters
 		public sealed class OrOfTypeGenericTests
 		{
 			[Test]
-			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
+			public async Task FirstCheckIsOfType_ShouldNotAllowDerivedTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfExactType<OtherDummy>().OrOfType<DummyBase>();
+					.Properties().WhichAreOfType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties of exact type PropertyFilters.OfType.OtherDummy or of type PropertyFilters.OfType.DummyBase in assembly")
+						"properties of type PropertyFilters.WhichAreOfExactType.OtherDummy or of exact type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 
@@ -67,38 +64,16 @@ public sealed partial class PropertyFilters
 			public async Task ShouldFilterForPropertiesWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType<OtherDummy>().OrOfType<DummyBase>();
+					.Properties().WhichAreOfExactType<OtherDummy>().OrOfExactType<DummyBase>();
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
 					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties of type PropertyFilters.OfType.OtherDummy or of type PropertyFilters.OfType.DummyBase in assembly")
+						"properties of exact type PropertyFilters.WhichAreOfExactType.OtherDummy or of exact type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
-			}
-
-			[Test]
-			public async Task ShouldNotChangeTheFilterItWasCalledOn()
-			{
-				Reflection.PropertyFilters.PropertiesOfType ofOtherDummy = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType<OtherDummy>();
-
-				Filtered.Properties ofOtherDummyOrDummyBase = ofOtherDummy.OrOfType<DummyBase>();
-
-				await That(ofOtherDummy).IsEqualTo([
-						typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
-					])
-					.Because("OrOfType must return a new filter instead of changing the one it was called on");
-				await That(ofOtherDummy.GetDescription())
-					.IsEqualTo("properties of type PropertyFilters.OfType.OtherDummy in assembly").AsPrefix();
-				await That(ofOtherDummyOrDummyBase).IsEqualTo([
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.DummyProperty))!,
-					typeof(TestClass).GetProperty(nameof(TestClass.OtherDummyProperty))!,
-				]).InAnyOrder();
 			}
 		}
 
@@ -109,7 +84,7 @@ public sealed partial class PropertyFilters
 			public async Task FirstCheckIsOfTypeExactly_ShouldAllowDerivedTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfExactType(typeof(OtherDummy)).OrOfType(typeof(DummyBase));
+					.Properties().WhichAreOfExactType(typeof(OtherDummy)).OrOfType(typeof(DummyBase));
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
@@ -118,7 +93,7 @@ public sealed partial class PropertyFilters
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties of exact type PropertyFilters.OfType.OtherDummy or of type PropertyFilters.OfType.DummyBase in assembly")
+						"properties of exact type PropertyFilters.WhichAreOfExactType.OtherDummy or of type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 
@@ -126,7 +101,7 @@ public sealed partial class PropertyFilters
 			public async Task ShouldFilterForPropertiesWhichImplementAnyOfTheGivenTypes()
 			{
 				Filtered.Properties properties = In.AssemblyContaining<AssemblyFilters>()
-					.Properties().OfType<OtherDummy>().OrOfType(typeof(DummyBase));
+					.Properties().WhichAreOfType<OtherDummy>().OrOfType(typeof(DummyBase));
 
 				await That(properties).IsEqualTo([
 					typeof(TestClass).GetProperty(nameof(TestClass.DummyBaseProperty))!,
@@ -135,7 +110,7 @@ public sealed partial class PropertyFilters
 				]).InAnyOrder();
 				await That(properties.GetDescription())
 					.IsEqualTo(
-						"properties of type PropertyFilters.OfType.OtherDummy or of type PropertyFilters.OfType.DummyBase in assembly")
+						"properties of type PropertyFilters.WhichAreOfExactType.OtherDummy or of type PropertyFilters.WhichAreOfExactType.DummyBase in assembly")
 					.AsPrefix();
 			}
 		}

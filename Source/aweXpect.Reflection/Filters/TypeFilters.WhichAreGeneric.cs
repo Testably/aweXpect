@@ -105,79 +105,79 @@ public static partial class TypeFilters
 				},
 				()
 					=> $"with argument {genericArgumentFilterOptions.GetDescription()}{collectionIndexOptions.Match.GetDescription()} ");
+	}
 
-		/// <summary>
-		///     Additional filters on types with a generic argument of a specific type.
-		/// </summary>
-		public class GenericTypesWithArgument : GenericTypes,
-			IOptionsProvider<CollectionIndexOptions>,
-			ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>
+	/// <summary>
+	///     Additional filters on types with a generic argument of a specific type.
+	/// </summary>
+	public class GenericTypesWithArgument : GenericTypes,
+		IOptionsProvider<CollectionIndexOptions>,
+		ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>
+	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
+		private readonly Filtered.Types _source;
+
+		internal GenericTypesWithArgument(
+			Filtered.Types source,
+			Func<CollectionIndexOptions, IFilter<Type>> createFilter,
+			CollectionIndexOptions collectionIndexOptions)
+			: base(source.Which(createFilter(collectionIndexOptions)))
 		{
-			private readonly CollectionIndexOptions _collectionIndexOptions;
-			private readonly Func<CollectionIndexOptions, IFilter<Type>> _createFilter;
-			private readonly Filtered.Types _source;
-
-			internal GenericTypesWithArgument(
-				Filtered.Types source,
-				Func<CollectionIndexOptions, IFilter<Type>> createFilter,
-				CollectionIndexOptions collectionIndexOptions)
-				: base(source.Which(createFilter(collectionIndexOptions)))
-			{
-				_source = source;
-				_createFilter = createFilter;
-				_collectionIndexOptions = collectionIndexOptions;
-			}
-
-			/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
-			OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
-				=> new(_collectionIndexOptions);
-
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
-			GenericTypesWithArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>.WithOptions(
-				CollectionIndexOptions options)
-				=> new(_source, _createFilter, options);
+			_source = source;
+			_createFilter = createFilter;
+			_collectionIndexOptions = collectionIndexOptions;
 		}
 
-		/// <summary>
-		///     Additional filters on types with a named parameter of a specific type.
-		/// </summary>
-		public class GenericTypesWithNamedArgument
-			: GenericTypesWithArgument,
-				IOptionsProvider<StringEqualityOptions>,
-				IStringMatchTypeOptions,
-				ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>,
-				ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>
+		/// <inheritdoc cref="IOptionsProvider{CollectionIndexOptions}.Options" />
+		OptionsHolder<CollectionIndexOptions> IOptionsProvider<CollectionIndexOptions>.Options
+			=> new(_collectionIndexOptions);
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
+		GenericTypesWithArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithArgument>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options);
+	}
+
+	/// <summary>
+	///     Additional filters on types with a named parameter of a specific type.
+	/// </summary>
+	public class GenericTypesWithNamedArgument
+		: GenericTypesWithArgument,
+			IOptionsProvider<StringEqualityOptions>,
+			IStringMatchTypeOptions,
+			ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>,
+			ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>
+	{
+		private readonly CollectionIndexOptions _collectionIndexOptions;
+		private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
+		private readonly OptionsHolder<StringEqualityOptions> _options;
+		private readonly Filtered.Types _source;
+
+		internal GenericTypesWithNamedArgument(
+			Filtered.Types source,
+			Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> createFilter,
+			CollectionIndexOptions collectionIndexOptions,
+			OptionsHolder<StringEqualityOptions> options)
+			: base(source, createFilter(options), collectionIndexOptions)
 		{
-			private readonly CollectionIndexOptions _collectionIndexOptions;
-			private readonly Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> _createFilter;
-			private readonly OptionsHolder<StringEqualityOptions> _options;
-			private readonly Filtered.Types _source;
-
-			internal GenericTypesWithNamedArgument(
-				Filtered.Types source,
-				Func<IReadOnlyOptionsHolder<StringEqualityOptions>, Func<CollectionIndexOptions, IFilter<Type>>> createFilter,
-				CollectionIndexOptions collectionIndexOptions,
-				OptionsHolder<StringEqualityOptions> options)
-				: base(source, createFilter(options), collectionIndexOptions)
-			{
-				_source = source;
-				_createFilter = createFilter;
-				_collectionIndexOptions = collectionIndexOptions;
-				_options = options;
-			}
-
-			/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
-			OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
-
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
-			GenericTypesWithNamedArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>.WithOptions(
-				CollectionIndexOptions options)
-				=> new(_source, _createFilter, options, new OptionsHolder<StringEqualityOptions>(_options.Value));
-
-			/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
-			GenericTypesWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>.WithOptions(
-				StringEqualityOptions options)
-				=> new(_source, _createFilter, _collectionIndexOptions, new OptionsHolder<StringEqualityOptions>(options));
+			_source = source;
+			_createFilter = createFilter;
+			_collectionIndexOptions = collectionIndexOptions;
+			_options = options;
 		}
+
+		/// <inheritdoc cref="IOptionsProvider{StringEqualityOptions}.Options" />
+		OptionsHolder<StringEqualityOptions> IOptionsProvider<StringEqualityOptions>.Options => _options;
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
+		GenericTypesWithNamedArgument ICopyOnOption<CollectionIndexOptions, GenericTypesWithNamedArgument>.WithOptions(
+			CollectionIndexOptions options)
+			=> new(_source, _createFilter, options, new OptionsHolder<StringEqualityOptions>(_options.Value));
+
+		/// <inheritdoc cref="ICopyOnOption{TOptions, TSelf}.WithOptions(TOptions)" />
+		GenericTypesWithNamedArgument ICopyOnOption<StringEqualityOptions, GenericTypesWithNamedArgument>.WithOptions(
+			StringEqualityOptions options)
+			=> new(_source, _createFilter, _collectionIndexOptions, new OptionsHolder<StringEqualityOptions>(options));
 	}
 }

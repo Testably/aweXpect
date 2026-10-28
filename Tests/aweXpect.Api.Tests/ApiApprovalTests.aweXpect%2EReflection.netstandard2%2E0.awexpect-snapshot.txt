@@ -1836,6 +1836,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithInParameterExactly(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithInParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<object?> WithInParameterExactly(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Type parameterType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Constructors WithNoParameters(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<T> WithOptionalParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string expected) { }
@@ -1892,7 +1893,6 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithNamedParameter<object?> WithoutParameter(this aweXpect.Reflection.Collections.Filtered.Constructors @this, string unexpected) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<T> WithoutParameter<T>(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public static aweXpect.Reflection.ConstructorFilters.ConstructorsWithParameter<object?> WithoutParameter(this aweXpect.Reflection.Collections.Filtered.Constructors @this, System.Type parameterType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Constructors WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Constructors @this) { }
         public class ConstructorsWith : aweXpect.Reflection.Collections.Filtered.Constructors
         {
             public aweXpect.Reflection.ConstructorFilters.ConstructorsWith OrWith<TAttribute>() where TAttribute : System.Attribute { }
@@ -1917,14 +1917,6 @@ namespace aweXpect.Reflection
     public static class EventFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Events Except(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<System.Reflection.EventInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Events NotOfExactType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events NotOfExactType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events NotOfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Events NotOfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
-        public static aweXpect.Reflection.EventFilters.EventsOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
-        public static aweXpect.Reflection.EventFilters.EventsOfType OfExactType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
-        public static aweXpect.Reflection.EventFilters.EventsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
-        public static aweXpect.Reflection.EventFilters.EventsOfType OfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events Which(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Func<System.Reflection.EventInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAre(this aweXpect.Reflection.Collections.Filtered.Events @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -1934,6 +1926,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotNullable(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotOfExactType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotOfExactType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotOfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotOfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -1944,6 +1940,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNotVirtual(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreNullable(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType WhichAreOfExactType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType WhichAreOfExactType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType WhichAreOfType(this aweXpect.Reflection.Collections.Filtered.Events @this, System.Type handlerType) { }
+        public static aweXpect.Reflection.EventFilters.EventsOfType WhichAreOfType<THandler>(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Events WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Events @this) { }
@@ -1980,14 +1980,6 @@ namespace aweXpect.Reflection
     public static class FieldFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Fields Except(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<System.Reflection.FieldInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields NotOfExactType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields NotOfExactType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields NotOfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Fields NotOfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
-        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
-        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfExactType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
-        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
-        public static aweXpect.Reflection.FieldFilters.FieldsOfType OfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields Which(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Func<System.Reflection.FieldInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAre(this aweXpect.Reflection.Collections.Filtered.Fields @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreConstant(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -1997,6 +1989,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotNullable(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotOfExactType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotOfExactType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotOfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotOfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -2007,6 +2003,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNotStatic(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreNullable(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType WhichAreOfExactType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType WhichAreOfExactType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType WhichAreOfType(this aweXpect.Reflection.Collections.Filtered.Fields @this, System.Type fieldType) { }
+        public static aweXpect.Reflection.FieldFilters.FieldsOfType WhichAreOfType<TField>(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Fields WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Fields @this) { }
@@ -2120,6 +2120,7 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithInParameterExactly<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<object?> WithInParameterExactly(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType) { }
         public static aweXpect.Reflection.Collections.Filtered.Methods.StringEqualityResult WithName(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
+        public static aweXpect.Reflection.Collections.Filtered.Methods WithNoParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<T> WithOptionalParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType, string expected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithOptionalParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, string expected) { }
@@ -2177,7 +2178,6 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.MethodFilters.MethodsWithNamedParameter<object?> WithoutParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, string unexpected) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<T> WithoutParameter<T>(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public static aweXpect.Reflection.MethodFilters.MethodsWithParameter<object?> WithoutParameter(this aweXpect.Reflection.Collections.Filtered.Methods @this, System.Type parameterType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Methods WithoutParameters(this aweXpect.Reflection.Collections.Filtered.Methods @this) { }
         public class GenericMethods : aweXpect.Reflection.Collections.Filtered.Methods
         {
             public aweXpect.Reflection.MethodFilters.GenericMethodsWithArgument WithArgument<T>() { }
@@ -2265,14 +2265,6 @@ namespace aweXpect.Reflection
     public static class PropertyFilters
     {
         public static aweXpect.Reflection.Collections.Filtered.Properties Except(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<System.Reflection.PropertyInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties NotOfExactType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties NotOfExactType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties NotOfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
-        public static aweXpect.Reflection.Collections.Filtered.Properties NotOfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
-        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfExactType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
-        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfExactType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
-        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
-        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType OfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties Which(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Func<System.Reflection.PropertyInfo, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAre(this aweXpect.Reflection.Collections.Filtered.Properties @this, aweXpect.Reflection.AccessModifiers accessModifier) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreAbstract(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -2286,6 +2278,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotInternal(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotNullable(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotObsolete(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotOfExactType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotOfExactType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotOfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotOfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotPrivateProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -2297,6 +2293,10 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNotVirtual(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreNullable(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreObsolete(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType WhichAreOfExactType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType WhichAreOfExactType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType WhichAreOfType(this aweXpect.Reflection.Collections.Filtered.Properties @this, System.Type propertyType) { }
+        public static aweXpect.Reflection.PropertyFilters.PropertiesOfType WhichAreOfType<TProperty>(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePrivate(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichArePrivateProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
         public static aweXpect.Reflection.Collections.Filtered.Properties WhichAreProtected(this aweXpect.Reflection.Collections.Filtered.Properties @this) { }
@@ -2483,16 +2483,16 @@ namespace aweXpect.Reflection
         public static aweXpect.Reflection.Collections.Filtered.Types.StringEqualityResult WithoutNamespace(this aweXpect.Reflection.Collections.Filtered.Types @this, string unexpected) { }
         public class GenericTypes : aweXpect.Reflection.Collections.Filtered.Types
         {
-            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument WithArgument<T>() { }
-            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument(string expected) { }
-            public aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument WithArgument<T>(string expected) { }
+            public aweXpect.Reflection.TypeFilters.GenericTypesWithArgument WithArgument<T>() { }
+            public aweXpect.Reflection.TypeFilters.GenericTypesWithNamedArgument WithArgument(string expected) { }
+            public aweXpect.Reflection.TypeFilters.GenericTypesWithNamedArgument WithArgument<T>(string expected) { }
             public aweXpect.Reflection.TypeFilters.GenericTypes WithArgumentCount(int expected) { }
-            public class GenericTypesWithArgument : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.ICopyOnOption<aweXpect.Options.CollectionIndexOptions, aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
-            {
-            }
-            public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithArgument, aweXpect.Core.ICopyOnOption<aweXpect.Options.CollectionIndexOptions, aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.TypeFilters.GenericTypes.GenericTypesWithNamedArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
-            {
-            }
+        }
+        public class GenericTypesWithArgument : aweXpect.Reflection.TypeFilters.GenericTypes, aweXpect.Core.ICopyOnOption<aweXpect.Options.CollectionIndexOptions, aweXpect.Reflection.TypeFilters.GenericTypesWithArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.CollectionIndexOptions>
+        {
+        }
+        public class GenericTypesWithNamedArgument : aweXpect.Reflection.TypeFilters.GenericTypesWithArgument, aweXpect.Core.ICopyOnOption<aweXpect.Options.CollectionIndexOptions, aweXpect.Reflection.TypeFilters.GenericTypesWithNamedArgument>, aweXpect.Core.ICopyOnOption<aweXpect.Options.StringEqualityOptions, aweXpect.Reflection.TypeFilters.GenericTypesWithNamedArgument>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions, aweXpect.Results.IStringPatternMatchTypeOptions
+        {
         }
         public class InheritanceScopeResult : aweXpect.Reflection.Collections.Filtered.Types
         {

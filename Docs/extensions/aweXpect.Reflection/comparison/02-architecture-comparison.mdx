@@ -235,5 +235,5 @@ await Expect.That(In.AssemblyContaining<AlbumController>()
 // Serializable types have exactly one parameterless constructor
 await Expect.That(In.AllLoadedAssemblies()
         .Types().With<SerializableAttribute>())
-    .ContainConstructors(c => c.WithoutParameters()).Exactly(1);
+    .ContainConstructors(c => c.WithNoParameters()).Exactly(1);
 ```

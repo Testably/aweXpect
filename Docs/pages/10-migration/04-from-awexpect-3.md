@@ -166,6 +166,12 @@ Suppress it in test projects that use a virtual time system.
   `.IncludingInherited()` adds the inherited ones and `.IncludingObjectMembers()` also those of `System.Object`.
 - `AtIndex(i).FromEnd()` is now `AtIndexFromEnd(i)`, as in aweXpect.
 - The namespace filters are `WhichAreWithinNamespace` and `WhichAreNotWithinNamespace`.
+- The member-type filters of properties, fields and events are `WhichAreOfType`, `WhichAreOfExactType`,
+  `WhichAreNotOfType` and `WhichAreNotOfExactType` (before `OfType`, `OfExactType`, `NotOfType` and
+  `NotOfExactType`); `OrOfType` and `OrOfExactType` keep their names. `WithoutParameters()` is now
+  `WithNoParameters()`, like the expectation `HasNoParameters()`.
+- `TypeFilters.GenericTypes.GenericTypesWithArgument` and `…WithNamedArgument` are no longer nested in
+  `GenericTypes` but declared in `TypeFilters`, like their counterparts in `MethodFilters`.
 - The name filters use the string options of aweXpect, so they chain in any order and offer every option, e.g.
   `WithName("x").IgnoringCase().AsPrefix()`.
 - Parameters can be filtered by a predicate with `Matching(p => …)`.

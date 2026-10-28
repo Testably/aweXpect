@@ -25,9 +25,9 @@ that has none. An empty cell means that there is no such form, e.g. no negation.
 | [Inheritance](./03-types.md#inheritance)                                       | types and members             | `Directly`, `IncludingInherited`, `IncludingObjectMembers`                                                           |
 | [Methods](./04-methods.md#methods)                                             | methods                       | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>`                 |
 | [Operators](./04-methods.md#operators)                                         | methods and types             | `WhichAreOperators` / `IsAnOperator`, `WhichHaveOperator` / `HasOperator`, `WhichHaveImplicitConversionOperator`     |
-| [Constructors](./04-methods.md#constructors)                                   | constructors                  | `WithoutParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                      |
-| [Properties & Fields](./05-properties-fields-and-events.md#properties--fields) | properties and fields         | `OfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`                    |
-| [Events](./05-properties-fields-and-events.md#events)                          | events                        | `OfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                        |
+| [Constructors](./04-methods.md#constructors)                                   | constructors                  | `WithNoParameters` / `HasNoParameters`, `WithParameter<T>` / `HasParameter<T>`                                       |
+| [Properties & Fields](./05-properties-fields-and-events.md#properties--fields) | properties and fields         | `WhichAreOfType<T>` / `IsOfType<T>`, `WhichAreNullable` / `IsNullable`, `WhichAreRequired` / `IsRequired`            |
+| [Events](./05-properties-fields-and-events.md#events)                          | events                        | `WhichAreOfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                |
 | [Combining filters](#combining-filters)                                        | filters and expectations      | `OrWith<TAttribute>` / `OrHas<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                             |
 | [Custom predicates](#custom-predicates)                                        | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
 | [Collections and quantifiers](#collections-and-quantifiers)                    | all subjects                  | `Satisfies`, `All().Satisfy`, `Any().Satisfy`                                                                        |
@@ -51,7 +51,7 @@ In.AllLoadedAssemblies().Methods()
 
 // Any of several property/field types
 In.AllLoadedAssemblies().Properties()
-    .OfType<string>().OrOfType<Guid>()
+    .WhichAreOfType<string>().OrOfType<Guid>()
 ```
 
 ## Custom predicates
