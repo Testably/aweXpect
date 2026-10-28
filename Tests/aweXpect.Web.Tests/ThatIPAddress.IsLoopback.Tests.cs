@@ -25,8 +25,11 @@ public sealed partial class ThatIPAddress
 
 			[Test]
 			[Arguments("127.0.0.1")]
+			[Arguments("127.0.0.2")]
 			[Arguments("127.1.2.3")]
 			[Arguments("::1")]
+			[Arguments("::ffff:127.0.0.1")]
+			[Arguments("::ffff:127.0.0.2")]
 			public async Task WhenSubjectIsLoopback_ShouldSucceed(string address)
 			{
 				IPAddress subject = IPAddress.Parse(address);
@@ -38,19 +41,21 @@ public sealed partial class ThatIPAddress
 			}
 
 			[Test]
-			public async Task WhenSubjectIsNotLoopback_ShouldFail()
+			[Arguments("10.0.0.1")]
+			[Arguments("::ffff:10.0.0.1")]
+			public async Task WhenSubjectIsNotLoopback_ShouldFail(string address)
 			{
-				IPAddress subject = IPAddress.Parse("10.0.0.1");
+				IPAddress subject = IPAddress.Parse(address);
 
 				async Task Act()
 					=> await That(subject).IsLoopback();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is a loopback address,
-					             but it was 10.0.0.1
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is a loopback address,
+					              but it was {address}
+					              """);
 			}
 
 			[Test]
@@ -73,25 +78,31 @@ public sealed partial class ThatIPAddress
 		public sealed class NegatedTests
 		{
 			[Test]
-			public async Task WhenSubjectIsLoopback_ShouldFail()
+			[Arguments("127.0.0.2")]
+			[Arguments("::1")]
+			[Arguments("::ffff:127.0.0.1")]
+			[Arguments("::ffff:127.0.0.2")]
+			public async Task WhenSubjectIsLoopback_ShouldFail(string address)
 			{
-				IPAddress subject = IPAddress.Parse("::1");
+				IPAddress subject = IPAddress.Parse(address);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsLoopback());
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not a loopback address,
-					             but it was ::1
-					             """);
+					.WithMessage($"""
+					              Expected that subject
+					              is not a loopback address,
+					              but it was {address}
+					              """);
 			}
 
 			[Test]
-			public async Task WhenSubjectIsNotLoopback_ShouldSucceed()
+			[Arguments("10.0.0.1")]
+			[Arguments("::ffff:10.0.0.1")]
+			public async Task WhenSubjectIsNotLoopback_ShouldSucceed(string address)
 			{
-				IPAddress subject = IPAddress.Parse("10.0.0.1");
+				IPAddress subject = IPAddress.Parse(address);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsLoopback());
