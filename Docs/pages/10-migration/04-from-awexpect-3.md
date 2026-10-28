@@ -117,7 +117,7 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 ### Time provider
 
 `WithTimeSystem(…)` and `ITimeSystem` from `aweXpect.Core.Internal` are replaced by `WithTimeProvider(…)` in the
-namespace `aweXpect`, which takes a `System.TimeProvider`, e.g. the `FakeTimeProvider` of
+namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTimeProvider` of
 `Microsoft.Extensions.TimeProvider.Testing`. On .NET Framework, `TimeProvider` comes from the
 `Microsoft.Bcl.TimeProvider` package, a new dependency of `aweXpect.Core` for `netstandard2.0`. See
 [on a virtual clock](../03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock).

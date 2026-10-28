@@ -3,7 +3,7 @@ using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 using aweXpect.Signaling;
 
-namespace aweXpect.Core.Tests;
+namespace aweXpect.Core.Tests.Core;
 
 public sealed class ExpectationExtensionsTests
 {

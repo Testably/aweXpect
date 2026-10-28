@@ -321,6 +321,7 @@ instead of in real time, so that a test of a long wait does not take long. Pass 
 
 ```csharp no-compile
 using aweXpect.Chronology; // from the aweXpect.Chronology package
+using aweXpect.Core;
 using Microsoft.Extensions.Time.Testing; // from the Microsoft.Extensions.TimeProvider.Testing package
 
 FakeTimeProvider timeProvider = new();

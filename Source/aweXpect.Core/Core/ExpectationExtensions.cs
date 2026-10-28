@@ -1,8 +1,7 @@
 ﻿using System;
-using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
-namespace aweXpect;
+namespace aweXpect.Core;
 
 /// <summary>
 ///     Options that apply to every evaluation of an expectation.

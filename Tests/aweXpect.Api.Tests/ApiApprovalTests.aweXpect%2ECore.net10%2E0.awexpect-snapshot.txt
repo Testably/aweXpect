@@ -82,10 +82,6 @@ namespace aweXpect
         public static aweXpect.Core.Expectation.Combination.All ThatAll(params aweXpect.Core.Expectation[] expectations) { }
         public static aweXpect.Core.Expectation.Combination.Any ThatAny(params aweXpect.Core.Expectation[] expectations) { }
     }
-    public static class ExpectationExtensions
-    {
-        public static TExpectation WithTimeProvider<TExpectation>(this TExpectation expectation, System.TimeProvider timeProvider) where TExpectation : aweXpect.Core.Expectation { }
-    }
     [System.Diagnostics.StackTraceHidden]
     public static class Fail
     {
@@ -381,6 +377,10 @@ namespace aweXpect.Core
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> NegatedAsAlternative(System.Action<aweXpect.Core.MemberAccessor, System.Text.StringBuilder> negatedExpectationTextGenerator) { }
             public aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TMember> Validate(System.Func<string, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TSource>> constraintBuilder) { }
         }
+    }
+    public static class ExpectationExtensions
+    {
+        public static TExpectation WithTimeProvider<TExpectation>(this TExpectation expectation, System.TimeProvider timeProvider) where TExpectation : aweXpect.Core.Expectation { }
     }
     [System.Flags]
     public enum ExpectationGrammars

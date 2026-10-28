@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration

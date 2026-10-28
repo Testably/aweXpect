@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
 

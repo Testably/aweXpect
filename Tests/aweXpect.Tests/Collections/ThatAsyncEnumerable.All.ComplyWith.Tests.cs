@@ -1,6 +1,7 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Threading;
+using aweXpect.Core;
 using aweXpect.Core.Tests.TestHelpers;
 
 // ReSharper disable PossibleMultipleEnumeration

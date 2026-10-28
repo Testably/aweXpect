@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 using aweXpect.Recording;
 
 namespace aweXpect.Tests;

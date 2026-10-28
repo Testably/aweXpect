@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif

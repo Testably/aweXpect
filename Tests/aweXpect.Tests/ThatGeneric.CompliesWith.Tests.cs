@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using aweXpect.Core;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 

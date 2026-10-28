@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 

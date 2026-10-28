@@ -1,5 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Threading;
+using aweXpect.Core;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
