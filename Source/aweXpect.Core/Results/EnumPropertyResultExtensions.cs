@@ -4,14 +4,14 @@ using aweXpect.Results;
 namespace aweXpect;
 
 /// <summary>
-///     The equality operators of an <see cref="IEnumPropertyResult{TEnum, TResult}" />.
+///     The equality operators of an <see cref="IEnumPropertyResult{TResult, TEnum}" />.
 /// </summary>
 public static class EnumPropertyResultExtensions
 {
 	/// <summary>
 	///     …is equal to the <paramref name="expected" /> value.
 	/// </summary>
-	public static TResult EqualTo<TEnum, TResult>(this IEnumPropertyResult<TEnum, TResult> result,
+	public static TResult EqualTo<TResult, TEnum>(this IEnumPropertyResult<TResult, TEnum> result,
 		TEnum? expected)
 		where TEnum : struct, Enum
 		=> result.Compare(new PropertyComparison<TEnum>(expected,
@@ -21,7 +21,7 @@ public static class EnumPropertyResultExtensions
 	/// <summary>
 	///     …is not equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public static TResult NotEqualTo<TEnum, TResult>(this IEnumPropertyResult<TEnum, TResult> result,
+	public static TResult NotEqualTo<TResult, TEnum>(this IEnumPropertyResult<TResult, TEnum> result,
 		TEnum? unexpected)
 		where TEnum : struct, Enum
 		=> result.Compare(new PropertyComparison<TEnum>(unexpected,

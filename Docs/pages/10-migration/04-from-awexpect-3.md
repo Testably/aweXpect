@@ -237,7 +237,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   (`StringMatcher`, `ObjectMatcher<TElement>`) that returns a `MatchResult`. They replace `IStringMatchType` and
   `IObjectMatchType`. See [Custom match types](../11-extending/06-comparisons.md#custom-match-types).
 - The operators of property results are extension methods on one interface per property type, such as
-  `IIntPropertyResult<TResult>` or `IEnumPropertyResult<TEnum, TResult>`, so a result of your own gets them by
+  `IIntPropertyResult<TResult>` or `IEnumPropertyResult<TResult, TEnum>`, so a result of your own gets them by
   implementing the interface. `IDoublePropertyResult<TResult, TToleranceResult>` and
   `IDecimalPropertyResult<TResult, TToleranceResult>` with `PropertyResult.Double` and `PropertyResult.Decimal` are new,
   and their `EqualTo` offers a tolerance, e.g. `EqualTo(4.5).Within(0.1)`. The `string` operators are split over `IStringEqualityPropertyResult<TResult>`,

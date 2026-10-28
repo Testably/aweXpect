@@ -48,8 +48,8 @@ namespace aweXpect
     }
     public static class EnumPropertyResultExtensions
     {
-        public static TResult EqualTo<TEnum, TResult>(this aweXpect.Results.IEnumPropertyResult<TEnum, TResult> result, TEnum? expected) where TEnum : struct, System.Enum { }
-        public static TResult NotEqualTo<TEnum, TResult>(this aweXpect.Results.IEnumPropertyResult<TEnum, TResult> result, TEnum? unexpected) where TEnum : struct, System.Enum { }
+        public static TResult EqualTo<TResult, TEnum>(this aweXpect.Results.IEnumPropertyResult<TResult, TEnum> result, TEnum? expected) where TEnum : struct, System.Enum { }
+        public static TResult NotEqualTo<TResult, TEnum>(this aweXpect.Results.IEnumPropertyResult<TResult, TEnum> result, TEnum? unexpected) where TEnum : struct, System.Enum { }
     }
     public static class Expect
     {
@@ -2186,7 +2186,7 @@ namespace aweXpect.Results
         TResult Compare(aweXpect.Results.PropertyComparison<double> comparison);
         TToleranceResult CompareEquality(aweXpect.Results.PropertyEqualityComparison<double> comparison);
     }
-    public interface IEnumPropertyResult<TEnum, out TResult> where TEnum : struct, System.Enum
+    public interface IEnumPropertyResult<out TResult, TEnum> where TEnum : struct, System.Enum
     {
         TResult Compare(aweXpect.Results.PropertyComparison<TEnum> comparison);
     }
@@ -2329,7 +2329,7 @@ namespace aweXpect.Results
         {
             public Enum(aweXpect.Core.IThat<TType> subject, System.Func<TType, TEnum?> mapper, string propertyExpression) { }
         }
-        public class Enum<TType, TThat, TValue, TEnum> : aweXpect.Results.IEnumPropertyResult<TEnum, aweXpect.Results.AndOrResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue> where TEnum : struct, System.Enum
+        public class Enum<TType, TThat, TValue, TEnum> : aweXpect.Results.IEnumPropertyResult<aweXpect.Results.AndOrResult<TType, TThat>, TEnum> where TThat : aweXpect.Core.IThat<TValue> where TEnum : struct, System.Enum
         {
             public Enum(TThat subject, System.Func<TValue, TEnum?> mapper, string propertyExpression, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None) { }
         }

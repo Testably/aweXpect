@@ -5,11 +5,11 @@ namespace aweXpect
 {
     public static class HttpStatusCodePropertyResultExtensions
     {
-        public static TResult ClientError<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
-        public static TResult Error<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
-        public static TResult Redirection<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
-        public static TResult ServerError<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
-        public static TResult Success<TResult>(this aweXpect.Results.IEnumPropertyResult<System.Net.HttpStatusCode, TResult> result) { }
+        public static TResult ClientError<TResult>(this aweXpect.Results.IEnumPropertyResult<TResult, System.Net.HttpStatusCode> result) { }
+        public static TResult Error<TResult>(this aweXpect.Results.IEnumPropertyResult<TResult, System.Net.HttpStatusCode> result) { }
+        public static TResult Redirection<TResult>(this aweXpect.Results.IEnumPropertyResult<TResult, System.Net.HttpStatusCode> result) { }
+        public static TResult ServerError<TResult>(this aweXpect.Results.IEnumPropertyResult<TResult, System.Net.HttpStatusCode> result) { }
+        public static TResult Success<TResult>(this aweXpect.Results.IEnumPropertyResult<TResult, System.Net.HttpStatusCode> result) { }
     }
     public static class ThatHttpRequestMessage
     {

@@ -190,7 +190,7 @@ property:
 | `double`      | `IDoublePropertyResult<TResult, TToleranceResult>`   | equality, ordering, `Between` and their negations |
 | `decimal`     | `IDecimalPropertyResult<TResult, TToleranceResult>`  | equality, ordering, `Between` and their negations |
 | `TimeSpan`    | `ITimeSpanPropertyResult<TResult>`                   | equality, ordering, `Between` and their negations |
-| an enum       | `IEnumPropertyResult<TEnum, TResult>`                | `EqualTo`, `NotEqualTo`                           |
+| an enum       | `IEnumPropertyResult<TResult, TEnum>`                | `EqualTo`, `NotEqualTo`                           |
 | `string`      | see [String properties](#string-properties)          |                                                   |
 
 The operators are extension methods in the `aweXpect` namespace. They check the arguments with your `Validation`, which
@@ -297,11 +297,11 @@ works on every result that implements the interface, also on those of aweXpect.C
 example, the day of the week on which an album was released can be on a weekend:
 
 ```csharp
-public static TResult OnWeekend<TResult>(this IEnumPropertyResult<DayOfWeek, TResult> result)
+public static TResult OnWeekend<TResult>(this IEnumPropertyResult<TResult, DayOfWeek> result)
     => result.Compare(PropertyComparison<DayOfWeek>.Satisfying(
         static day => day is DayOfWeek.Saturday or DayOfWeek.Sunday, "on a weekend"));
 
-public static TResult NotOnWeekend<TResult>(this IEnumPropertyResult<DayOfWeek, TResult> result)
+public static TResult NotOnWeekend<TResult>(this IEnumPropertyResult<TResult, DayOfWeek> result)
     => result.Compare(PropertyComparison<DayOfWeek>.Satisfying(
         static day => day is DayOfWeek.Saturday or DayOfWeek.Sunday, "on a weekend", isNegated: true));
 ```

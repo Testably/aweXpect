@@ -108,7 +108,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).DoesNotThrow();
 		}
 
-		private static TResult Specified<TResult>(IEnumPropertyResult<DateTimeKind, TResult> result,
+		private static TResult Specified<TResult>(IEnumPropertyResult<TResult, DateTimeKind> result,
 			bool isNegated = false)
 			=> result.Compare(PropertyComparison<DateTimeKind>.Satisfying(
 				kind => kind is DateTimeKind.Utc or DateTimeKind.Local, "specified", isNegated));
