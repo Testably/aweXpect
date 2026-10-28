@@ -106,6 +106,12 @@ await Expect.That(uri).HasPath().StartingWith("/tracks/");
 await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath("/my song");
 ```
 
+An encoded slash (`%2F`) stays encoded, as it is part of a segment and does not separate two segments:
+
+```csharp
+await Expect.That(new Uri("https://music.example.com/artists/AC%2FDC")).HasPath("/artists/AC%2FDC");
+```
+
 `HasScheme`, `HasHost`, `HasPath` and `HasFragment` with an expected value support the same
 [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
 [match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
