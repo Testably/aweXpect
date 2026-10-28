@@ -36,6 +36,22 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task WhenQueryParameterHasMultipleValues_ShouldFail()
+			{
+				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
+
+				async Task Act()
+					=> await That(subject).HasQueryParameter("tag").WhoseValue(v => v.IsNull());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a query parameter "tag" whose value is null,
+					             but it had 2 query parameter values ["live", "remastered"]
+					             """);
+			}
+
+			[Test]
 			public async Task WhenValueDoesNotSatisfyTheExpectations_ShouldFail()
 			{
 				Uri subject = new("https://awexpect.com/tracks?genre=rock");
@@ -111,6 +127,24 @@ public sealed partial class ThatUri
 						.DoesNotComplyWith(it => it.HasQueryParameter("genre").WhoseValue(v => v.IsEqualTo("jazz")));
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenQueryParameterHasMultipleValues_ShouldFail()
+			{
+				Uri subject = new("https://awexpect.com/tracks?tag=live&tag=remastered");
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasQueryParameter("tag").WhoseValue(v => v.IsEqualTo("live")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a query parameter "tag" whose value is equal to "live",
+					             but it was https://awexpect.com/tracks?tag=live&tag=remastered and it had 2 query parameter values ["live", "remastered"]
+					             """)
+					.Because("a query parameter with several values has no single value to check, so it fails the expectation and its negation alike");
 			}
 
 			[Test]

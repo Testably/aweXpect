@@ -83,20 +83,7 @@ public class HasHeaderValueResult<TType, TThat>
 		Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		_expectationBuilder
-			.ForMember(
-				MemberAccessor<TType, string?>.FromFuncWithName(t =>
-				{
-					string?[]? values = _headerValueAccessor(t);
-					if (values?.Length != 1)
-					{
-						return null;
-					}
-
-					return values[0];
-				}, "the value "),
-				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(expectations);
+		_expectationBuilder.AddSingleValueExpectations(_headerValueAccessor, "header values", expectations);
 		return this;
 	}
 

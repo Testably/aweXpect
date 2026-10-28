@@ -178,3 +178,5 @@ await Expect.That(uri).HasQueryParameter("tag").WithValues("live", "remastered")
 await Expect.That(uri).HasQueryParameter("tag")
     .WhoseValues(values => values.Contains("live"));
 ```
+
+Like `WithValue`, `WhoseValue` requires the query parameter to occur exactly once, also when it is negated.

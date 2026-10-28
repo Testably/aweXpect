@@ -281,6 +281,8 @@ await Expect.That(response).HasHeader("Vary")
     .WhoseValues(values => values.Contains("Accept-Encoding"));
 ```
 
+Like `WithValue`, `WhoseValue` requires the header to have exactly one value, also when it is negated.
+
 ### Response content type
 
 You can verify the media type in the `Content-Type` header of the `HttpResponseMessage`:
