@@ -12,7 +12,7 @@
 	    other projects register the reporter themselves.
 	-->
 	<PropertyGroup Condition="'$(AweXpectSnapshotsDiffEngine)' != 'false'">
-		<AweXpectModuleInitializers>$(AweXpectModuleInitializers),aweXpect.Snapshots.DiffEngineReporter.Register</AweXpectModuleInitializers>
+		<AweXpectModuleInitializers>$(AweXpectModuleInitializers),aweXpect.Snapshots.DiffEngine.DiffEngineReporter.Register</AweXpectModuleInitializers>
 	</PropertyGroup>
 	<ItemGroup>
 		<CompilerVisibleProperty Remove="AweXpectModuleInitializers"/>

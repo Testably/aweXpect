@@ -40,6 +40,8 @@ Then register it in an assembly-level setup of the test framework, e.g. in the c
 `[SetUpFixture]` of NUnit:
 
 ```csharp
+using aweXpect.Snapshots.DiffEngine;
+
 DiffEngineReporter.Register();
 ```
 
