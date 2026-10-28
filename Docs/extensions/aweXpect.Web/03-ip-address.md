@@ -38,6 +38,10 @@ is an IPv4 address,
 but it was ::ffff:10.0.0.1
 ```
 
+For `IsLoopback`, an IPv4-mapped address is mapped to its IPv4 address first, so `::ffff:127.0.0.2` is a loopback
+address like `127.0.0.2` on every target framework. `IsLoopback` for a `Uri` relies on `Uri.IsLoopback` instead, which
+treats only `[::ffff:127.0.0.1]` of the IPv4-mapped addresses as loopback.
+
 ## Subnet
 
 You can verify that the `IPAddress` is in a subnet given in CIDR notation, or that it is not:
