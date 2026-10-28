@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
-        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
-      },
-      {
         "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
-      "1690b3ad",
       "4af90a17",
       "5d21419f",
       "e09c66b4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          404.8000001589457,
           608.8378403981527,
           868.9271516799927,
           905.530338219234,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           997.3060237884522,
           549.8113759358724,
           890.4378986358643,
-          921.2202224731445
+          921.2202224731445,
+          873.6177594111516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -429,11 +429,11 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008,
           1016,
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          360.52019764582315,
           591.7332641056606,
           693.089730671474,
           784.9014176050822,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           723.6153013865153,
           507.1231466293335,
           704.6960507120405,
-          710.1039289474487
+          710.1039289474487,
+          740.8162197113037
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
-        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
-      },
-      {
         "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
-      "1690b3ad",
       "4af90a17",
       "5d21419f",
       "e09c66b4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2598.0010668436685,
           4016.6530085245768,
           4317.080994669596,
           4634.742577362061,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           5079.104804229736,
           3001.093763987223,
           4314.033343505859,
-          4454.758040364583
+          4454.758040364583,
+          4371.526022338867
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24172,
           24178,
           24172,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24179,
+          24178,
           24178,
           24178
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2708.0446594238283,
           4083.8796621050155,
           4918.238307659442,
           5329.651023864746,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5914.117556254069,
           3957.9833648681642,
           5140.793170048641,
-          5190.540181841169
+          5190.540181841169,
+          4925.627370394193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
-        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
-      },
-      {
         "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
-      "1690b3ad",
       "4af90a17",
       "5d21419f",
       "e09c66b4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1501.0294916788737,
           2215.886278661092,
           2529.365652901786,
           2922.860006205241,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2745.5736010233563,
           1639.05201285226,
           2534.869666290283,
-          2532.866598002116
+          2532.866598002116,
+          2430.8441907442534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1660,6 +1659,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2103.5146827697754,
           2938.589939371745,
           3391.0658683776855,
           4000.3063669840494,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3946.9709564208983,
           2255.8057375590006,
           3447.055249786377,
-          3572.1844850267685
+          3572.1844850267685,
+          3381.1653266906737
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "1690b3ad97d703116ebd1f63b41afe66222373e8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:47:45 2026 \u002B0100",
-        "message": "refactor: compile and load less on the first call of a string expectation (#2084)"
-      },
-      {
         "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
-      "1690b3ad",
       "4af90a17",
       "5d21419f",
       "e09c66b4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8020.443662370954,
           10510.14509938558,
           13526.42811701848,
           14660.960401262555,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14317.88836517334,
           8782.108249664307,
           13418.562852042061,
-          14350.408572387696
+          14350.408572387696,
+          13125.01981135777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2268,6 +2267,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          181373.5487141927,
           259964.24128069196,
           360866.0420898438,
           374606.34626652644,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           372313.8105119978,
           187054.64772135418,
           350783.5338541667,
-          358666.1329101563
+          358666.1329101563,
+          335141.2301307091
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544245,
+          544335,
           544335,
           544335
         ],
