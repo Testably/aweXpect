@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using DiffEngine;
 
-namespace aweXpect.Snapshots;
+namespace aweXpect.Snapshots.DiffEngine;
 
 /// <summary>
 ///     Launches and closes diff tools with the <see cref="DiffRunner" /> of DiffEngine.

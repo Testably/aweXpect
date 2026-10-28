@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNamespace>aweXpect.Snapshots</RootNamespace>
 		<Description>Opens a diff tool with DiffEngine for snapshots of aweXpect.Snapshots that are missing or different.</Description>
 		<IsBetaPackage>true</IsBetaPackage>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>

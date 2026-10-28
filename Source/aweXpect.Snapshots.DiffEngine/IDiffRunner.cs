@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace aweXpect.Snapshots;
+namespace aweXpect.Snapshots.DiffEngine;
 
 /// <summary>
 ///     Launches and closes diff tools, so that the tests of <see cref="DiffEngineReporter" /> never start one.

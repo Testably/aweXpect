@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Customization;
 
-namespace aweXpect.Snapshots;
+namespace aweXpect.Snapshots.DiffEngine;
 
 /// <summary>
 ///     Opens a diff tool with <see href="https://github.com/VerifyTests/DiffEngine">DiffEngine</see> for a snapshot that
