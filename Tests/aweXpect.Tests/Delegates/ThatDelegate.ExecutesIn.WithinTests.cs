@@ -1,5 +1,5 @@
-﻿using aweXpect.Core.Internal;
-using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -12,12 +12,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () => time.Advance(5.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(10000.Milliseconds()).Within(1123.Milliseconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -30,11 +30,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(5.Seconds()).WithTimeSystem(time);
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(5.Seconds()).WithTimeProvider(time);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -42,11 +42,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds()).WithTimeSystem(time);
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds()).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -59,7 +59,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () =>
 				{
 					time.Advance(500.Milliseconds());
@@ -67,7 +67,7 @@ public sealed partial class ThatDelegate
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds()).WithTimeSystem(time);
+					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds()).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

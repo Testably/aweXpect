@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -349,7 +349,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsEqualTo(["b",]).InAnyOrder().WithTimeSystem(new VirtualTimeSystem());
+						.IsEqualTo(["b",]).InAnyOrder().WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

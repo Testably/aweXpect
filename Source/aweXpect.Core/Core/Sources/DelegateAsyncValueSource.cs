@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Sources;
 
@@ -13,7 +12,7 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 
 	public bool IsNullTaskSubject => false;
 
-	public async ValueTask<DelegateValue<TValue>> GetValue(ITimeSystem timeSystem,
+	public async ValueTask<DelegateValue<TValue>> GetValue(TimeProvider timeProvider,
 		CancellationToken cancellationToken)
 	{
 		if (action is null)
@@ -21,14 +20,14 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 			return new DelegateValue<TValue>(default, null, TimeSpan.Zero, true);
 		}
 
-		long startTimestamp = timeSystem.GetTimestamp();
+		long startTimestamp = timeProvider.GetTimestamp();
 		Task<TValue>? task = null;
 		try
 		{
 			task = action(cancellationToken);
 			if (task is null)
 			{
-				return new DelegateValue<TValue>(default, null, timeSystem.GetElapsedTime(startTimestamp))
+				return new DelegateValue<TValue>(default, null, timeProvider.GetElapsedTime(startTimestamp))
 				{
 					NullKind = NullSubjectKind.NullTaskReturned,
 				};
@@ -38,18 +37,18 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 			if (task.IsFaulted)
 			{
 				return new DelegateValue<TValue>(default, task.GetFirstException(out Exception[]? otherExceptions),
-					timeSystem.GetElapsedTime(startTimestamp))
+					timeProvider.GetElapsedTime(startTimestamp))
 				{
 					OtherExceptions = otherExceptions,
 				};
 			}
 
 			TValue value = await task;
-			return new DelegateValue<TValue>(value, null, timeSystem.GetElapsedTime(startTimestamp));
+			return new DelegateValue<TValue>(value, null, timeProvider.GetElapsedTime(startTimestamp));
 		}
 		catch (Exception ex)
 		{
-			return new DelegateValue<TValue>(default, ex, timeSystem.GetElapsedTime(startTimestamp))
+			return new DelegateValue<TValue>(default, ex, timeProvider.GetElapsedTime(startTimestamp))
 			{
 				OtherExceptions = task?.GetOtherExceptions(ex),
 			};

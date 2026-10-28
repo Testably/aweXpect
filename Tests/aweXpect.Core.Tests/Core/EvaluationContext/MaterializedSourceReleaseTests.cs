@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.EvaluationContext;
@@ -21,7 +20,7 @@ public sealed class MaterializedSourceReleaseTests
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithCancellation_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		PendingDisposeAsyncEnumerable source = new([1, 2,], () => cts.Cancel());
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
@@ -41,15 +40,15 @@ public sealed class MaterializedSourceReleaseTests
 			.Because("one more attempt is made with the canceled token after the dispose was abandoned");
 
 		async Task Evaluate()
-			=> await That(subject).Eventually().Within(30.Seconds()).OnVirtualTime(timeSystem).Contains(5)
+			=> await That(subject).Eventually().Within(30.Seconds()).OnVirtualTime(timeProvider).Contains(5)
 				.WithCancellation(cts.Token);
 	}
 
 	[Test]
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithShorterTimeout_ShouldFailWithTheTimeout()
 	{
-		VirtualTimeSystem timeSystem = new();
-		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeSystem.Advance(10.Seconds()));
+		VirtualTimeProvider timeProvider = new();
+		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
 
@@ -65,15 +64,15 @@ public sealed class MaterializedSourceReleaseTests
 		await That(source.DisposeCount).IsEqualTo(1);
 
 		async Task Evaluate()
-			=> await That(subject).Eventually().Within(30.Seconds()).OnVirtualTime(timeSystem).Contains(5)
+			=> await That(subject).Eventually().Within(30.Seconds()).OnVirtualTime(timeProvider).Contains(5)
 				.WithTimeout(5.Seconds());
 	}
 
 	[Test]
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithTimeoutThatIsNotShorter_ShouldFail()
 	{
-		VirtualTimeSystem timeSystem = new();
-		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeSystem.Advance(60.Seconds()));
+		VirtualTimeProvider timeProvider = new();
+		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeProvider.Advance(60.Seconds()));
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
 
@@ -92,7 +91,7 @@ public sealed class MaterializedSourceReleaseTests
 			.Because("the last attempt is made after the dispose of the first one was abandoned");
 
 		async Task Evaluate()
-			=> await That(subject).Eventually().Within(5.Seconds()).OnVirtualTime(timeSystem).Contains(5)
+			=> await That(subject).Eventually().Within(5.Seconds()).OnVirtualTime(timeProvider).Contains(5)
 				.WithTimeout(30.Seconds());
 	}
 
@@ -159,8 +158,8 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_WithTimeout_WhenExpectationFails_ShouldReportTheFailure()
 	{
-		VirtualTimeSystem timeSystem = new();
-		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeSystem.Advance(10.Seconds()));
+		VirtualTimeProvider timeProvider = new();
+		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
 		Task evaluation = Evaluate();
 
 		await That(await IsCompleted(evaluation)).IsTrue()
@@ -177,14 +176,14 @@ public sealed class MaterializedSourceReleaseTests
 		await That(subject.DisposeCount).IsEqualTo(1);
 
 		async Task Evaluate()
-			=> await That(subject).Contains(5).WithTimeout(5.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(subject).Contains(5).WithTimeout(5.Seconds()).WithTimeProvider(timeProvider);
 	}
 
 	[Test]
 	public async Task WhenDisposeIsPending_WithTimeout_WhenExpectationIsMet_ShouldStayMet()
 	{
-		VirtualTimeSystem timeSystem = new();
-		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeSystem.Advance(10.Seconds()));
+		VirtualTimeProvider timeProvider = new();
+		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
 		Task evaluation = Evaluate();
 
 		await That(await IsCompleted(evaluation)).IsTrue()
@@ -194,7 +193,7 @@ public sealed class MaterializedSourceReleaseTests
 		await That(subject.DisposeCount).IsEqualTo(1);
 
 		async Task Evaluate()
-			=> await That(subject).Contains(1).WithTimeout(5.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(subject).Contains(1).WithTimeout(5.Seconds()).WithTimeProvider(timeProvider);
 	}
 
 	[Test]

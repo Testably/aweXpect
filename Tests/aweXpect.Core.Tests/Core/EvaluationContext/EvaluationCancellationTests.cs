@@ -3,7 +3,6 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Results;
@@ -63,23 +62,23 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
-	public async Task ForRemainingTimeout_ShouldMeasureAndElapseOnTheTimeSystem()
+	public async Task ForRemainingTimeout_ShouldMeasureAndElapseOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
-		EvaluationCancellation sut = EvaluationCancellation.Create(10.Seconds(), CancellationToken.None, timeSystem);
-		timeSystem.Advance(4.Seconds());
+		VirtualTimeProvider timeProvider = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(10.Seconds(), CancellationToken.None, timeProvider);
+		timeProvider.Advance(4.Seconds());
 		sut.Release();
 
 		EvaluationCancellation result = sut.ForRemainingTimeout();
-		timeSystem.Advance(5.Seconds());
+		timeProvider.Advance(5.Seconds());
 		bool isCanceledBeforeTheTimeout = result.Token.IsCancellationRequested;
-		timeSystem.Advance(1.Seconds());
+		timeProvider.Advance(1.Seconds());
 
 		await That(result.Timeout).IsEqualTo(6.Seconds())
-			.Because("the timeout is measured from the start of the evaluation on its time system");
+			.Because("the timeout is measured from the start of the evaluation on its time provider");
 		await That(isCanceledBeforeTheTimeout).IsFalse();
 		await That(result.Reason).IsEqualTo(CancellationReason.Timeout)
-			.Because("the rest of the timeout elapses on the time system of the evaluation as well");
+			.Because("the rest of the timeout elapses on the time provider of the evaluation as well");
 		result.Release();
 	}
 
@@ -305,18 +304,18 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
-	public async Task Reason_WhenTheTimeoutElapsedOnTheTimeSystem_ShouldBeTimeout()
+	public async Task Reason_WhenTheTimeoutElapsedOnTheTimeProvider_ShouldBeTimeout()
 	{
-		VirtualTimeSystem timeSystem = new();
-		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeSystem);
+		VirtualTimeProvider timeProvider = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeProvider);
 
-		timeSystem.Advance(1.Hours() - 1.Milliseconds());
+		timeProvider.Advance(1.Hours() - 1.Milliseconds());
 		CancellationReason reasonBeforeTheTimeout = sut.Reason;
-		timeSystem.Advance(1.Milliseconds());
+		timeProvider.Advance(1.Milliseconds());
 
 		await That(reasonBeforeTheTimeout).IsEqualTo(CancellationReason.None);
 		await That(sut.Reason).IsEqualTo(CancellationReason.Timeout)
-			.Because("the timeout elapses when the clock of the time system reaches it");
+			.Because("the timeout elapses when the clock of the time provider reaches it");
 		await That(sut.Token.IsCancellationRequested).IsTrue();
 		sut.Release();
 	}
@@ -331,15 +330,15 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
-	public async Task Release_ShouldReleaseTheTimeoutOnTheTimeSystem()
+	public async Task Release_ShouldReleaseTheTimeoutOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
-		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeSystem);
+		VirtualTimeProvider timeProvider = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeProvider);
 		CancellationToken token = sut.Token;
 		sut.Release();
 
 		void Act()
-			=> timeSystem.Advance(2.Hours());
+			=> timeProvider.Advance(2.Hours());
 
 		await That(Act).DoesNotThrow()
 			.Because("a released timeout is not due anymore when the clock reaches it");
@@ -351,14 +350,14 @@ public class EvaluationCancellationTests
 	{
 		Signaler<int> signaler = new();
 		signaler.Signal(1);
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		int calls = 0;
 
 		bool TakesAWhile(int _)
 		{
 			if (Interlocked.Increment(ref calls) == 1)
 			{
-				timeSystem.Advance(200.Milliseconds());
+				timeProvider.Advance(200.Milliseconds());
 			}
 
 			return true;
@@ -368,13 +367,13 @@ public class EvaluationCancellationTests
 			=> await That(signaler).Signaled().With(TakesAWhile)
 				.And.DidNotSignal(2.Times()).Within(300.Milliseconds())
 				.WithTimeout(300.Milliseconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:00.300").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
 			.Because("the second constraint only watched for the rest of the timeout instead of its own 300 ms");
-		await That(timeSystem.Now).IsEqualTo(300.Milliseconds())
+		await That(timeProvider.Now).IsEqualTo(300.Milliseconds())
 			.Because("the timeout ended the wait of the second constraint 100 ms after it started");
 	}
 
@@ -393,9 +392,9 @@ public class EvaluationCancellationTests
 	/// </summary>
 	private static EvaluationCancellation TimedOutAfter(TimeSpan timeout, CancellationToken callerToken = default)
 	{
-		VirtualTimeSystem timeSystem = new();
-		EvaluationCancellation cancellation = new(timeout, callerToken, null, timeSystem);
-		timeSystem.Advance(timeout);
+		VirtualTimeProvider timeProvider = new();
+		EvaluationCancellation cancellation = new(timeout, callerToken, null, timeProvider);
+		timeProvider.Advance(timeout);
 		return cancellation;
 	}
 

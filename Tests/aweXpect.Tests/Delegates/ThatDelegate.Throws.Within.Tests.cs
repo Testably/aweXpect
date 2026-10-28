@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -98,7 +98,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(20.Milliseconds());
@@ -106,7 +106,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan).WithTimeSystem(time);
+						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan).WithTimeProvider(time);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");
@@ -128,7 +128,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExceptionIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -137,7 +137,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -162,14 +162,14 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -296,7 +296,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_ShouldUseTheLastDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
@@ -305,7 +305,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(1.Seconds()).Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -318,7 +318,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithALongerLastDuration_ShouldApplyItAsTimeout()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(3.Seconds());
@@ -327,7 +327,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(1.Seconds()).Within(5.Seconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).DoesNotThrow()
 						.Because("the timeout is read from the last duration when the evaluation starts");
@@ -336,7 +336,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldUseTheLastDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
@@ -345,7 +345,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(5.Milliseconds()).Within(Timeout.InfiniteTimeSpan)
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).DoesNotThrow()
 						.Because("the infinite duration replaces the earlier one and imposes no limit");
@@ -354,7 +354,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldUseTheLastDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
@@ -363,7 +363,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception?> Act()
 						=> await That(action).Throws().Within(1.Seconds()).OnlyIf(true).Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -437,7 +437,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(20.Milliseconds());
@@ -446,7 +446,7 @@ public sealed partial class ThatDelegate
 
 					async Task<CustomException> Act()
 						=> await That(action).Throws<CustomException>().Within(Timeout.InfiniteTimeSpan)
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");
@@ -480,7 +480,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -489,7 +489,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<CustomException> Act()
-						=> await That(action).Throws<CustomException>().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws<CustomException>().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -502,7 +502,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -511,7 +511,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<CustomException> Act()
-						=> await That(action).Throws<CustomException>().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws<CustomException>().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.Whose(e => e.InnerException, i => i.IsNull());
@@ -520,14 +520,14 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws<Exception>().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws<Exception>().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -675,7 +675,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(20.Milliseconds());
@@ -684,7 +684,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws(typeof(CustomException))
-							.Within(Timeout.InfiniteTimeSpan).WithTimeSystem(time);
+							.Within(Timeout.InfiniteTimeSpan).WithTimeProvider(time);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");
@@ -718,7 +718,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -728,7 +728,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws(typeof(CustomException)).Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -741,14 +741,14 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws(typeof(Exception)).Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).Throws(typeof(Exception)).Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""

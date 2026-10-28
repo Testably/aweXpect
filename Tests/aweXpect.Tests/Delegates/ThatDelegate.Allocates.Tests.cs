@@ -1,6 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Threading;
-using aweXpect.Core.Internal;
+using aweXpect.Core;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
@@ -60,12 +60,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateExceedsTheTimeout_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () => time.Advance(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).Allocates().AtMost(1_000_000).WithTimeout(50.Milliseconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

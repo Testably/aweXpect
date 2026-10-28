@@ -6,7 +6,6 @@ using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
 using aweXpect.Options;
@@ -74,11 +73,11 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task Compare_WithAnEvaluation_ShouldEvaluateTheNestedExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		CapturingConstraint constraint = new(Outcome.Success);
 
@@ -94,7 +93,7 @@ public sealed class NestedExpectationEvaluationTests
 		await That(constraint.Context).IsNotSameAs(context)
 			.Because("the collections and the reasons of the nested expectation are released after the comparison");
 		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
-		await That((constraint.Context as Context)?.TimeSystem).IsSameAs(timeSystem);
+		await That((constraint.Context as Context)?.TimeProvider).IsSameAs(timeProvider);
 		await That(constraint.CancellationToken).IsEqualTo(cts.Token);
 	}
 
@@ -206,11 +205,11 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task ForEvaluation_ShouldEvaluateTheNestedExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		CapturingConstraint constraint = new(Outcome.Success);
 		IEqualityOptions<MyClass> sut = Equivalent();
@@ -228,7 +227,7 @@ public sealed class NestedExpectationEvaluationTests
 		await That(constraint.Context).IsNotSameAs(context)
 			.Because("the collections and the reasons of the nested expectation are released after the comparison");
 		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
-		await That((constraint.Context as Context)?.TimeSystem).IsSameAs(timeSystem);
+		await That((constraint.Context as Context)?.TimeProvider).IsSameAs(timeProvider);
 		await That(constraint.CancellationToken).IsEqualTo(cts.Token);
 	}
 
@@ -310,11 +309,11 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task IsMetBy_ShouldEvaluateTheExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		CapturingConstraint constraint = new(Outcome.Success);
 
@@ -324,7 +323,7 @@ public sealed class NestedExpectationEvaluationTests
 		await That(constraint.Context).IsNotSameAs(context)
 			.Because("the expectation must not leave its collections, reasons or stored values in the context");
 		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
-		await That((constraint.Context as Context)?.TimeSystem).IsSameAs(timeSystem);
+		await That((constraint.Context as Context)?.TimeProvider).IsSameAs(timeProvider);
 		await That(constraint.CancellationToken).IsEqualTo(cts.Token);
 	}
 
@@ -413,9 +412,9 @@ public sealed class NestedExpectationEvaluationTests
 	}
 
 	[Test]
-	public async Task NestedWait_ShouldWaitOnTheTimeSystemOfTheEvaluation()
+	public async Task NestedWait_ShouldWaitOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		MyClass subject = new()
 		{
 			Value = new Signaler(),
@@ -426,7 +425,7 @@ public sealed class NestedExpectationEvaluationTests
 		};
 
 		async Task Act()
-			=> await That(subject).IsEquivalentTo(expected).WithTimeSystem(timeSystem);
+			=> await That(subject).IsEquivalentTo(expected).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -440,14 +439,14 @@ public sealed class NestedExpectationEvaluationTests
 			             Equivalency options:
 			              - include public fields and properties
 			             """);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.Now).IsEqualTo(30.Seconds())
 			.Because("the nested expectation waited on the virtual clock of the evaluation");
 	}
 
 	[Test]
-	public async Task NestedWait_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeoutOnTheTimeSystemOfTheEvaluation()
+	public async Task NestedWait_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeoutOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		MyClass subject = new()
 		{
 			Value = new Signaler(),
@@ -458,12 +457,12 @@ public sealed class NestedExpectationEvaluationTests
 		};
 
 		async Task Act()
-			=> await That(subject).IsEquivalentTo(expected).WithTimeout(10.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(subject).IsEquivalentTo(expected).WithTimeout(10.Seconds()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:10*").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:10."));
-		await That(timeSystem.Now).IsEqualTo(10.Seconds())
+		await That(timeProvider.Now).IsEqualTo(10.Seconds())
 			.Because("the timeout cuts the wait of the nested expectation short on the virtual clock");
 	}
 

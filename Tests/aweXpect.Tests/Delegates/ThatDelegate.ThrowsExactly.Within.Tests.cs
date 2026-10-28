@@ -1,5 +1,5 @@
-﻿using aweXpect.Core.Internal;
-using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -72,7 +72,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -82,7 +82,7 @@ public sealed partial class ThatDelegate
 
 					async Task<CustomException> Act()
 						=> await That(action).ThrowsExactly<CustomException>().Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -95,14 +95,14 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).ThrowsExactly<Exception>().Within(5.Milliseconds()).WithTimeSystem(time);
+						=> await That(action).ThrowsExactly<Exception>().Within(5.Milliseconds()).WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -265,7 +265,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
@@ -275,7 +275,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).ThrowsExactly(typeof(CustomException)).Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""
@@ -288,7 +288,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeSystem time = new();
+					VirtualTimeProvider time = new();
 					Action action = () =>
 					{
 						time.Advance(50.Milliseconds());
@@ -296,7 +296,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).ThrowsExactly(typeof(Exception)).Within(5.Milliseconds())
-							.WithTimeSystem(time);
+							.WithTimeProvider(time);
 
 					await That(Act).Throws()
 						.WithMessage("""

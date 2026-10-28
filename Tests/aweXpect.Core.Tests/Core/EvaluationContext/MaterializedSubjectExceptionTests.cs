@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -256,7 +255,7 @@ public class MaterializedSubjectExceptionTests
 	[Test]
 	public async Task WhenGetEnumeratorThrows_AndExpectationIsRepeated_ShouldAskTheSourceAgainForEveryCheck()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		InvalidOperationException exception = new("the source is broken");
 		DisposeTrackingEnumerable source = new(null, 1, 2)
 		{
@@ -266,7 +265,7 @@ public class MaterializedSubjectExceptionTests
 
 		async Task Act()
 			=> await That(subject).CompliesWith(it => it.Contains(1))
-				.Within(TimeSpan.FromMilliseconds(30)).CheckEvery(TimeSpan.FromMilliseconds(10)).WithTimeSystem(time);
+				.Within(TimeSpan.FromMilliseconds(30)).CheckEvery(TimeSpan.FromMilliseconds(10)).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

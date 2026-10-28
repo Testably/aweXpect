@@ -22,7 +22,6 @@ The analyzers and the source generators need Roslyn 4.8 or later, which ships wi
 | [`aweXpect2002`](#test-framework-adapter)                   | Warning     | a test project on .NET 8 or later sets `<LangVersion>` below 9    |
 | [`aweXpect4001` to `aweXpect4004`](#expectation-generator)  | Error       | a method cannot be turned into a generated expectation            |
 | [`aweXpect4005`](#registration-generator)                   | Error       | a module initializer of an extension cannot be called             |
-| [`aweXpect5001`](#experimental-apis)                        | Error       | the experimental `WithTimeSystem(…)` or `ITimeSystem` is used     |
 
 ## aweXpect0001
 
@@ -254,20 +253,6 @@ the first expectation, see [test framework adapter](./11-extending/11-initializa
 
 ```csharp no-compile
 TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
-```
-
-## Experimental APIs
-
-`WithTimeSystem(…)` and the `ITimeSystem` it takes, both in `aweXpect.Core.Internal`, let an expectation wait and
-measure on a virtual clock instead of in real time, see
-[on a virtual clock](./03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock). They are marked as
-experimental with the diagnostic `aweXpect5001`, as they may change in any version. Suppress it in a test project
-that uses a virtual time system:
-
-```xml
-<PropertyGroup>
-  <NoWarn>$(NoWarn);aweXpect5001</NoWarn>
-</PropertyGroup>
 ```
 
 ## For extension authors

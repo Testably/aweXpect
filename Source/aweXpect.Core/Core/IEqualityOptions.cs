@@ -20,7 +20,7 @@ public interface IEqualityOptions<in TElement>
 	/// <remarks>
 	///     A comparison that evaluates expectations of its own, i.e. the <c>It.Is…</c> in the expected object of an
 	///     equivalency comparison, evaluates them as part of that evaluation: the <paramref name="cancellationToken" />
-	///     cancels them, and its timeout and time system apply to them.
+	///     cancels them, and its timeout and time provider apply to them.
 	/// </remarks>
 	IEqualityEvaluator<TElement> ForEvaluation(IEvaluationContext context, CancellationToken cancellationToken);
 

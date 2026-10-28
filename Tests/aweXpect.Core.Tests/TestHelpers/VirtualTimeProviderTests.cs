@@ -1,14 +1,15 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 
-public sealed class VirtualTimeSystemTests
+public sealed class VirtualTimeProviderTests
 {
 	[Test]
 	public async Task Advance_ShouldMakeTheScheduledCancellationsOnTheWay()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 		TimeSpan? canceledAt = null;
 		using CancellationTokenRegistration _ = cts.Token.Register(() => canceledAt = sut.Now);
@@ -23,7 +24,7 @@ public sealed class VirtualTimeSystemTests
 	[Test]
 	public async Task CancelAfter_ShouldCancelWhenTheClockReachesTheEndOfTheDelay()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 		sut.Advance(10.Milliseconds());
 
@@ -39,12 +40,12 @@ public sealed class VirtualTimeSystemTests
 	[Test]
 	public async Task CancelAfter_WhenTheSourceIsDisposed_ShouldNotCutAWaitShort()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		CancellationTokenSource cts = new();
 		sut.CancelAfter(cts, 40.Milliseconds());
 		cts.Dispose();
 
-		await sut.Delay(100.Milliseconds(), CancellationToken.None);
+		await sut.CreateDelay(100.Milliseconds(), CancellationToken.None);
 
 		await That(sut.Now).IsEqualTo(100.Milliseconds())
 			.Because("the timeout of a disposed source was released, like the timer of a real one");
@@ -53,7 +54,7 @@ public sealed class VirtualTimeSystemTests
 	[Test]
 	public async Task CancelAfter_WithInfiniteDelay_ShouldNotCancel()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 
 		sut.CancelAfter(cts, Timeout.InfiniteTimeSpan);
@@ -65,7 +66,7 @@ public sealed class VirtualTimeSystemTests
 	[Test]
 	public async Task CancelAfter_WithoutDelay_ShouldCancelAtOnce()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 
 		sut.CancelAfter(cts, TimeSpan.Zero);
@@ -75,42 +76,42 @@ public sealed class VirtualTimeSystemTests
 	}
 
 	[Test]
-	public async Task Delay_ShouldAdvanceTheClockByItsDuration()
+	public async Task CreateDelay_ShouldAdvanceTheClockByItsDuration()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		sut.Advance(10.Milliseconds());
 		long timestamp = sut.GetTimestamp();
 
-		await sut.Delay(1.Hours(), CancellationToken.None);
+		await sut.CreateDelay(1.Hours(), CancellationToken.None);
 
 		await That(sut.GetElapsedTime(timestamp)).IsEqualTo(1.Hours());
 		await That(sut.Now).IsEqualTo(1.Hours() + 10.Milliseconds());
 	}
 
 	[Test]
-	public async Task Delay_WhenACancellationIsScheduledAfterIt_ShouldNotCancel()
+	public async Task CreateDelay_WhenACancellationIsScheduledAfterIt_ShouldNotCancel()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 		sut.CancelAt(101.Milliseconds(), cts);
 
-		await sut.Delay(100.Milliseconds(), CancellationToken.None);
+		await sut.CreateDelay(100.Milliseconds(), CancellationToken.None);
 
 		await That(cts.IsCancellationRequested).IsFalse();
 		await That(sut.Now).IsEqualTo(100.Milliseconds());
 	}
 
 	[Test]
-	public async Task Delay_WhenACancellationIsScheduledWithinIt_ShouldStopTheClockUntilTheWaitIsCanceled()
+	public async Task CreateDelay_WhenACancellationIsScheduledWithinIt_ShouldStopTheClockUntilTheWaitIsCanceled()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 		using CancellationTokenSource waitCts = new();
 		TaskCompletionSource<bool> canceled = new(TaskCreationOptions.RunContinuationsAsynchronously);
 		using CancellationTokenRegistration _ = cts.Token.Register(() => canceled.TrySetResult(true));
 		sut.CancelAt(40.Milliseconds(), cts);
 
-		Task delay = sut.Delay(100.Milliseconds(), waitCts.Token);
+		Task delay = sut.CreateDelay(100.Milliseconds(), waitCts.Token);
 		await canceled.Task;
 
 		await That(sut.Now).IsEqualTo(40.Milliseconds());
@@ -122,26 +123,26 @@ public sealed class VirtualTimeSystemTests
 	}
 
 	[Test]
-	public async Task Delay_WhenAlreadyCanceled_ShouldNotAdvanceTheClock()
+	public async Task CreateDelay_WhenAlreadyCanceled_ShouldNotAdvanceTheClock()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource waitCts = new();
 		waitCts.Cancel();
 
-		Task Act() => sut.Delay(100.Milliseconds(), waitCts.Token);
+		Task Act() => sut.CreateDelay(100.Milliseconds(), waitCts.Token);
 
 		await That(Act).Throws<OperationCanceledException>();
 		await That(sut.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
 	[Test]
-	public async Task Delay_WithoutLimit_ShouldMoveTheClockToTheNextCancellationAndWaitForItsOwn()
+	public async Task CreateDelay_WithoutLimit_ShouldMoveTheClockToTheNextCancellationAndWaitForItsOwn()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		using CancellationTokenSource cts = new();
 		sut.CancelAfter(cts, 40.Milliseconds());
 
-		Task delay = sut.Delay(Timeout.InfiniteTimeSpan, cts.Token);
+		Task delay = sut.CreateDelay(Timeout.InfiniteTimeSpan, cts.Token);
 
 		await That(() => delay).Throws<OperationCanceledException>()
 			.Because("only a cancellation ends a wait without a limit");
@@ -149,9 +150,20 @@ public sealed class VirtualTimeSystemTests
 	}
 
 	[Test]
+	public async Task Delay_ShouldAdvanceTheClockByItsDuration()
+	{
+		VirtualTimeProvider sut = new();
+
+		await sut.Delay(1.Hours(), CancellationToken.None);
+
+		await That(sut.Now).IsEqualTo(1.Hours())
+			.Because("the standard delay of a time provider is a wait on the virtual clock as well");
+	}
+
+	[Test]
 	public async Task GetElapsedTime_ShouldMeasureTheVirtualTimeSinceTheTimestamp()
 	{
-		VirtualTimeSystem sut = new();
+		VirtualTimeProvider sut = new();
 		sut.Advance(10.Milliseconds());
 		long timestamp = sut.GetTimestamp();
 

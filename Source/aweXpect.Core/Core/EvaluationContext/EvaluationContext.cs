@@ -5,8 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -32,20 +30,20 @@ internal class EvaluationContext : IEvaluationContext
 	private int _storeCount;
 
 	/// <summary>
-	///     The time system of the evaluation, with which a repeated check measures the time and waits between its checks.
+	///     The clock of the evaluation, with which a repeated check measures the time and waits between its checks.
 	/// </summary>
 	/// <remarks>
-	///     Only another time system than the real one is kept in the <see cref="Extras" />, so that the context of most
+	///     Only another clock than the real one is kept in the <see cref="Extras" />, so that the context of most
 	///     expectations stays smaller.
 	/// </remarks>
-	public ITimeSystem TimeSystem
+	public TimeProvider TimeProvider
 	{
-		get => _extras?.TimeSystem ?? RealTimeSystem.Instance;
+		get => _extras?.TimeProvider ?? TimeProvider.System;
 		set
 		{
-			if (_extras is not null || !ReferenceEquals(value, RealTimeSystem.Instance))
+			if (_extras is not null || !ReferenceEquals(value, TimeProvider.System))
 			{
-				GetExtras().TimeSystem = value;
+				GetExtras().TimeProvider = value;
 			}
 		}
 	}
@@ -111,17 +109,17 @@ internal class EvaluationContext : IEvaluationContext
 			: new EvaluationContext
 			{
 				Cancellation = context.Cancellation,
-				TimeSystem = GetTimeSystem(context),
+				TimeProvider = GetTimeProvider(context),
 			};
 
 	/// <summary>
-	///     The time system of the evaluation in the <paramref name="context" />, or the real one outside an evaluation
+	///     The clock of the evaluation in the <paramref name="context" />, or the real one outside an evaluation
 	///     and for a <paramref name="context" /> of another implementation.
 	/// </summary>
-	public static ITimeSystem GetTimeSystem(IEvaluationContext? context)
+	public static TimeProvider GetTimeProvider(IEvaluationContext? context)
 		=> context is EvaluationContext evaluationContext
-			? evaluationContext.TimeSystem
-			: RealTimeSystem.Instance;
+			? evaluationContext.TimeProvider
+			: TimeProvider.System;
 
 	private bool IsNested(string key)
 		=> _nestingDepth > 0 && !EvaluationContextExtensions.IsMaterializationKey(key);
@@ -350,7 +348,7 @@ internal class EvaluationContext : IEvaluationContext
 			_extras = new Extras
 			{
 				RepeatedBy = this,
-				TimeSystem = _extras?.TimeSystem,
+				TimeProvider = _extras?.TimeProvider,
 			},
 		};
 		List<EvaluationContext> checks = GetExtras().Checks ??= [];
@@ -381,7 +379,7 @@ internal class EvaluationContext : IEvaluationContext
 		EvaluationContext attempt = new()
 		{
 			Cancellation = Cancellation,
-			TimeSystem = TimeSystem,
+			TimeProvider = TimeProvider,
 		};
 		GetExtras().Attempt = attempt;
 		return attempt;
@@ -633,6 +631,6 @@ internal class EvaluationContext : IEvaluationContext
 		public List<AsyncBecauseReason>? PendingReasons { get; set; }
 		public List<Action>? Releases { get; set; }
 		public EvaluationContext? RepeatedBy { get; init; }
-		public ITimeSystem? TimeSystem { get; set; }
+		public TimeProvider? TimeProvider { get; set; }
 	}
 }

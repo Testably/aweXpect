@@ -6,7 +6,6 @@ using System.Threading.Tasks.Sources;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 
@@ -941,7 +940,7 @@ public class ExpectTests
 			List<Func<aweXpect.Core.EvaluationContext.CompletedEvaluation, CancellationToken, ValueTask>> ran)
 			=> Task.CompletedTask;
 
-		internal override void UseTimeSystem(ITimeSystem timeSystem) { }
+		internal override void UseTimeProvider(TimeProvider timeProvider) { }
 
 		internal override void AddRemainingCancellations(
 			List<aweXpect.Core.EvaluationContext.EvaluationCancellation> cancellations)

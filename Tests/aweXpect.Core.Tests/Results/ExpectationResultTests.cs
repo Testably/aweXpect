@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -189,7 +188,7 @@ public class ExpectationResultTests
 
 		internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 			EvaluationContext.EvaluationContext context,
-			ITimeSystem timeSystem,
+			TimeProvider timeProvider,
 			TimeSpan? timeout,
 			CancellationToken cancellationToken)
 		{

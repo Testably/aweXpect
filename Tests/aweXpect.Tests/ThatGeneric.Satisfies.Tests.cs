@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 namespace aweXpect.Tests;
@@ -340,7 +340,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Satisfies(_ => false).Within(200.Milliseconds()).CheckEvery(1.Hours())
 						.WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -395,7 +395,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Satisfies(_ => ++count > 2).Within(100.Milliseconds())
-						.CheckEvery(1.Hours()).WithTimeSystem(new VirtualTimeSystem());
+						.CheckEvery(1.Hours()).WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -562,7 +562,7 @@ public sealed partial class ThatGeneric
 				{
 					async Task Act()
 						=> await That(subject).Satisfies(_ => false).Within(30.Seconds()).WithTimeout(60.Seconds())
-							.WithTimeSystem(new VirtualTimeSystem());
+							.WithTimeProvider(new VirtualTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -587,7 +587,7 @@ public sealed partial class ThatGeneric
 				{
 					async Task Act()
 						=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
-							.WithTimeSystem(new VirtualTimeSystem());
+							.WithTimeProvider(new VirtualTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Core.Internal;
 #if NET8_0_OR_GREATER
 using aweXpect.Core.Helpers;
 using aweXpect.Options;
@@ -34,7 +33,7 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 
 	public bool IsNullTaskSubject => false;
 
-	public ValueTask<DelegateValue<TValue>> GetValue(ITimeSystem timeSystem,
+	public ValueTask<DelegateValue<TValue>> GetValue(TimeProvider timeProvider,
 		CancellationToken cancellationToken)
 	{
 		if (_action is null && _actionWithoutCancellation is null)
@@ -46,21 +45,21 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 		if (_allocationOptions is not null)
 		{
 			return new ValueTask<DelegateValue<TValue>>(
-				InvokeMeasuringAllocations(_allocationOptions, timeSystem, cancellationToken));
+				InvokeMeasuringAllocations(_allocationOptions, timeProvider, cancellationToken));
 		}
 #endif
 
-		long startTimestamp = timeSystem.GetTimestamp();
+		long startTimestamp = timeProvider.GetTimestamp();
 		try
 		{
 			TValue value = _action is null ? _actionWithoutCancellation!() : _action(cancellationToken);
 			return new ValueTask<DelegateValue<TValue>>(new DelegateValue<TValue>(value, null,
-				timeSystem.GetElapsedTime(startTimestamp)));
+				timeProvider.GetElapsedTime(startTimestamp)));
 		}
 		catch (Exception ex)
 		{
 			return new ValueTask<DelegateValue<TValue>>(new DelegateValue<TValue>(default, ex,
-				timeSystem.GetElapsedTime(startTimestamp)));
+				timeProvider.GetElapsedTime(startTimestamp)));
 		}
 	}
 
@@ -81,12 +80,12 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 	/// <remarks>
 	///     The allocated bytes are read directly around the invocation, so that only the delegate is measured.
 	/// </remarks>
-	private DelegateValue<TValue> InvokeMeasuringAllocations(AllocationOptions options, ITimeSystem timeSystem,
+	private DelegateValue<TValue> InvokeMeasuringAllocations(AllocationOptions options, TimeProvider timeProvider,
 		CancellationToken cancellationToken)
 	{
 		if (options.IsWarmingUp)
 		{
-			long warmUpTimestamp = timeSystem.GetTimestamp();
+			long warmUpTimestamp = timeProvider.GetTimestamp();
 			try
 			{
 				Invoke(cancellationToken);
@@ -95,7 +94,7 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 			{
 				if (!options.AreExceptionsAllowed || cancellationToken.IsCancellationRequested)
 				{
-					return new DelegateValue<TValue>(default, ex, timeSystem.GetElapsedTime(warmUpTimestamp))
+					return new DelegateValue<TValue>(default, ex, timeProvider.GetElapsedTime(warmUpTimestamp))
 					{
 						IsWarmUpException = true,
 					};
@@ -103,13 +102,13 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 			}
 		}
 
-		long startTimestamp = timeSystem.GetTimestamp();
+		long startTimestamp = timeProvider.GetTimestamp();
 		long allocatedBytesBefore = GC.GetAllocatedBytesForCurrentThread();
 		try
 		{
 			TValue value = Invoke(cancellationToken);
 			long allocatedBytes = GC.GetAllocatedBytesForCurrentThread() - allocatedBytesBefore;
-			return new DelegateValue<TValue>(value, null, timeSystem.GetElapsedTime(startTimestamp))
+			return new DelegateValue<TValue>(value, null, timeProvider.GetElapsedTime(startTimestamp))
 			{
 				AllocatedBytes = allocatedBytes,
 			};
@@ -117,7 +116,7 @@ internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 		catch (Exception ex)
 		{
 			long allocatedBytes = GC.GetAllocatedBytesForCurrentThread() - allocatedBytesBefore;
-			return new DelegateValue<TValue>(default, ex, timeSystem.GetElapsedTime(startTimestamp))
+			return new DelegateValue<TValue>(default, ex, timeProvider.GetElapsedTime(startTimestamp))
 			{
 				AllocatedBytes = allocatedBytes,
 			};

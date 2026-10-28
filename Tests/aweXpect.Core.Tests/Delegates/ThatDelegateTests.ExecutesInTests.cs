@@ -1,5 +1,4 @@
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Delegates;
 using aweXpect.Results;
@@ -67,12 +66,12 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task AtMost_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			Action @delegate = () => time.Advance(2.Seconds());
 			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>> sut = That(@delegate).ExecutesIn();
 			_ = sut.AtMost(1.Seconds());
 
-			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeSystem(time);
+			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeProvider(time);
 
 			await That(Act).DoesNotThrow()
 				.Because("the later maximum replaces the earlier one, also as the timeout");
@@ -81,7 +80,7 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task AtMost_WithValue_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			Func<int> @delegate = () =>
 			{
 				time.Advance(2.Seconds());
@@ -90,7 +89,7 @@ public sealed partial class ThatDelegateTests
 			ExecutesInResult<AndResult<ThatDelegate.WithValue<int>>> sut = That(@delegate).ExecutesIn();
 			_ = sut.AtMost(1.Seconds());
 
-			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeSystem(time);
+			async Task Act() => await sut.AtMost(3.Seconds()).WithTimeProvider(time);
 
 			await That(Act).DoesNotThrow()
 				.Because("the later maximum replaces the earlier one, also as the timeout");
@@ -99,13 +98,13 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task Between_WhenAndIsSpecifiedTwice_ShouldUseTheLastRange()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			Action @delegate = () => time.Advance(2500.Milliseconds());
 			BetweenResult<AndResult<ThatDelegate.WithoutValue>, TimeSpan> sut =
 				That(@delegate).ExecutesIn().Between(1.Seconds());
 			_ = sut.And(2.Seconds());
 
-			async Task Act() => await sut.And(3.Seconds()).WithTimeSystem(time);
+			async Task Act() => await sut.And(3.Seconds()).WithTimeProvider(time);
 
 			await That(Act).DoesNotThrow()
 				.Because("the later range replaces the earlier one, also as the timeout");
@@ -200,13 +199,13 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTolerance()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			Action @delegate = () => time.Advance(3.Seconds());
 			ExecutesInToleranceResult<AndResult<ThatDelegate.WithoutValue>> sut =
 				That(@delegate).ExecutesIn(1.Seconds());
 			_ = sut.Within(1.Seconds());
 
-			async Task Act() => await sut.Within(3.Seconds()).WithTimeSystem(time);
+			async Task Act() => await sut.Within(3.Seconds()).WithTimeProvider(time);
 
 			await That(Act).DoesNotThrow()
 				.Because("the later tolerance replaces the earlier one, also as the timeout");

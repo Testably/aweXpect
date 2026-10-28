@@ -156,14 +156,42 @@ public static class EvaluationContextExtensions
 	///     <paramref name="evaluationContext" />.
 	/// </remarks>
 	public static long GetTimestamp(this IEvaluationContext evaluationContext)
-		=> EvaluationContext.GetTimeSystem(evaluationContext).GetTimestamp();
+		=> EvaluationContext.GetTimeProvider(evaluationContext).GetTimestamp();
 
 	/// <summary>
 	///     Gets the time elapsed on the clock of the evaluation since the <paramref name="startTimestamp" /> from
 	///     <see cref="GetTimestamp(IEvaluationContext)" />.
 	/// </summary>
 	public static TimeSpan GetElapsedTime(this IEvaluationContext evaluationContext, long startTimestamp)
-		=> EvaluationContext.GetTimeSystem(evaluationContext).GetElapsedTime(startTimestamp);
+		=> EvaluationContext.GetTimeProvider(evaluationContext).GetElapsedTime(startTimestamp);
+
+	/// <summary>
+	///     Cancels the <paramref name="cancellationTokenSource" /> after the <paramref name="delay" /> on the clock of
+	///     the evaluation.
+	/// </summary>
+	/// <remarks>
+	///     A constraint that waits for something outside aweXpect with a timeout of its own cancels its wait this way,
+	///     so that the timeout elapses on the same clock as <see cref="GetElapsedTime(IEvaluationContext, long)" />
+	///     measures and as the timeout of the evaluation, e.g. for
+	///     <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />.<br />
+	///     Like with <see cref="CancellationTokenSource.CancelAfter(TimeSpan)" />, <see cref="Timeout.InfiniteTimeSpan" />
+	///     never cancels, nor does a delay longer than a timer accepts, and a source that is disposed before is not
+	///     canceled.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">
+	///     The <paramref name="cancellationTokenSource" /> is <see langword="null" />.
+	/// </exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="delay" /> is negative and not <see cref="Timeout.InfiniteTimeSpan" />.
+	/// </exception>
+	public static void CancelAfter(this IEvaluationContext evaluationContext,
+		CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+	{
+		cancellationTokenSource.ThrowIfNull();
+		ThrowHelper.ThrowIfTimeoutIsNegative(delay);
+		EvaluationContext.GetTimeProvider(evaluationContext)
+			.CancelAfter(cancellationTokenSource, delay.ToTimerTimeout());
+	}
 
 	/// <summary>
 	///     Waits like <see cref="Signaler.WaitAsync(Times, TimeSpan?, CancellationToken)" />, while the
@@ -181,7 +209,7 @@ public static class EvaluationContextExtensions
 		Signaler signaler, Times amount, TimeSpan? timeout, CancellationToken cancellationToken)
 	{
 		signaler.ThrowIfNull();
-		return signaler.WaitAsync(amount, timeout, EvaluationContext.GetTimeSystem(evaluationContext),
+		return signaler.WaitAsync(amount, timeout, EvaluationContext.GetTimeProvider(evaluationContext),
 			cancellationToken);
 	}
 
@@ -202,7 +230,7 @@ public static class EvaluationContextExtensions
 		Func<TParameter, bool>? predicate, TimeSpan? timeout, CancellationToken cancellationToken)
 	{
 		signaler.ThrowIfNull();
-		return signaler.WaitAsync(amount, predicate, timeout, EvaluationContext.GetTimeSystem(evaluationContext),
+		return signaler.WaitAsync(amount, predicate, timeout, EvaluationContext.GetTimeProvider(evaluationContext),
 			cancellationToken);
 	}
 

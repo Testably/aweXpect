@@ -1,5 +1,5 @@
-﻿using aweXpect.Core.Internal;
-using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -23,11 +23,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -40,7 +40,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheLimit_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () =>
 				{
 					time.Advance(500.Milliseconds());
@@ -48,7 +48,7 @@ public sealed partial class ThatDelegate
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

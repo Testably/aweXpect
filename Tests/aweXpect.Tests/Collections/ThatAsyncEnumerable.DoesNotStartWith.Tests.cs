@@ -1,6 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
-using aweXpect.Core.Internal;
+using aweXpect.Core;
 using aweXpect.Core.Tests.TestHelpers;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -212,7 +212,7 @@ public sealed partial class ThatAsyncEnumerable
 
 				async Task Act()
 					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
-						.DoesNotStartWith(1, 2).WithTimeSystem(new VirtualTimeSystem());
+						.DoesNotStartWith(1, 2).WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

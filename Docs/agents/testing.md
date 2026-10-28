@@ -77,9 +77,8 @@ The slow tests of `aweXpect.Docs.Tests`:
 - Data sources: `[Arguments]`, `[MethodDataSource]` and `[AutoArguments]` (`Tests/Shared/AutoArgumentsAttribute.cs`,
   fills the remaining parameters with AutoFixture). `Catch.Exception`/`Catch.ExceptionAsync` capture an exception
   for later inspection.
-- Timing: use `.WithTimeSystem(new VirtualTimeSystem())` (`aweXpect.Core.Internal`, whose experimental diagnostic
-  `aweXpect5001` is in the `NoWarn` of `Tests/Directory.Build.props`;
-  `Tests/aweXpect.Core.Tests/TestHelpers/VirtualTimeSystem.cs`, linked into `aweXpect.Tests`) and advance the clock
+- Timing: use `.WithTimeProvider(new VirtualTimeProvider())` (a `TimeProvider` in
+  `Tests/aweXpect.Core.Tests/TestHelpers/VirtualTimeProvider.cs`, linked into `aweXpect.Tests`) and advance the clock
   instead of real delays or wider margins. Only tests about real time itself stay on the real clock.
 - `aweXpect.Tests` targets `net48` without the `IsExternalInit` or `Index` polyfill: no records or list patterns there.
   Run `-f net48` first when a test uses a newer language feature, because `net8.0`/`net10.0` pass without it.

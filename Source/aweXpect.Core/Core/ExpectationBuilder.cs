@@ -10,10 +10,8 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Initialization;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 using aweXpect.Results;
 
@@ -1596,8 +1594,8 @@ public abstract class ExpectationBuilder
 	{
 		try
 		{
-			ITimeSystem timeSystem = _rareSettings?.TimeSystem ?? RealTimeSystem.Instance;
-			context.TimeSystem = timeSystem;
+			TimeProvider timeProvider = _rareSettings?.TimeProvider ?? TimeProvider.System;
+			context.TimeProvider = timeProvider;
 			(TestCancellation? testCancellation, ITraceWriter? traceWriter) =
 				Customize.aweXpect.GetEvaluationSettings();
 			IsTracing = traceWriter is not null;
@@ -1614,7 +1612,7 @@ public abstract class ExpectationBuilder
 				rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
 			}
 
-			return IsMet(rootNode, context, timeSystem,
+			return IsMet(rootNode, context, timeProvider,
 				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
 				cancellationToken);
 		}
@@ -1724,7 +1722,7 @@ public abstract class ExpectationBuilder
 
 	internal abstract ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken);
 
@@ -1768,14 +1766,14 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
+	///     Specifies a <see cref="TimeProvider" /> to use for the expectation.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
-	internal void UseTimeSystem(ITimeSystem timeSystem)
+	/// <exception cref="InvalidOperationException">A time provider is already set.</exception>
+	internal void UseTimeProvider(TimeProvider timeProvider)
 	{
-		ThrowHelper.ThrowIfAlreadySpecified(_rareSettings?.TimeSystem is not null,
-			"WithTimeSystem");
-		GetRareSettings().TimeSystem = timeSystem;
+		ThrowHelper.ThrowIfAlreadySpecified(_rareSettings?.TimeProvider is not null,
+			"WithTimeProvider");
+		GetRareSettings().TimeProvider = timeProvider;
 	}
 
 	/// <summary>
@@ -1811,7 +1809,7 @@ public abstract class ExpectationBuilder
 		}
 
 		public ITimeoutBound? TimeoutBound { get; set; }
-		public ITimeSystem? TimeSystem { get; set; }
+		public TimeProvider? TimeProvider { get; set; }
 	}
 
 	/// <summary>
@@ -2106,7 +2104,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 	/// </remarks>
 	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
@@ -2117,16 +2115,16 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 			return rootNode.IsMetBy(_value, context, cancellationToken);
 		}
 
-		return IsMetAsync(rootNode, context, timeSystem, timeout, cancellationToken);
+		return IsMetAsync(rootNode, context, timeProvider, timeout, cancellationToken);
 	}
 
 	private async ValueTask<ConstraintResult> IsMetAsync(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		EvaluationCancellation cancellation = EvaluationCancellation.Create(timeout, cancellationToken, timeSystem);
+		EvaluationCancellation cancellation = EvaluationCancellation.Create(timeout, cancellationToken, timeProvider);
 		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;
@@ -2143,7 +2141,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder, IExpectThat<TVal
 		{
 			if (_subjectSource is not null)
 			{
-				data = await _subjectSource.GetValue(timeSystem, token);
+				data = await _subjectSource.GetValue(timeProvider, token);
 			}
 		}
 		catch (Exception exception)

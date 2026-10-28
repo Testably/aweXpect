@@ -1,5 +1,4 @@
 ﻿using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;
@@ -165,7 +164,7 @@ public sealed partial class ThatDelegateTests
 		public async Task Throws_WhenExpectedExceptionIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			Action @delegate = () =>
 			{
 				time.Advance(50.Milliseconds());
@@ -173,7 +172,7 @@ public sealed partial class ThatDelegateTests
 			};
 
 			async Task Act()
-				=> await That(@delegate).Throws<MyException>().Within(5.Milliseconds()).WithTimeSystem(time);
+				=> await That(@delegate).Throws<MyException>().Within(5.Milliseconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

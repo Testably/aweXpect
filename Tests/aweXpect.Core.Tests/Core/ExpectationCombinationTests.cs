@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Synchronous;
 
@@ -8,8 +7,8 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class ExpectationCombinationTests
 {
-	private static Action Taking(VirtualTimeSystem timeSystem, int milliseconds)
-		=> () => timeSystem.Advance(milliseconds.Milliseconds());
+	private static Action Taking(VirtualTimeProvider timeProvider, int milliseconds)
+		=> () => timeProvider.Advance(milliseconds.Milliseconds());
 
 	public sealed class BecauseTests
 	{
@@ -112,7 +111,7 @@ public sealed class ExpectationCombinationTests
 				=> await ThatAll(That(1).IsEqualTo(2))
 					.Because(PendingTask.Of<string?>())
 					.WithTimeout(TimeSpan.Zero)
-					.WithTimeSystem(new VirtualTimeSystem());
+					.WithTimeProvider(new VirtualTimeProvider());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -420,13 +419,13 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenAMemberHasATighterTimeout_ShouldKeepIt()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 50);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 50);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow().WithTimeout(30.Milliseconds()))
 					.WithTimeout(1.Seconds())
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -441,11 +440,11 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenAwaitedTwice_ShouldStartTheDeadlineAgain()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
 			Expectation.Combination.All sut = ThatAll(That(first).DoesNotThrow())
 				.WithTimeout(100.Milliseconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 			async Task Act()
 			{
@@ -460,15 +459,15 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenCalledWithALongerTimeout_ShouldNotLoosenTheTighterOne()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow())
 					.WithTimeout(50.Milliseconds())
 					.WithTimeout(1.Seconds())
 					.WithTimeout(Timeout.InfiniteTimeSpan)
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -482,14 +481,14 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenMembersTogetherExceedTheTimeout_ShouldOnlyGiveTheRemainingTimeToTheLaterMember()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
-			Action second = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
+			Action second = Taking(timeProvider, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())
 					.WithTimeout(100.Milliseconds())
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -505,14 +504,14 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenNestedCombinationRunsOutOfTime_ShouldOnlyGiveTheRemainingTimeToItsMembers()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
-			Action second = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
+			Action second = Taking(timeProvider, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), ThatAny(That(second).DoesNotThrow()))
 					.WithTimeout(100.Milliseconds())
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -528,13 +527,13 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenNestedCombinationSetsATighterTimeout_ShouldKeepIt()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 50);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 50);
 
 			async Task Act()
 				=> await ThatAll(ThatAll(That(first).DoesNotThrow()).WithTimeout(30.Milliseconds()))
 					.WithTimeout(1.Seconds())
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -549,14 +548,14 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenTimeoutIsInfinite_ShouldNotLimitTheMembers()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
-			Action second = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
+			Action second = Taking(timeProvider, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())
 					.WithTimeout(Timeout.InfiniteTimeSpan)
-					.WithTimeSystem(timeSystem);
+					.WithTimeProvider(timeProvider);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -579,7 +578,7 @@ public sealed class ExpectationCombinationTests
 			async Task Act()
 				=> await ThatAny(That(1).IsEqualTo(2), That(2).IsEqualTo(3))
 					.WithTimeout(TimeSpan.Zero)
-					.WithTimeSystem(new VirtualTimeSystem());
+					.WithTimeProvider(new VirtualTimeProvider());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -596,14 +595,14 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenVerifiedSynchronously_ShouldOnlyGiveTheRemainingTimeToTheLaterMember()
 		{
-			VirtualTimeSystem timeSystem = new();
-			Action first = Taking(timeSystem, 60);
-			Action second = Taking(timeSystem, 60);
+			VirtualTimeProvider timeProvider = new();
+			Action first = Taking(timeProvider, 60);
+			Action second = Taking(timeProvider, 60);
 
 			void Act()
 				=> ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())
 					.WithTimeout(100.Milliseconds())
-					.WithTimeSystem(timeSystem)
+					.WithTimeProvider(timeProvider)
 					.VerifySynchronously();
 
 			await That(Act).Throws<FailException>()

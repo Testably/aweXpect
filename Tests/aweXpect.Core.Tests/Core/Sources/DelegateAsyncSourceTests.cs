@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Sources;
@@ -8,13 +7,13 @@ namespace aweXpect.Core.Tests.Core.Sources;
 public class DelegateAsyncSourceTests
 {
 	[Test]
-	public async Task ForExecutionTime_ShouldUseElapsedFromTimeSystem()
+	public async Task ForExecutionTime_ShouldUseElapsedFromTimeProvider()
 	{
-		TimeSystemMock timeSystem = new TimeSystemMock().SetElapsed(1100.Milliseconds());
+		TimeProviderMock timeProvider = new TimeProviderMock().SetElapsed(1100.Milliseconds());
 
 		async Task Act() =>
 			await That(() => Task.CompletedTask).ExecutesIn().AtLeast(1000.Milliseconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).DoesNotThrow();
 	}

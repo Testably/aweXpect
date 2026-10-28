@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Recording;
 
@@ -93,7 +93,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds())
 						.Never()
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow();
 				cts.Cancel();
@@ -167,7 +167,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -212,7 +212,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int>.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -257,7 +257,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool>.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -302,7 +302,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool, DateTime>.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -347,7 +347,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -404,7 +404,7 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -430,7 +430,7 @@ public sealed partial class ThatEventRecording
 						await That(recording)
 							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 							.Within(30.Seconds()).WithTimeout(60.Seconds())
-							.WithTimeSystem(new VirtualTimeSystem());
+							.WithTimeProvider(new VirtualTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -514,7 +514,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(1.Seconds()).Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -535,7 +535,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Never().Within(1.Seconds()).Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
@@ -411,7 +410,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
 		}
 
 		await That(traceWriter.Messages).IsEqualTo([
@@ -427,7 +426,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
 		}
 
 		await That(traceWriter.Messages).HasCount(2);

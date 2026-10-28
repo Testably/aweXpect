@@ -1,8 +1,6 @@
 using System;
 using System.Threading;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -37,7 +35,7 @@ public sealed class EvaluationCancellation
 	private readonly TimeSpan? _outerTimeout;
 	private readonly long _startTimestamp;
 	private readonly CancellationTokenSource? _timeoutCts;
-	private readonly ITimeSystem _timeSystem;
+	private readonly TimeProvider _timeProvider;
 
 	/// <param name="timeout">The timeout that cancels the evaluation.</param>
 	/// <param name="callerToken">The token with which the caller cancels the evaluation.</param>
@@ -46,27 +44,27 @@ public sealed class EvaluationCancellation
 	///     <paramref name="timeout" />: it still limits what is awaited after the evaluation, see
 	///     <see cref="ForRemainingTimeout" />.
 	/// </param>
-	/// <param name="timeSystem">
-	///     The time system of the evaluation, on which the timeouts elapse; the real one when it is
+	/// <param name="timeProvider">
+	///     The time provider of the evaluation, on which the timeouts elapse; the real one when it is
 	///     <see langword="null" />.
 	/// </param>
 	internal EvaluationCancellation(TimeSpan? timeout, CancellationToken callerToken, TimeSpan? outerTimeout = null,
-		ITimeSystem? timeSystem = null)
+		TimeProvider? timeProvider = null)
 	{
 		Timeout = timeout;
 		_callerToken = callerToken;
 		_outerTimeout = outerTimeout ?? timeout;
-		_timeSystem = timeSystem ?? RealTimeSystem.Instance;
+		_timeProvider = timeProvider ?? TimeProvider.System;
 		Token = callerToken;
 		if (_outerTimeout is not null)
 		{
-			_startTimestamp = _timeSystem.GetTimestamp();
+			_startTimestamp = _timeProvider.GetTimestamp();
 		}
 
 		if (timeout is not null)
 		{
 			_timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(callerToken);
-			_timeSystem.CancelAfter(_timeoutCts, timeout.Value.ToTimerTimeout());
+			_timeProvider.CancelAfter(_timeoutCts, timeout.Value.ToTimerTimeout());
 			Token = _timeoutCts.Token;
 		}
 	}
@@ -111,16 +109,16 @@ public sealed class EvaluationCancellation
 	/// <summary>
 	///     Creates the cancellation of an evaluation with the <paramref name="timeout" /> and the
 	///     <paramref name="callerToken" />, whose <paramref name="timeout" /> elapses on the
-	///     <paramref name="timeSystem" />, or on the real one when it is <see langword="null" />.
+	///     <paramref name="timeProvider" />, or on the real one when it is <see langword="null" />.
 	/// </summary>
 	/// <remarks>
 	///     Most evaluations have neither, so they share <see cref="None" />, which holds no timer to release.
 	/// </remarks>
 	internal static EvaluationCancellation Create(TimeSpan? timeout, CancellationToken callerToken,
-		ITimeSystem? timeSystem = null)
+		TimeProvider? timeProvider = null)
 		=> timeout is null && !callerToken.CanBeCanceled
 			? None
-			: new EvaluationCancellation(timeout, callerToken, null, timeSystem);
+			: new EvaluationCancellation(timeout, callerToken, null, timeProvider);
 
 	/// <summary>
 	///     Whether a wait of at most <paramref name="waitTimeout" /> that a cancellation ended after
@@ -182,9 +180,9 @@ public sealed class EvaluationCancellation
 			return this;
 		}
 
-		TimeSpan remaining = timeout - _timeSystem.GetElapsedTime(_startTimestamp);
+		TimeSpan remaining = timeout - _timeProvider.GetElapsedTime(_startTimestamp);
 		return new EvaluationCancellation(remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero, _callerToken, null,
-			_timeSystem);
+			_timeProvider);
 	}
 
 	/// <summary>
