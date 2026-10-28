@@ -24,13 +24,13 @@ public class HasHeaderValueResult<TType, TThat>
 	where TType : class
 {
 	private readonly ExpectationBuilder _expectationBuilder;
-	private readonly Func<TType, string?[]?> _headerValueAccessor;
+	private readonly Func<TType, string[]?> _headerValueAccessor;
 	private readonly TThat _returnValue;
 
 	internal HasHeaderValueResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue,
-		Func<TType, string?[]?> headerValueAccessor)
+		Func<TType, string[]?> headerValueAccessor)
 		: base(expectationBuilder, returnValue)
 	{
 		_expectationBuilder = expectationBuilder;
@@ -104,12 +104,14 @@ public class HasHeaderValueResult<TType, TThat>
 	///     Verifies that the header values satisfy the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<TType, TThat> WhoseValues(
-		Action<IThatSubject<string?[]?>> expectations)
+		Action<IThatSubject<string[]>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<TType, string?[]?>.FromFuncWithName(t => _headerValueAccessor(t), "the values "),
+				// The values are also accessed when the header is missing, but then the failed header check ignores
+				// the result on them, so the empty array cannot change the outcome.
+				MemberAccessor<TType, string[]>.FromFuncWithName(t => _headerValueAccessor(t) ?? [], "the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
 			.AddExpectations(expectations,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);

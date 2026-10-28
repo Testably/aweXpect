@@ -189,7 +189,7 @@ namespace aweXpect.Web.Results
     public class HasHeaderValueResult<TType, TThat> : aweXpect.Results.AndOrResult<TType, TThat> where TType : class
     {
         public aweXpect.Results.AndOrResult<TType, TThat> WhoseValue(System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
-        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string?[]?>> expectations) { }
+        public aweXpect.Results.AndOrResult<TType, TThat> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string[]>> expectations) { }
         public aweXpect.Results.StringEqualityTypeResult<TType, TThat> WithValue(string? expected) { }
         public aweXpect.Results.StringCollectionMatchResult<TType, TThat> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
         public aweXpect.Results.StringCollectionMatchResult<TType, TThat> WithValues(params string[] expected) { }
@@ -197,7 +197,7 @@ namespace aweXpect.Web.Results
     public class HasQueryParameterValueResult : aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>>
     {
         public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValue(System.Action<aweXpect.Core.IThatSubject<string?>> expectations) { }
-        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string?[]?>> expectations) { }
+        public aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WhoseValues(System.Action<aweXpect.Core.IThatSubject<string[]>> expectations) { }
         public aweXpect.Results.StringEqualityTypeResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValue(string? expected) { }
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(System.Collections.Generic.IEnumerable<string> expected) { }
         public aweXpect.Results.StringCollectionMatchResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> WithValues(params string[] expected) { }

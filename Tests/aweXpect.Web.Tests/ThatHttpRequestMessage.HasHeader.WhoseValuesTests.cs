@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 
 namespace aweXpect.Tests;
 
@@ -19,6 +20,41 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expectations").And
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenHeaderDoesNotExist_AndNoValuesWouldSatisfyTheExpectations_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "foo");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-some-other-key").WhoseValues(v => v.IsEmpty());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-some-other-key" header whose values are empty,
+					             but it did not contain the expected header
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: foo
+					             """);
+			}
+
+			[Test]
+			public async Task WhenHeaderDoesNotExist_Negated_ShouldSucceed()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "foo");
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader("x-some-other-key").WhoseValues(v => v.IsEmpty()));
+
+				await That(Act).DoesNotThrow()
+					.Because("the missing header meets the negation, whatever the expectations on the values are");
 			}
 
 			[Test]
@@ -45,6 +81,36 @@ public sealed partial class ThatHttpRequestMessage
 					                 x-my-header: bar
 					                 x-my-header: baz
 					             """);
+			}
+
+			[Test]
+			public async Task WhenHeaderDoesNotExist_ShouldNotPassNullToTheExpectations()
+			{
+				List<string[]> observedValues = [];
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeader("x-my-header", "foo");
+
+				bool HasValues(string[] values)
+				{
+					observedValues.Add(values);
+					return values.Length > 0;
+				}
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-some-other-key").WhoseValues(v => v.Satisfies(HasValues));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-some-other-key" header whose values satisfy HasValues,
+					             but it did not contain the expected header
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-my-header: foo
+					             """);
+				await That(observedValues).All().Satisfy(values => values is not null)
+					.Because("the expectations on the values are also evaluated for a missing header");
 			}
 
 			[Test]

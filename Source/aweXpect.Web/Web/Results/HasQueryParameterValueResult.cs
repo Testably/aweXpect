@@ -106,12 +106,15 @@ public class HasQueryParameterValueResult
 	///     Verifies that the values of the query parameter satisfy the <paramref name="expectations" />.
 	/// </summary>
 	public AndOrResult<Uri, IThat<Uri?>> WhoseValues(
-		Action<IThatSubject<string?[]?>> expectations)
+		Action<IThatSubject<string[]>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
-				MemberAccessor<Uri, string?[]?>.FromFuncWithName(u => u.GetQueryParameterValues(_name), "the values "),
+				// The values are also accessed when the query parameter is missing, but then the failed check of the
+				// query parameter ignores the result on them, so the empty array cannot change the outcome.
+				MemberAccessor<Uri, string[]>.FromFuncWithName(u => u.GetQueryParameterValues(_name) ?? [],
+					"the values "),
 				(_, stringBuilder) => stringBuilder.Append(" whose values "))
 			.AddExpectations(expectations,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural);
