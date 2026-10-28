@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10518.95098055326,
           10407.075721740723,
           9259.06315867106,
           10645.552574157715,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10947.490519205729,
           7867.481620788574,
           7945.7524688720705,
-          6718.245365687779
+          6718.245365687779,
+          10138.581800188336
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -432,7 +432,6 @@ window.BENCHMARK_DATA = {
           1976,
           1976,
           1976,
-          1976,
           1984,
           1984,
           1984,
@@ -445,6 +444,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          367723.56082589284,
           381647.6934988839,
           335299.8204427083,
           389630.9268973214,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           381394.314453125,
           264405.5708984375,
           267762.8970703125,
-          223273.48118489582
+          223273.48118489582,
+          359223.28515625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590264,
           590290,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590288,
-          590225
+          590225,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20034.022123209634,
           20362.432715279716,
           20013.101442464194,
           19552.44419250488,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           20169.049327305383,
           14446.998148091634,
           14536.966057332356,
-          14625.338868277413
+          14625.338868277413,
+          19887.444706508093
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          287.28559719721477,
           245.7577998797099,
           224.07638646761578,
           233.1388209660848,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           302.57346749305725,
           166.3784828736232,
           178.03639147962843,
-          177.3599785225732
+          177.3599785225732,
+          232.64419617652894
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          494.7134147644043,
           553.6564313252767,
           571.2604010264079,
           548.9642368316651,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           581.812549718221,
           402.34365412394203,
           458.5897357940674,
-          423.4102638880412
+          423.4102638880412,
+          486.4040386199951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          400.3641142209371,
           407.88931735356647,
           446.4558005015055,
           423.81022148132325,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           443.58820667266843,
           283.52613226572674,
           319.0502178668976,
-          303.69204006876265
+          303.69204006876265,
+          386.55890690485637
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          123.35101833710304,
           111.55422718524933,
           122.28391969998678,
           117.5024121761322,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           111.5105562210083,
           80.03896193504333,
           80.7251609308379,
-          81.02224788665771
+          81.02224788665771,
+          105.51324099699656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1910,7 +1910,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
-          320,
+          272,
           272,
           272,
           272,
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.14238589604696,
           248.5083598136902,
           306.2525910695394,
           278.1785736401876,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           289.69599668796246,
           198.9348142941793,
           208.4595156510671,
-          222.42156912730292
+          222.42156912730292,
+          250.93145745595297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          236.70207227071126,
           252.83534905115764,
           258.02726996739705,
           255.38623778025308,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           267.87051776250206,
           175.46967777839075,
           190.10771975150476,
-          172.5268311867347
+          172.5268311867347,
+          233.17532251675922
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          235.82747624715168,
           223.7740821679433,
           219.93276567118508,
           226.38837583248431,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           209.7291624704997,
           159.52876029695784,
           160.33271212237221,
-          168.23191239152635
+          168.23191239152635,
+          200.16655869483947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          532.9976470947265,
           558.0476495107015,
           624.5794880549113,
           590.0845379462609,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           533.3986874307905,
           408.4974352836609,
           413.09962926592146,
-          459.87635946273804
+          459.87635946273804,
+          559.270866394043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          357.75832573572796,
           349.2779003381729,
           352.742732320513,
           373.62520627975465,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           345.6254704157511,
           258.63408451080323,
           248.5069879213969,
-          256.63529373804727
+          256.63529373804727,
+          339.623575814565
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          629.1689859798977,
           619.8666789372762,
           593.6084613800049,
           614.4710738842303,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           746.8616344451905,
           524.7071509043376,
           526.807805606297,
-          485.847832271031
+          485.847832271031,
+          703.196317990621
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3364,7 +3364,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
-          600,
+          632,
           632,
           632,
           632,
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1390.2627824147542,
           1473.1071846008301,
           1506.190026219686,
           1499.3825670878093,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1564.4947466169085,
           1098.8147351401192,
           1094.9246933800835,
-          1107.796083577474
+          1107.796083577474,
+          1367.8392577852521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          707.3121220270792,
           681.3279069491795,
           680.8586362838745,
           704.2055790764945,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           705.8645281791687,
           493.48600311279296,
           496.16956740159253,
-          500.8570910967313
+          500.8570910967313,
+          663.8922201156616
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          627.2177370707194,
           646.7563068526132,
           610.6712423733303,
           627.2019684864924,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           733.6918453489031,
           525.7281795648428,
           523.9197857039316,
-          497.0336186726888
+          497.0336186726888,
+          695.2504154841105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4097,7 +4097,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
-          648,
+          680,
           680,
           680,
           680,
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28446.75635172526,
           28693.625462849934,
           24533.275508626302,
           29209.810224260604,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           29458.440590994698,
           15813.564115251813,
           16282.096799577985,
-          13725.594681803386
+          13725.594681803386,
+          27546.52233276367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4211,7 +4211,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           33471,
-          33471,
           33468,
           33471,
           33468,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          828.0452209881374,
           809.6587336858114,
           839.1119194666545,
           822.4396275792803,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           831.4107434409005,
           579.5145050457546,
           572.7637465159098,
-          590.1006058965411
+          590.1006058965411,
+          775.8660957336426
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          666.411365713392,
           713.445157623291,
           652.726514561971,
           748.7592710494995,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           631.1381454467773,
           514.8077551523844,
           507.01787846429005,
-          467.8665428528419
+          467.8665428528419,
+          668.3920423507691
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4842,7 +4842,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
+          1488,
           1488,
           1488,
           1488,
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          83352.08643450055,
           84230.58907063802,
           62009.10281606821,
           83743.44901936849,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           82535.42764718192,
           54027.839359537764,
           53455.16491229717,
-          33739.83185032436
+          33739.83185032436,
+          82418.06069510324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5252,
-          5252,
           5254,
           5252,
           5254,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
       {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          137.3226841290792,
           140.3202334880829,
           146.02151627540587,
           146.6848596426157,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           156.42046100752694,
           104.1650300536837,
           105.62157160043716,
-          113.09330171744028
+          113.09330171744028,
+          128.96242791811625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5450,7 +5450,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
-          320,
+          304,
           304,
           304,
           304,
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33568.48595755441,
           32649.32285970052,
           25295.77742591271,
           32085.885384114583,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           33064.81743977864,
           14647.232786996025,
           15337.316233317057,
-          13482.028038533528
+          13482.028038533528,
+          31312.625325520832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,6 +5599,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          246.66916149003166,
           259.4673128809248,
           241.25962209701538,
           272.6461998303731,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           282.2695587158203,
           179.98832218987602,
           185.74810530458177,
-          174.54166514078776
+          174.54166514078776,
+          248.8067114194234
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          291.35002538136075,
           312.7133852958679,
           333.971711397171,
           302.44043226242064,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           293.11595487594604,
           224.02014156977336,
           224.44107014338175,
-          229.92297913477972
+          229.92297913477972,
+          295.457204691569
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          402.7374384880066,
           421.7551830291748,
           419.8720821936925,
           404.3782656873976,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           382.6408241589864,
           329.6401156584422,
           328.0731118275569,
-          334.1076677322388
+          334.1076677322388,
+          375.86575048310414
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          413.89203421274823,
           416.51892738342286,
           406.6680244763692,
           430.41957165400186,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           396.03660879135134,
           358.2384912784283,
           334.5322087287903,
-          297.01897087097166
+          297.01897087097166,
+          397.75218861443653
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          785.0743770599365,
           809.3368290583293,
           757.8678945541382,
           798.2168514887492,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           733.6035655566624,
           537.9747178004338,
           578.7595198495047,
-          529.6861187861516
+          529.6861187861516,
+          712.2565962927682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6916,7 +6916,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
-          1280,
+          1232,
           1232,
           1232,
           1232,
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1991.6265038081578,
           1979.0988202412923,
           2149.868045043945,
           2051.9786197117396,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2131.649586604192,
           1507.6489452362061,
           1672.9273422786168,
-          1558.5533996309553
+          1558.5533996309553,
+          1935.8155919392905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          973.0913032531738,
           958.0345230102539,
           944.5890074509841,
           986.8440039316813,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           1015.3704358614408,
           713.9341252871922,
           765.218125851949,
-          689.4425083569118
+          689.4425083569118,
+          949.8838801383972
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11976.642706734794,
           12397.290591430665,
           11701.54149576823,
           12131.549342564174,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11893.312091282436,
           8359.513330312875,
           8397.632245744977,
-          8075.532647269113
+          8075.532647269113,
+          11893.906700134277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7652,7 +7652,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
-          1712,
+          1720,
           1720,
           1720,
           1720,
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40928.246826171875,
           41677.81279109074,
           36373.74493408203,
           41509.35246863732,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           41007.01089477539,
           26590.641690767727,
           26521.127140590124,
-          24864.555444335936
+          24864.555444335936,
+          41520.94848124186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18393
+          18393,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10579.259935651507,
           10677.300686176006,
           10121.383895874023,
           10680.143263753254,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10527.827033996582,
           7847.732675405649,
           7890.840198771159,
-          7525.263392857143
+          7525.263392857143,
+          10617.627268473307
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
-        "message": "fix!: compare the media type of HasContentType ignoring case by default (#2070)"
-      },
-      {
         "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
         "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
+      },
+      {
+        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
+        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
       }
     ],
     "labels": [
-      "5520582a",
       "a2e430d0",
       "705c8132",
       "2068b12b",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "23f4f8ec",
       "978086a8",
       "e410691e",
-      "0027e238"
+      "0027e238",
+      "76331040"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11680.612877478967,
           11752.5470929827,
           11357.333339146206,
           11527.85748799642,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11660.84493146624,
           7988.275752766927,
           7986.617923443134,
-          7571.5723386492045
+          7571.5723386492045,
+          11564.859893290202
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8385,7 +8385,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
-          2192,
+          2200,
           2200,
           2200,
           2200,
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59106.88135579427,
           58821.4951944987,
           51851.53050537109,
           59416.75593348912,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           59361.00076090495,
           37850.909345354354,
           37470.711810772234,
-          37013.13781534831
+          37013.13781534831,
+          60357.32121863732
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8483,7 +8483,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          23554,
           23553,
           23553,
           23553,
@@ -8501,6 +8500,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20977.52168927874,
           21139.241020789512,
           19916.897288731165,
           21092.62966449444,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21246.73762512207,
           15383.336443219867,
           15389.781252034505,
-          14692.86303476187
+          14692.86303476187,
+          20737.42131478446
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
