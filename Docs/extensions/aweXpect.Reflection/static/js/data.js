@@ -1188,6 +1188,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -1388,7 +1394,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -1592,7 +1599,8 @@ window.BENCHMARK_DATA = {
           626.4807441575186,
           355.6786551475525,
           528.9008310953776,
-          662.2298644383749
+          662.2298644383749,
+          683.3519100189209
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1748,6 +1756,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -2013,7 +2022,8 @@ window.BENCHMARK_DATA = {
           862.3000031153362,
           520.713897450765,
           573.8104044596354,
-          892.5321295601981
+          892.5321295601981,
+          928.5811157907758
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2025,6 +2035,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3424,6 +3435,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -3624,7 +3641,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -3828,7 +3846,8 @@ window.BENCHMARK_DATA = {
           105.15319384733836,
           53.92242108498301,
           70.5967634121577,
-          107.28880518277487
+          107.28880518277487,
+          132.41489141782125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3975,6 +3994,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4249,7 +4269,8 @@ window.BENCHMARK_DATA = {
           212.387109041214,
           122.98164817003104,
           166.4284912109375,
-          196.96022090545068
+          196.96022090545068,
+          219.674134349823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4261,6 +4282,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5660,6 +5682,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -5860,7 +5888,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -6064,7 +6093,8 @@ window.BENCHMARK_DATA = {
           1785.1845141819545,
           946.5367733637491,
           1011.2745024817331,
-          1883.2799243927002
+          1883.2799243927002,
+          1922.313669204712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6259,6 +6289,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -6485,7 +6516,8 @@ window.BENCHMARK_DATA = {
           1356.9942136492048,
           820.8743755976359,
           949.3752626691546,
-          1454.7558242797852
+          1454.7558242797852,
+          1488.901920591082
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6694,7 +6726,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7836,6 +7869,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -8026,7 +8065,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -8220,7 +8260,8 @@ window.BENCHMARK_DATA = {
           2590.0441196148213,
           1476.6503938528208,
           1570.4014542897542,
-          2689.351959546407
+          2689.351959546407,
+          2800.3881424495153
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8405,6 +8446,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -8621,7 +8663,8 @@ window.BENCHMARK_DATA = {
           3824.090456644694,
           2176.102575302124,
           2387.353419303894,
-          3780.602739969889
+          3780.602739969889,
+          3729.4891134897866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8820,6 +8863,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3977,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -9962,6 +10006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -10152,7 +10202,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -10346,7 +10397,8 @@ window.BENCHMARK_DATA = {
           358.0741132222689,
           190.37787005106608,
           253.7709513444167,
-          390.37924966812136
+          390.37924966812136,
+          380.86117397944133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10483,6 +10535,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -10747,7 +10800,8 @@ window.BENCHMARK_DATA = {
           2181.4000129699707,
           1232.0952268327985,
           1402.144169108073,
-          2240.3889236450195
+          2240.3889236450195,
+          2266.4327560424804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10759,6 +10813,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -12088,6 +12143,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
         "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
+      },
+      {
+        "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
+        "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
       }
     ],
     "labels": [
@@ -12278,7 +12339,8 @@ window.BENCHMARK_DATA = {
       "7558fdb1",
       "554746c6",
       "fa41546d",
-      "5fafaf2a"
+      "5fafaf2a",
+      "2a51fd6f"
     ],
     "datasets": [
       {
@@ -12472,7 +12534,8 @@ window.BENCHMARK_DATA = {
           2871.497319285075,
           1636.6036308833532,
           1634.9903772672017,
-          2902.169359500592
+          2902.169359500592,
+          2989.4670478275843
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12671,6 +12734,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264
         ],
         "borderColor": "#63A2AC",
@@ -12873,7 +12937,8 @@ window.BENCHMARK_DATA = {
           304427.7484375,
           165681.01076253256,
           177209.60208834134,
-          281361.0869891827
+          281361.0869891827,
+          277869.67692683294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13072,6 +13137,7 @@ window.BENCHMARK_DATA = {
           17707,
           17576,
           17528,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
