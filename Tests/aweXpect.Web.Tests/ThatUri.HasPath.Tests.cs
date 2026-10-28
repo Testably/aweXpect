@@ -179,6 +179,62 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task WhenPathContainsEncodedSlash_ShouldDecodeTheRestOfThePath()
+			{
+				Uri subject = new("https://music.example.com/my%20artists/AC%2FDC");
+
+				async Task Act()
+					=> await That(subject).HasPath("/my artists/AC%2FDC");
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenPathContainsEncodedSlash_ShouldNotEqualThePathWithASlash()
+			{
+				Uri subject = new("https://music.example.com/artists/AC%2FDC");
+
+				async Task Act()
+					=> await That(subject).HasPath("/artists/AC/DC");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has path equal to "/artists/AC/DC",
+					             but it had path "/artists/AC%2FDC", which differs at index 11:
+					                           ↓ (actual)
+					               "…artists/AC%2FDC"
+					               "…artists/AC/DC"
+					                           ↑ (expected)
+					             """)
+					.Because("an encoded slash belongs to the segment \"AC/DC\" and does not separate two segments");
+			}
+
+			[Test]
+			public async Task WhenPathContainsEscapedUnreservedCharacter_ShouldDecodeIt()
+			{
+				Uri subject = new("https://music.example.com/tracks/%41%42");
+
+				async Task Act()
+					=> await That(subject).HasPath("/tracks/AB");
+
+				await That(Act).DoesNotThrow()
+					.Because("the path is decoded the same way on .NET Framework, which keeps it escaped, and on .NET");
+			}
+
+			[Test]
+			public async Task WhenPathContainsLowercaseEncodedSlash_ShouldKeepItEncodedInUppercase()
+			{
+				Uri subject = new("https://music.example.com/artists/AC%2fDC%2f");
+
+				async Task Act()
+					=> await That(subject).HasPath("/artists/AC%2FDC%2F");
+
+				await That(Act).DoesNotThrow()
+					.Because("the encoded slash is the same on .NET Framework, which keeps the lowercase, and on .NET");
+			}
+
+			[Test]
 			public async Task WhenPathContainsPlus_ShouldKeepThePlus()
 			{
 				Uri subject = new("https://music.example.com/rock+roll");

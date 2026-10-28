@@ -235,6 +235,8 @@ Suppress it in test projects that use a virtual time system.
 - A request without content has an empty string content, like a response, so `HasContent("")` and
   `HasContent(c => c.IsEmpty())` succeed and `DoesNotHaveContent("")` fails, as HTTP does not distinguish a missing
   body from an empty one.
+- `HasPath` keeps an encoded slash (`%2F`) in the path, so `/artists/AC%2FDC` no longer has the path
+  `/artists/AC/DC`, but `/artists/AC%2FDC`.
 
 ### Namespaces
 
