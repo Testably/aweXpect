@@ -29,6 +29,16 @@ internal static class ItemExpectationConstraints
 			static (expectation, it, grammars) => new ItemsConstraint<IEnumerable<TItem?>?, TItem>(it, grammars,
 				EnumerableQuantifier.All(), true, expectation));
 
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="ExpectAll{TItem}(IThat{IEnumerable{TItem}}, ItemExpectation{TItem})" />
+	public static ExpectationBuilder ExpectAll<TItem>(this IThat<IAsyncEnumerable<TItem?>?> subject,
+		ItemExpectation<TItem> expectation)
+		where TItem : class
+		=> subject.Get().ExpectationBuilder.AddConstraint(expectation,
+			static (expectation, it, grammars) => new AsyncItemsConstraint<TItem>(it, grammars,
+				EnumerableQuantifier.All(), true, expectation));
+#endif
+
 	/// <summary>
 	///     Expects no item of the <paramref name="subject" /> to meet the <paramref name="expectation" />.
 	/// </summary>
@@ -38,6 +48,16 @@ internal static class ItemExpectationConstraints
 		=> subject.Get().ExpectationBuilder.AddConstraint(expectation,
 			static (expectation, it, grammars) => new ItemsConstraint<IEnumerable<TItem?>?, TItem>(it, grammars,
 				EnumerableQuantifier.None(ExpectationGrammars.Nested), true, expectation));
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="ExpectNone{TItem}(IThat{IEnumerable{TItem}}, ItemExpectation{TItem})" />
+	public static ExpectationBuilder ExpectNone<TItem>(this IThat<IAsyncEnumerable<TItem?>?> subject,
+		ItemExpectation<TItem> expectation)
+		where TItem : class
+		=> subject.Get().ExpectationBuilder.AddConstraint(expectation,
+			static (expectation, it, grammars) => new AsyncItemsConstraint<TItem>(it, grammars,
+				EnumerableQuantifier.None(ExpectationGrammars.Nested), true, expectation));
+#endif
 
 	/// <summary>
 	///     Expects the items that the quantifier of the <paramref name="items" /> selects to meet the
@@ -61,22 +81,6 @@ internal static class ItemExpectationConstraints
 				state.Quantifier, false, state.expectation));
 
 #if NET8_0_OR_GREATER
-	/// <inheritdoc cref="ExpectAll{TItem}(IThat{IEnumerable{TItem}}, ItemExpectation{TItem})" />
-	public static ExpectationBuilder ExpectAll<TItem>(this IThat<IAsyncEnumerable<TItem?>?> subject,
-		ItemExpectation<TItem> expectation)
-		where TItem : class
-		=> subject.Get().ExpectationBuilder.AddConstraint(expectation,
-			static (expectation, it, grammars) => new AsyncItemsConstraint<TItem>(it, grammars,
-				EnumerableQuantifier.All(), true, expectation));
-
-	/// <inheritdoc cref="ExpectNone{TItem}(IThat{IEnumerable{TItem}}, ItemExpectation{TItem})" />
-	public static ExpectationBuilder ExpectNone<TItem>(this IThat<IAsyncEnumerable<TItem?>?> subject,
-		ItemExpectation<TItem> expectation)
-		where TItem : class
-		=> subject.Get().ExpectationBuilder.AddConstraint(expectation,
-			static (expectation, it, grammars) => new AsyncItemsConstraint<TItem>(it, grammars,
-				EnumerableQuantifier.None(ExpectationGrammars.Nested), true, expectation));
-
 	/// <inheritdoc cref="ExpectItems{TItem}(IEnumerableItems{TItem}, ItemExpectation{TItem})" />
 	public static ExpectationBuilder ExpectItems<TItem>(this IAsyncEnumerableItems<TItem?> items,
 		ItemExpectation<TItem> expectation)
@@ -85,13 +89,6 @@ internal static class ItemExpectationConstraints
 			static (state, it, grammars) => new AsyncItemsConstraint<TItem>(it, grammars,
 				state.Quantifier, false, state.expectation));
 #endif
-
-	private static ValueTask<PredicateResult> CheckItem<TItem>(ItemExpectation<TItem> expectation, TItem? item,
-		CancellationToken cancellationToken)
-		where TItem : class
-		=> item is null
-			? new ValueTask<PredicateResult>(ItemResults.Null)
-			: expectation.IsMatch(item, cancellationToken);
 
 	private sealed class ItemsConstraint<TCollection, TItem>(
 		string it,
@@ -106,7 +103,9 @@ internal static class ItemExpectationConstraints
 		protected override string Verb => expectation.Verb;
 
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
-			=> CheckItem(expectation, item, cancellationToken);
+			=> item is null
+				? new ValueTask<PredicateResult>(ItemResults.Null)
+				: expectation.IsMatch(item, cancellationToken);
 
 		protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 			string? indentation)
@@ -129,7 +128,9 @@ internal static class ItemExpectationConstraints
 		protected override string Verb => expectation.Verb;
 
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
-			=> CheckItem(expectation, item, cancellationToken);
+			=> item is null
+				? new ValueTask<PredicateResult>(ItemResults.Null)
+				: expectation.IsMatch(item, cancellationToken);
 
 		protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 			string? indentation)

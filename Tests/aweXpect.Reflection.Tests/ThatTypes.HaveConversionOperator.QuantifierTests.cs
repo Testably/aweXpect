@@ -60,9 +60,12 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = [typeof(ClassWithoutOperators), typeof(Money),];
 
+				Type sourceType = typeof(Money);
+				Type targetType = typeof(decimal);
+
 				async Task Act()
 				{
-					await That(subject).None().HaveImplicitConversionOperator(typeof(Money), typeof(decimal));
+					await That(subject).None().HaveImplicitConversionOperator(sourceType, targetType);
 				}
 
 				await That(Act).Throws<FailException>()
@@ -89,15 +92,18 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = [null, typeof(Money),];
 
+				Type sourceType = typeof(Money);
+				Type targetType = typeof(int);
+
 				async Task Act()
 				{
-					await That(subject).AtLeast(1).HaveExplicitConversionOperator(typeof(Money), typeof(int));
+					await That(subject).AtLeast(1).HaveExplicitConversionOperator(sourceType, targetType);
 				}
 
 				async Task ActNegated()
 				{
 					await That(subject).DoesNotComplyWith(they
-						=> they.AtLeast(1).HaveExplicitConversionOperator(typeof(Money), typeof(int)));
+						=> they.AtLeast(1).HaveExplicitConversionOperator(sourceType, targetType));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -216,9 +222,12 @@ public sealed partial class ThatTypes
 					typeof(ClassWithoutOperators),
 				}.ToTestAsyncEnumerable<Type?>();
 
+				Type sourceType = typeof(Money);
+				Type targetType = typeof(decimal);
+
 				async Task Act()
 				{
-					await That(subject).None().HaveImplicitConversionOperator(typeof(Money), typeof(decimal));
+					await That(subject).None().HaveImplicitConversionOperator(sourceType, targetType);
 				}
 
 				await That(Act).DoesNotThrow();

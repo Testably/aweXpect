@@ -46,9 +46,11 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = [typeof(ClassWithInterface1), typeof(UnrelatedClass),];
 
+				Type interfaceType = typeof(ITestInterface);
+
 				async Task Act()
 				{
-					await That(subject).Exactly(1).Implement(typeof(ITestInterface));
+					await That(subject).Exactly(1).Implement(interfaceType);
 				}
 
 				await That(Act).DoesNotThrow();
@@ -215,9 +217,11 @@ public sealed partial class ThatTypes
 					typeof(UnrelatedClass), typeof(DerivedClass1),
 				}.ToTestAsyncEnumerable<Type?>();
 
+				Type interfaceType = typeof(ITestInterface);
+
 				async Task Act()
 				{
-					await That(subject).DoNotImplement(typeof(ITestInterface));
+					await That(subject).DoNotImplement(interfaceType);
 				}
 
 				await That(Act).DoesNotThrow();

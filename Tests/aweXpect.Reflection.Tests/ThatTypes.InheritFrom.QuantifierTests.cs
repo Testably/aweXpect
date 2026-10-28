@@ -59,9 +59,11 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = [typeof(DerivedClass1), typeof(UnrelatedClass), typeof(DerivedClass2),];
 
+				Type baseType = typeof(BaseClass);
+
 				async Task Act()
 				{
-					await That(subject).AtLeast(2).InheritFrom(typeof(BaseClass));
+					await That(subject).AtLeast(2).InheritFrom(baseType);
 				}
 
 				await That(Act).DoesNotThrow();
@@ -383,9 +385,11 @@ public sealed partial class ThatTypes
 					typeof(DerivedClass1), typeof(DerivedClass2),
 				}.ToTestAsyncEnumerable<Type?>();
 
+				Type baseType = typeof(BaseClass);
+
 				async Task Act()
 				{
-					await That(subject).InheritFrom(typeof(BaseClass)).Directly();
+					await That(subject).InheritFrom(baseType).Directly();
 				}
 
 				await That(Act).DoesNotThrow();

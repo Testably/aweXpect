@@ -84,15 +84,17 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = [null, typeof(Money),];
 
+				Type operandType = typeof(int);
+
 				async Task Act()
 				{
-					await That(subject).AtLeast(1).HaveOperator(Operator.Addition, typeof(int));
+					await That(subject).AtLeast(1).HaveOperator(Operator.Addition, operandType);
 				}
 
 				async Task ActNegated()
 				{
 					await That(subject).DoesNotComplyWith(they
-						=> they.AtLeast(2).HaveOperator(Operator.Addition, typeof(int)));
+						=> they.AtLeast(2).HaveOperator(Operator.Addition, operandType));
 				}
 
 				await That(Act).Throws<FailException>()
