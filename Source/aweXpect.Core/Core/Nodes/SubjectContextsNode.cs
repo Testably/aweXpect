@@ -87,7 +87,7 @@ internal sealed class SubjectContextsNode(
 
 	private async ValueTask<ConstraintResult> AwaitAndWrap<TValue>(ValueTask<ConstraintResult> isMet, TValue? value)
 	{
-		ConstraintResult result = await isMet.ConfigureAwait(false);
+		ConstraintResult result = await isMet;
 		return !wrapsMetResult && result.Outcome == Outcome.Success
 			? result
 			: new SubjectContextsResult<TValue>(result, value, _subjectContexts);
