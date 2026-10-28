@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class OnlyHaveNullableMembers
+	public sealed partial class OnlyHaveNullableMembers
 	{
 		public sealed class Tests
 		{
@@ -63,8 +63,18 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             only have nullable members,
-					             but it contained types with non-nullable members*
+					             all only have nullable members,
+					             but none of * did
+
+					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
+					             [
+					               *
+					             ]
 					             """).AsWildcard()
 					.Because("inherited members are considered by default");
 			}
@@ -86,7 +96,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             only have nullable members,
+					             all only have nullable members,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -114,10 +124,16 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					              Expected that subject
-					              only have nullable members,
-					              but it contained types with non-nullable members
+					              all only have nullable members,
+					              but none of 2 did
 
 					              Not matching items:
+					              [
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }],
+					                ClassWithSingleNonNullableEvent with non-nullable members [event EventHandler ClassWithSingleNonNullableEvent.NonNullableEvent]
+					              ]
+
+					              Collection:
 					              [
 					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }],
 					                ClassWithSingleNonNullableEvent with non-nullable members [event EventHandler ClassWithSingleNonNullableEvent.NonNullableEvent]
@@ -142,11 +158,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					              Expected that subject
-					              only have nullable members,
-					              but it contained types with non-nullable members
+					              all only have nullable members,
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }]
+					              ]
+
+					              Collection:
+					              [
+					                ClassWithNullableMembers,
 					                ClassWithSingleNonNullableProperty with non-nullable members [public string ClassWithSingleNonNullableProperty.NonNullableProperty { get; set; }]
 					              ]
 					              """);
@@ -172,7 +194,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all only have nullable members,
-					             but it only contained types with only nullable members
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -236,10 +258,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             only have nullable members,
-					             but it contained types with non-nullable members
+					             all only have nullable members,
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

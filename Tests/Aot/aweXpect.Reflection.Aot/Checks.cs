@@ -68,6 +68,13 @@ internal static class Checks
 		new("named types fail when one is sealed",
 			() => ShouldFail(async () => await That(In.Types<Order, Customer>()).AreNotSealed(),
 				"none are sealed", "Order")),
+		new("exactly one of the named types implements the interface directly",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Types<Order, Customer>()).Exactly(1).Implement(typeof(IEntity)).Directly())),
+		new("named types fail when too few implement the interface",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(In.Types<Order, Customer>()).AtLeast(2).Implement(typeof(IEntity)),
+				"implements IEntity for at least 2 items")),
 		new("the methods of a type are not abstract",
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).AreNotAbstract())),
 		new("the declared and inherited methods of a type including the object members are not abstract",

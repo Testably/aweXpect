@@ -52,12 +52,18 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.GrandChildClass]
-						             all do not inherit directly from ThatTypes.BaseClass,
-						             but it contained types that inherit directly from ThatTypes.BaseClass
+						             none inherit directly from ThatTypes.BaseClass,
+						             but 1 of 2 did
 
-						             Not matching items:
+						             Matching items:
 						             [
 						               ThatTypes.DerivedClass1
+						             ]
+
+						             Collection:
+						             [
+						               ThatTypes.DerivedClass1,
+						               ThatTypes.GrandChildClass
 						             ]
 						             """);
 				}
@@ -75,7 +81,7 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all do not inherit directly from ThatTypes.BaseClass,
+						             none inherit directly from ThatTypes.BaseClass,
 						             but it was <null>
 						             """);
 				}
@@ -119,10 +125,15 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all do not inherit directly from ThatTypes.BaseClass,
-						             but it contained types that inherit directly from ThatTypes.BaseClass
+						             none inherit directly from ThatTypes.BaseClass,
+						             but 1 of 1 did
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               ThatTypes.DerivedClass1
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.DerivedClass1
 						             ]
@@ -163,7 +174,7 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GrandChildClass]
 						             at least one inherits directly from ThatTypes.BaseClass,
-						             but it only contained types that do not inherit directly from ThatTypes.BaseClass
+						             but none of 1 did
 
 						             Collection:
 						             [

@@ -181,9 +181,11 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
 - The filter options (`TypeFilterOptions`, `AttributeFilterOptions<TMember>`, `ParameterFilterOptions`,
   `GenericArgumentsFilterOptions` and `GenericArgumentFilterOptions`) are internal, and the results and filters no
   longer offer them through `IOptionsProvider<…>`.
-- The expectations on all items, such as `AreSealed()`, use the quantifier wording of aweXpect
-  (`all are sealed, but only 2 of 5 were`), work with quantifiers (`AtLeast(2).AreSealed()`), and a `null` item fails
-  them and their negation.
+- The expectations on all items that check a condition on each item, such as `AreSealed()`, `InheritFrom<T>()`,
+  `Implement<T>()`, `HaveOperator(…)` or `ContainMethods(…)`, use the quantifier wording of aweXpect
+  (`all are sealed, but only 2 of 5 were`, and `none inherit from Base` for a negation), work with quantifiers
+  (`AtLeast(2).InheritFrom<Base>().Directly()`), and a `null` item fails them and their negation. The expectations on
+  attributes, parameters, return types, member types and dependencies do not take quantifiers yet.
 - The version components (`HasVersion().WithMajor`) offer all comparisons of an `int` property, including
   `Between(…).And(…)`.
 - `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`.

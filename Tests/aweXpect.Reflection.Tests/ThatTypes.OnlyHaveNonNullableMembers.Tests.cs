@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class OnlyHaveNonNullableMembers
+	public sealed partial class OnlyHaveNonNullableMembers
 	{
 		public sealed class Tests
 		{
@@ -48,7 +48,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             only have non-nullable members,
+					             all only have non-nullable members,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -77,10 +77,16 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             only have non-nullable members,
-					             but it contained types with nullable members
+					             all only have non-nullable members,
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }],
+					               (… and 1 more)
+					             ]
+
+					             Collection:
 					             [
 					               ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }],
 					               (… and 1 more)
@@ -106,11 +112,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					              Expected that subject
-					              only have non-nullable members,
-					              but it contained types with nullable members
+					              all only have non-nullable members,
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }]
+					              ]
+
+					              Collection:
+					              [
+					                ClassWithNonNullableMembers,
 					                ClassWithSingleNullableProperty with nullable members [public string ClassWithSingleNullableProperty.NullableProperty { get; set; }]
 					              ]
 					              """);
@@ -136,7 +148,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all only have non-nullable members,
-					             but it only contained types with only non-nullable members
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -200,10 +212,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             only have non-nullable members,
-					             but it contained types with nullable members
+					             all only have non-nullable members,
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class ContainEvents
+	public sealed partial class ContainEvents
 	{
 		public sealed class Tests
 		{
@@ -57,10 +57,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.ClassWithMarkedEvent and ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainEvents.ClassWithoutMarkedEvent
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainEvents.ClassWithMarkedEvent,
 					               ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             ]
 					             """);
@@ -81,11 +87,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent and ThatTypes.ContainEvents.BaseClassWithMarkedEvent
 					             all declare events with ThatTypes.ContainEvents.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent,
+					               ThatTypes.ContainEvents.BaseClassWithMarkedEvent
 					             ]
 					             """);
 			}

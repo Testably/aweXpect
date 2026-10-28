@@ -22,10 +22,16 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
-					             all do not implement ThatTypes.ITestInterface,
-					             but it contained types that implement ThatTypes.ITestInterface
+					             none implement ThatTypes.ITestInterface,
+					             but 2 of 2 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.ClassWithInterface1,
+					               ThatTypes.ClassWithInterface2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.ClassWithInterface1,
 					               ThatTypes.ClassWithInterface2
@@ -67,7 +73,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not implement ThatTypes.ITestInterface,
+					             none implement ThatTypes.ITestInterface,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -159,7 +165,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             at least one implements ThatTypes.ITestInterface,
-					             but it only contained types that do not implement ThatTypes.ITestInterface
+					             but none of 1 did
 
 					             Collection:
 					             [

@@ -22,10 +22,16 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 2 of 2 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DerivedClass1,
+					               ThatTypes.DerivedClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DerivedClass1,
 					               ThatTypes.DerivedClass2
@@ -46,10 +52,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.GrandChildClass]
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.GrandChildClass
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.GrandChildClass
 					             ]
@@ -69,12 +80,18 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatTypes.DerivedClass1
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
 			}
@@ -112,7 +129,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not inherit from ThatTypes.BaseClass,
+					             none inherit from ThatTypes.BaseClass,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -168,10 +185,16 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 2 of 2 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DerivedClass1,
+					               ThatTypes.DerivedClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DerivedClass1,
 					               ThatTypes.DerivedClass2
@@ -196,10 +219,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.GrandChildClass
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.GrandChildClass
 					             ]
@@ -223,12 +251,18 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass
+					             none inherit from ThatTypes.BaseClass,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatTypes.DerivedClass1
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
 			}
@@ -283,7 +317,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DoNotInheritFrom.NegatedTests, ThatTypes.UnrelatedClass]
 					             at least one inherits from ThatTypes.BaseClass,
-					             but it only contained types that do not inherit from ThatTypes.BaseClass
+					             but none of 2 did
 
 					             Collection:
 					             [

@@ -31,10 +31,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that generic record structs in all loaded assemblies
-						             are all not generic,
-						             but it contained generic types
+						             none are generic,
+						             but * of * were
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               *
+						             ]
+
+						             Collection:
 						             [
 						               *
 						             ]
@@ -55,10 +60,15 @@ public sealed partial class Filtered
 					await That(Act).Throws()
 						.WithMessage($"""
 						              Expected that {expectedString}generic record structs in all loaded assemblies
-						              are all not generic,
-						              but it contained generic types
+						              none are generic,
+						              but * of * were
 
-						              Not matching items:
+						              Matching items:
+						              [
+						                *
+						              ]
+
+						              Collection:
 						              [
 						                *
 						              ]

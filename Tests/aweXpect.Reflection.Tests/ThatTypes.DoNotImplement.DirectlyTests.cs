@@ -52,12 +52,18 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.DerivedFromClassWithInterface1]
-						             all do not directly implement ThatTypes.ITestInterface,
-						             but it contained types that directly implement ThatTypes.ITestInterface
+						             none directly implement ThatTypes.ITestInterface,
+						             but 1 of 2 did
 
-						             Not matching items:
+						             Matching items:
 						             [
 						               ThatTypes.ClassWithInterface1
+						             ]
+
+						             Collection:
+						             [
+						               ThatTypes.ClassWithInterface1,
+						               ThatTypes.DerivedFromClassWithInterface1
 						             ]
 						             """);
 				}
@@ -75,7 +81,7 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all do not directly implement ThatTypes.ITestInterface,
+						             none directly implement ThatTypes.ITestInterface,
 						             but it was <null>
 						             """);
 				}
@@ -119,10 +125,15 @@ public sealed partial class ThatTypes
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
-						             all do not directly implement ThatTypes.ITestInterface,
-						             but it contained types that directly implement ThatTypes.ITestInterface
+						             none directly implement ThatTypes.ITestInterface,
+						             but 1 of 1 did
 
-						             Not matching items:
+						             Matching items:
+						             [
+						               ThatTypes.ClassWithInterface1
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.ClassWithInterface1
 						             ]
@@ -163,7 +174,7 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.DerivedFromClassWithInterface1]
 						             at least one directly implements ThatTypes.ITestInterface,
-						             but it only contained types that do not directly implement ThatTypes.ITestInterface
+						             but none of 1 did
 
 						             Collection:
 						             [

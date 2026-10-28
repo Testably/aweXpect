@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class HaveConversionOperator
+	public sealed partial class HaveConversionOperator
 	{
 		public sealed class Tests
 		{
@@ -118,12 +118,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types without an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+					              all have an explicit conversion operator from Money to int,
+					              but only * of * did
 
 					              Not matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -144,12 +149,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+					              all have an implicit conversion operator from Money to decimal,
+					              but only * of * did
 
 					              Not matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -195,7 +205,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have an implicit conversion operator from Money to decimal,
+					             none have an implicit conversion operator from Money to decimal,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -207,7 +217,7 @@ public sealed partial class ThatTypes
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a type with an implicit conversion operator from Money to decimal,
+					             at least one has an implicit conversion operator from Money to decimal,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -264,12 +274,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all do not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+					              none have an explicit conversion operator from Money to int,
+					              but * of * did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -290,12 +305,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all do not have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+					              none have an implicit conversion operator from Money to decimal,
+					              but * of * did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -337,10 +357,10 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              not all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it only contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+					              not all have an implicit conversion operator from Money to decimal,
+					              but all * did
 
 					              Collection:
 					              [
@@ -364,10 +384,10 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              also contain a type with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it only contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+					              at least one has an implicit conversion operator from Money to decimal,
+					              but none of * did
 
 					              Collection:
 					              [
@@ -442,12 +462,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+					              all have an implicit conversion operator from Money to decimal,
+					              but only * of * did
 
 					              Not matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -468,12 +493,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all do not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+					              none have an explicit conversion operator from Money to int,
+					              but * of * did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]

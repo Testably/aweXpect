@@ -16,6 +16,14 @@ internal static class ItemListRenderer
 	///     of them, followed by the number of items that are not listed.
 	/// </summary>
 	public static string Format<T>(IReadOnlyList<T> items, Action<StringBuilder, T> appendItem)
+		=> Format(items, null, appendItem);
+
+	/// <inheritdoc cref="Format{T}(IReadOnlyList{T}, Action{StringBuilder, T})" />
+	/// <remarks>
+	///     The <paramref name="totalCount" /> is the number of items in total, when the <paramref name="items" /> are
+	///     only the first of them.
+	/// </remarks>
+	public static string Format<T>(IReadOnlyList<T> items, int? totalCount, Action<StringBuilder, T> appendItem)
 	{
 		int maximum = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
 		StringBuilder stringBuilder = new();
@@ -25,7 +33,7 @@ internal static class ItemListRenderer
 			stringBuilder.Append(Environment.NewLine).Append("  ");
 			if (index >= maximum)
 			{
-				AppendMoreItems(stringBuilder, items.Count - maximum);
+				AppendMoreItems(stringBuilder, (totalCount ?? items.Count) - maximum);
 				break;
 			}
 

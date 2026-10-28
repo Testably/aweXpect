@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class ContainProperties
+	public sealed partial class ContainProperties
 	{
 		public sealed class Tests
 		{
@@ -57,10 +57,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.ClassWithMarkedProperty and ThatTypes.ContainProperties.ClassWithoutMarkedProperty
 					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainProperties.ClassWithoutMarkedProperty
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainProperties.ClassWithMarkedProperty,
 					               ThatTypes.ContainProperties.ClassWithoutMarkedProperty
 					             ]
 					             """);
@@ -81,11 +87,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty and ThatTypes.ContainProperties.BaseClassWithMarkedProperty
 					             all declare properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty,
+					               ThatTypes.ContainProperties.BaseClassWithMarkedProperty
 					             ]
 					             """);
 			}

@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all generic,
-					             but it contained not matching types
+					             all are generic,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -70,7 +75,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all generic,
+					             all are generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -82,7 +87,7 @@ public sealed partial class ThatTypes
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are not all generic,
+					             not all are generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -109,10 +114,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreGeneric
-					             are all generic,
-					             but it contained not matching types
+					             all are generic,
+					             but only * of * were
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -163,8 +173,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => type.IsGenericType in assembly containing type ThatTypes.AreGeneric
-					             are not all generic,
-					             but it only contained generic types
+					             not all are generic,
+					             but all * were
 
 					             Collection:
 					             [
