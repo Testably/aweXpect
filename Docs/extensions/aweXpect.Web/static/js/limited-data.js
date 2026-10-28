@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
-      {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          509.0077495574951,
           424.6598010796767,
           365.38320501645404,
           364.03650416646684,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           488.1308433532715,
           454.9328867594401,
           480.2029307229178,
-          453.2711669286092
+          453.2711669286092,
+          467.0879783630371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -440,7 +440,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1015.3387185414632,
           1025.9886810302735,
           773.4784679412842,
           811.067847442627,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           925.5554426738194,
           1004.6667348316738,
           1076.5203336988177,
-          970.0906133651733
+          970.0906133651733,
+          1072.214764050075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
-      {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          253.69301499639238,
           237.4439147435702,
           173.4931628704071,
           185.07311277389528,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           231.6196001493014,
           247.38296123913355,
           246.07338156018938,
-          273.4376969973246
+          273.4376969973246,
+          253.02777807529156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          268.13490746816,
           241.46031297047932,
           202.38619193663965,
           206.12943218151727,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           247.11147050857545,
           266.0521447317941,
           275.4768298222468,
-          258.9641146977743
+          258.9641146977743,
+          273.80066193853105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
-      {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          827.1027796427409,
           722.5915974889483,
           494.4264338357108,
           536.6642543792725,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           970.3885461262295,
           883.3648537855881,
           1104.9444580811721,
-          982.8758127848307
+          982.8758127848307,
+          979.0195956596962
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1678,7 +1678,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
-          1032,
+          1192,
           1192,
           1192,
           1192,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          936.5654462667612,
           934.5653817313058,
           736.5054408391317,
           775.6323823928833,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           926.7154275349209,
           982.2797829945882,
           1017.240454228719,
-          947.1246480941772
+          947.1246480941772,
+          1027.860305932852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
-      {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1887.169513293675,
           1839.951716014317,
           1466.3045243581137,
           1498.0231898171562,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1955.3485249110631,
           1914.5855023066204,
           1931.6328745524088,
-          1870.5461195537023
+          1870.5461195537023,
+          2007.5199420635518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21125.761661783854,
           20571.765236409505,
           14432.61992938702,
           15563.411768086751,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           20191.194490559898,
           18786.086873372395,
           22259.949120154746,
-          20333.036416860727
+          20333.036416860727,
+          21958.438153948104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2389,7 +2389,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2412,6 +2411,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
       {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          845.7663181168692,
           733.2115015616783,
           556.690922609965,
           602.8258855183919,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           732.9516418163593,
           719.9084849675496,
           869.9114283879597,
-          758.7382371266683
+          758.7382371266683,
+          907.2899378263033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1289.8425369262695,
           1308.493728129069,
           1016.3863337834676,
           1043.1493726094563,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1255.4042546198918,
           1316.4993698120118,
           1355.2906568967378,
-          1304.1272168477376
+          1304.1272168477376,
+          1423.5067085538592
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
-        "message": "chore: Bump SharpCompress from 0.50.5 to 0.50.7 (#2086)"
-      },
-      {
         "sha": "1b028951b29d78a5ddddaa0531a137a46ed58548",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:33 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
-      "2ce286e6",
       "1b028951",
       "f34312fa",
       "37b17490",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1354.2738659722465,
           1245.7187638600667,
           944.9470197677613,
           965.5413269315447,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1237.9065493070161,
           1279.2880212238856,
           1346.1458651678902,
-          1269.948884646098
+          1269.948884646098,
+          1378.3229776109968
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3480,7 +3480,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
-          1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          825.0945410728455,
           741.7925015177045,
           587.7655124664307,
           613.0422325770061,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           740.1350386483329,
           772.4098425547282,
           807.9884814580281,
-          731.0361295846792
+          731.0361295846792,
+          792.1811717351278
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
