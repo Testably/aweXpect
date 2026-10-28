@@ -36,13 +36,16 @@ internal static class MemberViolationRenderer
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> type has no violations to list; it fails because it cannot satisfy the
-	///     expectation, so it is rendered without a (contradictory empty) violation list.
+	///     expectation, so it is rendered without a (contradictory empty) violation list.<br />
+	///     The <paramref name="totalCount" /> is the number of types in total, when the <paramref name="types" /> are
+	///     only the first of them.
 	/// </remarks>
 	public static string FormatTypesWithViolatingMembers(
 		IReadOnlyList<Type?> types,
 		IReadOnlyDictionary<Type, MemberInfo[]> violations,
-		string memberHeader)
-		=> ItemListRenderer.Format(types, (stringBuilder, type) =>
+		string memberHeader,
+		int? totalCount)
+		=> ItemListRenderer.Format(types, totalCount, (stringBuilder, type) =>
 		{
 			stringBuilder.Append(Formatter.Format(type));
 			if (type is not null && violations.TryGetValue(type, out MemberInfo[]? members))

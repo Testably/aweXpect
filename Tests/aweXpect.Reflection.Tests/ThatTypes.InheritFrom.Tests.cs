@@ -98,10 +98,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(DerivedClass1) || type == typeof(UnrelatedClass) in assembly containing type ThatTypes.InheritFrom.GenericTests
 					             all inherit from ThatTypes.BaseClass,
-					             but it contained types that do not inherit from ThatTypes.BaseClass
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.UnrelatedClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -179,10 +185,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all inherit from ThatTypes.BaseClass,
-					             but it contained types that do not inherit from ThatTypes.BaseClass
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.UnrelatedClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -207,7 +219,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(DerivedClass1) || type == typeof(DerivedClass2) in assembly containing type ThatTypes.InheritFrom.NegatedTests
 					             not all inherit from ThatTypes.BaseClass,
-					             but it only contained types that inherit from ThatTypes.BaseClass
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -265,7 +277,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(GrandChildClass) in assembly containing type ThatTypes.InheritFrom.NegatedTests
 					             not all inherit from ThatTypes.BaseClass,
-					             but it only contained types that inherit from ThatTypes.BaseClass
+					             but all 1 did
 
 					             Collection:
 					             [

@@ -108,14 +108,19 @@ public sealed partial class TypeFilters
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that types which do not inherit directly from TypeFilters.WhichDoNotInheritFrom.DirectlyTests.Tests.FooBase in assembly containing type TypeFilters.WhichDoNotInheritFrom.DirectlyTests
-						             all do not inherit from TypeFilters.WhichDoNotInheritFrom.DirectlyTests.Tests.FooBase,
-						             but it contained types that inherit from TypeFilters.WhichDoNotInheritFrom.DirectlyTests.Tests.FooBase
+						             none inherit from TypeFilters.WhichDoNotInheritFrom.DirectlyTests.Tests.FooBase,
+						             but 1 of * did
 
-						             Not matching items:
+						             Matching items:
 						             [
 						               TypeFilters.WhichDoNotInheritFrom.DirectlyTests.Tests.FooGrandChild
 						             ]
-						             """);
+
+						             Collection:
+						             [
+						               *
+						             ]
+						             """).AsWildcard();
 				}
 
 				[Test]

@@ -26,10 +26,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not generic,
-					             but it contained generic types
+					             none are generic,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -70,7 +75,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not generic,
+					             none are generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -82,7 +87,7 @@ public sealed partial class ThatTypes
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a generic type,
+					             at least one is generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -124,10 +129,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that types matching type => type.IsGenericType in assembly containing type ThatTypes.AreNotGeneric
-					             are all not generic,
-					             but it contained generic types
+					             none are generic,
+					             but * of * were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -151,8 +161,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that types matching type => !type.IsGenericType in assembly containing type ThatTypes.AreNotGeneric
-					             also contain a generic type,
-					             but it only contained non-generic types
+					             at least one is generic,
+					             but none of * were
 
 					             Collection:
 					             [

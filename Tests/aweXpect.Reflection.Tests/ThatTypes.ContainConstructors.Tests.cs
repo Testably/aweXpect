@@ -4,7 +4,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class ContainConstructors
+	public sealed partial class ContainConstructors
 	{
 		public sealed class Tests
 		{
@@ -35,10 +35,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainConstructors.ClassWithMarkedConstructor and ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
 					             all contain constructors with ThatTypes.ContainConstructors.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainConstructors.ClassWithMarkedConstructor,
 					               ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
 					             ]
 					             """);

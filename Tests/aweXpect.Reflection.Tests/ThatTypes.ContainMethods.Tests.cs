@@ -12,7 +12,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class ContainMethods
+	public sealed partial class ContainMethods
 	{
 		public sealed class TypeTests
 		{
@@ -76,10 +76,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainMethods.ClassWithMarkedMethod,
 					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             ]
 					             """);
@@ -155,7 +161,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types StructWithMembers and ThatTypes.ContainMethods.ClassWithMarkedMethod
 					             all contain methods with name equal to "Equals" at least once,
-					             but it contained not matching types*
+					             but none of * did
+
+					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
+					             [
+					               *
+					             ]
 					             """).AsWildcard()
 					.Because("the members declared on System.Object and System.ValueType are excluded by default");
 			}
@@ -205,10 +221,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainMethods.ClassWithMarkedMethod,
 					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             ]
 					             """);
@@ -229,11 +251,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod and ThatTypes.ContainMethods.BaseClassWithMarkedMethod
 					             all declare methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod,
+					               ThatTypes.ContainMethods.BaseClassWithMarkedMethod
 					             ]
 					             """);
 			}
@@ -269,8 +297,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithTwoMarkedMethods
-					             do not all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it only contained matching types
+					             not all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
+					             but all 2 did
 
 					             Collection:
 					             [

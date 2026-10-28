@@ -28,10 +28,15 @@ public sealed partial class ThatTypes
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
-						             are all generic with 2 generic arguments,
-						             but it contained not matching types
+						             all are generic with 2 generic arguments,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               ThatTypes.GenericClassWithOneArgument<int>
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.GenericClassWithOneArgument<int>
 						             ]
@@ -55,10 +60,15 @@ public sealed partial class ThatTypes
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
-						             are all generic with 1 generic argument,
-						             but it contained not matching types
+						             all are generic with 1 generic argument,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
@@ -79,10 +89,16 @@ public sealed partial class ThatTypes
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that in types [PublicClass, ThatTypes.UnrelatedClass]
-						             are all generic with 1 generic argument,
-						             but it contained not matching types
+						             all are generic with 1 generic argument,
+						             but none of 2 were
 
 						             Not matching items:
+						             [
+						               PublicClass,
+						               ThatTypes.UnrelatedClass
+						             ]
+
+						             Collection:
 						             [
 						               PublicClass,
 						               ThatTypes.UnrelatedClass

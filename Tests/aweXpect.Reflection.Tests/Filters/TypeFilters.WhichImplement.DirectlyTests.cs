@@ -106,14 +106,19 @@ public sealed partial class TypeFilters
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that types which do not directly implement TypeFilters.WhichDoNotImplement.DirectlyTests.Tests.IFoo in assembly containing type TypeFilters.WhichDoNotImplement.DirectlyTests
-						             all do not implement TypeFilters.WhichDoNotImplement.DirectlyTests.Tests.IFoo,
-						             but it contained types that implement TypeFilters.WhichDoNotImplement.DirectlyTests.Tests.IFoo
+						             none implement TypeFilters.WhichDoNotImplement.DirectlyTests.Tests.IFoo,
+						             but 1 of * did
 
-						             Not matching items:
+						             Matching items:
 						             [
 						               TypeFilters.WhichDoNotImplement.DirectlyTests.Tests.FooImplDerived
 						             ]
-						             """);
+
+						             Collection:
+						             [
+						               *
+						             ]
+						             """).AsWildcard();
 				}
 
 				[Test]

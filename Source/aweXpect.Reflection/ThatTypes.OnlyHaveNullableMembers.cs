@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -36,101 +31,93 @@ public static partial class ThatTypes
 	public static MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> OnlyHaveNullableMembers(
 		this IThat<IEnumerable<Type?>?> subject)
 	{
-		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
-		return new MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<MemberScopes>, IEnumerable<Type?>>(scope,
-				static (scope, it, grammars)
-				=> new OnlyHaveNullableMembersConstraint(it, grammars, scope)),
-			subject,
-			scope);
+		OnlyHaveMembersExpectation expectation = new(true);
+		return new(subject.ExpectAll(expectation), subject, expectation.Scope);
+	}
+
+	/// <summary>
+	///     …only have nullable fields, properties and events.
+	/// </summary>
+	/// <inheritdoc cref="OnlyHaveNullableMembers(IThat{IEnumerable{Type}})" path="/remarks" />
+	public static MemberScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> OnlyHaveNullableMembers(
+		this IEnumerableItems<Type?> items)
+	{
+		OnlyHaveMembersExpectation expectation = new(true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Scope);
+	}
+
+	/// <inheritdoc cref="OnlyHaveNullableMembers(IEnumerableItems{Type})" />
+	public static MemberScopeResult<TCollection, TCollection> OnlyHaveNullableMembers<TCollection>(
+		this IStructEnumerableItems<TCollection, Type?> items)
+		where TCollection : struct, IEnumerable<Type?>
+	{
+		OnlyHaveMembersExpectation expectation = new(true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Scope);
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all fields, properties and events of all items in the filtered collection of <see cref="Type" />
-	///     are nullable.
-	/// </summary>
-	/// <remarks>
-	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
-	///     reference type annotated as nullable (according to the nullable reference type metadata).<br />
-	///     The inherited members are considered, but neither those declared on <see cref="object" />,
-	///     <see cref="ValueType" /> or <see cref="Enum" /> nor those a type cannot access. Restrict them with
-	///     <see cref="InheritanceScopeResult{TType, TValue}.Directly" /> or add the members of these roots with
-	///     <see cref="MemberScopeResult{TType, TValue}.IncludingObjectMembers" />.
-	/// </remarks>
+	/// <inheritdoc cref="OnlyHaveNullableMembers(IThat{IEnumerable{Type}})" />
 	[GuaranteesNotNull]
 	public static MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> OnlyHaveNullableMembers(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
-		OptionsHolder<MemberScopes> scope = new(MemberScopes.None);
-		return new MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<MemberScopes>, IAsyncEnumerable<Type?>>(scope,
-				static (scope, it, grammars)
-				=> new OnlyHaveNullableMembersConstraint(it, grammars, scope)),
-			subject,
-			scope);
+		OnlyHaveMembersExpectation expectation = new(true);
+		return new(subject.ExpectAll(expectation), subject, expectation.Scope);
+	}
+
+	/// <inheritdoc cref="OnlyHaveNullableMembers(IEnumerableItems{Type})" />
+	public static MemberScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> OnlyHaveNullableMembers(
+		this IAsyncEnumerableItems<Type?> items)
+	{
+		OnlyHaveMembersExpectation expectation = new(true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Scope);
 	}
 #endif
 
-	private sealed class OnlyHaveNullableMembersConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		OptionsHolder<MemberScopes> scope)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
+	/// <summary>
+	///     Checks that a type only has nullable, or only non-nullable, fields, properties and events, and keeps the
+	///     members that violate it for the failure message.
+	/// </summary>
+	private sealed class OnlyHaveMembersExpectation(bool nullable) : ItemExpectation<Type>
 	{
-		private readonly Dictionary<Type, MemberInfo[]> _notNullableMembers = new();
+		private readonly Dictionary<Type, MemberInfo[]> _violatingMembers = new();
 
-		private bool OnlyHasNullableMembers(Type? type)
+		public OptionsHolder<MemberScopes> Scope { get; } = new(MemberScopes.None);
+
+		public override ValueTask<PredicateResult> IsMatch(Type item, CancellationToken cancellationToken)
 		{
-			if (type is null)
+			MemberInfo[] violatingMembers = nullable
+				? item.GetNotNullableMembers(Scope.Value)
+				: item.GetNullableMembers(Scope.Value);
+			if (violatingMembers.Length > 0)
 			{
-				return false;
+				_violatingMembers[item] = violatingMembers;
 			}
 
-			MemberInfo[] notNullableMembers = type.GetNotNullableMembers(scope.Value);
-			if (notNullableMembers.Length > 0)
-			{
-				_notNullableMembers[type] = notNullableMembers;
-			}
-
-			return notNullableMembers.Length == 0;
+			return new ValueTask<PredicateResult>(violatingMembers.Length == 0);
 		}
 
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, OnlyHasNullableMembers, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, OnlyHasNullableMembers);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect() ? "only declare nullable members" : "only have nullable members"));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained types with non-nullable members");
-
-		protected override Func<string?> FormatItems(Type?[] items)
-			=> () => MemberViolationRenderer.FormatTypesWithViolatingMembers(items, _notNullableMembers,
-				" with non-nullable members ");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendScope(stringBuilder.Append(scope.Value.IsDirect()
-				? "not all only declare nullable members"
-				: "not all only have nullable members"));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained types with only nullable members");
-
-		private void AppendScope(StringBuilder stringBuilder)
+		public override void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
 		{
-			if (scope.Value.IncludesObjectMembers())
+			stringBuilder.Append("only ");
+			if (Scope.Value.IsDirect())
+			{
+				stringBuilder.Append(grammars.IsPlural() ? "declare " : "declares ");
+			}
+			else
+			{
+				stringBuilder.Append(grammars.IsPlural() ? "have " : "has ");
+			}
+
+			stringBuilder.Append(nullable ? "nullable members" : "non-nullable members");
+			if (Scope.Value.IncludesObjectMembers())
 			{
 				stringBuilder.Append(" including object members");
 			}
 		}
+
+		public override string FormatItems(IEnumerable<Type?> items, FormattingOptions options)
+			=> MemberViolationRenderer.FormatTypesWithViolatingMembers(items.ToList(), _violatingMembers,
+				nullable ? " with non-nullable members " : " with nullable members ", options.TotalItemCount);
 	}
 }

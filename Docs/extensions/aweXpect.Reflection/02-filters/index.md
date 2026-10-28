@@ -117,3 +117,18 @@ await Expect.That(types).AtLeast(2).AreSealed();
 await Expect.That(methods).AtMost(1).AreAsync();
 await Expect.That(types).AtLeast(2).HaveNamespace("MusicStore").AsPrefix();
 ```
+
+The same holds for the relations, operators, generic arguments and members of types: `InheritFrom`, `Implement`,
+`AreGeneric`, `HaveOperator`, `HaveImplicitConversionOperator`, `HaveExplicitConversionOperator`,
+`OnlyHaveNullableMembers`, `OnlyHaveNonNullableMembers` and the `Contain…` checks. They keep their options, like
+`Directly()`, and their negations mean that no item matches (`none inherit from MediaItem`):
+
+```csharp
+await Expect.That(types).AtLeast(2).InheritFrom<MediaItem>().Directly();
+await Expect.That(types).None().Implement<IDisposable>();
+await Expect.That(types).AtMost(1).ContainMethods(methods => methods.With<ObsoleteAttribute>());
+```
+
+On a struct collection, such as an `ImmutableArray<Type>`, pass the type as an argument after a quantifier, e.g.
+`AtLeast(2).InheritFrom(typeof(MediaItem))`, as C# cannot infer the collection type next to an explicit type
+argument.

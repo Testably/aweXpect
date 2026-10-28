@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class HaveOperator
+	public sealed partial class HaveOperator
 	{
 		public sealed class Tests
 		{
@@ -88,10 +88,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all declare the operator Subtraction,
-					             but it contained types not declaring the operator Subtraction
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               OperatorDerivedClass
+					             ]
+
+					             Collection:
+					             [
+					               OperatorBaseClass,
 					               OperatorDerivedClass
 					             ]
 					             """);
@@ -131,9 +137,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have the operator Addition,
-					             but it contained types without the operator Addition
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -189,12 +200,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all have the operator Addition with operand {Formatter.Format(typeof(string))},
-					              but it contained types without the operator Addition with operand {Formatter.Format(typeof(string))}
+					              all have the operator Addition with operand string,
+					              but none of * did
 
 					              Not matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -222,7 +238,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have the operator Addition,
+					             none have the operator Addition,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -234,7 +250,7 @@ public sealed partial class ThatTypes
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a type with the operator Addition,
+					             at least one has the operator Addition,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -277,10 +293,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have the operator Addition,
-					             but it contained types with the operator Addition
+					             none have the operator Addition,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -337,12 +358,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all do not have the operator Addition with operand {Formatter.Format(typeof(int))},
-					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(int))}
+					              none have the operator Addition with operand int,
+					              but * of * did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -363,12 +389,17 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).Throws()
-					.WithMessage($"""
+					.WithMessage("""
 					              Expected that subject
-					              all do not have the operator Addition with operand {Formatter.Format(typeof(Money))},
-					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(Money))}
+					              none have the operator Addition with operand Money,
+					              but * of * did
 
-					              Not matching items:
+					              Matching items:
+					              [
+					                *
+					              ]
+
+					              Collection:
 					              [
 					                *
 					              ]
@@ -395,7 +426,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have the operator Addition,
-					             but it only contained types with the operator Addition
+					             but all * did
 
 					             Collection:
 					             [
@@ -420,8 +451,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a type with the operator Addition,
-					             but it only contained types without the operator Addition
+					             at least one has the operator Addition,
+					             but none of * did
 
 					             Collection:
 					             [
@@ -515,9 +546,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have the operator Addition,
-					             but it contained types without the operator Addition
+					             but only * of * did
 
 					             Not matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]
@@ -540,10 +576,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have the operator Addition,
-					             but it contained types with the operator Addition
+					             none have the operator Addition,
+					             but * of * did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               *
+					             ]
+
+					             Collection:
 					             [
 					               *
 					             ]

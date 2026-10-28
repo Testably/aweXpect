@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class ContainFields
+	public sealed partial class ContainFields
 	{
 		public sealed class Tests
 		{
@@ -57,10 +57,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.ClassWithMarkedField and ThatTypes.ContainFields.ClassWithoutMarkedField
 					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.ContainFields.ClassWithoutMarkedField
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainFields.ClassWithMarkedField,
 					               ThatTypes.ContainFields.ClassWithoutMarkedField
 					             ]
 					             """);
@@ -81,11 +87,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField and ThatTypes.ContainFields.BaseClassWithMarkedField
 					             all declare fields with ThatTypes.ContainFields.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField,
+					               ThatTypes.ContainFields.BaseClassWithMarkedField
 					             ]
 					             """);
 			}

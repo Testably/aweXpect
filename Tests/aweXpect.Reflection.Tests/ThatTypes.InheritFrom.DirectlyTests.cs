@@ -53,10 +53,16 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.GrandChildClass]
 						             all inherit directly from ThatTypes.BaseClass,
-						             but it contained types that do not inherit directly from ThatTypes.BaseClass
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               ThatTypes.GrandChildClass
+						             ]
+
+						             Collection:
+						             [
+						               ThatTypes.DerivedClass1,
 						               ThatTypes.GrandChildClass
 						             ]
 						             """);
@@ -137,9 +143,14 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that subject
 						             all inherit directly from ThatTypes.BaseClass,
-						             but it contained types that do not inherit directly from ThatTypes.BaseClass
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               ThatTypes.GrandChildClass
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.GrandChildClass
 						             ]
@@ -163,7 +174,7 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
 						             not all inherit directly from ThatTypes.BaseClass,
-						             but it only contained types that inherit directly from ThatTypes.BaseClass
+						             but all 2 did
 
 						             Collection:
 						             [

@@ -93,10 +93,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.UnrelatedClass]
 					             all implement ThatTypes.ITestInterface,
-					             but it contained types that do not implement ThatTypes.ITestInterface
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatTypes.UnrelatedClass
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.ClassWithInterface1,
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -158,7 +164,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
 					             not all implement ThatTypes.ITestInterface,
-					             but it only contained types that implement ThatTypes.ITestInterface
+					             but all 2 did
 
 					             Collection:
 					             [

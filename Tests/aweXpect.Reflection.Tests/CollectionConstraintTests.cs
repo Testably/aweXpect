@@ -160,18 +160,18 @@ public sealed class CollectionConstraintTests
 
 		async Task Act()
 		{
-			await That(subject).Implement<IComparable>();
+			await That(subject).Have<ObsoleteAttribute>();
 		}
 
 		async Task ActNegated()
 		{
-			await That(subject).DoesNotComplyWith(they => they.Implement<IComparable>());
+			await That(subject).DoesNotComplyWith(they => they.Have<ObsoleteAttribute>());
 		}
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             all implement IComparable,
+			             all have ObsoleteAttribute,
 			             but for the item at index 1, it was <null>
 
 			             Collection:
@@ -184,7 +184,7 @@ public sealed class CollectionConstraintTests
 		await That(ActNegated).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             not all implement IComparable,
+			             not all have ObsoleteAttribute,
 			             but for the item at index 1, it was <null>
 
 			             Collection:
@@ -416,18 +416,18 @@ public sealed class CollectionConstraintTests
 
 		async Task Act()
 		{
-			await That(subject).Implement<IComparable>();
+			await That(subject).Have<ObsoleteAttribute>();
 		}
 
 		async Task ActNegated()
 		{
-			await That(subject).DoesNotComplyWith(they => they.Implement<IComparable>());
+			await That(subject).DoesNotComplyWith(they => they.Have<ObsoleteAttribute>());
 		}
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             all implement IComparable,
+			             all have ObsoleteAttribute,
 			             but for the item at index 1, it was <null>
 
 			             Collection:
@@ -440,7 +440,7 @@ public sealed class CollectionConstraintTests
 		await That(ActNegated).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
-			             not all implement IComparable,
+			             not all have ObsoleteAttribute,
 			             but for the item at index 1, it was <null>
 
 			             Collection:
