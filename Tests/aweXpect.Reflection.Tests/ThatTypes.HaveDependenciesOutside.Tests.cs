@@ -59,7 +59,7 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenCollectionContainsNull_ShouldListNull()
+			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
 				[
@@ -76,10 +76,11 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces
+					              but for the item at index 1, it was <null>
 
-					              Not matching items:
+					              Collection:
 					              [
+					                Layer1AndLayer2,
 					                <null>
 					              ]
 					              """);
@@ -177,7 +178,7 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenCollectionContainsNull_ShouldListNull()
+			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
 				[
@@ -194,10 +195,11 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types
+					              but for the item at index 1, it was <null>
 
-					              Not matching items:
+					              Collection:
 					              [
+					                Layer1AndLayer2,
 					                <null>
 					              ]
 					              """);

@@ -45,6 +45,47 @@ public sealed partial class ThatMethods
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod("TestMethod1"), null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have ThatMethods.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have ThatMethods.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNotAllMethodsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject = new[]

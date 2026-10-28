@@ -30,10 +30,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but it contained methods without a matching parameter
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value),
 					               <null>
 					             ]
 					             """);
@@ -501,10 +502,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but it contained methods without a matching parameter
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value),
 					               <null>
 					             ]
 					             """);

@@ -60,10 +60,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all do not return string,
-					             but it contained methods which return string
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               int ThatMethods.TestClass.GetInt(),
 					               <null>
 					             ]
 					             """);

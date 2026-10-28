@@ -91,11 +91,52 @@ public sealed partial class ThatConstructors
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<ConstructorInfo?> subject = [typeof(TestClass).GetConstructor(Type.EmptyTypes), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHave.AttributeTests.TestClass(),
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHave.AttributeTests.TestClass(),
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoConstructorHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<ConstructorInfo?> subject = new[]
 				{
-					typeof(TestClass).GetConstructor(Type.EmptyTypes), null,
+					typeof(TestClass).GetConstructor(Type.EmptyTypes),
 				};
 
 				async Task Act()

@@ -104,9 +104,9 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but it contained constructors without a matching parameter
+					             but for the item at index 0, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
 					               <null>
 					             ]
@@ -378,9 +378,9 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but it contained constructors without a matching parameter
+					             but for the item at index 0, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
 					               <null>
 					             ]

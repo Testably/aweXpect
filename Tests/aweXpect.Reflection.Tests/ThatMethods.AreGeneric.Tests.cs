@@ -27,6 +27,47 @@ public sealed partial class ThatMethods
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<MethodInfo?> subject = [typeof(ClassWithMethods).GetMethod(nameof(ClassWithMethods.GenericMethod1)), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreGeneric();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreGeneric());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all generic,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value),
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             are not all generic,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value),
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenMethodIsNotGeneric_ShouldFail()
 			{
 				IEnumerable<MethodInfo> subject =

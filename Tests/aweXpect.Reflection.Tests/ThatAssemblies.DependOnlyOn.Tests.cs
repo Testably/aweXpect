@@ -98,9 +98,9 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it contained assemblies with disallowed dependencies
+					             but for the item at index 0, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
 					               <null>
 					             ]

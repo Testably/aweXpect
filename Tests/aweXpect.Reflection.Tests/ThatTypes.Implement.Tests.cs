@@ -39,6 +39,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(ClassWithInterface1), null,];
+
+				async Task Act()
+				{
+					await That(subject).Implement<ITestInterface>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Implement<ITestInterface>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all implement ThatTypes.ITestInterface,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.ClassWithInterface1,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all implement ThatTypes.ITestInterface,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.ClassWithInterface1,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenSomeTypeDoesNotImplement_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(ClassWithInterface1), typeof(UnrelatedClass));

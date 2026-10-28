@@ -91,11 +91,52 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Assembly?> subject = [Assembly.GetExecutingAssembly(), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<MarkerAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard();
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard().Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoAssemblyHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<Assembly?> subjects = new[]
 				{
-					Assembly.GetExecutingAssembly(), null,
+					Assembly.GetExecutingAssembly(),
 				};
 
 				async Task Act()

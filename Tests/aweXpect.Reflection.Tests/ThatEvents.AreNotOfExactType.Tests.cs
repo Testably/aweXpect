@@ -59,10 +59,11 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not of exact type Delegate,
-					             but it contained events of exact type Delegate
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent,
 					               <null>
 					             ]
 					             """);

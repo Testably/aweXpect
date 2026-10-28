@@ -32,7 +32,7 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
-			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
+			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
 				[
@@ -49,10 +49,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             only have non-nullable members,
-					             but it contained types with nullable members
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ClassWithNonNullableMembers,
 					               <null>
 					             ]
 					             """);
@@ -65,7 +66,7 @@ public sealed partial class ThatTypes
 				IEnumerable<Type?> subject =
 				[
 					typeof(ClassWithSingleNullableProperty),
-					null,
+					typeof(ClassWithSingleNullableEvent),
 				];
 
 				async Task Act()

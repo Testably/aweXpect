@@ -175,10 +175,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all do not have parameter of type long,
-					             but it contained methods with a matching parameter
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               void ThatMethods.DoNotHaveParameter.TestClass.MethodWithParameters(int value, string text),
 					               <null>
 					             ]
 					             """);

@@ -30,10 +30,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all return string,
-					             but it contained not matching methods
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               string ThatMethods.TestClass.GetString(),
 					               <null>
 					             ]
 					             """);
@@ -305,7 +306,7 @@ public sealed partial class ThatMethods
 			public sealed class EnumerableTests
 			{
 				[Test]
-				public async Task WhenMethodIsNull_ShouldSucceed()
+				public async Task WhenMethodIsNull_ShouldFail()
 				{
 					IEnumerable<MethodInfo?> subject =
 					[
@@ -318,7 +319,18 @@ public sealed partial class ThatMethods
 						await That(subject).DoesNotComplyWith(they => they.Return<string>());
 					}
 
-					await That(Act).DoesNotThrow();
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             not all return string,
+						             but for the item at index 1, it was <null>
+
+						             Collection:
+						             [
+						               string ThatMethods.TestClass.GetString(),
+						               <null>
+						             ]
+						             """).Because("a null item cannot be inspected, like a null subject");
 				}
 			}
 

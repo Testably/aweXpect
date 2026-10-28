@@ -42,6 +42,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(DerivedClass1), null,];
+
+				async Task Act()
+				{
+					await That(subject).InheritFrom<BaseClass>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.InheritFrom<BaseClass>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all inherit from ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all inherit from ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenSomeTypesDoNotInherit_ShouldFail()
 			{
 				Filtered.Types subject = In.AssemblyContaining<GenericTests>()

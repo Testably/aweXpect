@@ -158,10 +158,11 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             all do not have parameter of type long,
-					             but it contained constructors with a matching parameter
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
 					               <null>
 					             ]
 					             """);

@@ -89,6 +89,47 @@ public sealed partial class ThatProperties
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<PropertyInfo?> subject = [typeof(TestClass).GetProperty("TestProperty1"), null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have ThatProperties.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have ThatProperties.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNotAllPropertiesHaveAttribute_ShouldFail()
 			{
 				IEnumerable<PropertyInfo> subject = new[]

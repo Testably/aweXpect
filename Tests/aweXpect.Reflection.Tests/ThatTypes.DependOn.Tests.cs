@@ -311,10 +311,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ViaField,
 					               <null>
 					             ]
 					             """);
@@ -352,10 +353,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ViaField,
 					               <null>
 					             ]
 					             """);

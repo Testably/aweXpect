@@ -91,11 +91,52 @@ public sealed partial class ThatProperties
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<PropertyInfo?> subject = [typeof(TestClass).GetProperty(nameof(TestClass.NoAttributeProperty)), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.NoAttributeProperty { get; set; },
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.NoAttributeProperty { get; set; },
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoPropertyHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<PropertyInfo?> subject = new[]
 				{
-					typeof(TestClass).GetProperty(nameof(TestClass.NoAttributeProperty)), null,
+					typeof(TestClass).GetProperty(nameof(TestClass.NoAttributeProperty)),
 				};
 
 				async Task Act()
