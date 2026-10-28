@@ -45,9 +45,7 @@ public static partial class ThatHttpRequestMessage
 			subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.RequestContexts)
 				.ForAsyncMember(MemberAccessor<HttpRequestMessage, Task<string?>>.FromFuncWithName(
-						async (m, _, cancellationToken) => m.Content == null
-							? null
-							: await m.Content.ReadAsStringOrEmptyAsync(cancellationToken),
+						async (m, _, cancellationToken) => await m.Content.ReadAsStringOrEmptyAsync(cancellationToken),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
 				.AddExpectations(expectations),
@@ -106,17 +104,7 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			if (actual.Content is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-#if NETSTANDARD2_0
-			_message = await actual.Content.ReadAsStringAsync();
-#else
-			_message = await actual.Content.ReadAsStringAsync(cancellationToken);
-#endif
+			_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
 			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected, parameterName);
 			if (_matchResult.IsMatch)
@@ -138,17 +126,8 @@ public static partial class ThatHttpRequestMessage
 				.Append(CurrentOptions.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Actual?.Content is null)
-			{
-				stringBuilder.Append(It).Append(" had a <null> content");
-			}
-			else
-			{
-				stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "string content",
-					Grammars, _message, expected, _matchResult));
-			}
-		}
+			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "string content",
+				Grammars, _message, expected, _matchResult));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))

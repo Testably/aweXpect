@@ -29,6 +29,8 @@ internal static class HttpContentExtensions
 	/// <remarks>
 	///     The content of a <see cref="HttpResponseMessage" /> is <see langword="null" /> on .NET Framework until it is set,
 	///     whereas .NET 5+ uses an empty content, so a missing content is read as the empty string on every framework.
+	///     A missing content of a <see cref="HttpRequestMessage" /> is read the same way, as HTTP does not distinguish
+	///     an absent body from an empty one.
 	/// </remarks>
 	public static Task<string> ReadAsStringOrEmptyAsync(this HttpContent? content,
 		CancellationToken cancellationToken)

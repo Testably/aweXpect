@@ -226,6 +226,9 @@ Suppress it in test projects that use a virtual time system.
 - `HasHeader(…).WhoseValue(…)` and `HasQueryParameter(…).WhoseValue(…)` fail, also when negated, if the header or
   query parameter does not have exactly one value, like `WithValue`. Before, the expectations on the value received
   `null`, so that e.g. `WhoseValue(value => value.IsNull())` succeeded for several values.
+- A request without content has an empty string content, like a response, so `HasContent("")` and
+  `HasContent(c => c.IsEmpty())` succeed and `DoesNotHaveContent("")` fails, as HTTP does not distinguish a missing
+  body from an empty one.
 
 ### Namespaces
 
