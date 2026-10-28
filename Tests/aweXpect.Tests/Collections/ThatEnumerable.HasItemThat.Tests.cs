@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -65,7 +64,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.HasItemThat(x => x.IsEqualTo(1)).AtIndex(0).WithTimeSystem(new VirtualTimeSystem());
+						.HasItemThat(x => x.IsEqualTo(1)).AtIndex(0).WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -1,30 +1,29 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 using aweXpect.Signaling;
 
-namespace aweXpect.Core.Tests.Core.TimeSystem;
+namespace aweXpect.Core.Tests.Core;
 
 /// <summary>
-///     Every wait and every timeout of an evaluation runs on the time system of the evaluation.
+///     Every wait and every timeout of an evaluation runs on the time provider of the evaluation.
 /// </summary>
 /// <remarks>
-///     On the <see cref="VirtualTimeSystem" /> a wait takes no real time and reports the duration of the virtual clock.
+///     On the <see cref="VirtualTimeProvider" /> a wait takes no real time and reports the duration of the virtual clock.
 ///     No wait is longer than half a minute, so that a regression which waits in real time fails the test instead of
 ///     hanging the test run.
 /// </remarks>
-public sealed class EvaluationTimeSystemTests
+public sealed class EvaluationTimeProviderTests
 {
 	[Test]
-	public async Task Signaled_Within_ShouldWaitOnTheTimeSystem()
+	public async Task Signaled_Within_ShouldWaitOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler = new();
 
 		async Task Act()
-			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -32,30 +31,30 @@ public sealed class EvaluationTimeSystemTests
 			             has recorded the callback at least once within 0:30,
 			             but it was never recorded within 0:30
 			             """);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds());
+		await That(timeProvider.Now).IsEqualTo(30.Seconds());
 	}
 
 	[Test]
 	public async Task Signaled_Within_WhenAlreadySignaled_ShouldNotWait()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler = new();
 		signaler.Signal();
 
-		await That(signaler).Signaled().Within(30.Seconds()).WithTimeSystem(timeSystem);
+		await That(signaler).Signaled().Within(30.Seconds()).WithTimeProvider(timeProvider);
 
-		await That(timeSystem.Now).IsEqualTo(TimeSpan.Zero);
+		await That(timeProvider.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
 	[Test]
 	public async Task Signaled_Within_WhenTheTimeoutIsNotShorter_ShouldLetTheWaitDecide()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler = new();
 
 		async Task Act()
 			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(30.Seconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -64,18 +63,18 @@ public sealed class EvaluationTimeSystemTests
 			             but it was never recorded within 0:30
 			             """)
 			.Because("the timeout elapses on the same clock as the wait, so it ends the wait exactly at its end");
-		await That(timeSystem.Now).IsEqualTo(30.Seconds());
+		await That(timeProvider.Now).IsEqualTo(30.Seconds());
 	}
 
 	[Test]
 	public async Task Signaled_Within_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeout()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler = new();
 
 		async Task Act()
 			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(10.Seconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -84,19 +83,19 @@ public sealed class EvaluationTimeSystemTests
 			             but it did not finish within 0:10
 			             """).And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:10."));
-		await That(timeSystem.Now).IsEqualTo(10.Seconds())
+		await That(timeProvider.Now).IsEqualTo(10.Seconds())
 			.Because("the timeout cuts the wait short on the virtual clock");
 	}
 
 	[Test]
-	public async Task Signaled_WithParameter_Within_ShouldWaitOnTheTimeSystem()
+	public async Task Signaled_WithParameter_Within_ShouldWaitOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler<int> signaler = new();
 		signaler.Signal(1);
 
 		async Task Act()
-			=> await That(signaler).Signaled(2.Times()).Within(30.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(signaler).Signaled(2.Times()).Within(30.Seconds()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -106,19 +105,19 @@ public sealed class EvaluationTimeSystemTests
 			               1
 			             ] within 0:30
 			             """);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds());
+		await That(timeProvider.Now).IsEqualTo(30.Seconds());
 	}
 
 	[Test]
-	public async Task Triggered_Within_ShouldWaitOnTheTimeSystem()
+	public async Task Triggered_Within_ShouldWaitOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Within(30.Seconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -126,19 +125,19 @@ public sealed class EvaluationTimeSystemTests
 			             has recorded the CustomEvent event on sut at least once within 0:30,
 			             but it was never recorded within 0:30
 			             """);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds());
+		await That(timeProvider.Now).IsEqualTo(30.Seconds());
 	}
 
 	[Test]
 	public async Task Triggered_Within_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeout()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Within(30.Seconds())
-				.WithTimeout(10.Seconds()).WithTimeSystem(timeSystem);
+				.WithTimeout(10.Seconds()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -147,24 +146,24 @@ public sealed class EvaluationTimeSystemTests
 			             but it did not finish within 0:10
 			             """).And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:10."));
-		await That(timeSystem.Now).IsEqualTo(10.Seconds())
+		await That(timeProvider.Now).IsEqualTo(10.Seconds())
 			.Because("the timeout cuts the wait short on the virtual clock");
 	}
 
 	[Test]
-	public async Task WithTimeout_ShouldElapseOnTheTimeSystem()
+	public async Task WithTimeout_ShouldElapseOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		bool? isCanceledAfterTheTimeout = null;
 		Func<CancellationToken, Task> subject = token =>
 		{
-			timeSystem.Advance(2.Hours());
+			timeProvider.Advance(2.Hours());
 			isCanceledAfterTheTimeout = token.IsCancellationRequested;
 			return Task.CompletedTask;
 		};
 
 		async Task Act()
-			=> await That(subject).DoesNotThrow().WithTimeout(1.Hours()).WithTimeSystem(timeSystem);
+			=> await That(subject).DoesNotThrow().WithTimeout(1.Hours()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

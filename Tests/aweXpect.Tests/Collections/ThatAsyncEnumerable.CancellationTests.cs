@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
@@ -804,11 +803,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceHangsAfterSomeItems_ShouldFailAfterTheTimeout()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2, 3);
 
 			async Task Act()
-				=> await That(subject).Contains(4).WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).Contains(4).WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -826,11 +825,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceHangsBeforeTheCollectionIsFormatted_ShouldFailAfterTheTimeout()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -886,7 +885,7 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceObservesTheToken_ShouldCancelTheSource()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			CancellationToken sourceToken = CancellationToken.None;
 
 			async IAsyncEnumerable<int> Numbers([EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -901,7 +900,7 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = Numbers();
 
 			async Task Act()
-				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -951,11 +950,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailACount()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).HasCount(3).WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).HasCount(3).WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -973,11 +972,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailIsEqualTo()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -998,12 +997,12 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
 				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds())
-					.WithTimeSystem(time);
+					.WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -1023,7 +1022,7 @@ public sealed partial class ThatAsyncEnumerable
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static async Task AbandonSourceThatFaultsLater(Exception exception)
 		{
-			VirtualTimeSystem time = new();
+			VirtualTimeProvider time = new();
 			TaskCompletionSource tcs = new();
 
 			async IAsyncEnumerable<int> Numbers()
@@ -1036,7 +1035,7 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = Numbers();
 
 			async Task Act()
-				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeSystem(time);
+				=> await That(subject).Contains(1).WithTimeout(1.Seconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

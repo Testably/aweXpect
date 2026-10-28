@@ -7,7 +7,6 @@ using aweXpect.Chronology;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Signaling;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
@@ -16,34 +15,102 @@ namespace aweXpect.Core.Tests.Core.EvaluationContext;
 public class EvaluationContextExtensionsTests
 {
 	[Test]
-	public async Task GetElapsedTime_ShouldMeasureOnTheTimeSystemOfTheEvaluation()
+	public async Task CancelAfter_ForAContextOfAnotherImplementation_ShouldCancelOnTheRealClock()
 	{
-		VirtualTimeSystem timeSystem = new();
+		IEvaluationContext context = new ForeignEvaluationContext();
+		using CancellationTokenSource cts = new();
+		TaskCompletionSource<bool> canceled = new(TaskCreationOptions.RunContinuationsAsynchronously);
+		using CancellationTokenRegistration _ = cts.Token.Register(() => canceled.TrySetResult(true));
+
+		context.CancelAfter(cts, 10.Milliseconds());
+		await Task.WhenAny(canceled.Task, Task.Delay(30.Seconds()));
+
+		await That(canceled.Task.IsCompleted).IsTrue()
+			.Because("only an evaluation of this library has a time provider of its own");
+	}
+
+	[Test]
+	public async Task CancelAfter_ShouldCancelOnTheTimeProviderOfTheEvaluation()
+	{
+		VirtualTimeProvider timeProvider = new();
 		IEvaluationContext context = new Context
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
-		timeSystem.Advance(10.Seconds());
+		using CancellationTokenSource cts = new();
+
+		context.CancelAfter(cts, 30.Seconds());
+		timeProvider.Advance(30.Seconds() - 1.Milliseconds());
+		bool isCanceledBeforeTheDelay = cts.IsCancellationRequested;
+		timeProvider.Advance(1.Milliseconds());
+
+		await That(isCanceledBeforeTheDelay).IsFalse();
+		await That(cts.IsCancellationRequested).IsTrue()
+			.Because("the delay elapses when the virtual clock of the evaluation reaches it");
+	}
+
+	[Test]
+	public async Task CancelAfter_WhenCancellationTokenSourceIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act() => new Context().CancelAfter(null!, 30.Seconds());
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("cancellationTokenSource").And
+			.WithMessage("The 'cancellationTokenSource' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task CancelAfter_WhenDelayIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		using CancellationTokenSource cts = new();
+
+		void Act() => new Context().CancelAfter(cts, -2.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("delay").And
+			.WithMessage("The delay must not be negative.").AsPrefix();
+	}
+
+	[Test]
+	public async Task CancelAfter_WithDelayBeyondTheLimitOfATimer_ShouldNotCancel()
+	{
+		using CancellationTokenSource cts = new();
+
+		new Context().CancelAfter(cts, TimeSpan.MaxValue);
+
+		await That(cts.IsCancellationRequested).IsFalse()
+			.Because("a delay that a timer does not accept would not elapse during a test run anyway");
+	}
+
+	[Test]
+	public async Task GetElapsedTime_ShouldMeasureOnTheTimeProviderOfTheEvaluation()
+	{
+		VirtualTimeProvider timeProvider = new();
+		IEvaluationContext context = new Context
+		{
+			TimeProvider = timeProvider,
+		};
+		timeProvider.Advance(10.Seconds());
 
 		long timestamp = context.GetTimestamp();
-		timeSystem.Advance(30.Seconds());
+		timeProvider.Advance(30.Seconds());
 		TimeSpan result = context.GetElapsedTime(timestamp);
 
 		await That(result).IsEqualTo(30.Seconds());
 	}
 
 	[Test]
-	public async Task GetTimestamp_ForAContextOfAnotherImplementation_ShouldBeOfTheRealTimeSystem()
+	public async Task GetTimestamp_ForAContextOfAnotherImplementation_ShouldBeOfTheRealTimeProvider()
 	{
 		IEvaluationContext context = new ForeignEvaluationContext();
-		long before = RealTimeSystem.Instance.GetTimestamp();
+		long before = TimeProvider.System.GetTimestamp();
 
 		long timestamp = context.GetTimestamp();
 		TimeSpan elapsed = context.GetElapsedTime(timestamp);
 
 		await That(timestamp).IsGreaterThanOrEqualTo(before).And
-			.IsLessThanOrEqualTo(RealTimeSystem.Instance.GetTimestamp())
-			.Because("only an evaluation of this library has a time system of its own");
+			.IsLessThanOrEqualTo(TimeProvider.System.GetTimestamp())
+			.Because("only an evaluation of this library has a time provider of its own");
 		await That(elapsed).IsGreaterThanOrEqualTo(TimeSpan.Zero);
 	}
 
@@ -477,10 +544,10 @@ public class EvaluationContextExtensionsTests
 	[Test]
 	public async Task WaitForSignalsAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		Signaler signaler = new();
 		signaler.Signal();
@@ -489,16 +556,16 @@ public class EvaluationContextExtensionsTests
 			await context.WaitForSignalsAsync(signaler, 1.Times(), 30.Seconds(), CancellationToken.None);
 
 		await That(result.IsSuccess).IsTrue();
-		await That(timeSystem.Now).IsEqualTo(TimeSpan.Zero);
+		await That(timeProvider.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
 	[Test]
-	public async Task WaitForSignalsAsync_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
+	public async Task WaitForSignalsAsync_ShouldLetTheTimeoutExpireOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		Signaler signaler = new();
 
@@ -506,7 +573,7 @@ public class EvaluationContextExtensionsTests
 			await context.WaitForSignalsAsync(signaler, 1.Times(), 30.Seconds(), CancellationToken.None);
 
 		await That(result.IsSuccess).IsFalse();
-		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.Now).IsEqualTo(30.Seconds())
 			.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
 	}
 
@@ -536,12 +603,12 @@ public class EvaluationContextExtensionsTests
 	}
 
 	[Test]
-	public async Task WaitForSignalsAsync_WithParameter_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
+	public async Task WaitForSignalsAsync_WithParameter_ShouldLetTheTimeoutExpireOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 		Signaler<int> signaler = new();
 		signaler.Signal(1);
@@ -551,7 +618,7 @@ public class EvaluationContextExtensionsTests
 
 		await That(result.IsSuccess).IsFalse();
 		await That(result.Parameters).IsEqualTo([1,]);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.Now).IsEqualTo(30.Seconds())
 			.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
 	}
 

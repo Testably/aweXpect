@@ -258,7 +258,7 @@ public class ManualExpectationBuilderTests
 		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => true));
 
 		async Task Act() => await sut.IsMet(
-			new ExpectationNode(), null!, new TimeSystemMock(), null, CancellationToken.None);
+			new ExpectationNode(), null!, new TimeProviderMock(), null, CancellationToken.None);
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("Use IsMetBy for ManualExpectationBuilder.");

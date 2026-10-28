@@ -1,5 +1,4 @@
-﻿using aweXpect.Core.Internal;
-using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -78,10 +77,10 @@ public sealed class UnexpectedExceptionTests
 	public async Task Task_WhenFailed_AndExpectationIsRepeated_ShouldFailWithoutRetrying()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 
 		async Task Act()
-			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).WithTimeSystem(time);
+			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

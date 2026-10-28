@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -279,7 +278,7 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 
 				bool IsOne(int x)
 				{
@@ -289,7 +288,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(),
-						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeSystem(time);
+						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -1035,7 +1034,7 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 
 				bool IsOne(int x)
 				{
@@ -1045,7 +1044,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing,
-						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeSystem(time);
+						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

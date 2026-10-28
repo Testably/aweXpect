@@ -2,7 +2,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
@@ -147,7 +146,7 @@ public sealed class OnCompletedTests
 
 		await That(1).CompliesWith(it
 				=> it.HasSideEffect(log, "a", _ => ++value >= 3 ? Outcome.Success : Outcome.Failure))
-			.Within(1.Seconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
+			.Within(1.Seconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
 
 		await That(log.Evaluations).IsEqualTo(3);
 		await That(log.Effects).IsEqualTo([
@@ -297,7 +296,7 @@ public sealed class OnCompletedTests
 	public async Task WhenTimedOut_ShouldReceiveTheTokenOfTheCaller()
 	{
 		SideEffectLog log = new();
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		using CancellationTokenSource cts = new();
 		CancellationToken evaluationToken = default;
 
@@ -305,10 +304,10 @@ public sealed class OnCompletedTests
 			=> await That(1).HasSideEffect(log, "a", Outcome.Undecided, cancellationToken =>
 				{
 					evaluationToken = cancellationToken;
-					timeSystem.Advance(2.Seconds());
+					timeProvider.Advance(2.Seconds());
 					return Task.CompletedTask;
 				}).WithCancellation(cts.Token).WithTimeout(1.Seconds())
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

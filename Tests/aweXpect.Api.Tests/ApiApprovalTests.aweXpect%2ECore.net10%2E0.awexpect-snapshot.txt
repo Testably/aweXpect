@@ -82,6 +82,10 @@ namespace aweXpect
         public static aweXpect.Core.Expectation.Combination.All ThatAll(params aweXpect.Core.Expectation[] expectations) { }
         public static aweXpect.Core.Expectation.Combination.Any ThatAny(params aweXpect.Core.Expectation[] expectations) { }
     }
+    public static class ExpectationExtensions
+    {
+        public static TExpectation WithTimeProvider<TExpectation>(this TExpectation expectation, System.TimeProvider timeProvider) where TExpectation : aweXpect.Core.Expectation { }
+    }
     [System.Diagnostics.StackTraceHidden]
     public static class Fail
     {
@@ -938,6 +942,7 @@ namespace aweXpect.Core.EvaluationContext
     }
     public static class EvaluationContextExtensions
     {
+        public static void CancelAfter(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, System.Threading.CancellationTokenSource cancellationTokenSource, System.TimeSpan delay) { }
         public static System.TimeSpan GetElapsedTime(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext, long startTimestamp) { }
         public static long GetTimestamp(this aweXpect.Core.EvaluationContext.IEvaluationContext evaluationContext) { }
         public static bool TryGetItem<TItem>(this aweXpect.Core.EvaluationContext.IMaterializedEnumerable<TItem> materialized, int index, out TItem item) { }
@@ -1131,23 +1136,6 @@ namespace aweXpect.Core.Extending
     public static class ThatExtensions
     {
         public static aweXpect.Core.IExpectThat<T> Get<T>(this aweXpect.Core.IThat<T> subject) { }
-    }
-}
-namespace aweXpect.Core.Internal
-{
-    [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
-    public interface ITimeSystem
-    {
-        void CancelAfter(System.Threading.CancellationTokenSource cancellationTokenSource, System.TimeSpan delay);
-        System.Threading.Tasks.Task Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken);
-        System.TimeSpan GetElapsedTime(long startTimestamp);
-        long GetTimestamp();
-    }
-    [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
-    public static class TimeSystemExtensions
-    {
-        [System.Diagnostics.CodeAnalysis.Experimental("aweXpect5001")]
-        public static TExpectation WithTimeSystem<TExpectation>(this TExpectation expectation, aweXpect.Core.Internal.ITimeSystem timeSystem) where TExpectation : aweXpect.Core.Expectation { }
     }
 }
 namespace aweXpect.Core.Metadata

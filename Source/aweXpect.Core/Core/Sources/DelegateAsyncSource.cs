@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Sources;
 
@@ -27,7 +26,7 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 
 	public bool IsNullTaskSubject => false;
 
-	public async ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
+	public async ValueTask<DelegateValue> GetValue(TimeProvider timeProvider,
 		CancellationToken cancellationToken)
 	{
 		if (action is null && _actionWithoutCancellation is null)
@@ -38,14 +37,14 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 			};
 		}
 
-		long startTimestamp = timeSystem.GetTimestamp();
+		long startTimestamp = timeProvider.GetTimestamp();
 		Task? task = null;
 		try
 		{
 			task = action is null ? _actionWithoutCancellation!() : action(cancellationToken);
 			if (task is null)
 			{
-				return new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp))
+				return new DelegateValue(null, timeProvider.GetElapsedTime(startTimestamp))
 				{
 					NullKind = NullSubjectKind.NullTaskReturned,
 				};
@@ -55,18 +54,18 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 			if (task.IsFaulted)
 			{
 				return new DelegateValue(task.GetFirstException(out Exception[]? otherExceptions),
-					timeSystem.GetElapsedTime(startTimestamp))
+					timeProvider.GetElapsedTime(startTimestamp))
 				{
 					OtherExceptions = otherExceptions,
 				};
 			}
 
 			await task;
-			return new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp));
+			return new DelegateValue(null, timeProvider.GetElapsedTime(startTimestamp));
 		}
 		catch (Exception ex)
 		{
-			return new DelegateValue(ex, timeSystem.GetElapsedTime(startTimestamp))
+			return new DelegateValue(ex, timeProvider.GetElapsedTime(startTimestamp))
 			{
 				OtherExceptions = task?.GetOtherExceptions(ex),
 			};

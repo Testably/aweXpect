@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 
@@ -25,7 +24,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DidNotTriggerPropertyChanged()
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow();
 				cts.Cancel();

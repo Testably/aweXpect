@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Signaling;
 
@@ -54,7 +53,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
@@ -67,7 +66,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
@@ -145,7 +144,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -163,7 +162,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).DidNotSignal().Within(1.Seconds()).Within(50.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

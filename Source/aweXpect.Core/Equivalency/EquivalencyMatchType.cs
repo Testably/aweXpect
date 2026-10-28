@@ -43,7 +43,7 @@ public sealed class EquivalencyMatchType<TElement> : ObjectMatchType<TElement>
 	/// <inheritdoc />
 	/// <remarks>
 	///     The expectations of an <c>It.Is…</c> in the expected object are canceled by the cancellation of the
-	///     <paramref name="environment" /> and use the timeout and the time system of its evaluation. The matcher keeps the
+	///     <paramref name="environment" /> and use the timeout and the clock of its evaluation. The matcher keeps the
 	///     members to ignore that matched nothing across the items of a collection.
 	/// </remarks>
 	public override ObjectMatcher<TElement> ForEvaluation(MatchEnvironment environment)

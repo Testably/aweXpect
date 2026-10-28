@@ -49,7 +49,7 @@ public static partial class EquivalencyComparison
 	/// <param name="equivalencyOptions">The options of the comparison.</param>
 	/// <param name="failureBuilder">Receives the explanation of a difference.</param>
 	/// <param name="evaluation">
-	///     The evaluation whose cancellation and time system the expectations of an <c>It.Is…</c> in the
+	///     The evaluation whose cancellation and time provider the expectations of an <c>It.Is…</c> in the
 	///     <paramref name="expected" /> object use, or <see langword="null" /> outside an evaluation.
 	/// </param>
 	/// <param name="cancellationToken">The token that cancels the <paramref name="evaluation" />.</param>
@@ -148,7 +148,7 @@ public static partial class EquivalencyComparison
 	/// <param name="expected">The expected value.</param>
 	/// <param name="equivalencyOptions">The options of the comparison.</param>
 	/// <param name="evaluation">
-	///     The evaluation whose cancellation and time system the expectations of an <c>It.Is…</c> in the
+	///     The evaluation whose cancellation and time provider the expectations of an <c>It.Is…</c> in the
 	///     <paramref name="expected" /> object use, or <see langword="null" /> outside an evaluation.
 	/// </param>
 	/// <param name="cancellationToken">The token that cancels the <paramref name="evaluation" />.</param>

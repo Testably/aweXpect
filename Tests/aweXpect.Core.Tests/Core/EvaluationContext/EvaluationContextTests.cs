@@ -7,7 +7,6 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Results;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
@@ -75,17 +74,17 @@ public class EvaluationContextTests
 	}
 
 	[Test]
-	public async Task StartAttempt_ShouldKeepTheTimeSystem()
+	public async Task StartAttempt_ShouldKeepTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 
 		Context attempt = await context.StartAttempt();
 
-		await That(attempt.TimeSystem).IsSameAs(timeSystem)
+		await That(attempt.TimeProvider).IsSameAs(timeProvider)
 			.Because("a repeated check in another attempt measures and waits like the evaluation");
 	}
 
@@ -125,17 +124,17 @@ public class EvaluationContextTests
 	}
 
 	[Test]
-	public async Task StartCheck_ShouldKeepTheTimeSystem()
+	public async Task StartCheck_ShouldKeepTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Context context = new()
 		{
-			TimeSystem = timeSystem,
+			TimeProvider = timeProvider,
 		};
 
 		Context check = await context.StartCheck(null);
 
-		await That(check.TimeSystem).IsSameAs(timeSystem)
+		await That(check.TimeProvider).IsSameAs(timeProvider)
 			.Because("a repeated check within another check measures and waits like the evaluation");
 	}
 
@@ -200,25 +199,25 @@ public class EvaluationContextTests
 	}
 
 	[Test]
-	public async Task TimeSystem_ShouldDefaultToTheRealTimeSystem()
+	public async Task TimeProvider_ShouldDefaultToTheRealTimeProvider()
 	{
 		Context context = new();
 
-		await That(context.TimeSystem).IsSameAs(RealTimeSystem.Instance);
+		await That(context.TimeProvider).IsSameAs(TimeProvider.System);
 	}
 
 	[Test]
-	public async Task TimeSystem_WhenResetToTheRealTimeSystem_ShouldUseTheRealTimeSystem()
+	public async Task TimeProvider_WhenResetToTheRealTimeProvider_ShouldUseTheRealTimeProvider()
 	{
 		Context context = new()
 		{
-			TimeSystem = new VirtualTimeSystem(),
+			TimeProvider = new VirtualTimeProvider(),
 		};
 
-		context.TimeSystem = RealTimeSystem.Instance;
+		context.TimeProvider = TimeProvider.System;
 
-		await That(context.TimeSystem).IsSameAs(RealTimeSystem.Instance)
-			.Because("the real time system replaces another one that was set before");
+		await That(context.TimeProvider).IsSameAs(TimeProvider.System)
+			.Because("the system time provider replaces another one that was set before");
 	}
 
 	[Test]

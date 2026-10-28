@@ -1,5 +1,4 @@
-﻿using aweXpect.Core.Internal;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ internal interface IValueSource<TValue>
 	/// </summary>
 	bool IsNullTaskSubject { get; }
 
-	ValueTask<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken);
+	ValueTask<TValue> GetValue(TimeProvider timeProvider, CancellationToken cancellationToken);
 
 	/// <summary>
 	///     The exceptions of the faulted subject besides the <paramref name="exception" />, which

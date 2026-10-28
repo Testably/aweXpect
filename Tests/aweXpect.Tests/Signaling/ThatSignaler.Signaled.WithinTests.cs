@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Signaling;
@@ -67,7 +66,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().AtMost(1.Times()).Within(200.Milliseconds())
-						.WithTimeout(200.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeout(200.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
@@ -80,7 +79,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -99,7 +98,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().AtMost(1.Times()).Within(200.Milliseconds())
-						.WithTimeout(200.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeout(200.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
@@ -116,7 +115,7 @@ public sealed partial class ThatSignaler
 				{
 					async Task Act() =>
 						await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(60.Seconds())
-							.WithTimeSystem(new VirtualTimeSystem());
+							.WithTimeProvider(new VirtualTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -202,7 +201,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().Within(1.Seconds()).Within(50.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -219,7 +218,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled().Within(1.Seconds()).Within(50.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

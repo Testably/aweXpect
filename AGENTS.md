@@ -60,7 +60,7 @@ Correctness is a must. The other goals are strong defaults and win in this order
   `--treenode-filter "/*/*/*/*[Category=Slow]"`. After any change to `Docs/**`, run them in `aweXpect.Docs.Tests`.
 - Test conventions: test methods in alphabetical order within their class; no comments in tests, put the reasoning
   into `.Because(...)`; never a bare `Throws<T>()`, always pin the message with `.WithMessage(...)`; timing tests run
-  on a virtual clock with `.WithTimeSystem(new VirtualTimeSystem())` instead of wider margins.
+  on a virtual clock with `.WithTimeProvider(new VirtualTimeProvider())` instead of wider margins.
 - The SonarCloud quality gate requires all reported issues to be solved and a code coverage above 90%.
 
 ## Editing

@@ -81,6 +81,36 @@ finish within …", and a cancellation by the caller leaves it inconclusive.
 
 </details>
 
+<details>
+<summary>A timeout of your own</summary>
+
+An expectation that waits for something outside aweXpect with a timeout of its own, e.g. `Within(timeout)`, cancels
+its wait with `CancelAfter` of the `IEvaluationContext` and measures it with `GetTimestamp()` and `GetElapsedTime(…)`.
+They all use the clock of the evaluation, which is the real one unless the caller sets another with
+`WithTimeProvider(…)`, so that the timeout and the measured time agree, also on a virtual clock:
+
+```csharp no-compile
+using CancellationTokenSource waitCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+context.CancelAfter(waitCts, timeout);
+long startTimestamp = context.GetTimestamp();
+try
+{
+    await WaitForTrackAsync(actual, waitCts.Token);
+    Outcome = Outcome.Success;
+}
+catch (OperationCanceledException)
+{
+    Outcome = context.Cancellation.HasWaitElapsed(timeout, context.GetElapsedTime(startTimestamp))
+        ? Outcome.Failure
+        : Outcome.Undecided;
+}
+```
+
+`HasWaitElapsed` tells a wait that reached its timeout, which fails the expectation, apart from a cancellation by the
+caller or a shorter timeout of the evaluation, which leave it undecided.
+
+</details>
+
 ## Results
 
 All constraints should also provide the expectations and results for the negated case, so that they are compatible

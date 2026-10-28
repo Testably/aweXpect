@@ -26,7 +26,7 @@ public sealed class EquivalencyExpectationBuilderTests
 		EquivalencyExpectationBuilder<int> sut = new();
 
 		async Task Act() => await sut.IsMet(
-			new ExpectationNode(), null!, new TimeSystemMock(), null, CancellationToken.None);
+			new ExpectationNode(), null!, new TimeProviderMock(), null, CancellationToken.None);
 
 		await That(Act).Throws<NotSupportedException>()
 			.WithMessage("Use IsMetBy for EquivalencyExpectationBuilder.");

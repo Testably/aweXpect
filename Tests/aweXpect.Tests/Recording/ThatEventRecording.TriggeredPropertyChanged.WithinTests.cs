@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 
@@ -33,7 +32,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).TriggeredPropertyChanged()
 						.Within(10.Milliseconds())
 						.AtLeast(3.Times())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

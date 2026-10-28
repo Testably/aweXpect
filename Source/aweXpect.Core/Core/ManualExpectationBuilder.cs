@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 
 namespace aweXpect.Core;
@@ -197,7 +196,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	/// <inheritdoc />
 	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 		=> throw Tracing.WriteException(

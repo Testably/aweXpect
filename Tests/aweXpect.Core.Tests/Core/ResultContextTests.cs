@@ -1,6 +1,5 @@
 using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
@@ -85,7 +84,7 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackNeverCompletes_InACombination_ShouldLeaveOutTheContext()
 		{
-			VirtualTimeSystem timeSystem = new();
+			VirtualTimeProvider timeProvider = new();
 			Task evaluation = Evaluate();
 
 			await That(await IsCompleted(evaluation)).IsTrue()
@@ -105,10 +104,10 @@ public sealed class ResultContextTests
 					That(1).ShowsContexts((contexts, _, _)
 							=> contexts.Add(new ResultContext.AsyncCallback("Value", _ =>
 							{
-								timeSystem.Advance(10.Seconds());
+								timeProvider.Advance(10.Seconds());
 								return PendingTask.Of<string?>();
 							})))
-						.WithTimeout(5.Seconds()).WithTimeSystem(timeSystem),
+						.WithTimeout(5.Seconds()).WithTimeProvider(timeProvider),
 					That(2).ShowsContexts((_, _, _) => { }));
 		}
 
@@ -146,7 +145,7 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackNeverCompletes_WithTimeout_ShouldLeaveOutTheContext()
 		{
-			VirtualTimeSystem timeSystem = new();
+			VirtualTimeProvider timeProvider = new();
 			Task evaluation = Evaluate();
 
 			await That(await IsCompleted(evaluation)).IsTrue()
@@ -166,11 +165,11 @@ public sealed class ResultContextTests
 				{
 					contexts.Add(new ResultContext.AsyncCallback("Value", _ =>
 					{
-						timeSystem.Advance(10.Seconds());
+						timeProvider.Advance(10.Seconds());
 						return PendingTask.Of<string?>();
 					}));
 					contexts.Add(new ResultContext.AsyncCallback("Other", _ => Task.FromResult<string?>("completed"), 1));
-				}).WithTimeout(5.Seconds()).WithTimeSystem(timeSystem);
+				}).WithTimeout(5.Seconds()).WithTimeProvider(timeProvider);
 		}
 
 		[Test]
@@ -249,18 +248,18 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackThrowsOnCancellation_AfterTheTimeout_ShouldStillReportTheFailure()
 		{
-			VirtualTimeSystem timeSystem = new();
+			VirtualTimeProvider timeProvider = new();
 
 			async Task Act()
 				=> await That(1).ShowsContexts((contexts, _, _)
 						=> contexts.Add(new ResultContext.AsyncCallback("Value", async token =>
 						{
-							timeSystem.Advance(10.Seconds());
+							timeProvider.Advance(10.Seconds());
 							await Task.Yield();
 							token.ThrowIfCancellationRequested();
 							return "after the timeout";
 						})))
-					.WithTimeout(5.Seconds()).WithTimeSystem(timeSystem);
+					.WithTimeout(5.Seconds()).WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

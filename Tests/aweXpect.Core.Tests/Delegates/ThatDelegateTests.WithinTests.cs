@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Delegates;
 
@@ -31,16 +31,16 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 		{
-			VirtualTimeSystem timeSystem = new();
+			VirtualTimeProvider timeProvider = new();
 			CancellationToken? delegateToken = null;
 			Func<CancellationToken, Task> @delegate = token =>
 			{
 				delegateToken = token;
-				return timeSystem.Delay(30.Seconds(), token);
+				return timeProvider.CreateDelay(30.Seconds(), token);
 			};
 
 			async Task Act()
-				=> await That(@delegate).Throws<MyException>().Within(50.Milliseconds()).WithTimeSystem(timeSystem);
+				=> await That(@delegate).Throws<MyException>().Within(50.Milliseconds()).WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -50,7 +50,7 @@ public sealed partial class ThatDelegateTests
 				             """).AsWildcard();
 
 			await That(delegateToken?.IsCancellationRequested).IsTrue();
-			await That(timeSystem.Now).IsEqualTo(50.Milliseconds())
+			await That(timeProvider.Now).IsEqualTo(50.Milliseconds())
 				.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 		}
 

@@ -12,7 +12,7 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<NoWarn>701;1702;CA1845;S2699;aweXpect5001</NoWarn>
+		<NoWarn>701;1702;CA1845;S2699</NoWarn>
 		<WarningsAsErrors>$(WarningsAsErrors);CS8620</WarningsAsErrors>
 	</PropertyGroup>
 

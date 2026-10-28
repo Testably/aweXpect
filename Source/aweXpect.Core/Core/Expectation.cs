@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core;
 
@@ -123,10 +121,10 @@ public abstract class Expectation
 		List<Func<CompletedEvaluation, CancellationToken, ValueTask>> ran);
 
 	/// <summary>
-	///     Lets the evaluations of the expectation run on the <paramref name="timeSystem" />.
+	///     Lets the evaluations of the expectation run on the <paramref name="timeProvider" />.
 	/// </summary>
-	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
-	internal abstract void UseTimeSystem(ITimeSystem timeSystem);
+	/// <exception cref="InvalidOperationException">A time provider is already set.</exception>
+	internal abstract void UseTimeProvider(TimeProvider timeProvider);
 
 	/// <summary>
 	///     Adds the cancellation of each expectation for what is still awaited after its evaluation, see
@@ -384,7 +382,7 @@ public abstract class Expectation
 			{
 				return limit is null && cancellationToken is null
 					? default
-					: new MemberLimits(limit, RealTimeSystem.Instance, cancellationToken);
+					: new MemberLimits(limit, TimeProvider.System, cancellationToken);
 			}
 
 			options.ReleaseLinkedCancellation();
@@ -393,7 +391,7 @@ public abstract class Expectation
 			options.LinkedCancellation = linked;
 			TimeSpan? timeout = TimerHelpers.Tighter(limit, options.Timeout);
 			return new MemberLimits(timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
-				options.TimeSystem ?? RealTimeSystem.Instance, token);
+				options.TimeProvider ?? TimeProvider.System, token);
 		}
 
 		private int AddResult(int position, Result result, (Expectation Expectation, Result Result)[] results,
@@ -504,16 +502,16 @@ public abstract class Expectation
 		/// <inheritdoc />
 		/// <remarks>
 		///     A combination has no evaluation of its own, so every combined expectation runs on the
-		///     <paramref name="timeSystem" />.
+		///     <paramref name="timeProvider" />.
 		/// </remarks>
-		internal override void UseTimeSystem(ITimeSystem timeSystem)
+		internal override void UseTimeProvider(TimeProvider timeProvider)
 		{
 			foreach (Expectation expectation in _expectations)
 			{
-				expectation.UseTimeSystem(timeSystem);
+				expectation.UseTimeProvider(timeProvider);
 			}
 
-			GetOptions().TimeSystem = timeSystem;
+			GetOptions().TimeProvider = timeProvider;
 		}
 
 		/// <inheritdoc />
@@ -755,7 +753,7 @@ public abstract class Expectation
 
 			public List<IBecauseReason>? Reasons { get; set; }
 			public TimeSpan? Timeout { get; set; }
-			public ITimeSystem? TimeSystem { get; set; }
+			public TimeProvider? TimeProvider { get; set; }
 
 			public void ReleaseLinkedCancellation()
 			{
@@ -771,16 +769,16 @@ public abstract class Expectation
 		{
 			private readonly long _start;
 			private readonly TimeSpan? _timeout;
-			private readonly ITimeSystem? _timeSystem;
+			private readonly TimeProvider? _timeProvider;
 
-			public MemberLimits(TimeSpan? timeout, ITimeSystem timeSystem, CancellationToken? cancellationToken)
+			public MemberLimits(TimeSpan? timeout, TimeProvider timeProvider, CancellationToken? cancellationToken)
 			{
 				_timeout = timeout;
 				CancellationToken = cancellationToken;
 				if (timeout is not null)
 				{
-					_timeSystem = timeSystem;
-					_start = timeSystem.GetTimestamp();
+					_timeProvider = timeProvider;
+					_start = timeProvider.GetTimestamp();
 				}
 			}
 
@@ -796,7 +794,7 @@ public abstract class Expectation
 					return null;
 				}
 
-				TimeSpan remaining = timeout - _timeSystem!.GetElapsedTime(_start);
+				TimeSpan remaining = timeout - _timeProvider!.GetElapsedTime(_start);
 				return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
 			}
 		}

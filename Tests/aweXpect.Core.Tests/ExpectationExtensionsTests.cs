@@ -1,17 +1,16 @@
 ﻿using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 using aweXpect.Signaling;
 
-namespace aweXpect.Core.Tests.Core.Internal;
+namespace aweXpect.Core.Tests;
 
-public sealed class TimeSystemExtensionsTests
+public sealed class ExpectationExtensionsTests
 {
 	[Test]
-	public async Task WithTimeSystem_OnACombination_ShouldRunEveryCombinedExpectationOnTheTimeSystem()
+	public async Task WithTimeProvider_OnACombination_ShouldRunEveryCombinedExpectationOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler1 = new();
 		Signaler signaler2 = new();
 
@@ -19,33 +18,33 @@ public sealed class TimeSystemExtensionsTests
 			=> await ThatAll(
 					That(signaler1).Signaled().Within(10.Seconds()),
 					That(signaler2).Signaled().Within(20.Seconds()))
-				.WithTimeSystem(timeSystem);
+				.WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*never recorded within 0:10*never recorded within 0:20*").AsWildcard();
-		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.Now).IsEqualTo(30.Seconds())
 			.Because("both combined expectations waited one after the other on the virtual clock");
 	}
 
 	[Test]
-	public async Task WithTimeSystem_ShouldReturnTheSameExpectation()
+	public async Task WithTimeProvider_ShouldReturnTheSameExpectation()
 	{
 		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue();
 
-		AndOrResult<bool, IThat<bool>> result = sut.WithTimeSystem(new VirtualTimeSystem());
+		AndOrResult<bool, IThat<bool>> result = sut.WithTimeProvider(new VirtualTimeProvider());
 
 		await That(result).IsSameAs(sut);
 		await result;
 	}
 
 	[Test]
-	public async Task WithTimeSystem_ShouldRunTheEvaluationOnTheTimeSystem()
+	public async Task WithTimeProvider_ShouldRunTheEvaluationOnTheTimeProvider()
 	{
-		VirtualTimeSystem timeSystem = new();
+		VirtualTimeProvider timeProvider = new();
 		Signaler signaler = new();
 
 		async Task Act()
-			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeSystem(timeSystem);
+			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeProvider(timeProvider);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -53,16 +52,16 @@ public sealed class TimeSystemExtensionsTests
 			             has recorded the callback at least once within 0:30,
 			             but it was never recorded within 0:30
 			             """);
-		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.Now).IsEqualTo(30.Seconds())
 			.Because("the wait elapsed on the virtual clock instead of in real time");
 	}
 
 	[Test]
-	public async Task WithTimeSystem_WhenExpectationIsNull_ShouldThrowArgumentNullException()
+	public async Task WithTimeProvider_WhenExpectationIsNull_ShouldThrowArgumentNullException()
 	{
 		ExpectationResult? sut = null;
 
-		void Act() => sut!.WithTimeSystem(new VirtualTimeSystem());
+		void Act() => sut!.WithTimeProvider(new VirtualTimeProvider());
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("expectation").And
@@ -70,25 +69,25 @@ public sealed class TimeSystemExtensionsTests
 	}
 
 	[Test]
-	public async Task WithTimeSystem_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	public async Task WithTimeProvider_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
-		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue().WithTimeSystem(new VirtualTimeSystem());
+		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue().WithTimeProvider(new VirtualTimeProvider());
 
-		void Act() => sut.WithTimeSystem(new VirtualTimeSystem());
+		void Act() => sut.WithTimeProvider(new VirtualTimeProvider());
 
 		await That(Act).Throws<InvalidOperationException>()
-			.WithMessage("WithTimeSystem cannot be specified more than once.");
+			.WithMessage("WithTimeProvider cannot be specified more than once.");
 	}
 
 	[Test]
-	public async Task WithTimeSystem_WhenTimeSystemIsNull_ShouldThrowArgumentNullException()
+	public async Task WithTimeProvider_WhenTimeProviderIsNull_ShouldThrowArgumentNullException()
 	{
 		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue();
 
-		void Act() => sut.WithTimeSystem(null!);
+		void Act() => sut.WithTimeProvider(null!);
 
 		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("timeSystem").And
-			.WithMessage("The 'timeSystem' cannot be null.").AsPrefix();
+			.WithParamName("timeProvider").And
+			.WithMessage("The 'timeProvider' cannot be null.").AsPrefix();
 	}
 }

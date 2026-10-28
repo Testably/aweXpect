@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Customization;
@@ -58,17 +57,17 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// <inheritdoc />
 	internal override async ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		ConstraintResult result = await IsMetEventually(rootNode, context, timeSystem, timeout, cancellationToken);
+		ConstraintResult result = await IsMetEventually(rootNode, context, timeProvider, timeout, cancellationToken);
 		return result.PrependExpectationText(sb => sb.Append("eventually "));
 	}
 
 	private async Task<ConstraintResult> IsMetEventually(Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
@@ -76,7 +75,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		{
 			// Nothing is evaluated, but the cancellation still limits what is awaited for the failure message.
 			EvaluationCancellation missingSubjectCancellation =
-				EvaluationCancellation.Create(timeout, cancellationToken, timeSystem);
+				EvaluationCancellation.Create(timeout, cancellationToken, timeProvider);
 			using EvaluationCancellation.ReleaseScope _ = missingSubjectCancellation.ReleaseAtTheEnd();
 			context.Cancellation = missingSubjectCancellation;
 			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
@@ -90,12 +89,12 @@ internal class EventuallyExpectationBuilder<TValue>(
 		// outer timeout bounds.
 		EvaluationCancellation cancellation = new(
 			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken, timeout,
-			timeSystem);
+			timeProvider);
 		context.Cancellation = cancellation;
 		try
 		{
 			ConstraintResult result =
-				await IsMetRepeatedly(subject, rootNode, context, timeSystem, retryTimeout, cancellation);
+				await IsMetRepeatedly(subject, rootNode, context, timeProvider, retryTimeout, cancellation);
 			if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } cancellationTimeout &&
 			    cancellation.Reason == CancellationReason.Timeout)
 			{
@@ -127,7 +126,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	private async Task<ConstraintResult> IsMetRepeatedly(Func<CancellationToken, Task<TValue>> subject,
 		Node rootNode,
 		EvaluationContext.EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan retryTimeout,
 		EvaluationCancellation cancellation)
 	{
@@ -135,7 +134,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		EvaluationContext.EvaluationContext currentContext = context;
 		CancellationToken cancellationToken = cancellation.Token;
 		using Polling polling =
-			Polling.Start(timeSystem, timeSystem.GetTimestamp(), retryTimeout, interval, cancellation);
+			Polling.Start(timeProvider, timeProvider.GetTimestamp(), retryTimeout, interval, cancellation);
 
 		bool isLastAttempt = false;
 		bool wasChecked = false;
@@ -312,7 +311,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		EvaluationCancellation cancellation = context.Cancellation;
 		EvaluationCancellation? limitCancellation = cancellation.Timeout is null && limit is not null
-			? new EvaluationCancellation(limit, cancellation.Token, null, context.TimeSystem)
+			? new EvaluationCancellation(limit, cancellation.Token, null, context.TimeProvider)
 			: null;
 		context.Cancellation = limitCancellation ?? cancellation;
 		CancellationToken cancellationToken = context.Cancellation.Token;

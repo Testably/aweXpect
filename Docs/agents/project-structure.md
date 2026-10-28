@@ -31,9 +31,8 @@ Two NuGet packages are built from `Source/`; the analyzer and generator projects
 | `aweXpect.Analyzers.CodeFixers` | in `aweXpect` | Code fixes for the analyzers |
 
 `aweXpect` depends on `aweXpect.Core`. Extension packages reference only `aweXpect.Core`, so Core aims to stay more
-stable than `aweXpect`; the namespace `aweXpect.Core.Internal` may change in any version, so `WithTimeSystem` and
-`ITimeSystem` are `[Experimental("aweXpect5001")]` and the compiler reports an error when another assembly uses them.
-Core itself uses `ITimeSystem` throughout, so `aweXpect5001` is in the `NoWarn` of `aweXpect.Core.csproj` only.
+stable than `aweXpect`. The clock of an evaluation is a `System.TimeProvider` (`WithTimeProvider`), which Core
+references from `Microsoft.Bcl.TimeProvider` on `netstandard2.0`.
 
 The extension packages are built from `Source/` as well and reference `aweXpect.Core` as a project. Each sets its own
 description, project URL and README (`PackageReadmeSourceFile`, the index page of its docs) in its project file; the
@@ -65,8 +64,8 @@ projects in this repository that need the generator reference `aweXpect.Core.Gen
 - `Source/aweXpect.Core/Core`: the evaluation engine. `ExpectationBuilder` collects constraints into a tree of
   `Nodes`; `Constraints` holds `ConstraintResult`; `Sources` wraps values and delegates; `Adapters` maps failures to
   the test framework; `Extending` holds the attributes for generated expectations and `ReflectionFallback.cs`, which
-  guards member reflection; `Metadata` holds the registry and attributes for generated type metadata; `Internal` holds unstable
-  API such as `WithTimeSystem`; `Polyfills` holds polyfills for the older targets (some are linked into `aweXpect`).
+  guards member reflection; `Metadata` holds the registry and attributes for generated type metadata;
+  `Polyfills` holds polyfills for the older targets (some are linked into `aweXpect`).
 - `Source/aweXpect.Core/{Formatting,Options,Results,Customization,Equivalency,Recording,Signaling,Delegates,Collections}`:
   value formatting, comparison options, result types, the customization API and the corresponding primitives.
 

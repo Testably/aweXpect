@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 
 namespace aweXpect.Equivalency;
@@ -239,10 +238,10 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 
 	internal abstract bool IsOfExpectedType(object value);
 
-	/// <inheritdoc cref="ExpectationBuilder.IsMet(Node, EvaluationContext, ITimeSystem, TimeSpan?, CancellationToken)" />
+	/// <inheritdoc cref="ExpectationBuilder.IsMet(Node, EvaluationContext, TimeProvider, TimeSpan?, CancellationToken)" />
 	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext context,
-		ITimeSystem timeSystem,
+		TimeProvider timeProvider,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 		=> throw Tracing.WriteException(

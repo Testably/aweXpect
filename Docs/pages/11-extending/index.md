@@ -192,9 +192,7 @@ publish as a package.
 ### Referencing aweXpect.Core
 
 Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
-need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
-`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships. The
-compiler reminds you of this with the diagnostic `aweXpect5001`.
+need, so that the extension works together with as many versions of `aweXpect` as possible.
 
 By default, a package marks the analyzers of its dependencies as private (`exclude="Analyzers"` in its `.nuspec`).
 Reference `aweXpect.Core` with `PrivateAssets="contentfiles;build"`, so that its source generators also run in the

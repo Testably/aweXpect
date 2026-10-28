@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
@@ -26,7 +25,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () =>
 				{
 					time.Advance(50.Milliseconds());
@@ -35,7 +34,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
@@ -98,7 +97,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateWithValueThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Func<int> @delegate = () =>
 				{
 					time.Advance(50.Milliseconds());
@@ -107,7 +106,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
@@ -134,7 +133,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenExceptionIsAllowed_ShouldNotForwardItAsInnerException()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Exception exception = new MyException();
 				Action @delegate = () =>
 				{
@@ -144,7 +143,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).Throws<FailException>()
 					.Whose(e => e.InnerException, i => i.IsNull())
@@ -211,7 +210,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenToleranceIsGivenAndDelegateThrowsWithinIt_ShouldSucceed()
 			{
-				VirtualTimeSystem time = new();
+				VirtualTimeProvider time = new();
 				Action @delegate = () =>
 				{
 					time.Advance(50.Milliseconds());
@@ -220,7 +219,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(50.Milliseconds()).AllowingExceptions().Within(5.Seconds())
-						.WithTimeSystem(time);
+						.WithTimeProvider(time);
 
 				await That(Act).DoesNotThrow()
 					.Because("the option must also be available on the tolerance overload");

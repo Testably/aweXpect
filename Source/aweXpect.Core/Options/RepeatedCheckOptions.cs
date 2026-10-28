@@ -5,9 +5,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 using aweXpect.Results;
 
@@ -173,7 +171,7 @@ public readonly struct RepeatedCheckOptions
 			return await check(context) ? Outcome.Success : Outcome.Failure;
 		}
 
-		long startTimestamp = GetTimeSystem(context).GetTimestamp();
+		long startTimestamp = GetTimeProvider(context).GetTimestamp();
 		(bool isMet, UserCodeException? exception) = await Check(check, context);
 		if (isMet)
 		{
@@ -181,7 +179,7 @@ public readonly struct RepeatedCheckOptions
 		}
 
 		using Polling polling =
-			Polling.Start(GetTimeSystem(context), startTimestamp, Timeout, Interval, context.Cancellation);
+			Polling.Start(GetTimeProvider(context), startTimestamp, Timeout, Interval, context.Cancellation);
 		EvaluationContext? checkContext = null;
 		while (true)
 		{
@@ -212,12 +210,12 @@ public readonly struct RepeatedCheckOptions
 	}
 
 	/// <summary>
-	///     The time system of the evaluation, or the real one for a <paramref name="context" /> of another implementation.
+	///     The clock of the evaluation, or the real one for a <paramref name="context" /> of another implementation.
 	/// </summary>
-	private static ITimeSystem GetTimeSystem(IEvaluationContext context)
+	private static TimeProvider GetTimeProvider(IEvaluationContext context)
 		=> context is EvaluationContext evaluationContext
-			? evaluationContext.TimeSystem
-			: RealTimeSystem.Instance;
+			? evaluationContext.TimeProvider
+			: TimeProvider.System;
 
 	/// <remarks>
 	///     A cancellation of the evaluation still aborts it, like everywhere else.

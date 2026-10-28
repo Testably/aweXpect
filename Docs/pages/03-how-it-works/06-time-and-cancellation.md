@@ -315,23 +315,36 @@ signal too many is received. A canceled `CancellationToken` makes the expectatio
 
 ### On a virtual clock
 
-`WithTimeSystem(timeSystem)` lets an expectation wait, time out and measure on a virtual clock instead of in real
-time, so that a test of a long wait does not take long. Pass an `ITimeSystem` from `aweXpect.Core.Internal`, e.g. an
-adapter to the virtual clock of a mocking library:
+`WithTimeProvider(timeProvider)` lets an expectation wait, time out and measure on the clock of a `TimeProvider`
+instead of in real time, so that a test of a long wait does not take long. Pass any `TimeProvider`, e.g. the
+`FakeTimeProvider` from the `Microsoft.Extensions.TimeProvider.Testing` package, which the code under test can share:
 
 ```csharp no-compile
 using aweXpect.Chronology; // from the aweXpect.Chronology package
-using aweXpect.Core.Internal; // experimental, see aweXpect5001
+using Microsoft.Extensions.Time.Testing; // from the Microsoft.Extensions.TimeProvider.Testing package
 
-ITimeSystem timeSystem = new MyVirtualTimeSystem();
+FakeTimeProvider timeProvider = new();
+Track track = new(timeProvider); // plays on the same clock
 
-await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds())
-  .WithTimeSystem(timeSystem);
+async Task ExpectIsPlayed()
+  => await Expect.That(track).Satisfies(x => x.IsPlayed).Within(2.Seconds())
+    .WithTimeProvider(timeProvider);
+
+Task expectation = ExpectIsPlayed();
+timeProvider.Advance(2.Seconds());
+await expectation;
 ```
 
 It applies to the waits, timeouts and measured durations of the expectation, also to all expectations combined in
-`Expect.ThatAll` or `Expect.ThatAny`, but not to code that waits outside of it, e.g. in the subject. The API is
-[experimental](../08-analyzers.md#experimental-apis) and may change in any version.
+`Expect.ThatAll` or `Expect.ThatAny`, but not to code that waits outside of it, e.g. in the subject. Without
+`WithTimeProvider(…)`, an expectation runs on `TimeProvider.System`, the real clock.
+
+:::warning
+The waits and timeouts of the expectation are timers of the `TimeProvider`. A `FakeTimeProvider` only fires its timers
+when the test advances it, so an expectation that waits only progresses when the test advances the clock: start the
+expectation without awaiting it, advance the clock, and then await it. Awaiting it first waits forever, unless a
+timeout in real time, e.g. of the test framework, ends the test.
+:::
 
 ## Execution time
 

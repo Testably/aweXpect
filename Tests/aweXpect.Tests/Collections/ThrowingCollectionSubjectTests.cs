@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
@@ -735,7 +734,7 @@ public sealed class ThrowingCollectionSubject
 			async Task Act()
 				=> await That(subject).Eventually().Within(50.Milliseconds()).CheckEvery(50.Milliseconds())
 					.Contains(3)
-					.WithTimeSystem(new VirtualTimeSystem());
+					.WithTimeProvider(new VirtualTimeProvider());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

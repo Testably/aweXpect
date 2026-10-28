@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Results;
@@ -23,17 +22,17 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
 		TimeSpan timeout = 2.Seconds();
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 
 		ChangingClass sut1 = new(time);
 		ChangingClass sut2 = new(time);
 
 		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
-		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeSystem(time);
+		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeProvider(time);
 		await That(sut1.Interval).IsEqualTo(100.Milliseconds());
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(timeout))
 		{
-			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeSystem(time);
+			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeProvider(time);
 			await That(sut2.Interval).IsEqualTo(timeout);
 		}
 	}
@@ -57,7 +56,7 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
 	{
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(LowTimeout))
 		{
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
@@ -351,14 +350,14 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromCancellationToken_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
 		{
 			async Task Act()
 				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
-					.DoesNotThrow().WithTimeSystem(time);
+					.DoesNotThrow().WithTimeProvider(time);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -394,14 +393,14 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			async Task Act()
 				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
-					.Throws<TaskCanceledException>().WithTimeSystem(time);
+					.Throws<TaskCanceledException>().WithTimeProvider(time);
 
 			exception = await Catch.ExceptionAsync(Act);
 		}
@@ -443,7 +442,7 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
@@ -451,7 +450,7 @@ public sealed class CustomizeSettingsTests
 			async Task Act()
 				=> await That(cancellationToken => time.Delay(30.Seconds(), cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithTimeout(20.Seconds()).WithTimeSystem(time);
+					.WithTimeout(20.Seconds()).WithTimeProvider(time);
 
 			exception = await Catch.ExceptionAsync(Act);
 		}
@@ -468,7 +467,7 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_None_ShouldBeApplied()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
@@ -477,7 +476,7 @@ public sealed class CustomizeSettingsTests
 				       .Set(TestCancellation.None()))
 			{
 				await That(cancellationToken => time.Delay(LowTimeout, cancellationToken))
-					.DoesNotThrow().WithTimeSystem(time);
+					.DoesNotThrow().WithTimeProvider(time);
 			}
 		}
 
@@ -488,10 +487,10 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_PerDefault_ShouldNotCancel()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 
 		await That(cancellationToken => time.Delay(LowTimeout, cancellationToken)).DoesNotThrow()
-			.WithTimeSystem(time);
+			.WithTimeProvider(time);
 
 		await That(time.Now).IsEqualTo(LowTimeout)
 			.Because("without a test cancellation the subject runs to its end");
@@ -501,7 +500,7 @@ public sealed class CustomizeSettingsTests
 	public async Task WithCancellation_OverwritesTheCancellationToken()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		using CancellationTokenSource cts = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
@@ -510,7 +509,7 @@ public sealed class CustomizeSettingsTests
 			async Task Act()
 				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithCancellation(cancelledToken).WithTimeSystem(time);
+					.WithCancellation(cancelledToken).WithTimeProvider(time);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -528,14 +527,14 @@ public sealed class CustomizeSettingsTests
 	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(20.Seconds())))
 		{
 			async Task Act()
 				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithTimeout(20.Milliseconds()).WithTimeSystem(time);
+					.WithTimeout(20.Milliseconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -549,7 +548,7 @@ public sealed class CustomizeSettingsTests
 			.Because("the shorter timeout of WithTimeout ends the wait, not the test cancellation");
 	}
 
-	private sealed class ChangingClass(VirtualTimeSystem time)
+	private sealed class ChangingClass(VirtualTimeProvider time)
 	{
 		private long? _startTimestamp;
 

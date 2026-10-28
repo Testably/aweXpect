@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;
@@ -22,15 +21,15 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenAsyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
-			VirtualTimeSystem timeSystem = new();
+			VirtualTimeProvider timeProvider = new();
 			Func<Task> @delegate = () =>
 			{
-				timeSystem.Advance(100.Milliseconds());
+				timeProvider.Advance(100.Milliseconds());
 				return PendingTask.Of<int>();
 			};
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds()).WithTimeSystem(timeSystem);
+				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds()).WithTimeProvider(timeProvider);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

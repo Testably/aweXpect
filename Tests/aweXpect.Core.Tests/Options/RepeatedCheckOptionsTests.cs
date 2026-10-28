@@ -8,7 +8,6 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -70,7 +69,7 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenACheckTakesLongerThanTheTimeout_ShouldNotCheckAgain()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		int checks = 0;
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
 
@@ -80,7 +79,7 @@ public sealed class RepeatedCheckOptionsTests
 					checks++;
 					time.Advance(600.Milliseconds());
 				})
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -96,13 +95,13 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachCheck()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		int checks = 0;
 		DisposeTrackingEnumerable subject = new(null, 1, 2, 3);
 
 		async Task Act()
 			=> await HasMatchingItem(That<IEnumerable<int>>(subject), _ => false, () => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -118,7 +117,7 @@ public sealed class RepeatedCheckOptionsTests
 	}
 
 	[Test]
-	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeSystem()
+	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeProvider()
 	{
 		RepeatedCheckOptions sut = new();
 		sut = sut.Within(30.Seconds());
@@ -174,13 +173,13 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenTheIntervalExceedsTheTimeout_ShouldCheckAtTheTimeoutAndNotAfterIt()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		List<TimeSpan> checks = [];
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
 
 		async Task Act()
 			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
-				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).WithTimeSystem(time);
+				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -245,7 +244,7 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenUserCodeAlwaysThrows_ShouldKeepCheckingAndFailWithTheLastException()
 	{
-		VirtualTimeSystem time = new();
+		VirtualTimeProvider time = new();
 		int checks = 0;
 		MyException? lastThrown = null;
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
@@ -257,7 +256,7 @@ public sealed class RepeatedCheckOptionsTests
 						throw lastThrown;
 					},
 					() => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(time);
 
 		Exception? exception = await Catch.ExceptionAsync(Act);
 

@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Helpers;
 
@@ -43,8 +42,8 @@ internal enum PollStep
 internal sealed class Polling : IDisposable
 {
 	/// <summary>
-	///     The largest wait that <see cref="Task.Delay(TimeSpan, CancellationToken)" />, with which the real time system
-	///     waits, accepts on every target framework.
+	///     The largest wait that <see cref="Task.Delay(TimeSpan, CancellationToken)" />, with which
+	///     <see cref="TimeProvider.System" /> waits, accepts on every target framework.
 	/// </summary>
 	private static readonly TimeSpan MaximumWait = TimeSpan.FromMilliseconds(int.MaxValue);
 
@@ -54,14 +53,14 @@ internal sealed class Polling : IDisposable
 	private readonly TimeSpan _interval;
 	private readonly CancellationTokenRegistration _registration;
 	private readonly long _startTimestamp;
-	private readonly ITimeSystem _timeSystem;
+	private readonly TimeProvider _timeProvider;
 	private TimeSpan? _canceledAt;
 	private bool _isLastCheck;
 
-	private Polling(ITimeSystem timeSystem, long startTimestamp, TimeSpan budget, TimeSpan interval,
+	private Polling(TimeProvider timeProvider, long startTimestamp, TimeSpan budget, TimeSpan interval,
 		EvaluationCancellation cancellation)
 	{
-		_timeSystem = timeSystem;
+		_timeProvider = timeProvider;
 		_startTimestamp = startTimestamp;
 		_budget = budget;
 		_interval = interval;
@@ -92,9 +91,10 @@ internal sealed class Polling : IDisposable
 	/// <summary>
 	///     Starts polling with the <paramref name="budget" />, measured from the <paramref name="startTimestamp" />.
 	/// </summary>
-	/// <param name="timeSystem">The time system that measures the time and waits between the checks.</param>
+	/// <param name="timeProvider">The time provider that measures the time and waits between the checks.</param>
 	/// <param name="startTimestamp">
-	///     The <see cref="ITimeSystem.GetTimestamp()" /> of the <paramref name="timeSystem" /> before the first check.
+	///     The <see cref="TimeProvider.GetTimestamp()" /> of the <paramref name="timeProvider" /> before the first
+	///     check.
 	/// </param>
 	/// <param name="budget">
 	///     The time the checks may take; <see cref="Timeout.InfiniteTimeSpan" /> or <see cref="TimeSpan.MaxValue" /> is
@@ -102,9 +102,9 @@ internal sealed class Polling : IDisposable
 	/// </param>
 	/// <param name="interval">The time between two checks; a non-positive interval checks again without waiting.</param>
 	/// <param name="cancellation">The cancellation of the evaluation.</param>
-	public static Polling Start(ITimeSystem timeSystem, long startTimestamp, TimeSpan budget, TimeSpan interval,
+	public static Polling Start(TimeProvider timeProvider, long startTimestamp, TimeSpan budget, TimeSpan interval,
 		EvaluationCancellation cancellation)
-		=> new(timeSystem, startTimestamp, budget, interval, cancellation);
+		=> new(timeProvider, startTimestamp, budget, interval, cancellation);
 
 	/// <summary>
 	///     Waits for the next check.
@@ -156,7 +156,8 @@ internal sealed class Polling : IDisposable
 	/// </summary>
 	/// <remarks>
 	///     A wait of zero still yields, so that checking without waiting does not block the thread. The wait is not
-	///     canceled by the token itself: the <see cref="ITimeSystem.Delay(TimeSpan, CancellationToken)" /> would register
+	///     canceled by the token itself: the
+	///     <see cref="TimeProviderExtensions.CreateDelay(TimeProvider, TimeSpan, CancellationToken)" /> would register
 	///     its own callback, and the callbacks run in reverse order, so the wait could continue before the time of the
 	///     cancellation was recorded.
 	/// </remarks>
@@ -169,7 +170,7 @@ internal sealed class Polling : IDisposable
 		}
 
 		using CancellationTokenSource waitCts = new();
-		Task delay = _timeSystem.Delay(wait, waitCts.Token);
+		Task delay = _timeProvider.CreateDelay(wait, waitCts.Token);
 		if (await Task.WhenAny(_canceled.Task, delay) != _canceled.Task)
 		{
 			return false;
@@ -179,13 +180,13 @@ internal sealed class Polling : IDisposable
 		return true;
 	}
 
-	/// <inheritdoc cref="ITimeSystem.GetTimestamp()" />
-	public long GetTimestamp() => _timeSystem.GetTimestamp();
+	/// <inheritdoc cref="TimeProvider.GetTimestamp()" />
+	public long GetTimestamp() => _timeProvider.GetTimestamp();
 
-	/// <inheritdoc cref="ITimeSystem.GetElapsedTime(long)" />
-	public TimeSpan GetElapsedTime(long startTimestamp) => _timeSystem.GetElapsedTime(startTimestamp);
+	/// <inheritdoc cref="TimeProvider.GetElapsedTime(long)" />
+	public TimeSpan GetElapsedTime(long startTimestamp) => _timeProvider.GetElapsedTime(startTimestamp);
 
-	/// <inheritdoc cref="ITimeSystem.CancelAfter(CancellationTokenSource, TimeSpan)" />
+	/// <inheritdoc cref="TimeProviderExtensions.CancelAfter(TimeProvider, CancellationTokenSource, TimeSpan)" />
 	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
-		=> _timeSystem.CancelAfter(cancellationTokenSource, delay);
+		=> _timeProvider.CancelAfter(cancellationTokenSource, delay);
 }

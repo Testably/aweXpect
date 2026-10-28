@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 
@@ -25,7 +24,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow();
 				cts.Cancel();
@@ -63,7 +62,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
-						.WithTimeSystem(new VirtualTimeSystem());
+						.WithTimeProvider(new VirtualTimeProvider());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");

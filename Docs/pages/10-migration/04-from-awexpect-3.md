@@ -104,8 +104,8 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 - An option set to `false` is the same as not set, so `IgnoringIndentation(false).AsBlock()` no longer throws.
 - A match type that does not support several options already set names all of them, e.g.
   `IgnoringIndentation and IgnoringNewlineStyle cannot be combined with AsBlock.`
-- `WithCancellation(…)`, `WithTimeSystem(…)` and `Allocates(…)`, which apply to the whole chain of expectations, still
-  throw when they are specified more than once.
+- `WithCancellation(…)`, `WithTimeProvider(…)` and `Allocates(…)`, which apply to the whole chain of expectations,
+  still throw when they are specified more than once.
 
 ### Customization
 
@@ -114,10 +114,13 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 - The excluded assembly prefixes moved to `Customize.aweXpect.Settings().ExcludedAssemblyPrefixes`. A prefix ending
   with a dot, such as `MyCompany.`, now matches in Core as well.
 
-### Time system
+### Time provider
 
-`WithTimeSystem(…)` and the `ITimeSystem` it takes are marked experimental with the diagnostic `aweXpect5001`.
-Suppress it in test projects that use a virtual time system.
+`WithTimeSystem(…)` and `ITimeSystem` from `aweXpect.Core.Internal` are replaced by `WithTimeProvider(…)` in the
+namespace `aweXpect`, which takes a `System.TimeProvider`, e.g. the `FakeTimeProvider` of
+`Microsoft.Extensions.TimeProvider.Testing`. On .NET Framework, `TimeProvider` comes from the
+`Microsoft.Bcl.TimeProvider` package, a new dependency of `aweXpect.Core` for `netstandard2.0`. See
+[on a virtual clock](../03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock).
 
 ## New expectations
 

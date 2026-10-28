@@ -8,7 +8,6 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 
 namespace aweXpect.Results;
 
@@ -173,8 +172,8 @@ public class ExpectationResultWithoutValue<TSelf>(ExpectationBuilder expectation
 		=> ExpectationBuilder.RunCompletionCallbacks(outcome, ran);
 
 	/// <inheritdoc />
-	internal override void UseTimeSystem(ITimeSystem timeSystem)
-		=> ExpectationBuilder.UseTimeSystem(timeSystem);
+	internal override void UseTimeProvider(TimeProvider timeProvider)
+		=> ExpectationBuilder.UseTimeProvider(timeProvider);
 
 	/// <inheritdoc />
 	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
@@ -403,8 +402,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		=> ExpectationBuilder.RunCompletionCallbacks(outcome, ran);
 
 	/// <inheritdoc />
-	internal override void UseTimeSystem(ITimeSystem timeSystem)
-		=> ExpectationBuilder.UseTimeSystem(timeSystem);
+	internal override void UseTimeProvider(TimeProvider timeProvider)
+		=> ExpectationBuilder.UseTimeProvider(timeProvider);
 
 	/// <inheritdoc />
 	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)

@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.Internal;
 
 namespace aweXpect.Signaling;
 
@@ -63,9 +62,9 @@ internal sealed class SignalWait : IDisposable
 
 	/// <summary>
 	///     Waits without blocking a thread until the wait is completed, the <paramref name="timeout" /> expires on the
-	///     <paramref name="timeSystem" /> or the <paramref name="cancellationToken" /> is canceled.
+	///     <paramref name="timeProvider" /> or the <paramref name="cancellationToken" /> is canceled.
 	/// </summary>
-	public async Task WaitAsync(TimeSpan timeout, ITimeSystem timeSystem, CancellationToken cancellationToken)
+	public async Task WaitAsync(TimeSpan timeout, TimeProvider timeProvider, CancellationToken cancellationToken)
 	{
 		Task completion = _completion.Task;
 		if (completion.IsCompleted)
@@ -74,7 +73,7 @@ internal sealed class SignalWait : IDisposable
 		}
 
 		using CancellationTokenSource delayCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		Task delay = timeSystem.Delay(timeout.ToTimerTimeout(), delayCts.Token);
+		Task delay = timeProvider.CreateDelay(timeout.ToTimerTimeout(), delayCts.Token);
 		await Task.WhenAny(completion, delay);
 		// Releases the timer of the delay, which would otherwise run until the timeout.
 		delayCts.Cancel();

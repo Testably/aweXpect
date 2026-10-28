@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Options;
@@ -127,7 +126,7 @@ public sealed class RepeatedCheckExtensionTests
 		{
 			async Task Act()
 				=> await That(probe).ReturnsPositive().Within(30.Seconds()).WithTimeout(60.Seconds())
-					.WithTimeSystem(new VirtualTimeSystem());
+					.WithTimeProvider(new VirtualTimeProvider());
 
 			exception = await Catch.ExceptionAsync(Act);
 		}
