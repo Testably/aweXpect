@@ -314,21 +314,15 @@ a continuation sets an option. Such a result implements `ICopyOnOption<StringEqu
 `WithOptions(options)`, which returns a new result with them in a new holder, while the result they were called on stays
 unchanged. The quantifiers, e.g. `Once()`, and the index options `AtIndex(…)` and
 `AtIndexFromEnd(…)` do the same for a result that implements `ICopyOnOption<Quantifier, TSelf>` or
-`ICopyOnOption<CollectionIndexOptions, TSelf>`. A string option of your own, e.g. a preset of several options, does the same, so
-that it keeps a stored result unchanged as well:
+`ICopyOnOption<CollectionIndexOptions, TSelf>`. A string option of your own, e.g. a preset of several options, passes
+the new options to `OptionsProvider.WithOptions(result, options)`, so that it keeps a stored result unchanged as well:
+it returns the copy of a result that implements `ICopyOnOption<…>` and sets the options in the holder of any other
+result.
 
 ```csharp
 public static TSelf IgnoringCaseAndIndentation<TSelf>(this TSelf result)
     where TSelf : IOptionsProvider<StringEqualityOptions>
-{
-    if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-    {
-        return copyOnOption.WithOptions(result.Options.Value.IgnoringCase().IgnoringIndentation());
-    }
-
-    result.Options.IgnoringCase().IgnoringIndentation();
-    return result;
-}
+    => OptionsProvider.WithOptions(result, result.Options.Value.IgnoringCase().IgnoringIndentation());
 ```
 
 <details>

@@ -9,7 +9,8 @@ namespace aweXpect.Core;
 ///     <see cref="OptionsHolder{TOptions}" /> of its <see cref="IOptionsProvider{TOptions}" />. A result that can be stored
 ///     and continued more than once, e.g. a filter in
 ///     <c>aweXpect.Reflection</c>, implements this interface, so that a continuation never changes the result it was
-///     called on.<br />
+///     called on. An option method applies its options with <see cref="OptionsProvider.WithOptions{TSelf, TOptions}" />,
+///     which respects this interface.<br />
 ///     It is only used when an option is applied, never per evaluation.
 /// </remarks>
 public interface ICopyOnOption<in TOptions, out TSelf>

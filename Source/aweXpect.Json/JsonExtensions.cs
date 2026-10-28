@@ -25,12 +25,6 @@ public static class JsonExtensions
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		JsonMatchType matchType = new(jsonOptions);
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsJson)));
-		}
-
-		result.Options.SetMatchType(matchType, nameof(AsJson));
-		return result;
+		return OptionsProvider.WithOptions(result, result.Options.Value.SetMatchType(matchType, nameof(AsJson)));
 	}
 }

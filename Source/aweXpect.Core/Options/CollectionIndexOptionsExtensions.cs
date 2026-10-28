@@ -18,28 +18,12 @@ public static class CollectionIndexOptionsExtensions
 	/// </summary>
 	public static TSelf AtIndex<TSelf>(this TSelf result, int index)
 		where TSelf : IOptionsProvider<CollectionIndexOptions>
-	{
-		if (result is ICopyOnOption<CollectionIndexOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AtIndex(index));
-		}
-
-		result.Options.AtIndex(index);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AtIndex(index));
 
 	/// <summary>
 	///     …at the given zero-based <paramref name="index" />, counted from the end of the collection.
 	/// </summary>
 	public static TSelf AtIndexFromEnd<TSelf>(this TSelf result, int index)
 		where TSelf : IOptionsProvider<CollectionIndexOptions>
-	{
-		if (result is ICopyOnOption<CollectionIndexOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AtIndexFromEnd(index));
-		}
-
-		result.Options.AtIndexFromEnd(index);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AtIndexFromEnd(index));
 }
