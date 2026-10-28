@@ -1230,6 +1230,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -1437,7 +1443,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -1648,7 +1655,8 @@ window.BENCHMARK_DATA = {
           614.3767366409302,
           656.0288326263428,
           342.4948868433634,
-          347.6062619345529
+          347.6062619345529,
+          502.6281225340707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1804,6 +1812,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -2083,7 +2092,8 @@ window.BENCHMARK_DATA = {
           882.9032936096191,
           983.1232933044433,
           487.0153755187988,
-          511.8779330934797
+          511.8779330934797,
+          662.5472027460734
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2095,6 +2105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3543,6 +3554,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -3750,7 +3767,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -3961,7 +3979,8 @@ window.BENCHMARK_DATA = {
           104.55142676035562,
           107.19626475175222,
           54.710572803020476,
-          53.70245317476137
+          53.70245317476137,
+          78.0545424904142
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4108,6 +4127,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4396,7 +4416,8 @@ window.BENCHMARK_DATA = {
           219.3249032497406,
           253.21939550127303,
           120.28429956436158,
-          119.4272324187415
+          119.4272324187415,
+          165.33249569856204
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4408,6 +4429,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5856,6 +5878,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -6063,7 +6091,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -6274,7 +6303,8 @@ window.BENCHMARK_DATA = {
           1845.0904158274332,
           1805.63905275785,
           942.0844794591268,
-          911.125733311971
+          911.125733311971,
+          1385.623242441813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6469,6 +6499,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -6709,7 +6740,8 @@ window.BENCHMARK_DATA = {
           1399.0184700305645,
           1503.6241540908813,
           845.1625427246094,
-          876.3808537165324
+          876.3808537165324,
+          1078.323911412557
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6924,6 +6956,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1864,
+          1953,
           1953,
           1953
         ],
@@ -8109,6 +8142,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -8306,7 +8345,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -8507,7 +8547,8 @@ window.BENCHMARK_DATA = {
           2588.9653475625173,
           2563.8966729300364,
           1374.5715264638266,
-          1389.655174255371
+          1389.655174255371,
+          2140.318687438965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8692,6 +8733,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -8922,7 +8964,8 @@ window.BENCHMARK_DATA = {
           3856.8591782706126,
           3923.106797354562,
           2170.910491434733,
-          2190.125603267125
+          2190.125603267125,
+          3020.092459814889
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9128,6 +9171,7 @@ window.BENCHMARK_DATA = {
           3980,
           3978,
           3980,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -10312,6 +10356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -10509,7 +10559,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -10710,7 +10761,8 @@ window.BENCHMARK_DATA = {
           360.8480878898076,
           452.79995121274675,
           182.54585393269858,
-          182.38411378860474
+          182.38411378860474,
+          270.76650756200155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10847,6 +10899,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -11125,7 +11178,8 @@ window.BENCHMARK_DATA = {
           2250.60019329616,
           2440.501351220267,
           1275.5570963541666,
-          1304.7158854166667
+          1304.7158854166667,
+          1715.0311513900756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11137,6 +11191,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -12515,6 +12570,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
         "message": "chore: fail the Release build on missing XML documentation (#2143)"
+      },
+      {
+        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
+        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
       }
     ],
     "labels": [
@@ -12712,7 +12773,8 @@ window.BENCHMARK_DATA = {
       "d75e0769",
       "8ebddc03",
       "19fa288e",
-      "dbfb8e56"
+      "dbfb8e56",
+      "155bfd1e"
     ],
     "datasets": [
       {
@@ -12913,7 +12975,8 @@ window.BENCHMARK_DATA = {
           2862.6179227193197,
           2851.834618159703,
           1500.3998168064998,
-          1574.9868636812482
+          1574.9868636812482,
+          2227.2492291132608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13112,6 +13175,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -13328,7 +13392,8 @@ window.BENCHMARK_DATA = {
           302061.569148137,
           279888.1878580729,
           152993.37360839843,
-          167452.27479771205
+          167452.27479771205,
+          240757.59542410713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13534,7 +13599,8 @@ window.BENCHMARK_DATA = {
           17577,
           17558,
           17576,
-          17574
+          17574,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
