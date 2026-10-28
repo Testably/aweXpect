@@ -1212,6 +1212,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -1416,7 +1422,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -1624,7 +1631,8 @@ window.BENCHMARK_DATA = {
           683.3519100189209,
           347.86065171559653,
           500.8716677983602,
-          614.3767366409302
+          614.3767366409302,
+          656.0288326263428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1780,6 +1788,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -2053,7 +2062,8 @@ window.BENCHMARK_DATA = {
           928.5811157907758,
           519.4649501947256,
           708.7865483601888,
-          882.9032936096191
+          882.9032936096191,
+          983.1232933044433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2065,6 +2075,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3492,6 +3503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -3696,7 +3713,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -3904,7 +3922,8 @@ window.BENCHMARK_DATA = {
           132.41489141782125,
           69.61025864344377,
           84.66997290574588,
-          104.55142676035562
+          104.55142676035562,
+          107.19626475175222
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4051,6 +4070,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4333,7 +4353,8 @@ window.BENCHMARK_DATA = {
           219.674134349823,
           135.39477111612047,
           166.99938894907635,
-          219.3249032497406
+          219.3249032497406,
+          253.21939550127303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4345,6 +4366,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5772,6 +5794,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -5976,7 +6004,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -6184,7 +6213,8 @@ window.BENCHMARK_DATA = {
           1922.313669204712,
           1012.6881680121788,
           1359.685546239217,
-          1845.0904158274332
+          1845.0904158274332,
+          1805.63905275785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6379,6 +6409,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -6613,7 +6644,8 @@ window.BENCHMARK_DATA = {
           1488.901920591082,
           884.202818938664,
           1103.1886461893716,
-          1399.0184700305645
+          1399.0184700305645,
+          1503.6241540908813
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6826,7 +6858,8 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1864,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7992,6 +8025,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -8186,7 +8225,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -8384,7 +8424,8 @@ window.BENCHMARK_DATA = {
           2800.3881424495153,
           1505.4866752624512,
           2046.8140335083008,
-          2588.9653475625173
+          2588.9653475625173,
+          2563.8966729300364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8569,6 +8610,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -8793,7 +8835,8 @@ window.BENCHMARK_DATA = {
           3729.4891134897866,
           2321.2113876342773,
           3012.151653289795,
-          3856.8591782706126
+          3856.8591782706126,
+          3923.106797354562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8996,7 +9039,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3980
+          3980,
+          3978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10162,6 +10206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -10356,7 +10406,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -10554,7 +10605,8 @@ window.BENCHMARK_DATA = {
           380.86117397944133,
           208.04418756280626,
           274.1447158495585,
-          360.8480878898076
+          360.8480878898076,
+          452.79995121274675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10691,6 +10743,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -10963,7 +11016,8 @@ window.BENCHMARK_DATA = {
           2266.4327560424804,
           1453.42830619812,
           1761.8357459477015,
-          2250.60019329616
+          2250.60019329616,
+          2440.501351220267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10975,6 +11029,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -12332,6 +12387,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
@@ -12526,7 +12587,8 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
@@ -12724,7 +12786,8 @@ window.BENCHMARK_DATA = {
           2989.4670478275843,
           1617.2601858774822,
           2131.0291979653493,
-          2862.6179227193197
+          2862.6179227193197,
+          2851.834618159703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12923,6 +12986,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -13133,7 +13197,8 @@ window.BENCHMARK_DATA = {
           277869.67692683294,
           172100.1948730469,
           240105.06124441963,
-          302061.569148137
+          302061.569148137,
+          279888.1878580729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13336,7 +13401,8 @@ window.BENCHMARK_DATA = {
           17577,
           17574,
           17577,
-          17577
+          17577,
+          17558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
