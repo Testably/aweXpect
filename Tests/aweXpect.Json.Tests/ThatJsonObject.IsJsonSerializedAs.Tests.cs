@@ -17,6 +17,44 @@ public sealed partial class ThatJsonObject
 		public sealed class JsonTests
 		{
 			[Test]
+			public async Task ForCollections_ShouldCompareEachItem()
+			{
+				Track[] subject = [new("Let It Be", Genre.Rock), new("Let It Be", Genre.Rock),];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(track
+						=> track.IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2, "Album": null}"""));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task ForCollections_WhenEmptyAndExpectedIsInvalidJson_ShouldThrowArgumentException()
+			{
+				Track[] subject = [];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(track => track.IsJsonSerializedAs("{\"Title\":"));
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The 'expected' JSON is invalid: *").AsWildcard()
+					.Because("an invalid expected JSON is rejected also when no item is compared with it");
+			}
+
+			[Test]
+			public async Task ForCollections_WhenEmptyAndExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				Track[] subject = [];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(track => track.IsJsonSerializedAs(null!));
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithMessage("The 'expected' JSON cannot be null.*").AsWildcard()
+					.Because("a null expected JSON is rejected also when no item is compared with it");
+			}
+
+			[Test]
 			public async Task WhenExpectedIsInvalidJson_ShouldThrowArgumentException()
 			{
 				Track subject = new("Let It Be", Genre.Rock);
