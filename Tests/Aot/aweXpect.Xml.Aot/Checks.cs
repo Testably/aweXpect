@@ -78,6 +78,8 @@ internal static class Checks
 			() => ShouldFail(async () => await That("<a createdAt=\"1\"/>").IsEqualTo("<a createdAt=\"2\"/>")
 					.AsXml(o => o.IgnoringMember("@createdat")),
 				"\"@createdat\" matched no member (did you mean \"@createdAt\"?)")),
+		new("the option methods need only the namespace aweXpect",
+			() => ShouldPass(Consumer.Xml.ConsumerChecks.OptionsWithoutPackageNamespace)),
 	];
 
 	private static async Task<string?> ShouldPass(Func<Task> act)

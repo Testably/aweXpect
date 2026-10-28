@@ -74,7 +74,8 @@ projects in this repository that need the generator reference `aweXpect.Core.Gen
 
 All extension packages put their entry points into the namespace `aweXpect`, so that they show up next to the
 built-in ones without an extra `using`: the `That<Subject>` classes with the expectations and entry extensions such as
-`JsonExtensions.AsJson()` and `XmlExtensions.AsXml()`. Every other public type lives in `aweXpect.<Package>` or below,
+`JsonExtensions.AsJson()` and `XmlExtensions.AsXml()`, and the extension classes with the option methods, such as
+`JsonOptionsExtensions` and `XmlOptionsExtensions`. Every other public type lives in `aweXpect.<Package>` or below,
 so that it cannot clash with Core or another package: results in `aweXpect.<Package>.Results`, the customization group
 and its types, options and formatting in `aweXpect.<Package>` (or a sub-namespace such as
 `aweXpect.Web.ContentProcessors`). The layout is the same as in `aweXpect`: one partial class `That<Subject>` per
@@ -94,8 +95,8 @@ table of `00-index.md`.
 - `Options/` (namespace `aweXpect.Json.Options`): `JsonOptions`; a new option must be copied in the internal copy
   constructor and listed in the "JSON options" context of a failure. `JsonLookupOptions` holds the options of
   `HasProperty` and `HasValueAt`.
-- `Json/` (namespace `aweXpect.Json`): `JsonOptionsExtensions` and `JsonLookupOptionsHolderExtensions` with the
-  option methods; `JsonElementValidator`
+- `Json/` (namespace `aweXpect.Json`): `JsonOptionsExtensions` and `JsonLookupOptionsHolderExtensions` (namespace
+  `aweXpect`) with the option methods; `JsonElementValidator`
   reports each difference by its JSON path; `ExpectationJsonConverter` serializes
   expected values and the `It.Is...` expectations inside them, anything but JSON values by reflection behind
   `ReflectionFallback.IsSupported`; `Customize.aweXpect.Json()` with the default document and serializer options.
@@ -130,7 +131,7 @@ table of `00-index.md`.
   `/order/item[2]/@price`. `MatchesXmlConstraint<TNode>` parses the expected XML once when the expectation is written;
   `HasNodeConstraint<TSubject, TNode>` stores the found node for nested expectations.
 - `Options/XmlOptions` (namespace `aweXpect.Xml.Options`) is immutable, its option methods are in
-  `Xml/XmlOptionsExtensions` (namespace `aweXpect.Xml`): a new option must be copied in the internal copy constructor
+  `Xml/XmlOptionsExtensions` (namespace `aweXpect`): a new option must be copied in the internal copy constructor
   and listed in the "XML options" failure context. `MembersToIgnoreTracker` names ignored members that matched nothing.
 - `Helpers/SecureXml` is the only place that parses XML: DTDs are prohibited and no resolver is set. Never parse with
   `XDocument.Parse` or default `XmlReaderSettings`.

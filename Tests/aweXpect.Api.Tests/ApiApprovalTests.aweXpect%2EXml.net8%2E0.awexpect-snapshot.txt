@@ -66,15 +66,12 @@ namespace aweXpect
     {
         public static TSelf AsXml<TSelf>(this TSelf result, System.Func<aweXpect.Xml.Options.XmlOptions, aweXpect.Xml.Options.XmlOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
-}
-namespace aweXpect.Xml
-{
     public static class XmlOptionsExtensions
     {
-        public static aweXpect.Xml.Options.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.Options.XmlOptions @this, bool ignoreAdditionalNodes = true) { }
-        public static aweXpect.Xml.Options.XmlOptions IgnoringElementOrder(this aweXpect.Xml.Options.XmlOptions @this, bool ignoreElementOrder = true) { }
-        public static aweXpect.Xml.Options.XmlOptions IgnoringMember(this aweXpect.Xml.Options.XmlOptions @this, string memberToIgnore) { }
-        public static aweXpect.Xml.Options.XmlOptions IgnoringMembers(this aweXpect.Xml.Options.XmlOptions @this, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringAdditionalNodes(this aweXpect.Xml.Options.XmlOptions options, bool ignoreAdditionalNodes = true) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringElementOrder(this aweXpect.Xml.Options.XmlOptions options, bool ignoreElementOrder = true) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringMember(this aweXpect.Xml.Options.XmlOptions options, string memberToIgnore) { }
+        public static aweXpect.Xml.Options.XmlOptions IgnoringMembers(this aweXpect.Xml.Options.XmlOptions options, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
     }
 }
 namespace aweXpect.Xml.Options

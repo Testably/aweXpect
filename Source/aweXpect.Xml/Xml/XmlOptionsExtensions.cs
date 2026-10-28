@@ -3,9 +3,10 @@ using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
+using aweXpect.Xml;
 using aweXpect.Xml.Options;
 
-namespace aweXpect.Xml;
+namespace aweXpect;
 
 /// <summary>
 ///     Extension methods for <see cref="XmlOptions" />.
@@ -24,9 +25,9 @@ public static class XmlOptionsExtensions
 	///     failure as a member to ignore that matched no member.
 	/// </remarks>
 	public static XmlOptions IgnoringAdditionalNodes(
-		this XmlOptions @this,
+		this XmlOptions options,
 		bool ignoreAdditionalNodes = true)
-		=> new XmlOptions(@this)
+		=> new XmlOptions(options)
 		{
 			IgnoreAdditionalNodes = ignoreAdditionalNodes,
 		};
@@ -47,9 +48,9 @@ public static class XmlOptionsExtensions
 	///     position.
 	/// </remarks>
 	public static XmlOptions IgnoringElementOrder(
-		this XmlOptions @this,
+		this XmlOptions options,
 		bool ignoreElementOrder = true)
-		=> new XmlOptions(@this)
+		=> new XmlOptions(options)
 		{
 			IgnoreElementOrder = ignoreElementOrder,
 		};
@@ -71,7 +72,7 @@ public static class XmlOptionsExtensions
 	/// </remarks>
 	/// <exception cref="ArgumentException">The <paramref name="memberToIgnore" /> is empty.</exception>
 	public static XmlOptions IgnoringMember(
-		this XmlOptions @this,
+		this XmlOptions options,
 		string memberToIgnore)
 	{
 		ThrowHelper.ThrowIfNull(memberToIgnore, nameof(memberToIgnore));
@@ -81,9 +82,9 @@ public static class XmlOptionsExtensions
 				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
 		}
 
-		return new XmlOptions(@this)
+		return new XmlOptions(options)
 		{
-			MembersToIgnore = [..@this.MembersToIgnore, new XmlMemberToIgnore.ByPath(memberToIgnore),],
+			MembersToIgnore = [..options.MembersToIgnore, new XmlMemberToIgnore.ByPath(memberToIgnore),],
 		};
 	}
 
@@ -96,16 +97,16 @@ public static class XmlOptionsExtensions
 	///     or unexpected, and an ignored child is not considered for the order of the child nodes.
 	/// </remarks>
 	public static XmlOptions IgnoringMembers(
-		this XmlOptions @this,
+		this XmlOptions options,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return new XmlOptions(@this)
+		return new XmlOptions(options)
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new XmlMemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};

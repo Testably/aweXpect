@@ -4,9 +4,10 @@ using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Extending;
 using aweXpect.Helpers;
+using aweXpect.Json;
 using aweXpect.Json.Options;
 
-namespace aweXpect.Json;
+namespace aweXpect;
 
 /// <summary>
 ///     Extension methods for <see cref="JsonOptions" />.
@@ -17,14 +18,13 @@ public static class JsonOptionsExtensions
 	///     Specify the <see cref="JsonDocumentOptions" /> to use when interpreting a <see langword="string" /> as JSON.
 	/// </summary>
 	public static JsonOptions WithDocumentOptions(
-		this JsonOptions @this,
+		this JsonOptions options,
 		Func<JsonDocumentOptions, JsonDocumentOptions> documentOptions)
 	{
 		ThrowHelper.ThrowIfNull(documentOptions, nameof(documentOptions));
-		JsonDocumentOptions options = documentOptions(@this.DocumentOptions);
-		return new JsonOptions(@this)
+		return new JsonOptions(options)
 		{
-			DocumentOptions = options,
+			DocumentOptions = documentOptions(options.DocumentOptions),
 		};
 	}
 
@@ -38,11 +38,11 @@ public static class JsonOptionsExtensions
 	///     so the type of the expected value must be known to the resolver.
 	/// </remarks>
 	public static JsonOptions WithSerializerOptions(
-		this JsonOptions @this,
+		this JsonOptions options,
 		JsonSerializerOptions serializerOptions)
 	{
 		ThrowHelper.ThrowIfNull(serializerOptions, nameof(serializerOptions));
-		return new JsonOptions(@this)
+		return new JsonOptions(options)
 		{
 			SerializerOptions = serializerOptions,
 		};
@@ -56,9 +56,9 @@ public static class JsonOptionsExtensions
 	///     Additional elements of arrays are not affected, use <see cref="IgnoringAdditionalArrayElements" /> instead.
 	/// </remarks>
 	public static JsonOptions IgnoringAdditionalProperties(
-		this JsonOptions @this,
+		this JsonOptions options,
 		bool ignoreAdditionalProperties = true)
-		=> new JsonOptions(@this)
+		=> new JsonOptions(options)
 		{
 			IgnoreAdditionalProperties = ignoreAdditionalProperties,
 		};
@@ -72,9 +72,9 @@ public static class JsonOptionsExtensions
 	///     that are not paired with an expected element.
 	/// </remarks>
 	public static JsonOptions IgnoringAdditionalArrayElements(
-		this JsonOptions @this,
+		this JsonOptions options,
 		bool ignoreAdditionalArrayElements = true)
-		=> new JsonOptions(@this)
+		=> new JsonOptions(options)
 		{
 			IgnoreAdditionalArrayElements = ignoreAdditionalArrayElements,
 		};
@@ -88,9 +88,9 @@ public static class JsonOptionsExtensions
 	///     pairing can fail for overlapping <c>It.Is…</c> expectations, even when another pairing would succeed.
 	/// </remarks>
 	public static JsonOptions IgnoringArrayOrder(
-		this JsonOptions @this,
+		this JsonOptions options,
 		bool ignoreArrayOrder = true)
-		=> new JsonOptions(@this)
+		=> new JsonOptions(options)
 		{
 			IgnoreArrayOrder = ignoreArrayOrder,
 		};
@@ -103,9 +103,9 @@ public static class JsonOptionsExtensions
 	///     Elements of an array with the value <see langword="null" /> are not affected.
 	/// </remarks>
 	public static JsonOptions TreatingNullAsAbsent(
-		this JsonOptions @this,
+		this JsonOptions options,
 		bool treatNullAsAbsent = true)
-		=> new JsonOptions(@this)
+		=> new JsonOptions(options)
 		{
 			TreatNullAsAbsent = treatNullAsAbsent,
 		};
@@ -123,9 +123,9 @@ public static class JsonOptionsExtensions
 	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="tolerance" /> is negative or NaN.</exception>
 	public static JsonNumbersWithinOptions ComparingNumbersWithin(
-		this JsonOptions @this,
+		this JsonOptions options,
 		double tolerance)
-		=> new(@this, tolerance);
+		=> new(options, tolerance);
 
 	/// <summary>
 	///     Ignores the <paramref name="memberToIgnore" /> in the comparison.
@@ -140,7 +140,7 @@ public static class JsonOptionsExtensions
 	///     of the pairing.
 	/// </remarks>
 	public static JsonOptions IgnoringMember(
-		this JsonOptions @this,
+		this JsonOptions options,
 		string memberToIgnore)
 	{
 		ThrowHelper.ThrowIfNull(memberToIgnore, nameof(memberToIgnore));
@@ -150,9 +150,9 @@ public static class JsonOptionsExtensions
 				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
 		}
 
-		return new JsonOptions(@this)
+		return new JsonOptions(options)
 		{
-			MembersToIgnore = [..@this.MembersToIgnore, new JsonMemberToIgnore.ByName(memberToIgnore),],
+			MembersToIgnore = [..options.MembersToIgnore, new JsonMemberToIgnore.ByName(memberToIgnore),],
 		};
 	}
 
@@ -167,16 +167,16 @@ public static class JsonOptionsExtensions
 	///     of the pairing.
 	/// </remarks>
 	public static JsonOptions IgnoringMembers(
-		this JsonOptions @this,
+		this JsonOptions options,
 		Func<string, bool> predicate,
 		[CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "")
 	{
 		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return new JsonOptions(@this)
+		return new JsonOptions(options)
 		{
 			MembersToIgnore =
 			[
-				..@this.MembersToIgnore,
+				..options.MembersToIgnore,
 				new JsonMemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};

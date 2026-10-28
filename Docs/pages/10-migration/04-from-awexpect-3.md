@@ -227,7 +227,8 @@ Suppress it in test projects that use a virtual time system.
 
 Results of the extension packages are in `aweXpect.<Package>.Results`, their option types (`JsonOptions`,
 `XmlOptions`, `PublicApiOptions`) in `aweXpect.<Package>.Options` and their other public types in
-`aweXpect.<Package>`. Add the matching `using` where you name such a type.
+`aweXpect.<Package>`. Add the matching `using` where you name such a type. The option methods, e.g.
+`o => o.IgnoringArrayOrder()`, are in `aweXpect` and need no extra `using`.
 
 ## Extensions
 
