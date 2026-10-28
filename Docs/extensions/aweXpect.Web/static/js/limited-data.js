@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
-      {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          355.76227364173303,
           509.0077495574951,
           424.6598010796767,
           365.38320501645404,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           457.49622230529786,
           488.1308433532715,
           454.9328867594401,
-          480.2029307229178
+          480.2029307229178,
+          453.2711669286092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -441,7 +441,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664,
+          640,
           640,
           640,
           640,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          762.3243434270223,
           1015.3387185414632,
           1025.9886810302735,
           773.4784679412842,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1021.4798039027622,
           925.5554426738194,
           1004.6667348316738,
-          1076.5203336988177
+          1076.5203336988177,
+          970.0906133651733
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
-      {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          192.52397632598877,
           253.69301499639238,
           237.4439147435702,
           173.4931628704071,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           259.32427620887756,
           231.6196001493014,
           247.38296123913355,
-          246.07338156018938
+          246.07338156018938,
+          273.4376969973246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          202.4426908309643,
           268.13490746816,
           241.46031297047932,
           202.38619193663965,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           267.05627039500644,
           247.11147050857545,
           266.0521447317941,
-          275.4768298222468
+          275.4768298222468,
+          258.9641146977743
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
-      {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          514.2604644639151,
           827.1027796427409,
           722.5915974889483,
           494.4264338357108,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           976.4981702168783,
           970.3885461262295,
           883.3648537855881,
-          1104.9444580811721
+          1104.9444580811721,
+          982.8758127848307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1679,7 +1679,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
-          1032,
+          1192,
           1192,
           1192,
           1192,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          706.6201132456462,
           936.5654462667612,
           934.5653817313058,
           736.5054408391317,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1027.4066754659018,
           926.7154275349209,
           982.2797829945882,
-          1017.240454228719
+          1017.240454228719,
+          947.1246480941772
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
-      {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1511.469975199018,
           1887.169513293675,
           1839.951716014317,
           1466.3045243581137,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1910.9118482149565,
           1955.3485249110631,
           1914.5855023066204,
-          1931.6328745524088
+          1931.6328745524088,
+          1870.5461195537023
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13607.618142934945,
           21125.761661783854,
           20571.765236409505,
           14432.61992938702,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22429.298300606864,
           20191.194490559898,
           18786.086873372395,
-          22259.949120154746
+          22259.949120154746,
+          20333.036416860727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2390,7 +2390,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2413,6 +2412,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
       {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          550.254607132503,
           845.7663181168692,
           733.2115015616783,
           556.690922609965,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           798.5347500528608,
           732.9516418163593,
           719.9084849675496,
-          869.9114283879597
+          869.9114283879597,
+          758.7382371266683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          989.2691076823643,
           1289.8425369262695,
           1308.493728129069,
           1016.3863337834676,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1410.389205796378,
           1255.4042546198918,
           1316.4993698120118,
-          1355.2906568967378
+          1355.2906568967378,
+          1304.1272168477376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
-        "author": "dependabot[bot]",
-        "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.32 to 8.0.33 (#2085)"
-      },
-      {
         "sha": "2ce286e6354ed9a4ec4c5773e0bcb247601980e5",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:22 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
         "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
+      },
+      {
+        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
+        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
       }
     ],
     "labels": [
-      "2068b12b",
       "2ce286e6",
       "1b028951",
       "f34312fa",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "0027e238",
       "76331040",
       "7558fdb1",
-      "554746c6"
+      "554746c6",
+      "fa41546d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          941.2746116638184,
           1354.2738659722465,
           1245.7187638600667,
           944.9470197677613,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1326.3084732055663,
           1237.9065493070161,
           1279.2880212238856,
-          1346.1458651678902
+          1346.1458651678902,
+          1269.948884646098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3481,7 +3481,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
-          1464,
+          1440,
           1440,
           1440,
           1440,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          582.7902631759644,
           825.0945410728455,
           741.7925015177045,
           587.7655124664307,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           862.400163430434,
           740.1350386483329,
           772.4098425547282,
-          807.9884814580281
+          807.9884814580281,
+          731.0361295846792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
