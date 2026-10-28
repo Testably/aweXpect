@@ -1236,6 +1236,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -1444,7 +1450,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -1656,7 +1663,8 @@ window.BENCHMARK_DATA = {
           235.5320383952214,
           508.80319900512694,
           242.27026520456587,
-          500.76539478302004
+          500.76539478302004,
+          527.4150661740985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1836,6 +1844,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2093,7 +2102,8 @@ window.BENCHMARK_DATA = {
           520.7589690868671,
           966.970623143514,
           557.7056749979655,
-          1086.2820332390922
+          1086.2820332390922,
+          1043.5138197580973
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2105,6 +2115,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3560,6 +3571,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -3768,7 +3785,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -3980,7 +3998,8 @@ window.BENCHMARK_DATA = {
           133.47965195973714,
           251.1881541887919,
           136.06530810991924,
-          306.5293654123942
+          306.5293654123942,
+          243.46431465148925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4127,6 +4146,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4417,7 +4437,8 @@ window.BENCHMARK_DATA = {
           131.42994288035803,
           247.92575775782268,
           139.37534960678644,
-          305.0619183608464
+          305.0619183608464,
+          262.91809272766113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4429,6 +4450,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5824,6 +5846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -6022,7 +6050,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -6224,7 +6253,8 @@ window.BENCHMARK_DATA = {
           516.7755776087444,
           1064.9942759195962,
           557.0758202626155,
-          993.8616753986904
+          993.8616753986904,
+          1031.6353096008302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6416,6 +6446,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -6641,7 +6672,8 @@ window.BENCHMARK_DATA = {
           489.83077239990234,
           975.5364428202312,
           537.0733523002037,
-          1025.217236328125
+          1025.217236328125,
+          982.7938363393148
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6653,6 +6685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -8038,6 +8071,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -8236,7 +8275,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -8438,7 +8478,8 @@ window.BENCHMARK_DATA = {
           1112.6066719055175,
           1936.7327379079966,
           1167.044155707726,
-          1971.1112192789712
+          1971.1112192789712,
+          2001.2130208333333
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8577,6 +8618,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -8855,7 +8897,8 @@ window.BENCHMARK_DATA = {
           10403.477037702289,
           21332.965475899833,
           11133.035115168645,
-          22793.638942173548
+          22793.638942173548,
+          22024.219218662805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9047,6 +9090,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -10252,6 +10296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -10450,7 +10500,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -10652,7 +10703,8 @@ window.BENCHMARK_DATA = {
           412.9570006370544,
           798.3946457544963,
           420.7755738894145,
-          839.4234569256122
+          839.4234569256122,
+          835.9516654014587
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10791,6 +10843,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -11069,7 +11122,8 @@ window.BENCHMARK_DATA = {
           666.3984788485935,
           1327.2343719482421,
           720.5340617986826,
-          1405.2916517893473
+          1405.2916517893473,
+          1367.5818361554827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11081,6 +11135,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -12466,6 +12521,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
         "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
+      },
+      {
+        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
+        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
       }
     ],
     "labels": [
@@ -12664,7 +12725,8 @@ window.BENCHMARK_DATA = {
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
-      "155bfd1e"
+      "155bfd1e",
+      "2bba8222"
     ],
     "datasets": [
       {
@@ -12866,7 +12928,8 @@ window.BENCHMARK_DATA = {
           751.449466569083,
           1376.6437390191215,
           808.4705751859225,
-          1375.4480187733968
+          1375.4480187733968,
+          1351.9152256011962
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13036,6 +13099,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -13283,7 +13347,8 @@ window.BENCHMARK_DATA = {
           432.911708577474,
           764.6549742380778,
           441.66459156916693,
-          830.035285504659
+          830.035285504659,
+          812.2311939239502
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13295,6 +13360,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
