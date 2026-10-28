@@ -11,7 +11,7 @@ namespace aweXpect.Web.ContentProcessors;
 /// <summary>
 ///     Handles string contents.
 /// </summary>
-public class StringContentProcessor : IContentProcessor
+public sealed class StringContentProcessor : IContentProcessor
 {
 	/// <inheritdoc cref="IContentProcessor.AppendContentInfo(StringBuilder, HttpContent, string, CancellationToken)" />
 	public async Task<bool> AppendContentInfo(

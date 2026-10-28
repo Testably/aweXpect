@@ -10,7 +10,7 @@ namespace aweXpect.Web.ContentProcessors;
 /// <summary>
 ///     Handles audio, image, video and pdf files.
 /// </summary>
-public class BinaryContentProcessor : IContentProcessor
+public sealed class BinaryContentProcessor : IContentProcessor
 {
 	/// <inheritdoc cref="IContentProcessor.AppendContentInfo(StringBuilder, HttpContent, string, CancellationToken)" />
 	public Task<bool> AppendContentInfo(

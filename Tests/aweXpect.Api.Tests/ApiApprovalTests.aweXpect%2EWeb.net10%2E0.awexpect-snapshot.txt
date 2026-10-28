@@ -164,7 +164,7 @@ namespace aweXpect.Web
 }
 namespace aweXpect.Web.ContentProcessors
 {
-    public class BinaryContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    public sealed class BinaryContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public BinaryContentProcessor() { }
         public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
@@ -173,12 +173,12 @@ namespace aweXpect.Web.ContentProcessors
     {
         System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
-    public class JsonContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    public sealed class JsonContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public JsonContentProcessor() { }
         public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
     }
-    public class StringContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
+    public sealed class StringContentProcessor : aweXpect.Web.ContentProcessors.IContentProcessor
     {
         public StringContentProcessor() { }
         public System.Threading.Tasks.Task<bool> AppendContentInfo(System.Text.StringBuilder messageBuilder, System.Net.Http.HttpContent httpContent, string indentation, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) { }
