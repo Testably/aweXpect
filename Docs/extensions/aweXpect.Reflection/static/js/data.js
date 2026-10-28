@@ -1182,6 +1182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -1381,7 +1387,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -1584,7 +1591,8 @@ window.BENCHMARK_DATA = {
           504.377131652832,
           626.4807441575186,
           355.6786551475525,
-          528.9008310953776
+          528.9008310953776,
+          662.2298644383749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1740,6 +1748,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -2003,7 +2012,8 @@ window.BENCHMARK_DATA = {
           722.209126663208,
           862.3000031153362,
           520.713897450765,
-          573.8104044596354
+          573.8104044596354,
+          892.5321295601981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2015,6 +2025,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3407,6 +3418,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -3606,7 +3623,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -3809,7 +3827,8 @@ window.BENCHMARK_DATA = {
           82.49245051237253,
           105.15319384733836,
           53.92242108498301,
-          70.5967634121577
+          70.5967634121577,
+          107.28880518277487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3956,6 +3975,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4228,7 +4248,8 @@ window.BENCHMARK_DATA = {
           166.57190682093304,
           212.387109041214,
           122.98164817003104,
-          166.4284912109375
+          166.4284912109375,
+          196.96022090545068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4240,6 +4261,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5632,6 +5654,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -5831,7 +5859,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -6034,7 +6063,8 @@ window.BENCHMARK_DATA = {
           1372.120185470581,
           1785.1845141819545,
           946.5367733637491,
-          1011.2745024817331
+          1011.2745024817331,
+          1883.2799243927002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6229,6 +6259,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -6453,7 +6484,8 @@ window.BENCHMARK_DATA = {
           1090.8119434629168,
           1356.9942136492048,
           820.8743755976359,
-          949.3752626691546
+          949.3752626691546,
+          1454.7558242797852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6661,7 +6693,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7797,6 +7830,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -7986,7 +8025,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -8179,7 +8219,8 @@ window.BENCHMARK_DATA = {
           1995.9870024461013,
           2590.0441196148213,
           1476.6503938528208,
-          1570.4014542897542
+          1570.4014542897542,
+          2689.351959546407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8364,6 +8405,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -8578,7 +8620,8 @@ window.BENCHMARK_DATA = {
           2989.4978318895614,
           3824.090456644694,
           2176.102575302124,
-          2387.353419303894
+          2387.353419303894,
+          3780.602739969889
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8776,7 +8819,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3980,
-          3977
+          3977,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9912,6 +9956,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -10101,7 +10151,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -10294,7 +10345,8 @@ window.BENCHMARK_DATA = {
           292.48169797261556,
           358.0741132222689,
           190.37787005106608,
-          253.7709513444167
+          253.7709513444167,
+          390.37924966812136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10431,6 +10483,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -10693,7 +10746,8 @@ window.BENCHMARK_DATA = {
           1818.1370654424031,
           2181.4000129699707,
           1232.0952268327985,
-          1402.144169108073
+          1402.144169108073,
+          2240.3889236450195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10705,6 +10759,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -12027,6 +12082,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
         "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
+      },
+      {
+        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
+        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
       }
     ],
     "labels": [
@@ -12216,7 +12277,8 @@ window.BENCHMARK_DATA = {
       "76331040",
       "7558fdb1",
       "554746c6",
-      "fa41546d"
+      "fa41546d",
+      "5fafaf2a"
     ],
     "datasets": [
       {
@@ -12409,7 +12471,8 @@ window.BENCHMARK_DATA = {
           2167.465690612793,
           2871.497319285075,
           1636.6036308833532,
-          1634.9903772672017
+          1634.9903772672017,
+          2902.169359500592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12607,7 +12670,8 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
-          3248
+          3248,
+          3264
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12808,7 +12872,8 @@ window.BENCHMARK_DATA = {
           243292.83180338543,
           304427.7484375,
           165681.01076253256,
-          177209.60208834134
+          177209.60208834134,
+          281361.0869891827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13006,7 +13071,8 @@ window.BENCHMARK_DATA = {
           17577,
           17707,
           17576,
-          17528
+          17528,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
