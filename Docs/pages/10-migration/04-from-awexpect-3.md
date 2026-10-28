@@ -41,6 +41,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 | v3                                                | v4                                                           |
 |---------------------------------------------------|--------------------------------------------------------------|
 | `IsEquivalentTo(…, o => o.Ignoring(predicate))`   | `IsEquivalentTo(…, o => o.IgnoringMembers(predicate))`       |
+| `IsEquivalentTo(…, o => o.Ignoring(type => …))`   | `IsEquivalentTo(…, o => o.IgnoringMembers((_, type) => …))`  |
 | `IsValidJson().Which(j => …)`                     | `IsValidJson(j => …)`                                        |
 | `IsValidXml().Which(root => …)`                   | `IsValidXml(root => …)`                                      |
 | `HasStatusCode().DifferentTo(…)`                  | `HasStatusCode().NotEqualTo(…)`                              |

@@ -91,28 +91,6 @@ public static class EquivalencyOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores all members whose type matches the <paramref name="predicate" /> when checking for equivalency.
-	/// </summary>
-	public static TEquivalencyOptions IgnoringMembers<TEquivalencyOptions>(
-		this TEquivalencyOptions options,
-		Func<Type, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-		where TEquivalencyOptions : EquivalencyTypeOptions
-	{
-		predicate.ThrowIfNull();
-		return options with
-		{
-			MembersToIgnore =
-			[
-				..options.MembersToIgnore,
-				new MemberToIgnore.ByPredicate((_, memberType) => predicate(memberType),
-					doNotPopulateThisValue.TrimCommonWhiteSpace()),
-			],
-		};
-	}
-
-	/// <summary>
 	///     Ignores fields matching the <paramref name="predicate" /> when checking for equivalency.
 	/// </summary>
 	public static TEquivalencyOptions IgnoringFields<TEquivalencyOptions>(

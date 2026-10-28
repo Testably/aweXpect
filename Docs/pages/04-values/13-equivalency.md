@@ -230,7 +230,8 @@ depth, while `"ame"` or `"t.Name"` ignore nothing.
 
 ### Ignoring members by predicate
 
-There are three overloads of `IgnoringMembers`, depending on which information you need:
+The number of lambda parameters tells what the predicate matches: one parameter receives the member path, two
+parameters receive the member path and type:
 
 ```csharp
 // by member path and type
@@ -244,7 +245,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 
 // by type only
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .IgnoringMembers(memberType => memberType == typeof(DateTime)));
+  .IgnoringMembers((_, memberType) => memberType == typeof(DateTime)));
 ```
 
 Use `IgnoringFields` or `IgnoringProperties` instead of `IgnoringMembers` to restrict a predicate to one kind of member.

@@ -115,26 +115,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Test]
-	public async Task Generic_For_IgnoringMembers_TypePredicate_ShouldSetOptionForType()
-	{
-		EquivalencyOptions options = new();
-
-		EquivalencyOptions result = options.For<MyClass>(o => o.IgnoringMembers(x => x == typeof(DateTime)));
-
-		await That(result.MembersToIgnore).IsEmpty();
-		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-		{
-			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-		});
-		await That(result.ToString()).IsEqualTo("""
-		                                         - include public fields and properties
-		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
-		                                           - include public fields and properties
-		                                           - ignore members: [x => x == typeof(DateTime)]
-		                                        """);
-	}
-
-	[Test]
 	public async Task Generic_For_IgnoringProperties_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -333,35 +313,6 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                                           x =>
 		                                                           x == "foo" ||
 		                                                           x == "bar"
-		                                                           """);
-	}
-
-	[Test]
-	public async Task IgnoringMembers_TypePredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
-	{
-		EquivalencyOptions options = new();
-
-		void Act()
-			=> _ = options.IgnoringMembers((Func<Type, bool>)null!);
-
-		await That(Act).Throws<ArgumentNullException>()
-			.WithParamName("predicate").And
-			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
-	}
-
-	[Test]
-	public async Task IgnoringMembers_TypePredicate_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
-	{
-		EquivalencyOptions options = new();
-
-		EquivalencyOptions result = options.IgnoringMembers(x =>
-			x == typeof(DateTime) ||
-			x == typeof(string));
-
-		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
-		                                                           x =>
-		                                                           x == typeof(DateTime) ||
-		                                                           x == typeof(string)
 		                                                           """);
 	}
 

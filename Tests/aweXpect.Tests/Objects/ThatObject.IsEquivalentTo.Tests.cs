@@ -321,7 +321,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o
-						.IgnoringMembers(memberType => memberType == typeof(int)));
+						.IgnoringMembers((_, memberType) => memberType == typeof(int)));
 
 				await That(Act).DoesNotThrow();
 			}
