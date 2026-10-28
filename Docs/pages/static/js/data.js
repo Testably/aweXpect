@@ -1488,6 +1488,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -1738,7 +1744,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -1992,7 +1999,8 @@ window.BENCHMARK_DATA = {
           10033.143083699544,
           10947.490519205729,
           7867.481620788574,
-          7945.7524688720705
+          7945.7524688720705,
+          6718.245365687779
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2228,6 +2236,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2513,7 +2522,8 @@ window.BENCHMARK_DATA = {
           308547.10714285716,
           381394.314453125,
           264405.5708984375,
-          267762.8970703125
+          267762.8970703125,
+          223273.48118489582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2772,7 +2782,8 @@ window.BENCHMARK_DATA = {
           590290,
           590292,
           590288,
-          590288
+          590288,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3034,7 +3045,8 @@ window.BENCHMARK_DATA = {
           17867.976224626815,
           20169.049327305383,
           14446.998148091634,
-          14536.966057332356
+          14536.966057332356,
+          14625.338868277413
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3046,6 +3058,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4753,6 +4766,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -4996,7 +5015,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -5243,7 +5263,8 @@ window.BENCHMARK_DATA = {
           214.4708914597829,
           302.57346749305725,
           166.3784828736232,
-          178.03639147962843
+          178.03639147962843,
+          177.3599785225732
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5439,6 +5460,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5750,7 +5772,8 @@ window.BENCHMARK_DATA = {
           512.701161316463,
           581.812549718221,
           402.34365412394203,
-          458.5897357940674
+          458.5897357940674,
+          423.4102638880412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5762,6 +5785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6257,7 +6281,8 @@ window.BENCHMARK_DATA = {
           374.6817469596863,
           443.58820667266843,
           283.52613226572674,
-          319.0502178668976
+          319.0502178668976,
+          303.69204006876265
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6269,6 +6294,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12589,6 +12615,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -13602,7 +13634,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -14619,7 +14652,8 @@ window.BENCHMARK_DATA = {
           101.36440924008687,
           111.5105562210083,
           80.03896193504333,
-          80.7251609308379
+          80.7251609308379,
+          81.02224788665771
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15618,6 +15652,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16666,7 +16701,8 @@ window.BENCHMARK_DATA = {
           261.24670342036654,
           289.69599668796246,
           198.9348142941793,
-          208.4595156510671
+          208.4595156510671,
+          222.42156912730292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16859,6 +16895,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -17994,7 +18031,8 @@ window.BENCHMARK_DATA = {
           242.3762935124911,
           267.87051776250206,
           175.46967777839075,
-          190.10771975150476
+          190.10771975150476,
+          172.5268311867347
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18006,6 +18044,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -19799,6 +19838,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -20049,7 +20094,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -20303,7 +20349,8 @@ window.BENCHMARK_DATA = {
           195.9067804472787,
           209.7291624704997,
           159.52876029695784,
-          160.33271212237221
+          160.33271212237221,
+          168.23191239152635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20508,6 +20555,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -20824,7 +20872,8 @@ window.BENCHMARK_DATA = {
           573.3022924831936,
           533.3986874307905,
           408.4974352836609,
-          413.09962926592146
+          413.09962926592146,
+          459.87635946273804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20836,6 +20885,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -21345,7 +21395,8 @@ window.BENCHMARK_DATA = {
           311.8888109842936,
           345.6254704157511,
           258.63408451080323,
-          248.5069879213969
+          248.5069879213969,
+          256.63529373804727
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21357,6 +21408,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -27684,6 +27736,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -28697,7 +28755,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -29714,7 +29773,8 @@ window.BENCHMARK_DATA = {
           699.7146144280067,
           746.8616344451905,
           524.7071509043376,
-          526.807805606297
+          526.807805606297,
+          485.847832271031
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30701,6 +30761,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -31761,7 +31822,8 @@ window.BENCHMARK_DATA = {
           1437.0269486745199,
           1564.4947466169085,
           1098.8147351401192,
-          1094.9246933800835
+          1094.9246933800835,
+          1107.796083577474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31954,6 +32016,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -33089,7 +33152,8 @@ window.BENCHMARK_DATA = {
           708.6212322528546,
           705.8645281791687,
           493.48600311279296,
-          496.16956740159253
+          496.16956740159253,
+          500.8570910967313
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33101,6 +33165,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -39472,6 +39537,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -40485,7 +40556,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -41502,7 +41574,8 @@ window.BENCHMARK_DATA = {
           701.8625321070353,
           733.6918453489031,
           525.7281795648428,
-          523.9197857039316
+          523.9197857039316,
+          497.0336186726888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -42489,6 +42562,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -43549,7 +43623,8 @@ window.BENCHMARK_DATA = {
           20331.434744027945,
           29458.440590994698,
           15813.564115251813,
-          16282.096799577985
+          16282.096799577985,
+          13725.594681803386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44571,7 +44646,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -44877,7 +44953,8 @@ window.BENCHMARK_DATA = {
           726.634489440918,
           831.4107434409005,
           579.5145050457546,
-          572.7637465159098
+          572.7637465159098,
+          590.1006058965411
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -44889,6 +44966,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -47030,6 +47108,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -47338,7 +47422,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -47650,7 +47735,8 @@ window.BENCHMARK_DATA = {
           590.7652410098484,
           631.1381454467773,
           514.8077551523844,
-          507.01787846429005
+          507.01787846429005,
+          467.8665428528419
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47944,6 +48030,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -48287,7 +48374,8 @@ window.BENCHMARK_DATA = {
           61965.07881986178,
           82535.42764718192,
           54027.839359537764,
-          53455.16491229717
+          53455.16491229717,
+          33739.83185032436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48603,6 +48691,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
+          5256,
           5256,
           5256
         ],
@@ -50454,6 +50543,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -50762,7 +50857,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -51074,7 +51170,8 @@ window.BENCHMARK_DATA = {
           130.19412765900293,
           156.42046100752694,
           104.1650300536837,
-          105.62157160043716
+          105.62157160043716,
+          113.09330171744028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51368,6 +51465,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -51711,7 +51809,8 @@ window.BENCHMARK_DATA = {
           17911.2056187221,
           33064.81743977864,
           14647.232786996025,
-          15337.316233317057
+          15337.316233317057,
+          13482.028038533528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52028,7 +52127,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52334,7 +52434,8 @@ window.BENCHMARK_DATA = {
           228.75333396026068,
           282.2695587158203,
           179.98832218987602,
-          185.74810530458177
+          185.74810530458177,
+          174.54166514078776
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52346,6 +52447,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -54139,6 +54241,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -54389,7 +54497,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -54643,7 +54752,8 @@ window.BENCHMARK_DATA = {
           296.65658937181746,
           293.11595487594604,
           224.02014156977336,
-          224.44107014338175
+          224.44107014338175,
+          229.92297913477972
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54848,6 +54958,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -55164,7 +55275,8 @@ window.BENCHMARK_DATA = {
           401.71559387842814,
           382.6408241589864,
           329.6401156584422,
-          328.0731118275569
+          328.0731118275569,
+          334.1076677322388
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55176,6 +55288,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -55685,7 +55798,8 @@ window.BENCHMARK_DATA = {
           409.00521818796796,
           396.03660879135134,
           358.2384912784283,
-          334.5322087287903
+          334.5322087287903,
+          297.01897087097166
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55697,6 +55811,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -57446,6 +57561,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -57696,7 +57817,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -57950,7 +58072,8 @@ window.BENCHMARK_DATA = {
           678.5675033841815,
           733.6035655566624,
           537.9747178004338,
-          578.7595198495047
+          578.7595198495047,
+          529.6861187861516
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58186,6 +58309,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -58471,7 +58595,8 @@ window.BENCHMARK_DATA = {
           1895.6658924102783,
           2131.649586604192,
           1507.6489452362061,
-          1672.9273422786168
+          1672.9273422786168,
+          1558.5533996309553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58483,6 +58608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -58992,7 +59118,8 @@ window.BENCHMARK_DATA = {
           907.6047374725342,
           1015.3704358614408,
           713.9341252871922,
-          765.218125851949
+          765.218125851949,
+          689.4425083569118
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59004,6 +59131,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -60753,6 +60881,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -61003,7 +61137,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -61257,7 +61392,8 @@ window.BENCHMARK_DATA = {
           10931.542291494516,
           11893.312091282436,
           8359.513330312875,
-          8397.632245744977
+          8397.632245744977,
+          8075.532647269113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61496,6 +61632,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -61778,7 +61915,8 @@ window.BENCHMARK_DATA = {
           33974.177755502555,
           41007.01089477539,
           26590.641690767727,
-          26521.127140590124
+          26521.127140590124,
+          24864.555444335936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62037,7 +62175,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609
+          18609,
+          18393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62299,7 +62438,8 @@ window.BENCHMARK_DATA = {
           10071.962538582939,
           10527.827033996582,
           7847.732675405649,
-          7890.840198771159
+          7890.840198771159,
+          7525.263392857143
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62311,6 +62451,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -64060,6 +64201,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -64310,7 +64457,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -64564,7 +64712,8 @@ window.BENCHMARK_DATA = {
           10227.767029982348,
           11660.84493146624,
           7988.275752766927,
-          7986.617923443134
+          7986.617923443134,
+          7571.5723386492045
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64803,6 +64952,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -65085,7 +65235,8 @@ window.BENCHMARK_DATA = {
           48219.166377476286,
           59361.00076090495,
           37850.909345354354,
-          37470.711810772234
+          37470.711810772234,
+          37013.13781534831
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65314,6 +65465,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -65606,7 +65758,8 @@ window.BENCHMARK_DATA = {
           19660.803297932944,
           21246.73762512207,
           15383.336443219867,
-          15389.781252034505
+          15389.781252034505,
+          14692.86303476187
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -65618,6 +65771,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
