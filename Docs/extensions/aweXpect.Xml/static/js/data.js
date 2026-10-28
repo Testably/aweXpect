@@ -1212,6 +1212,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
@@ -1416,7 +1422,8 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
@@ -1624,7 +1631,8 @@ window.BENCHMARK_DATA = {
           938.7004898616245,
           858.9441326141357,
           461.66464443206786,
-          997.3060237884522
+          997.3060237884522,
+          549.8113759358724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1805,6 +1813,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2053,7 +2062,8 @@ window.BENCHMARK_DATA = {
           738.3787677764892,
           795.0780237197876,
           355.4676568508148,
-          723.6153013865153
+          723.6153013865153,
+          507.1231466293335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2065,6 +2075,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3492,6 +3503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
@@ -3696,7 +3713,8 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
@@ -3904,7 +3922,8 @@ window.BENCHMARK_DATA = {
           4497.900282796224,
           4877.796715799967,
           2635.9508349100747,
-          5079.104804229736
+          5079.104804229736,
+          3001.093763987223
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4117,7 +4136,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24178,
-          24178
+          24178,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4333,7 +4353,8 @@ window.BENCHMARK_DATA = {
           5534.413301595052,
           5471.788576761882,
           2979.062430826823,
-          5914.117556254069
+          5914.117556254069,
+          3957.9833648681642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4345,6 +4366,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -5712,6 +5734,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
@@ -5906,7 +5934,8 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
@@ -6104,7 +6133,8 @@ window.BENCHMARK_DATA = {
           2750.1413935343426,
           2661.5634808858235,
           1395.3601879119874,
-          2745.5736010233563
+          2745.5736010233563,
+          1639.05201285226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6285,6 +6315,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -6513,7 +6544,8 @@ window.BENCHMARK_DATA = {
           3729.1144289652507,
           3539.5946197509766,
           1953.2414672851562,
-          3946.9709564208983
+          3946.9709564208983,
+          2255.8057375590006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6525,6 +6557,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -7882,6 +7915,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
         "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
+      },
+      {
+        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
+        "message": "chore: fail the Release build on missing XML documentation (#2143)"
       }
     ],
     "labels": [
@@ -8076,7 +8115,8 @@ window.BENCHMARK_DATA = {
       "91e67fd2",
       "d75e0769",
       "8ebddc03",
-      "19fa288e"
+      "19fa288e",
+      "dbfb8e56"
     ],
     "datasets": [
       {
@@ -8274,7 +8314,8 @@ window.BENCHMARK_DATA = {
           14086.909571329752,
           14203.771719360351,
           7330.749349975586,
-          14317.88836517334
+          14317.88836517334,
+          8782.108249664307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8455,6 +8496,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -8683,7 +8725,8 @@ window.BENCHMARK_DATA = {
           356412.9297921317,
           364924.42630208336,
           178136.90974934897,
-          372313.8105119978
+          372313.8105119978,
+          187054.64772135418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8886,7 +8929,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
