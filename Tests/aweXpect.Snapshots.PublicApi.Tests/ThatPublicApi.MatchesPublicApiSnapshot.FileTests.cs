@@ -31,6 +31,28 @@ public sealed partial class ThatPublicApi
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot();
 
 			[Test]
+			public async Task WhenAwaited_ShouldReturnTheSubject()
+			{
+				FileInfo subject = WriteForwardingLibrary();
+
+				FileInfo result = await That(subject).MatchesPublicApiSnapshot();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
+			public async Task WhenChainedWithAnd_ShouldContinueOnTheSubject()
+			{
+				FileInfo subject = WriteForwardingLibrary();
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot().And.IsSameAs(subject);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectations after .And are on the file, not on the generated public API");
+			}
+
+			[Test]
 			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 

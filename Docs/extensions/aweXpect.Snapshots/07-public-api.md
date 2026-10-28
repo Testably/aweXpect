@@ -27,7 +27,8 @@ namespace MusicStore
 ```
 
 It behaves like [`MatchesSnapshot()` for strings](01-matching-snapshots.md#strings), e.g. for the files and
-[accepting changes](02-accepting-snapshots.md).
+[accepting changes](02-accepting-snapshots.md). `.And` continues on the assembly or the file, and awaiting the
+expectation returns it.
 
 ## Target frameworks and reference assemblies
 

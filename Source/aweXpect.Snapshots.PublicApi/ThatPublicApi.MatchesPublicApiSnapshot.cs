@@ -26,9 +26,8 @@ public static class ThatPublicApi
 	///     usually differs between the target frameworks of a library, so keep a snapshot per target framework of the test
 	///     project with <c>.UniqueFor.TargetFramework()</c>; each target framework of the test project loads the matching
 	///     build of the library.<br />
-	///     The result continues on the generated public API text, not on the assembly, so <c>.And</c> adds expectations on
-	///     that text: the text and line rules of the snapshot only apply to a string subject.<br />
-	///     Otherwise, it behaves like <c>MatchesSnapshot()</c> for strings, e.g. for the files and accepting changes.
+	///     The generated text is compared like a string by <c>MatchesSnapshot()</c>, e.g. for the files, the rules and
+	///     accepting changes, while <c>.And</c> continues on the assembly and awaiting the result returns it.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
 	/// <param name="options">
@@ -38,7 +37,7 @@ public static class ThatPublicApi
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static StringSnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+	public static StringSnapshotResult<Assembly, IThat<Assembly?>> MatchesPublicApiSnapshot(
 		this IThat<Assembly?> subject,
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
@@ -56,9 +55,8 @@ public static class ThatPublicApi
 	///     The assembly is read without loading it by
 	///     <see cref="PublicApiDeclarations.GenerateFrom(FileInfo, Func{PublicApiOptions, PublicApiOptions})" />,
 	///     e.g. a build for a target framework that the tests cannot run on or a reference assembly.<br />
-	///     The result continues on the generated public API text, not on the file, so <c>.And</c> adds expectations on
-	///     that text: the text and line rules of the snapshot only apply to a string subject.<br />
-	///     Otherwise, it behaves like the overload for an <see cref="Assembly" />.
+	///     Otherwise, it behaves like the overload for an <see cref="Assembly" />, so <c>.And</c> continues on the file
+	///     and awaiting the result returns it.
 	/// </remarks>
 	/// <param name="subject">The subject.</param>
 	/// <param name="options">
@@ -68,7 +66,7 @@ public static class ThatPublicApi
 	/// <param name="callerFilePath">The path of the test file, which is set by the compiler.</param>
 	/// <param name="callerMemberName">The name of the test method, which is set by the compiler.</param>
 	[GuaranteesNotNull]
-	public static StringSnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(
+	public static StringSnapshotResult<FileInfo, IThat<FileInfo?>> MatchesPublicApiSnapshot(
 		this IThat<FileInfo?> subject,
 		Func<PublicApiOptions, PublicApiOptions>? options = null,
 		[CallerFilePath] string callerFilePath = "",
@@ -78,13 +76,13 @@ public static class ThatPublicApi
 			callerFilePath, callerMemberName);
 
 	/// <remarks>
-	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the
-	///     generated public API.<br />
+	///     The snapshot is added on the member of the generated public API, and its options are shared with the result
+	///     on the subject, so that e.g. <c>.Named(...)</c> on the result still names the snapshot.<br />
 	///     The options that the public API was generated with are kept for the "Public API options" of a failure.
 	/// </remarks>
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]
-	private static StringSnapshotResult<string?, IThat<string?>> AddPublicApiSnapshot<TSubject>(
+	private static StringSnapshotResult<TSubject, IThat<TSubject?>> AddPublicApiSnapshot<TSubject>(
 		IThat<TSubject?> subject,
 		Func<PublicApiOptions, PublicApiOptions>? options,
 		Func<TSubject, Func<PublicApiOptions, PublicApiOptions>, string> write,
@@ -93,20 +91,20 @@ public static class ThatPublicApi
 		where TSubject : class
 	{
 		PublicApiOptions? usedOptions = null;
-		StringSnapshotResult<string?, IThat<string?>>? result = null;
-		subject.Get().ExpectationBuilder
+		StringSnapshotResult<string, IThat<string?>>? snapshot = null;
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		expectationBuilder
 			.ForMember(MemberAccessor<TSubject?, string?>.FromFuncWithName(
 					value => value is null
 						? null
 						: write(value, defaults => usedOptions = options?.Invoke(defaults) ?? defaults),
 					"public API"),
 				(_, stringBuilder) => stringBuilder.Append("has a public API which "))
-			.AddExpectations(expectationBuilder =>
+			.AddExpectations(memberBuilder =>
 			{
-				expectationBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions?.AddContext(contexts));
-				result = new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath,
-					callerMemberName)!;
+				memberBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions?.AddContext(contexts));
+				snapshot = new ThatSubject<string?>(memberBuilder).MatchesSnapshot(callerFilePath, callerMemberName);
 			});
-		return result!;
+		return new StringSnapshotResult<TSubject, IThat<TSubject?>>(expectationBuilder, subject, snapshot!.Options);
 	}
 }

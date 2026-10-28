@@ -214,33 +214,6 @@ public static partial class ThatSnapshot
 			static (file, _) => new ValueTask<byte[]>(File.ReadAllBytes(file!.FullName)));
 
 	/// <summary>
-	///     Stores the snapshot of a <see cref="string" /> with the file <paramref name="extension" /> instead of
-	///     <c>txt</c>, e.g. <c>json</c> in <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.json</c>, so that editors
-	///     and diff tools highlight it.
-	/// </summary>
-	/// <typeparam name="TType">
-	///     The type that awaiting the result returns, which is nullable for a string that a snapshot expectation of
-	///     another subject continues on, e.g. the public API of an assembly.
-	/// </typeparam>
-	/// <param name="result">The snapshot expectation of a string.</param>
-	/// <param name="extension">The file extension without a leading dot, e.g. <c>json</c>, <c>html</c> or <c>xml</c>.</param>
-	/// <remarks>
-	///     The pending file keeps the extension as well, e.g.
-	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.json</c>.
-	///     The extension is kept as given, and a store receives it as <see cref="SnapshotId.Extension" />.<br />
-	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
-	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />
-	///     A snapshot that was already used with another extension in the same test run fails.
-	/// </remarks>
-	public static StringSnapshotResult<TType, IThat<string?>> WithExtension<TType>(
-		this StringSnapshotResult<TType, IThat<string?>> result, string extension)
-	{
-		SnapshotExtension.ThrowIfInvalid(extension);
-		result.Options.Extension = extension;
-		return result;
-	}
-
-	/// <summary>
 	///     Stores the snapshot of a <see cref="FileInfo" /> with the file <paramref name="extension" /> instead of the
 	///     extension of the file, e.g. for a file without one.
 	/// </summary>

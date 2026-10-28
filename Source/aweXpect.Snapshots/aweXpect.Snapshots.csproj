@@ -20,6 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="aweXpect.Snapshots.PublicApi" Key="$(PublicKey)"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="buildTransitive/aweXpect.Snapshots.targets" Pack="true" PackagePath="buildTransitive/"/>
 	</ItemGroup>
 

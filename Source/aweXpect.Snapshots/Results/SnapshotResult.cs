@@ -26,6 +26,26 @@ public class StringSnapshotResult<TType, TThat> : SnapshotResult<TType, TThat, S
 	/// </remarks>
 	public StringSnapshotFor<StringSnapshotResult<TType, TThat>> For => new(AddRule);
 
+	/// <summary>
+	///     Stores the snapshot with the file <paramref name="extension" /> instead of <c>txt</c>, e.g. <c>json</c> in
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.json</c>, so that editors and diff tools highlight it.
+	/// </summary>
+	/// <param name="extension">The file extension without a leading dot, e.g. <c>json</c>, <c>html</c> or <c>xml</c>.</param>
+	/// <remarks>
+	///     The pending file keeps the extension as well, e.g.
+	///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.json</c>.
+	///     The extension is kept as given, and a store receives it as <see cref="SnapshotId.Extension" />.<br />
+	///     It cannot be empty, contain a <c>.</c>, whitespace, control characters or any of
+	///     <c>&lt; &gt; : " / \ | ? * % @</c>, or be <c>pending</c>.<br />
+	///     A snapshot that was already used with another extension in the same test run fails.
+	/// </remarks>
+	public StringSnapshotResult<TType, TThat> WithExtension(string extension)
+	{
+		SnapshotExtension.ThrowIfInvalid(extension);
+		Options.Extension = extension;
+		return this;
+	}
+
 	private StringSnapshotResult<TType, TThat> AddRule(SnapshotRule rule)
 	{
 		Options.Rules.Add(rule);

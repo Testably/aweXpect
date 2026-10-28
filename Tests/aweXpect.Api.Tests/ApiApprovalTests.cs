@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -62,7 +63,7 @@ public sealed class ApiApprovalTests
 	/// <summary>
 	///     The snapshot is named after the assembly and the target framework, so that both tests use the same one.
 	/// </summary>
-	private static StringSnapshotResult<string?, IThat<string?>> MatchesPublicApiSnapshot(string assemblyName,
+	private static StringSnapshotResult<FileInfo, IThat<FileInfo?>> MatchesPublicApiSnapshot(string assemblyName,
 		string framework)
 		=> That(Helper.GetAssemblyFile(framework, assemblyName))
 			.MatchesPublicApiSnapshot(callerMemberName: assemblyName).Named(framework);

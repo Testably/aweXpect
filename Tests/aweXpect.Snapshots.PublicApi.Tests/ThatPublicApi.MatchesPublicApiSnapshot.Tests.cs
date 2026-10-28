@@ -17,6 +17,28 @@ public sealed partial class ThatPublicApi
 				=> await That(typeof(Album).Assembly).MatchesPublicApiSnapshot().UniqueFor.TargetFramework();
 
 			[Test]
+			public async Task WhenAwaited_ShouldReturnTheSubject()
+			{
+				Assembly subject = Assembly.LoadFile(WriteForwardingLibrary().FullName);
+
+				Assembly result = await That(subject).MatchesPublicApiSnapshot();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
+			public async Task WhenChainedWithAnd_ShouldContinueOnTheSubject()
+			{
+				Assembly subject = Assembly.LoadFile(WriteForwardingLibrary().FullName);
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot().And.IsSameAs(subject);
+
+				await That(Act).DoesNotThrow()
+					.Because("the expectations after .And are on the assembly, not on the generated public API");
+			}
+
+			[Test]
 			public async Task WhenIgnoringForwardedTypes_ShouldNotIncludeThem()
 				=> await That(Assembly.LoadFile(WriteForwardingLibrary().FullName))
 					.MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
