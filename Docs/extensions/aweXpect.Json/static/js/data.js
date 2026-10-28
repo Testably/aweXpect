@@ -1140,6 +1140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -1332,7 +1338,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -1528,7 +1535,8 @@ window.BENCHMARK_DATA = {
           2002.1438337472769,
           1553.343476840428,
           2041.0273508707683,
-          1741.9377871922084
+          1741.9377871922084,
+          1121.6986954552788
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1674,6 +1682,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -1933,7 +1942,8 @@ window.BENCHMARK_DATA = {
           15612.746715291341,
           12111.159053548177,
           17248.27479117257,
-          12445.543935139975
+          12445.543935139975,
+          6879.857294522799
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1945,6 +1955,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -3288,6 +3299,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -3480,7 +3497,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -3676,7 +3694,8 @@ window.BENCHMARK_DATA = {
           1666.2785999591533,
           1287.2674263000488,
           1646.505560874939,
-          1309.7550945281982
+          1309.7550945281982,
+          911.3658422470093
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3822,6 +3841,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -4081,7 +4101,8 @@ window.BENCHMARK_DATA = {
           15029.327513631184,
           11357.86665242513,
           15960.658412679037,
-          11526.667223249164
+          11526.667223249164,
+          6374.938336299016
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4093,6 +4114,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -5376,6 +5398,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -5558,7 +5586,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -5744,7 +5773,8 @@ window.BENCHMARK_DATA = {
           5498.241242472331,
           3815.971667989095,
           5685.943733215332,
-          4053.1300054277694
+          4053.1300054277694,
+          3144.737738095797
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5927,6 +5957,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -6129,7 +6160,8 @@ window.BENCHMARK_DATA = {
           48082.12121582031,
           32478.476969401043,
           49438.050354003906,
-          34571.40782877604
+          34571.40782877604,
+          21171.033935546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6320,7 +6352,8 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7414,6 +7447,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -7596,7 +7635,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -7782,7 +7822,8 @@ window.BENCHMARK_DATA = {
           9362.658601614145,
           7286.235590253557,
           9539.489362444196,
-          8132.064419086163
+          8132.064419086163,
+          5364.80706678118
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7918,6 +7959,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -8167,7 +8209,8 @@ window.BENCHMARK_DATA = {
           309273.2155761719,
           230929.51668294272,
           316016.8295735677,
-          240394.45045572918
+          240394.45045572918,
+          161000.84202473957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8358,7 +8401,8 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521594,
-          521542
+          521542,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9452,6 +9496,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -9634,7 +9684,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -9820,7 +9871,8 @@ window.BENCHMARK_DATA = {
           2822.092520305089,
           2339.903066253662,
           2878.234126164363,
-          2605.2836151123047
+          2605.2836151123047,
+          1689.7146986447847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10006,6 +10058,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -10205,7 +10258,8 @@ window.BENCHMARK_DATA = {
           1989.1352724347796,
           1779.6196866353353,
           2005.7089811471792,
-          1888.894962946574
+          1888.894962946574,
+          1181.5658986227852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10217,6 +10271,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -11490,6 +11545,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -11672,7 +11733,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -11858,7 +11920,8 @@ window.BENCHMARK_DATA = {
           2878.1142407735188,
           2112.002439626058,
           3143.5914372762045,
-          2295.214455604553
+          2295.214455604553,
+          1605.3610450199672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12041,6 +12104,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -12243,7 +12307,8 @@ window.BENCHMARK_DATA = {
           1685.4638674418131,
           1949.1847943623861,
           1927.088729095459,
-          1938.341661834717
+          1938.341661834717,
+          905.1689306259156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12255,6 +12320,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -12826,6 +12892,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -12891,7 +12963,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -12960,7 +13033,8 @@ window.BENCHMARK_DATA = {
           2416.109371772179,
           1833.0526563008627,
           2461.498104640416,
-          1969.1961990356444
+          1969.1961990356444,
+          1282.4836793627057
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13026,6 +13100,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -13111,7 +13186,8 @@ window.BENCHMARK_DATA = {
           1145.5878542491369,
           1360.7521257400513,
           1227.1598706563313,
-          1387.9010274251302
+          1387.9010274251302,
+          604.3948420115879
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13123,6 +13199,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -13577,6 +13654,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -13642,7 +13725,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -13711,7 +13795,8 @@ window.BENCHMARK_DATA = {
           3037.964632161458,
           2429.930246225993,
           3122.3266352335613,
-          2607.717852183751
+          2607.717852183751,
+          1632.7974090576172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13761,6 +13846,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -13862,7 +13948,8 @@ window.BENCHMARK_DATA = {
           1320.729950087411,
           1552.1033114024572,
           1409.697113445827,
-          1509.4031691918005
+          1509.4031691918005,
+          666.3162338892619
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13874,6 +13961,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -13986,6 +14074,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -13994,7 +14088,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -14006,7 +14101,8 @@ window.BENCHMARK_DATA = {
           160665.34225260417,
           137958.8206217448,
           162809.2893254207,
-          148803.72173200335
+          148803.72173200335,
+          93625.93248697916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14018,6 +14114,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -14043,7 +14140,8 @@ window.BENCHMARK_DATA = {
           192922.53414481026,
           166827.9689860026,
           197813.32146344866,
-          176682.35164388022
+          176682.35164388022,
+          106742.51782226562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14060,7 +14158,8 @@ window.BENCHMARK_DATA = {
           266951,
           266882,
           266951,
-          266882
+          266882,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14110,6 +14209,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
@@ -14118,7 +14223,8 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
@@ -14130,7 +14236,8 @@ window.BENCHMARK_DATA = {
           2680.29673903329,
           2073.7609283447264,
           2885.482154573713,
-          2102.466804797833
+          2102.466804797833,
+          1433.6354141235352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14142,6 +14249,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -14167,7 +14275,8 @@ window.BENCHMARK_DATA = {
           1793.1345399220784,
           1823.9254959106445,
           1973.0849143981934,
-          1884.7637474877495
+          1884.7637474877495,
+          1005.526272837321
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14179,6 +14288,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
