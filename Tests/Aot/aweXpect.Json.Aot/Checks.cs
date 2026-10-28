@@ -176,6 +176,8 @@ internal static partial class Checks
 			() => ShouldThrowNotSupported(async () => await That(Parse("{}"))
 					.Matches(new Track { Rating = new Dto[0], }, o => o.WithSerializerOptions(DtoContext.Default.Options)),
 				"Add [JsonSerializable(typeof(Checks.Dto[]))]")),
+		new("the option methods need only the namespace aweXpect",
+			() => ShouldPass(Consumer.Json.ConsumerChecks.OptionsWithoutPackageNamespace)),
 	];
 
 	private static JsonElement Parse(string json)

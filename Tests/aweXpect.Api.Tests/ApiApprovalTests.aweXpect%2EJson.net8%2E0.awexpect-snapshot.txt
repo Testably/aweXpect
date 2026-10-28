@@ -7,6 +7,22 @@ namespace aweXpect
     {
         public static TSelf AsJson<TSelf>(this TSelf result, System.Func<aweXpect.Json.Options.JsonOptions, aweXpect.Json.Options.JsonOptions>? options = null) where TSelf : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
+    public static class JsonLookupOptionsHolderExtensions
+    {
+        public static aweXpect.Core.OptionsHolder<aweXpect.Json.Options.JsonLookupOptions> TreatingNullAsAbsent(this aweXpect.Core.OptionsHolder<aweXpect.Json.Options.JsonLookupOptions> holder, bool treatNullAsAbsent = true) { }
+    }
+    public static class JsonOptionsExtensions
+    {
+        public static aweXpect.Json.Options.JsonNumbersWithinOptions ComparingNumbersWithin(this aweXpect.Json.Options.JsonOptions options, double tolerance) { }
+        public static aweXpect.Json.Options.JsonOptions IgnoringAdditionalArrayElements(this aweXpect.Json.Options.JsonOptions options, bool ignoreAdditionalArrayElements = true) { }
+        public static aweXpect.Json.Options.JsonOptions IgnoringAdditionalProperties(this aweXpect.Json.Options.JsonOptions options, bool ignoreAdditionalProperties = true) { }
+        public static aweXpect.Json.Options.JsonOptions IgnoringArrayOrder(this aweXpect.Json.Options.JsonOptions options, bool ignoreArrayOrder = true) { }
+        public static aweXpect.Json.Options.JsonOptions IgnoringMember(this aweXpect.Json.Options.JsonOptions options, string memberToIgnore) { }
+        public static aweXpect.Json.Options.JsonOptions IgnoringMembers(this aweXpect.Json.Options.JsonOptions options, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
+        public static aweXpect.Json.Options.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.Options.JsonOptions options, bool treatNullAsAbsent = true) { }
+        public static aweXpect.Json.Options.JsonOptions WithDocumentOptions(this aweXpect.Json.Options.JsonOptions options, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> documentOptions) { }
+        public static aweXpect.Json.Options.JsonOptions WithSerializerOptions(this aweXpect.Json.Options.JsonOptions options, System.Text.Json.JsonSerializerOptions serializerOptions) { }
+    }
     public static class ThatJsonElement
     {
         public static aweXpect.Json.Results.JsonPropertyResult<System.Text.Json.JsonElement, aweXpect.Core.IThat<System.Text.Json.JsonElement>> DoesNotHaveProperty(this aweXpect.Core.IThat<System.Text.Json.JsonElement> subject, string name) { }
@@ -205,22 +221,6 @@ namespace aweXpect.Json
     {
         public static string Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
         public static void Format(this aweXpect.Formatting.ValueFormatter formatter, System.Text.StringBuilder stringBuilder, System.Text.Json.JsonElement? value, aweXpect.Formatting.FormattingOptions? options = null) { }
-    }
-    public static class JsonLookupOptionsHolderExtensions
-    {
-        public static aweXpect.Core.OptionsHolder<aweXpect.Json.Options.JsonLookupOptions> TreatingNullAsAbsent(this aweXpect.Core.OptionsHolder<aweXpect.Json.Options.JsonLookupOptions> holder, bool treatNullAsAbsent = true) { }
-    }
-    public static class JsonOptionsExtensions
-    {
-        public static aweXpect.Json.Options.JsonNumbersWithinOptions ComparingNumbersWithin(this aweXpect.Json.Options.JsonOptions @this, double tolerance) { }
-        public static aweXpect.Json.Options.JsonOptions IgnoringAdditionalArrayElements(this aweXpect.Json.Options.JsonOptions @this, bool ignoreAdditionalArrayElements = true) { }
-        public static aweXpect.Json.Options.JsonOptions IgnoringAdditionalProperties(this aweXpect.Json.Options.JsonOptions @this, bool ignoreAdditionalProperties = true) { }
-        public static aweXpect.Json.Options.JsonOptions IgnoringArrayOrder(this aweXpect.Json.Options.JsonOptions @this, bool ignoreArrayOrder = true) { }
-        public static aweXpect.Json.Options.JsonOptions IgnoringMember(this aweXpect.Json.Options.JsonOptions @this, string memberToIgnore) { }
-        public static aweXpect.Json.Options.JsonOptions IgnoringMembers(this aweXpect.Json.Options.JsonOptions @this, System.Func<string, bool> predicate, [System.Runtime.CompilerServices.CallerArgumentExpression("predicate")] string doNotPopulateThisValue = "") { }
-        public static aweXpect.Json.Options.JsonOptions TreatingNullAsAbsent(this aweXpect.Json.Options.JsonOptions @this, bool treatNullAsAbsent = true) { }
-        public static aweXpect.Json.Options.JsonOptions WithDocumentOptions(this aweXpect.Json.Options.JsonOptions @this, System.Func<System.Text.Json.JsonDocumentOptions, System.Text.Json.JsonDocumentOptions> documentOptions) { }
-        public static aweXpect.Json.Options.JsonOptions WithSerializerOptions(this aweXpect.Json.Options.JsonOptions @this, System.Text.Json.JsonSerializerOptions serializerOptions) { }
     }
 }
 namespace aweXpect.Json.Options

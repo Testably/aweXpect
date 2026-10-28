@@ -1,7 +1,7 @@
 ﻿using aweXpect.Core;
 using aweXpect.Json.Options;
 
-namespace aweXpect.Json;
+namespace aweXpect;
 
 /// <summary>
 ///     The option methods of <see cref="JsonLookupOptions" /> on the <see cref="OptionsHolder{TOptions}" /> of an
