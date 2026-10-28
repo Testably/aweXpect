@@ -1242,6 +1242,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -1451,7 +1457,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -1664,7 +1671,8 @@ window.BENCHMARK_DATA = {
           342.4948868433634,
           347.6062619345529,
           502.6281225340707,
-          651.9188171386719
+          651.9188171386719,
+          650.0231351852417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1820,6 +1828,7 @@ window.BENCHMARK_DATA = {
           464,
           464,
           464,
+          368,
           368,
           368,
           368,
@@ -2103,7 +2112,8 @@ window.BENCHMARK_DATA = {
           487.0153755187988,
           511.8779330934797,
           662.5472027460734,
-          935.6048184076946
+          935.6048184076946,
+          934.425332959493
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2115,6 +2125,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3577,6 +3588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -3786,7 +3803,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -3999,7 +4017,8 @@ window.BENCHMARK_DATA = {
           54.710572803020476,
           53.70245317476137,
           78.0545424904142,
-          101.0828171798161
+          101.0828171798161,
+          105.78797046343486
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4146,6 +4165,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4438,7 +4458,8 @@ window.BENCHMARK_DATA = {
           120.28429956436158,
           119.4272324187415,
           165.33249569856204,
-          207.54211529095969
+          207.54211529095969,
+          223.0810365517934
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4450,6 +4471,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -5912,6 +5934,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -6121,7 +6149,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -6334,7 +6363,8 @@ window.BENCHMARK_DATA = {
           942.0844794591268,
           911.125733311971,
           1385.623242441813,
-          1897.014309338161
+          1897.014309338161,
+          1905.782332611084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6529,6 +6559,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -6773,7 +6804,8 @@ window.BENCHMARK_DATA = {
           845.1625427246094,
           876.3808537165324,
           1078.323911412557,
-          1489.6223116556803
+          1489.6223116556803,
+          1475.0019279207502
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6991,7 +7023,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8187,6 +8220,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -8386,7 +8425,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -8589,7 +8629,8 @@ window.BENCHMARK_DATA = {
           1374.5715264638266,
           1389.655174255371,
           2140.318687438965,
-          2787.6499687194823
+          2787.6499687194823,
+          2801.4070598057338
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8774,6 +8815,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -9008,7 +9050,8 @@ window.BENCHMARK_DATA = {
           2170.910491434733,
           2190.125603267125,
           3020.092459814889,
-          3813.7754229227703
+          3813.7754229227703,
+          3852.338654738206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9216,7 +9259,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10412,6 +10456,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -10611,7 +10661,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -10814,7 +10865,8 @@ window.BENCHMARK_DATA = {
           182.54585393269858,
           182.38411378860474,
           270.76650756200155,
-          376.86722021102906
+          376.86722021102906,
+          405.70173050807074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10951,6 +11003,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -11233,7 +11286,8 @@ window.BENCHMARK_DATA = {
           1275.5570963541666,
           1304.7158854166667,
           1715.0311513900756,
-          2286.398344930013
+          2286.398344930013,
+          2330.5332129342214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11245,6 +11299,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -12637,6 +12692,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
         "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
+      },
+      {
+        "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
+        "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
       }
     ],
     "labels": [
@@ -12836,7 +12897,8 @@ window.BENCHMARK_DATA = {
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
-      "2bba8222"
+      "2bba8222",
+      "33ef507b"
     ],
     "datasets": [
       {
@@ -13039,7 +13101,8 @@ window.BENCHMARK_DATA = {
           1500.3998168064998,
           1574.9868636812482,
           2227.2492291132608,
-          3007.581505584717
+          3007.581505584717,
+          3092.1835108439127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13238,6 +13301,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -13458,7 +13522,8 @@ window.BENCHMARK_DATA = {
           152993.37360839843,
           167452.27479771205,
           240757.59542410713,
-          280960.5022670201
+          280960.5022670201,
+          281521.17257254466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13666,7 +13731,8 @@ window.BENCHMARK_DATA = {
           17576,
           17574,
           17577,
-          17707
+          17707,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
