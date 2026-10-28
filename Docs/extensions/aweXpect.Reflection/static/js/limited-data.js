@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
-      {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          356.174617099762,
           704.3644876480103,
           535.3990122721746,
           606.8000283922468,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           361.48864084879557,
           371.8360306535448,
           658.7765026887258,
-          666.1225430624826
+          666.1225430624826,
+          717.3313465118408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,7 @@ window.BENCHMARK_DATA = {
         "data": [
           464,
           464,
-          464,
+          368,
           368,
           368,
           368,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          536.8183043162028,
           926.7215559823172,
           599.25021387736,
           897.3135285059611,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           535.7584282330105,
           538.7823316867535,
           912.7841662724812,
-          910.9740199406941
+          910.9740199406941,
+          892.788693745931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
-      {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          58.143421300819945,
           104.04969412088394,
           76.7723245529028,
           109.94119653531483,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           57.29377517529896,
           58.84064237276713,
           112.43246676921845,
-          109.27381024360656
+          109.27381024360656,
+          99.74626936117808
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          122.15644100734166,
           215.77363429750716,
           208.96221241950988,
           214.08026609970972,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           130.66755592823029,
           124.99929022789001,
           209.32910462788172,
-          199.85296444892884
+          199.85296444892884,
+          191.67093537403986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
-      {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          877.4776200612386,
           1863.7854092461723,
           1032.0853875967173,
           1913.7210534413655,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           974.9345914522806,
           996.1595478057861,
           1849.8494091033936,
-          1814.0170042673747
+          1814.0170042673747,
+          1777.226598103841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1677,7 +1677,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          790.3319710413615,
           1452.0054513386317,
           948.3869262422834,
           1417.8631495067052,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           887.871327273051,
           811.8647864977519,
           1462.0381678263345,
-          1441.8871121724446
+          1441.8871121724446,
+          1420.5426682692307
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1764,7 +1764,6 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864,
           1953,
           1953,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
       {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1403.0971938451132,
           2742.6894027165004,
           1625.616120147705,
           2683.3756768362864,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1407.002833557129,
           1519.6138274329048,
           2682.1261184692385,
-          2649.084877559117
+          2649.084877559117,
+          2650.0373083750405
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2285,7 +2285,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2185.3293940226235,
           3875.937665499174,
           2474.9843826293945,
           3703.219406568087,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2330.305312523475,
           2333.6141204833984,
           3818.6849403381348,
-          3780.4813499450684
+          3780.4813499450684,
+          3693.5754152025497
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3981,
           3977,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3981,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
       {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          186.8432778040568,
           397.83714217406055,
           258.73817995616366,
           355.00933027267456,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           207.92194836934408,
           207.12831432478768,
           406.50287059148155,
-          369.4645639419556
+          369.4645639419556,
+          383.47430680592856
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1231.1973390579224,
           2321.012066432408,
           1513.0686894734702,
           2207.5948312123614,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1346.5243061610631,
           1325.7920325142998,
           2301.9324806758336,
-          2265.78483908517
+          2265.78483908517,
+          2244.725003378732
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "2035709788e314afef5721e8499327ca998ac367",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:16 2026 \u002B0100",
-        "message": "docs: link the extension docs instead of the archived repositories (#2083)"
-      },
-      {
         "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
         "message": "feat!: let the header expectations also read the content headers (#2128)"
+      },
+      {
+        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
+        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
       }
     ],
     "labels": [
-      "20357097",
       "1dc71bae",
       "5520582a",
       "a2e430d0",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
-      "978086a8"
+      "978086a8",
+      "e410691e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1460.6088209885818,
           2941.172984568278,
           1744.8773065294538,
           2959.1051738445576,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1602.653688812256,
           1454.1926074981689,
           2896.1334981282553,
-          2819.7892905644007
+          2819.7892905644007,
+          2771.5314837864466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3462,7 +3462,6 @@ window.BENCHMARK_DATA = {
         "data": [
           3232,
           3232,
-          3232,
           3200,
           3200,
           3200,
@@ -3502,6 +3501,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
+          3248,
           3248,
           3248,
           3248,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          169174.7233561198,
           283718.9447265625,
           184646.6104561942,
           303895.9719935826,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           163594.33670748197,
           165075.92091471356,
           281969.92259114585,
-          281558.70455729164
+          281558.70455729164,
+          273418.156266276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17577,
           17528,
           17577,
@@ -3633,6 +3632,7 @@ window.BENCHMARK_DATA = {
           17577,
           17576,
           17574,
+          17577,
           17577,
           17577
         ],
