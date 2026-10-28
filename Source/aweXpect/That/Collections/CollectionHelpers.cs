@@ -369,6 +369,7 @@ internal static class CollectionHelpers
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			// Only a null subject fails, and the base class already renders it.
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -376,6 +377,7 @@ internal static class CollectionHelpers
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			// Only a null subject fails, and the base class already renders it.
 		}
 	}
 
