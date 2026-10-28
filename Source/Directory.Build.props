@@ -22,7 +22,7 @@
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<NoWarn>$(NoWarn);1701;1702;NU5104</NoWarn>
-		<WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+		<WarningsNotAsErrors Condition="'$(Configuration)' == 'Debug'">CS1591</WarningsNotAsErrors>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
