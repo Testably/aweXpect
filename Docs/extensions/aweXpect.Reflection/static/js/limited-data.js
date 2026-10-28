@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
-      {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          654.3421315413254,
           671.6627222207876,
           510.8457384109497,
           352.4883561770121,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           683.3519100189209,
           347.86065171559653,
           500.8716677983602,
-          614.3767366409302
+          614.3767366409302,
+          656.0288326263428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          856.5047099930899,
           914.9418407586904,
           674.7714883804322,
           517.434481547429,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           928.5811157907758,
           519.4649501947256,
           708.7865483601888,
-          882.9032936096191
+          882.9032936096191,
+          983.1232933044433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
-      {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          108.38223900794983,
           104.47783721344811,
           79.48857587178549,
           54.09268499697958,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           132.41489141782125,
           69.61025864344377,
           84.66997290574588,
-          104.55142676035562
+          104.55142676035562,
+          107.19626475175222
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          194.78944703737895,
           201.3052121571132,
           163.58828633626302,
           129.4458199818929,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           219.674134349823,
           135.39477111612047,
           166.99938894907635,
-          219.3249032497406
+          219.3249032497406,
+          253.21939550127303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
-      {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1824.7318864186605,
           1883.1723336439866,
           1414.071137491862,
           968.0383640289307,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1922.313669204712,
           1012.6881680121788,
           1359.685546239217,
-          1845.0904158274332
+          1845.0904158274332,
+          1805.63905275785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1666,7 +1666,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1405.2154852549236,
           1458.6723163604736,
           1049.9497627258302,
           849.8805862835476,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1488.901920591082,
           884.202818938664,
           1103.1886461893716,
-          1399.0184700305645
+          1399.0184700305645,
+          1503.6241540908813
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1864,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1864,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
       {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2628.636346435547,
           2805.0542270115443,
           1980.77556737264,
           1527.3868714650473,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2800.3881424495153,
           1505.4866752624512,
           2046.8140335083008,
-          2588.9653475625173
+          2588.9653475625173,
+          2563.8966729300364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2274,7 +2274,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3781.691639709473,
           3885.0407955463115,
           2999.7583722432455,
           2311.443398108849,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3729.4891134897866,
           2321.2113876342773,
           3012.151653289795,
-          3856.8591782706126
+          3856.8591782706126,
+          3923.106797354562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3980
+          3980,
+          3978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
       {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          377.7605573947613,
           373.70174224036083,
           271.7017094067165,
           182.9318326632182,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           380.86117397944133,
           208.04418756280626,
           274.1447158495585,
-          360.8480878898076
+          360.8480878898076,
+          452.79995121274675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2204.889621189662,
           2238.6528282165527,
           1679.3286024729412,
           1335.615485872541,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2266.4327560424804,
           1453.42830619812,
           1761.8357459477015,
-          2250.60019329616
+          2250.60019329616,
+          2440.501351220267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "958434060b2fcc417535464eac15b519dfc70d5c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 17:43:21 2026 \u002B0100",
-        "message": "refactor!: align the remaining Core option hooks with the option rules (#2092)"
-      },
-      {
         "sha": "7190426271a7a65605d916dca260291afbe20ce8",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 17:47:36 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
         "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
+      },
+      {
+        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
+        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
       }
     ],
     "labels": [
-      "95843406",
       "71904262",
       "eea60aeb",
       "a9c742d3",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
-      "d75e0769"
+      "d75e0769",
+      "8ebddc03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2715.196264266968,
           2913.0787479694072,
           2169.3929059164866,
           1685.307834489005,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2989.4670478275843,
           1617.2601858774822,
           2131.0291979653493,
-          2862.6179227193197
+          2862.6179227193197,
+          2851.834618159703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3490,7 +3490,6 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
           3248,
           3248,
           3248,
@@ -3505,6 +3504,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          274204.56989933894,
           274655.42790339544,
           243313.63577706474,
           183877.80178222657,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           277869.67692683294,
           172100.1948730469,
           240105.06124441963,
-          302061.569148137
+          302061.569148137,
+          279888.1878580729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17574,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17574,
           17577,
-          17577
+          17577,
+          17558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
