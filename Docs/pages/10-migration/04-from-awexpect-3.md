@@ -222,6 +222,9 @@ Suppress it in test projects that use a virtual time system.
 - `HasHeader` and `DoesNotHaveHeader` also read the headers of the content, so `HasHeader("Content-Type")` now
   succeeds and `DoesNotHaveHeader("Content-Type")` fails when the content has this header, the same for
   `Content-Length`, `Content-Encoding` or `Content-Disposition`. Use `HasContentType` to verify the media type.
+- `HasHeader(…).WhoseValue(…)` and `HasQueryParameter(…).WhoseValue(…)` fail, also when negated, if the header or
+  query parameter does not have exactly one value, like `WithValue`. Before, the expectations on the value received
+  `null`, so that e.g. `WhoseValue(value => value.IsNull())` succeeded for several values.
 
 ### Namespaces
 

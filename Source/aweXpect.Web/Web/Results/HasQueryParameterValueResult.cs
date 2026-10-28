@@ -85,20 +85,8 @@ public class HasQueryParameterValueResult
 		Action<IThatSubject<string?>> expectations)
 	{
 		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
-		_expectationBuilder
-			.ForMember(
-				MemberAccessor<Uri, string?>.FromFuncWithName(u =>
-				{
-					string[]? values = u.GetQueryParameterValues(_name);
-					if (values?.Length != 1)
-					{
-						return null;
-					}
-
-					return values[0];
-				}, "the value "),
-				(_, stringBuilder) => stringBuilder.Append(" whose value "))
-			.AddExpectations(expectations);
+		_expectationBuilder.AddSingleValueExpectations<Uri>(u => u.GetQueryParameterValues(_name),
+			"query parameter values", expectations);
 		return this;
 	}
 

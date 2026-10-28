@@ -88,6 +88,28 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenHeaderHasMultipleValues_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeaders("x-genre", "rock", "jazz");
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-genre").WhoseValue(v => v.IsNotEqualTo("rock"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an "x-genre" header whose value is not equal to "rock",
+					             but it had 2 header values ["rock", "jazz"]
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-genre: rock
+					                 x-genre: jazz
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
@@ -160,6 +182,30 @@ public sealed partial class ThatHttpRequestMessage
 					               HEAD https://awexpect.com/ HTTP/1.1
 					                 x-my-header: some header
 					             """);
+			}
+
+			[Test]
+			public async Task WhenHeaderHasMultipleValues_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithHeaders("x-genre", "rock", "jazz");
+
+				async Task Act()
+					=> await That(subject)
+						.DoesNotComplyWith(it => it.HasHeader("x-genre").WhoseValue(v => v.IsEqualTo("rock")));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have an "x-genre" header whose value is equal to "rock",
+					             but it did contain the "x-genre" header: ["rock", "jazz"] and it had 2 header values ["rock", "jazz"]
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 x-genre: rock
+					                 x-genre: jazz
+					             """)
+					.Because("a header with several values has no single value to check, so it fails the expectation and its negation alike");
 			}
 		}
 	}
