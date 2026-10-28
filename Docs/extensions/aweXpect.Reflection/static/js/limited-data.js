@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
-      {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          489.4275792666844,
           349.77796055720404,
           318.35973532994586,
           656.2019107682364,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           347.6062619345529,
           502.6281225340707,
           651.9188171386719,
-          650.0231351852417
+          650.0231351852417,
+          696.7373105684916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          644.7326856026283,
           504.43075718198503,
           487.36285972595215,
           903.2886648178101,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           511.8779330934797,
           662.5472027460734,
           935.6048184076946,
-          934.425332959493
+          934.425332959493,
+          790.4320733887809
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
-      {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          75.41930011908214,
           57.821878228868755,
           53.062227074589046,
           110.45066498120626,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           53.70245317476137,
           78.0545424904142,
           101.0828171798161,
-          105.78797046343486
+          105.78797046343486,
+          118.5670189005988
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          166.062668800354,
           125.90101364680699,
           115.92414813775282,
           210.54550397396088,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           119.4272324187415,
           165.33249569856204,
           207.54211529095969,
-          223.0810365517934
+          223.0810365517934,
+          247.3366008122762
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
-      {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1382.546235148112,
           1006.4992156709943,
           911.3679145177206,
           1765.5958549499512,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           911.125733311971,
           1385.623242441813,
           1897.014309338161,
-          1905.782332611084
+          1905.782332611084,
+          1435.3627314934363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1660,7 +1660,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1082.640353902181,
           831.0409699122112,
           758.3283020019531,
           1440.820011138916,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           876.3808537165324,
           1078.323911412557,
           1489.6223116556803,
-          1475.0019279207502
+          1475.0019279207502,
+          1305.6793030330114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1763,7 +1763,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1864,
           1864,
-          1864,
           1953,
           1953,
           1953,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
-          1864
+          1864,
+          1952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
       {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2110.1127049763995,
           1463.629804611206,
           1318.1837924321492,
           2700.3685066223143,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1389.655174255371,
           2140.318687438965,
           2787.6499687194823,
-          2801.4070598057338
+          2801.4070598057338,
+          2146.982179005941
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2268,7 +2268,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2900.9416122436523,
           2208.402438354492,
           2055.689343516032,
           3811.665287653605,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2190.125603267125,
           3020.092459814889,
           3813.7754229227703,
-          3852.338654738206
+          3852.338654738206,
+          3375.942433039347
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3981,
           3980,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3981,
-          3980
+          3980,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
       {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          272.38374493672296,
           208.23742826168353,
           183.7481241861979,
           363.47918885094776,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           182.38411378860474,
           270.76650756200155,
           376.86722021102906,
-          405.70173050807074
+          405.70173050807074,
+          350.7862903888409
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1690.690761566162,
           1308.409900529044,
           1173.6930400303431,
           2234.1289777119955,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1304.7158854166667,
           1715.0311513900756,
           2286.398344930013,
-          2330.5332129342214
+          2330.5332129342214,
+          1985.8646915142353
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "4af90a17286a4ca1964e829b58a09d10b0b0274d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 20:55:05 2026 \u002B0100",
-        "message": "feat: default the negated result and take the subject in AddExpectations (#2097)"
-      },
-      {
         "sha": "5d21419fb2ba6f674a806757db52eb5f25e8c39d",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 20:56:58 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
-      "4af90a17",
       "5d21419f",
       "e09c66b4",
       "7649b140",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2234.089752469744,
           1591.9458465576172,
           1418.7146925608317,
           2725.9737236022947,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1574.9868636812482,
           2227.2492291132608,
           3007.581505584717,
-          3092.1835108439127
+          3092.1835108439127,
+          2301.2389460245768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3484,7 +3484,6 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
           3248,
           3248,
           3248,
@@ -3499,6 +3498,7 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
+          3264,
           3264,
           3264,
           3264,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          239645.20078822545,
           166082.3169468471,
           161738.3274676983,
           272854.9411433293,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           167452.27479771205,
           240757.59542410713,
           280960.5022670201,
-          281521.17257254466
+          281521.17257254466,
+          267586.37831333705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17574,
           17574,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17574,
           17577,
           17707,
-          17577
+          17577,
+          17658
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
