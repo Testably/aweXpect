@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
-      {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          656.6080237706502,
           357.96529528299965,
           485.09850184122723,
           305.2768303326198,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           717.3313465118408,
           495.3494989871979,
           504.377131652832,
-          626.4807441575186
+          626.4807441575186,
+          355.6786551475525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          896.3854001998901,
           545.3626660567063,
           708.5867201487223,
           456.65093636512756,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           892.788693745931,
           719.3923501968384,
           722.209126663208,
-          862.3000031153362
+          862.3000031153362,
+          520.713897450765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
-      {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          105.98728456497193,
           53.8455001860857,
           78.19539122581482,
           50.853073966503146,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           99.74626936117808,
           79.41822300507472,
           82.49245051237253,
-          105.15319384733836
+          105.15319384733836,
+          53.92242108498301
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          248.21908877690632,
           138.7467544078827,
           172.65625494321188,
           114.17726723353069,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           191.67093537403986,
           189.75781162579855,
           166.57190682093304,
-          212.387109041214
+          212.387109041214,
+          122.98164817003104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
-      {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1861.0644271850585,
           980.5618464152018,
           1334.4731621061053,
           863.3503203392029,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1777.226598103841,
           1456.7349389394124,
           1372.120185470581,
-          1785.1845141819545
+          1785.1845141819545,
+          946.5367733637491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1673,7 +1673,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1502.5857846577962,
           834.5415642602103,
           1088.1556775753315,
           793.0441759654453,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1420.5426682692307,
           1130.0748321533204,
           1090.8119434629168,
-          1356.9942136492048
+          1356.9942136492048,
+          820.8743755976359
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1953,
-          1953,
           1864,
           1953,
           1953,
@@ -1809,6 +1808,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
       {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2855.267758778163,
           1381.0182583882258,
           1999.697290802002,
           1267.707849230085,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2650.0373083750405,
           2242.3151111602783,
           1995.9870024461013,
-          2590.0441196148213
+          2590.0441196148213,
+          1476.6503938528208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2281,7 +2281,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3803.046391296387,
           2122.3299384483926,
           2979.260217666626,
           1985.5223154340472,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3693.5754152025497,
           3099.5109685262046,
           2989.4978318895614,
-          3824.090456644694
+          3824.090456644694,
+          2176.102575302124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3980,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
       {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          393.6206706682841,
           195.19042773246764,
           285.1616200038365,
           204.2250519434611,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           383.47430680592856,
           290.76927932103473,
           292.48169797261556,
-          358.0741132222689
+          358.0741132222689,
+          190.37787005106608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2320.0149681091307,
           1319.374270439148,
           1790.130494181315,
           1209.6026319357065,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2244.725003378732,
           1820.6675173895699,
           1818.1370654424031,
-          2181.4000129699707
+          2181.4000129699707,
+          1232.0952268327985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
-        "message": "feat: expose the running test, its cancellation token and attachments through the test framework adapter (#2073)"
-      },
-      {
         "sha": "2068b12ba6928181ddb4554564fd286fb017b66e",
         "author": "dependabot[bot]",
         "date": "Mon Oct 26 15:36:00 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
-      "705c8132",
       "2068b12b",
       "2ce286e6",
       "1b028951",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3001.027625744159,
           1556.9537018140156,
           2190.3123732346753,
           1409.1255081176757,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2771.5314837864466,
           2241.8845596313477,
           2167.465690612793,
-          2871.497319285075
+          2871.497319285075,
+          1636.6036308833532
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3497,7 +3497,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
+          3248,
           3248,
           3248,
           3248,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279478.11985677085,
           173705.89926757812,
           241536.76070731026,
           158555.87022986778,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           273418.156266276,
           239728.925390625,
           243292.83180338543,
-          304427.7484375
+          304427.7484375,
+          165681.01076253256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17574,
           17577,
           17576,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17707
+          17707,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
