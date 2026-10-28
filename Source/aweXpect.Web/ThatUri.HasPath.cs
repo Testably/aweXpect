@@ -51,11 +51,19 @@ public static partial class ThatUri
 		int start = 0;
 		while (index >= 0)
 		{
+#if NET10_0_OR_GREATER
+			sb.Append(Uri.UnescapeDataString(path.AsSpan(start, index - start))).Append("%2F");
+#else
 			sb.Append(Uri.UnescapeDataString(path.Substring(start, index - start))).Append("%2F");
+#endif
 			start = index + 3;
 			index = path.IndexOf("%2F", start, StringComparison.OrdinalIgnoreCase);
 		}
 
+#if NET10_0_OR_GREATER
+		return sb.Append(Uri.UnescapeDataString(path.AsSpan(start))).ToString();
+#else
 		return sb.Append(Uri.UnescapeDataString(path.Substring(start))).ToString();
+#endif
 	}
 }
