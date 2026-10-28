@@ -11,7 +11,7 @@ namespace aweXpect.Results;
 ///     implements this interface offers the same operators with the same names and expectation texts.
 ///     Implement the interface explicitly, so that its members do not show up next to the operators.
 /// </remarks>
-public interface IEnumPropertyResult<TEnum, out TResult>
+public interface IEnumPropertyResult<out TResult, TEnum>
 	where TEnum : struct, Enum
 {
 	/// <summary>

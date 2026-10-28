@@ -4,7 +4,7 @@ using aweXpect.Results;
 namespace aweXpect;
 
 /// <summary>
-///     The status code classes of an <see cref="IEnumPropertyResult{TEnum, TResult}" /> for a
+///     The status code classes of an <see cref="IEnumPropertyResult{TResult, TEnum}" /> for a
 ///     <see cref="HttpStatusCode" /> property, e.g. of <c>HasStatusCode()</c>.
 /// </summary>
 public static class HttpStatusCodePropertyResultExtensions
@@ -32,30 +32,30 @@ public static class HttpStatusCodePropertyResultExtensions
 	/// <summary>
 	///     …is a success status code (2xx).
 	/// </summary>
-	public static TResult Success<TResult>(this IEnumPropertyResult<HttpStatusCode, TResult> result)
+	public static TResult Success<TResult>(this IEnumPropertyResult<TResult, HttpStatusCode> result)
 		=> result.Compare(SuccessComparison);
 
 	/// <summary>
 	///     …is a redirection status code (3xx).
 	/// </summary>
-	public static TResult Redirection<TResult>(this IEnumPropertyResult<HttpStatusCode, TResult> result)
+	public static TResult Redirection<TResult>(this IEnumPropertyResult<TResult, HttpStatusCode> result)
 		=> result.Compare(RedirectionComparison);
 
 	/// <summary>
 	///     …is a client error status code (4xx).
 	/// </summary>
-	public static TResult ClientError<TResult>(this IEnumPropertyResult<HttpStatusCode, TResult> result)
+	public static TResult ClientError<TResult>(this IEnumPropertyResult<TResult, HttpStatusCode> result)
 		=> result.Compare(ClientErrorComparison);
 
 	/// <summary>
 	///     …is a server error status code (5xx).
 	/// </summary>
-	public static TResult ServerError<TResult>(this IEnumPropertyResult<HttpStatusCode, TResult> result)
+	public static TResult ServerError<TResult>(this IEnumPropertyResult<TResult, HttpStatusCode> result)
 		=> result.Compare(ServerErrorComparison);
 
 	/// <summary>
 	///     …is a client or server error status code (4xx or 5xx).
 	/// </summary>
-	public static TResult Error<TResult>(this IEnumPropertyResult<HttpStatusCode, TResult> result)
+	public static TResult Error<TResult>(this IEnumPropertyResult<TResult, HttpStatusCode> result)
 		=> result.Compare(ErrorComparison);
 }

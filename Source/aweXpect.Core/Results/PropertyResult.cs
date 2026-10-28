@@ -115,12 +115,12 @@ public static class PropertyResult
 		Func<TValue, TEnum?> mapper,
 		string propertyExpression,
 		ExpectationGrammars grammars = ExpectationGrammars.None)
-		: IEnumPropertyResult<TEnum, AndOrResult<TType, TThat>>
+		: IEnumPropertyResult<AndOrResult<TType, TThat>, TEnum>
 		where TThat : IThat<TValue>
 		where TEnum : struct, Enum
 	{
-		/// <inheritdoc cref="IEnumPropertyResult{TEnum, TResult}.Compare(PropertyComparison{TEnum})" />
-		AndOrResult<TType, TThat> IEnumPropertyResult<TEnum, AndOrResult<TType, TThat>>.Compare(
+		/// <inheritdoc cref="IEnumPropertyResult{TResult, TEnum}.Compare(PropertyComparison{TEnum})" />
+		AndOrResult<TType, TThat> IEnumPropertyResult<AndOrResult<TType, TThat>, TEnum>.Compare(
 			PropertyComparison<TEnum> comparison)
 			=> new(AddStructConstraint(subject, grammars, mapper, propertyExpression, comparison), subject);
 	}
