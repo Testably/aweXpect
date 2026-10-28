@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1743.8749532699585,
           1555.8806336266655,
           2077.206997190203,
           2022.4838717533992,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1553.343476840428,
           2041.0273508707683,
           1741.9377871922084,
-          1121.6986954552788
+          1121.6986954552788,
+          2035.2547675541468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12821.364896501813,
           10373.62582724435,
           15797.021658090445,
           16396.497399466378,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           12111.159053548177,
           17248.27479117257,
           12445.543935139975,
-          6879.857294522799
+          6879.857294522799,
+          15652.90908203125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1370.1837903431483,
           1237.6183641873872,
           1707.7806851704916,
           1628.0818207604545,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1287.2674263000488,
           1646.505560874939,
           1309.7550945281982,
-          911.3658422470093
+          911.3658422470093,
+          1646.6772900990077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12044.597059122721,
           9507.562659630408,
           14388.153580801827,
           14987.185563223702,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           11357.86665242513,
           15960.658412679037,
           11526.667223249164,
-          6374.938336299016
+          6374.938336299016,
+          14214.091711191031
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4173.6183504377095,
           3929.077146911621,
           5650.870903602014,
           5524.671089172363,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3815.971667989095,
           5685.943733215332,
           4053.1300054277694,
-          3144.737738095797
+          3144.737738095797,
+          5423.047189331055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1664,7 +1664,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1676,6 +1675,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          36000.69462702824,
           29005.375069754464,
           47018.66225585937,
           48515.545335036055,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           32478.476969401043,
           49438.050354003906,
           34571.40782877604,
-          21171.033935546875
+          21171.033935546875,
+          44811.82889811198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
       {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8322.804649353027,
           7380.94525381235,
           9506.016381399972,
           9682.06654663086,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7286.235590253557,
           9539.489362444196,
           8132.064419086163,
-          5364.80706678118
+          5364.80706678118,
+          9275.364849853515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249743.68704427083,
           209206.36682942708,
           298369.51307896205,
           320901.01326497394,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           230929.51668294272,
           316016.8295735677,
           240394.45045572918,
-          161000.84202473957
+          161000.84202473957,
+          300366.8944335937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521541,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521541,
           521594,
           521542,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
       {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2629.9251869746618,
           2213.655953816005,
           2867.4629217294546,
           2900.133402457604,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2339.903066253662,
           2878.234126164363,
           2605.2836151123047,
-          1689.7146986447847
+          1689.7146986447847,
+          2829.7870570591517
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2894,7 +2894,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1917.626728602818,
           1560.3824951171875,
           1979.0604921976726,
           2031.432422910418,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1779.6196866353353,
           2005.7089811471792,
           1888.894962946574,
-          1181.5658986227852
+          1181.5658986227852,
+          1921.0287410191127
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2207.171106719971,
           2106.5819759368896,
           2660.720199584961,
           2747.917680467878,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2112.002439626058,
           3143.5914372762045,
           2295.214455604553,
-          1605.3610450199672
+          1605.3610450199672,
+          2877.017813618978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3483,7 +3483,6 @@ window.BENCHMARK_DATA = {
           2776,
           2776,
           2776,
-          2776,
           2840,
           2840,
           2840,
@@ -3500,6 +3499,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2056.406147548131,
           1397.956110127767,
           1748.7187596834624,
           1960.9122652689616,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1949.1847943623861,
           1927.088729095459,
           1938.341661834717,
-          905.1689306259156
+          905.1689306259156,
+          1836.7053999582927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1855.3363744099936,
           1632.067563756307,
           2086.253339494978,
           2179.8960843404134,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1833.0526563008627,
           2461.498104640416,
           1969.1961990356444,
-          1282.4836793627057
+          1282.4836793627057,
+          2271.7712829589846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4091,7 +4091,6 @@ window.BENCHMARK_DATA = {
           2888,
           2888,
           2888,
-          2888,
           3016,
           3016,
           3016,
@@ -4108,6 +4107,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1470.8178543090821,
           956.542239634196,
           1162.572247314453,
           1258.825724919637,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1360.7521257400513,
           1227.1598706563313,
           1387.9010274251302,
-          604.3948420115879
+          604.3948420115879,
+          1131.100829188029
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "1dc71baeed855a336b61690ddbd41727fb4e8923",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 12:27:41 2026 \u002B0100",
-        "message": "chore: run Dependabot in the night from Monday to Tuesday (#2082)"
-      },
-      {
         "sha": "5520582a5e5b20f3b1b14763cd7a7e4fa9dd6aaa",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 13:07:59 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
-      "1dc71bae",
       "5520582a",
       "a2e430d0",
       "705c8132",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2663.779745992025,
           2288.356576283773,
           2956.896233694894,
           3022.1497230529785,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2429.930246225993,
           3122.3266352335613,
           2607.717852183751,
-          1632.7974090576172
+          1632.7974090576172,
+          2964.126407623291
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4699,7 +4699,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
-          3744,
+          3872,
           3872,
           3872,
           3872,
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1690.9243260792323,
           1050.104055404663,
           1293.8981304168701,
           1429.0526109842153,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1552.1033114024572,
           1409.697113445827,
           1509.4031691918005,
-          666.3162338892619
+          666.3162338892619,
+          1274.1077661514282
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4906,6 +4906,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -4915,7 +4921,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -4928,7 +4935,8 @@ window.BENCHMARK_DATA = {
           137958.8206217448,
           162809.2893254207,
           148803.72173200335,
-          93625.93248697916
+          93625.93248697916,
+          163249.03696289062
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4940,6 +4948,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -4967,7 +4976,8 @@ window.BENCHMARK_DATA = {
           166827.9689860026,
           197813.32146344866,
           176682.35164388022,
-          106742.51782226562
+          106742.51782226562,
+          192988.30758463542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4985,7 +4995,8 @@ window.BENCHMARK_DATA = {
           266882,
           266951,
           266882,
-          266936
+          266936,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5041,6 +5052,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
         "message": "docs: amend the design goals where they are worded too broadly (#2129)"
+      },
+      {
+        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
+        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
       }
     ],
     "labels": [
@@ -5050,7 +5067,8 @@ window.BENCHMARK_DATA = {
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
-      "e410691e"
+      "e410691e",
+      "0027e238"
     ],
     "datasets": [
       {
@@ -5063,7 +5081,8 @@ window.BENCHMARK_DATA = {
           2073.7609283447264,
           2885.482154573713,
           2102.466804797833,
-          1433.6354141235352
+          1433.6354141235352,
+          2704.4972229003906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5075,6 +5094,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5102,7 +5122,8 @@ window.BENCHMARK_DATA = {
           1823.9254959106445,
           1973.0849143981934,
           1884.7637474877495,
-          1005.526272837321
+          1005.526272837321,
+          1889.855269495646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5114,6 +5135,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
