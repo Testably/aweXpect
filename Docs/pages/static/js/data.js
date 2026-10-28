@@ -1554,6 +1554,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -1815,7 +1821,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -2080,7 +2087,8 @@ window.BENCHMARK_DATA = {
           7871.454311664288,
           10836.996009239783,
           5386.045146179199,
-          10731.722440592448
+          10731.722440592448,
+          9834.38957449106
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2316,6 +2324,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2623,7 +2632,8 @@ window.BENCHMARK_DATA = {
           277296.1037597656,
           376805.266413762,
           184761.44944661457,
-          361128.0189127604
+          361128.0189127604,
+          318281.59622628347
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2893,6 +2903,7 @@ window.BENCHMARK_DATA = {
           590287,
           590287,
           590286,
+          590287,
           590287
         ],
         "borderColor": "#FF671B",
@@ -3166,7 +3177,8 @@ window.BENCHMARK_DATA = {
           15653.950175694057,
           20762.722424316406,
           10097.011583768404,
-          19540.003479003906
+          19540.003479003906,
+          18310.085467529298
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3178,6 +3190,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4962,6 +4975,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -5216,7 +5235,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -5474,7 +5494,8 @@ window.BENCHMARK_DATA = {
           186.9764168580373,
           225.74347742966242,
           104.02836934725444,
-          208.5255986213684
+          208.5255986213684,
+          232.66219765799386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5670,6 +5691,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6003,7 +6025,8 @@ window.BENCHMARK_DATA = {
           462.91304941177367,
           519.9630917867024,
           246.7109572092692,
-          477.98661235173546
+          477.98661235173546,
+          570.1218039194742
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6015,6 +6038,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6532,7 +6556,8 @@ window.BENCHMARK_DATA = {
           310.0391542116801,
           403.8919993400574,
           194.38665046010698,
-          388.9453813870748
+          388.9453813870748,
+          380.14378147125245
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6544,6 +6569,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12941,6 +12967,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -13965,7 +13997,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -14993,7 +15026,8 @@ window.BENCHMARK_DATA = {
           84.77129473136021,
           106.06908804575602,
           57.05679671253477,
-          102.49273867266518
+          102.49273867266518,
+          101.08922776381175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15992,6 +16026,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17062,7 +17097,8 @@ window.BENCHMARK_DATA = {
           235.73803017934162,
           261.76098985671996,
           132.9913690408071,
-          236.78540391921996
+          236.78540391921996,
+          257.4733988126119
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17255,6 +17291,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -18412,7 +18449,8 @@ window.BENCHMARK_DATA = {
           189.1074573834737,
           241.22636726924353,
           131.20685358047484,
-          237.847521679742
+          237.847521679742,
+          235.97290432453156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18424,6 +18462,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -20294,6 +20333,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -20555,7 +20600,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -20820,7 +20866,8 @@ window.BENCHMARK_DATA = {
           166.81118837424688,
           201.7942720413208,
           113.25751860936482,
-          219.62169986504776
+          219.62169986504776,
+          193.50729775428772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21025,6 +21072,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -21363,7 +21411,8 @@ window.BENCHMARK_DATA = {
           458.7736264546712,
           556.7301421483357,
           274.7212615694319,
-          512.4460574558804
+          512.4460574558804,
+          526.7778793743679
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21375,6 +21424,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -21906,7 +21956,8 @@ window.BENCHMARK_DATA = {
           262.8572775522868,
           350.73538258870445,
           188.82729444503784,
-          344.5829641137804
+          344.5829641137804,
+          334.2599605832781
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21918,6 +21969,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -28322,6 +28374,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -29346,7 +29404,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -30374,7 +30433,8 @@ window.BENCHMARK_DATA = {
           569.5773542949131,
           728.8686180114746,
           370.53427483485297,
-          701.6391012827555
+          701.6391012827555,
+          672.3134678431919
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31361,6 +31421,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -32443,7 +32504,8 @@ window.BENCHMARK_DATA = {
           1242.2306915283202,
           1318.9017910003663,
           704.2423777580261,
-          1316.826583703359
+          1316.826583703359,
+          1364.73307459695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32636,6 +32698,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -33793,7 +33856,8 @@ window.BENCHMARK_DATA = {
           520.0890223821004,
           664.9312440236409,
           361.54116298357644,
-          661.6651188532511
+          661.6651188532511,
+          660.1628768784659
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33805,6 +33869,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -40253,6 +40318,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -41277,7 +41348,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -42305,7 +42377,8 @@ window.BENCHMARK_DATA = {
           530.027265103658,
           729.4372780663626,
           363.6697772741318,
-          706.2924100240072
+          706.2924100240072,
+          666.7954696019491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43292,6 +43365,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -44374,7 +44448,8 @@ window.BENCHMARK_DATA = {
           17312.150975153996,
           28126.238096110024,
           10984.02451978411,
-          28068.117899576824
+          28068.117899576824,
+          20188.794692993164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45407,6 +45482,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -45724,7 +45800,8 @@ window.BENCHMARK_DATA = {
           615.2371544471154,
           798.7733165740967,
           420.3350796381632,
-          788.2845826466878
+          788.2845826466878,
+          748.4352978297642
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45736,6 +45813,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -47954,6 +48032,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -48273,7 +48357,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -48596,7 +48681,8 @@ window.BENCHMARK_DATA = {
           516.9446788200966,
           672.5671143213908,
           332.82178119023644,
-          670.8892386754354
+          670.8892386754354,
+          609.7945444924491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48890,6 +48976,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -49255,7 +49342,8 @@ window.BENCHMARK_DATA = {
           55902.93911539714,
           85270.27302433894,
           29995.62342936198,
-          83660.4387113131
+          83660.4387113131,
+          62406.55467810998
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49583,6 +49671,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -51499,6 +51588,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -51818,7 +51913,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -52141,7 +52237,8 @@ window.BENCHMARK_DATA = {
           116.80455354849498,
           149.17145450909933,
           71.35075828234355,
-          144.3283449490865
+          144.3283449490865,
+          132.88364822069803
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52435,6 +52532,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -52800,7 +52898,8 @@ window.BENCHMARK_DATA = {
           15057.741507393974,
           32518.35035588191,
           10829.856728108723,
-          31922.456168619792
+          31922.456168619792,
+          18310.94809613909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53128,6 +53227,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -53445,7 +53545,8 @@ window.BENCHMARK_DATA = {
           182.0034183184306,
           245.76857652664185,
           128.7284424463908,
-          239.02742910385132
+          239.02742910385132,
+          234.2481082280477
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -53457,6 +53558,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -55327,6 +55429,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -55588,7 +55696,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -55853,7 +55962,8 @@ window.BENCHMARK_DATA = {
           228.27548126073984,
           295.73251734461104,
           151.27606313569206,
-          287.53671305974325
+          287.53671305974325,
+          276.6938092158391
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56058,6 +56168,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -56396,7 +56507,8 @@ window.BENCHMARK_DATA = {
           355.4234770366124,
           410.6263248125712,
           205.45907661120097,
-          374.968530859266
+          374.968530859266,
+          404.03200848897296
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56408,6 +56520,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -56939,7 +57052,8 @@ window.BENCHMARK_DATA = {
           321.15883728436063,
           436.00304920332775,
           207.28623204231263,
-          396.99205526938806
+          396.99205526938806,
+          416.4631382135245
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56951,6 +57065,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -58777,6 +58892,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -59038,7 +59159,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -59303,7 +59425,8 @@ window.BENCHMARK_DATA = {
           580.3030179977417,
           722.0126645406087,
           366.93301709493,
-          699.5886997076182
+          699.5886997076182,
+          740.656484858195
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59539,6 +59662,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -59846,7 +59970,8 @@ window.BENCHMARK_DATA = {
           1743.8817689259847,
           1931.9159146626791,
           1045.9661004202705,
-          1804.2015657424927
+          1804.2015657424927,
+          2166.1026644388835
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59858,6 +59983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -60389,7 +60515,8 @@ window.BENCHMARK_DATA = {
           795.1447787602742,
           917.8959504641019,
           490.95020593007405,
-          885.7716691970825
+          885.7716691970825,
+          1005.1663681030274
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60401,6 +60528,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -62227,6 +62355,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -62488,7 +62622,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -62753,7 +62888,8 @@ window.BENCHMARK_DATA = {
           8539.392781938825,
           12081.822305297852,
           6001.568827115572,
-          12011.667479294996
+          12011.667479294996,
+          10787.109300885882
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62992,6 +63128,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -63296,7 +63433,8 @@ window.BENCHMARK_DATA = {
           27200.608716692244,
           38809.79135567801,
           19068.165841909555,
-          40850.87904575893
+          40850.87904575893,
+          34232.10279628209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63565,6 +63703,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609
         ],
@@ -63839,7 +63978,8 @@ window.BENCHMARK_DATA = {
           7987.613770621164,
           10700.880980271559,
           5641.548261202299,
-          10513.052755083356
+          10513.052755083356,
+          10071.800404139927
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63851,6 +63991,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -65677,6 +65818,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
         "message": "fix!: treat a missing content of a request like that of a response (#2138)"
+      },
+      {
+        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
+        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
       }
     ],
     "labels": [
@@ -65938,7 +66085,8 @@ window.BENCHMARK_DATA = {
       "348ea074",
       "91e67fd2",
       "d75e0769",
-      "8ebddc03"
+      "8ebddc03",
+      "19fa288e"
     ],
     "datasets": [
       {
@@ -66203,7 +66351,8 @@ window.BENCHMARK_DATA = {
           8052.052983210637,
           11514.810719081333,
           5742.339748382568,
-          11509.608568318685
+          11509.608568318685,
+          10224.272411891392
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66442,6 +66591,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -66746,7 +66896,8 @@ window.BENCHMARK_DATA = {
           39179.9456258138,
           57791.57387131911,
           27217.843921367938,
-          58764.477252666766
+          58764.477252666766,
+          49378.71614990234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67013,6 +67164,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -67289,7 +67441,8 @@ window.BENCHMARK_DATA = {
           15426.16258591872,
           20885.20245361328,
           11382.435955592564,
-          20891.318917410714
+          20891.318917410714,
+          19715.92201131185
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67301,6 +67454,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
