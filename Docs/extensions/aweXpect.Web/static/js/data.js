@@ -1170,6 +1170,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -1367,7 +1373,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -1568,7 +1575,8 @@ window.BENCHMARK_DATA = {
           478.6094778060913,
           457.49622230529786,
           488.1308433532715,
-          454.9328867594401
+          454.9328867594401,
+          480.2029307229178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1748,6 +1756,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -1983,7 +1992,8 @@ window.BENCHMARK_DATA = {
           1070.9929101126534,
           1021.4798039027622,
           925.5554426738194,
-          1004.6667348316738
+          1004.6667348316738,
+          1076.5203336988177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1995,6 +2005,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3373,6 +3384,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -3570,7 +3587,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -3771,7 +3789,8 @@ window.BENCHMARK_DATA = {
           249.41025761195593,
           259.32427620887756,
           231.6196001493014,
-          247.38296123913355
+          247.38296123913355,
+          246.07338156018938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3918,6 +3937,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4186,7 +4206,8 @@ window.BENCHMARK_DATA = {
           273.7050013175377,
           267.05627039500644,
           247.11147050857545,
-          266.0521447317941
+          266.0521447317941,
+          275.4768298222468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4198,6 +4219,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5516,6 +5538,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -5703,7 +5731,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -5894,7 +5923,8 @@ window.BENCHMARK_DATA = {
           1032.5758972167969,
           976.4981702168783,
           970.3885461262295,
-          883.3648537855881
+          883.3648537855881,
+          1104.9444580811721
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6086,6 +6116,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -6289,7 +6320,8 @@ window.BENCHMARK_DATA = {
           1101.2028221130372,
           1027.4066754659018,
           926.7154275349209,
-          982.2797829945882
+          982.2797829945882,
+          1017.240454228719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6301,6 +6333,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -7609,6 +7642,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -7796,7 +7835,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -7987,7 +8027,8 @@ window.BENCHMARK_DATA = {
           1958.8783255985804,
           1910.9118482149565,
           1955.3485249110631,
-          1914.5855023066204
+          1914.5855023066204,
+          1931.6328745524088
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8126,6 +8167,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -8382,7 +8424,8 @@ window.BENCHMARK_DATA = {
           22459.962811279296,
           22429.298300606864,
           20191.194490559898,
-          18786.086873372395
+          18786.086873372395,
+          22259.949120154746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8574,6 +8617,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -9702,6 +9746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -9889,7 +9939,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -10080,7 +10131,8 @@ window.BENCHMARK_DATA = {
           790.5419354120891,
           798.5347500528608,
           732.9516418163593,
-          719.9084849675496
+          719.9084849675496,
+          869.9114283879597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10219,6 +10271,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -10475,7 +10528,8 @@ window.BENCHMARK_DATA = {
           1437.2649509429932,
           1410.389205796378,
           1255.4042546198918,
-          1316.4993698120118
+          1316.4993698120118,
+          1355.2906568967378
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10487,6 +10541,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -11795,6 +11850,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
         "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
+      },
+      {
+        "sha": "554746c671599207ec99839f6537076f32e3c135",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
+        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
       }
     ],
     "labels": [
@@ -11982,7 +12043,8 @@ window.BENCHMARK_DATA = {
       "e410691e",
       "0027e238",
       "76331040",
-      "7558fdb1"
+      "7558fdb1",
+      "554746c6"
     ],
     "datasets": [
       {
@@ -12173,7 +12235,8 @@ window.BENCHMARK_DATA = {
           1373.2333023364727,
           1326.3084732055663,
           1237.9065493070161,
-          1279.2880212238856
+          1279.2880212238856,
+          1346.1458651678902
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12343,6 +12406,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -12568,7 +12632,8 @@ window.BENCHMARK_DATA = {
           836.3457184473674,
           862.400163430434,
           740.1350386483329,
-          772.4098425547282
+          772.4098425547282,
+          807.9884814580281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12580,6 +12645,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
