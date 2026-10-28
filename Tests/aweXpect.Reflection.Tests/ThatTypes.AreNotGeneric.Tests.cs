@@ -51,6 +51,47 @@ public sealed partial class ThatTypes
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(PublicClass), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreNotGeneric();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotGeneric());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             are all not generic,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               PublicClass,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             also contain a generic type,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               PublicClass,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
 		}
 
 		public sealed class Tests

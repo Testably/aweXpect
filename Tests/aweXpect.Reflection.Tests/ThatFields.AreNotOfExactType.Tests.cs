@@ -43,10 +43,11 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it contained fields of exact type ThatFields.AreNotOfExactType.DummyBase
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ThatFields.AreNotOfExactType.Dummy ThatFields.AreNotOfExactType.TestClass.DummyField,
 					               <null>
 					             ]
 					             """);

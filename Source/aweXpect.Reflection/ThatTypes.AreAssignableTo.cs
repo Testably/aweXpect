@@ -134,18 +134,18 @@ public static partial class ThatTypes
 #endif
 
 	[GenerateCollectionExpectation("AreAssignableTo", "is assignable to {type}", "are assignable to {type}",
-		CollectionOverload = true, NegatedName = "AreNotAssignableTo",
+		CollectionOverload = true, NegatedName = "AreNotAssignableTo", NullItemFailsBothWays = true,
 		Remarks = """
 		          This covers base classes and interfaces in one step and considers a type itself as assignable.
 		          """)]
-	private static bool IsAssignableToType(Type? item, Type type)
-		=> item is not null && type.EnsureIsNotOpenGeneric().IsAssignableFrom(item);
+	private static bool IsAssignableToType(Type item, Type type)
+		=> type.EnsureIsNotOpenGeneric().IsAssignableFrom(item);
 
 	[GenerateCollectionExpectation("AreAssignableFrom", "is assignable from {type}", "are assignable from {type}",
-		CollectionOverload = true, NegatedName = "AreNotAssignableFrom",
+		CollectionOverload = true, NegatedName = "AreNotAssignableFrom", NullItemFailsBothWays = true,
 		Remarks = """
 		          This covers base classes and interfaces in one step and considers a type itself as assignable.
 		          """)]
-	private static bool IsAssignableFromType(Type? item, Type type)
-		=> item is not null && item.IsAssignableFrom(type.EnsureIsNotOpenGeneric());
+	private static bool IsAssignableFromType(Type item, Type type)
+		=> item.IsAssignableFrom(type.EnsureIsNotOpenGeneric());
 }

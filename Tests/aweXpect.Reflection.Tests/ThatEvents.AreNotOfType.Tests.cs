@@ -87,10 +87,11 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not of type EventHandler,
-					             but it contained events of type EventHandler
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent,
 					               <null>
 					             ]
 					             """);

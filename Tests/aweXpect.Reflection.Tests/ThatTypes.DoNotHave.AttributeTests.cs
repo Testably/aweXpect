@@ -69,9 +69,50 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(BarClass), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.BarClass,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.BarClass,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoTypeHasAttribute_ShouldSucceed()
 			{
-				List<Type?> subjects = [typeof(BarClass), null,];
+				List<Type?> subjects = [typeof(BarClass),];
 
 				async Task Act()
 				{
@@ -106,7 +147,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
-					typeof(BarClass), null,
+					typeof(BarClass),
 				}.ToTestAsyncEnumerable<Type?>();
 
 				async Task Act()

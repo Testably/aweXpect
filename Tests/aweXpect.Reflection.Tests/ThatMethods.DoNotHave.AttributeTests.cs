@@ -91,11 +91,52 @@ public sealed partial class ThatMethods
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<MethodInfo?> subject = [typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatMethods.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.NoAttributeMethod(),
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatMethods.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.NoAttributeMethod(),
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoMethodHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<MethodInfo?> subject = new[]
 				{
-					typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)), null,
+					typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)),
 				};
 
 				async Task Act()

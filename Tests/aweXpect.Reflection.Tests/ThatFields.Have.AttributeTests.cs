@@ -45,6 +45,47 @@ public sealed partial class ThatFields
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<FieldInfo?> subject = [typeof(TestClass).GetField("TestField1"), null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have ThatFields.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have ThatFields.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNotAllFieldsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<FieldInfo> subject = new[]

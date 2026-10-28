@@ -37,10 +37,11 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on namespace "{Layer2Namespace}",
-					              but it contained types with the dependency
+					              but for the item at index 1, it was <null>
 
-					              Not matching items:
+					              Collection:
 					              [
+					                OnlyLayer1,
 					                <null>
 					              ]
 					              """);
@@ -297,10 +298,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               OnlyLayer1,
 					               <null>
 					             ]
 					             """)
@@ -339,10 +341,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               OnlyLayer1,
 					               <null>
 					             ]
 					             """)

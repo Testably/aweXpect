@@ -49,10 +49,11 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ThatTypes.ContainMethods.ClassWithMarkedMethod,
 					               <null>
 					             ]
 					             """);

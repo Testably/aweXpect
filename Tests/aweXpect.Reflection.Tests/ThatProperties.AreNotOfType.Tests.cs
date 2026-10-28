@@ -87,10 +87,11 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not of type int,
-					             but it contained properties of type int
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; },
 					               <null>
 					             ]
 					             """);

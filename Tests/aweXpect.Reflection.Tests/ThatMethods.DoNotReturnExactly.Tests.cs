@@ -43,10 +43,11 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all do not return exactly ThatMethods.DummyBase,
-					             but it contained methods which return exactly ThatMethods.DummyBase
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy(),
 					               <null>
 					             ]
 					             """);

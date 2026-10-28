@@ -15,7 +15,7 @@ public sealed partial class ThatTypes
 			{
 				IEnumerable<Type?> subject = new[]
 				{
-					typeof(DoNotHaveNameType), null,
+					typeof(DoNotHaveNameType),
 				};
 
 				async Task Act()
@@ -24,6 +24,47 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(DoNotHaveNameType), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHaveName("SomeOtherClassName");
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHaveName("SomeOtherClassName"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have name equal to "SomeOtherClassName",
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             at least one has name equal to "SomeOtherClassName",
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHaveName.Tests.DoNotHaveNameType,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
 			}
 
 			[Test]
@@ -106,7 +147,7 @@ public sealed partial class ThatTypes
 			{
 				IAsyncEnumerable<Type?> subject = new[]
 				{
-					typeof(DoNotHaveNameType), null,
+					typeof(DoNotHaveNameType),
 				}.ToTestAsyncEnumerable<Type?>();
 
 				async Task Act()

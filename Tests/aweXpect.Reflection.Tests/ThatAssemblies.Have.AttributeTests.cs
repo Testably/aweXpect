@@ -43,6 +43,47 @@ public sealed partial class ThatAssemblies
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Assembly?> subject = [typeof(AttributeTests).Assembly, null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<AssemblyTitleAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<AssemblyTitleAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have AssemblyTitleAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard();
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have AssemblyTitleAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard().Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNegated_ShouldListMatchingAssemblies()
 			{
 				IEnumerable<Assembly> subjects = new[]

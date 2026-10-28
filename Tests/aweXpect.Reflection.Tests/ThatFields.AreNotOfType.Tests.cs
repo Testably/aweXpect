@@ -87,10 +87,11 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not of type int,
-					             but it contained fields of type int
+					             but for the item at index 1, it was <null>
 
-					             Not matching items:
+					             Collection:
 					             [
+					               string ThatFields.AreNotOfType.TestClass.StringField,
 					               <null>
 					             ]
 					             """);

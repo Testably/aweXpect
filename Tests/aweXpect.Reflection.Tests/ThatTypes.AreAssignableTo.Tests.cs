@@ -39,6 +39,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(DerivedClass1), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreAssignableTo<BaseClass>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAssignableTo<BaseClass>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are assignable to ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all are assignable to ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.DerivedClass1,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenSomeTypeIsNotAssignable_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(DerivedClass1), typeof(UnrelatedClass));
@@ -151,6 +192,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(UnrelatedClass), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreNotAssignableTo<BaseClass>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotAssignableTo<BaseClass>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none are assignable to ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.UnrelatedClass,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             at least one is assignable to ThatTypes.BaseClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.UnrelatedClass,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoTypeIsAssignable_ShouldSucceed()
 			{
 				Filtered.Types subject = In.Types(typeof(UnrelatedClass));
@@ -253,6 +335,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(BaseClass), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreAssignableFrom<GrandChildClass>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreAssignableFrom<GrandChildClass>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all are assignable from ThatTypes.GrandChildClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.BaseClass,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all are assignable from ThatTypes.GrandChildClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.BaseClass,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenSomeTypeIsNotAssignableFromTarget_ShouldFail()
 			{
 				Filtered.Types subject = In.Types(typeof(BaseClass), typeof(UnrelatedClass));
@@ -328,6 +451,47 @@ public sealed partial class ThatTypes
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(UnrelatedClass), null,];
+
+				async Task Act()
+				{
+					await That(subject).AreNotAssignableFrom<GrandChildClass>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.AreNotAssignableFrom<GrandChildClass>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none are assignable from ThatTypes.GrandChildClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.UnrelatedClass,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             at least one is assignable from ThatTypes.GrandChildClass,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.UnrelatedClass,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
 			}
 
 			[Test]

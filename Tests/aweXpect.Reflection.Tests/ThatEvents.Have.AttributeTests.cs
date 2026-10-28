@@ -102,6 +102,47 @@ public sealed partial class ThatEvents
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<EventInfo?> subject = [typeof(TestClass).GetEvent("TestEvent1"), null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<MarkerAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<MarkerAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have ThatEvents.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have ThatEvents.Have.AttributeTests.MarkerAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNotAllEventsHaveAttribute_ShouldFail()
 			{
 				IEnumerable<EventInfo> subject = new[]

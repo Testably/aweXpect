@@ -91,11 +91,52 @@ public sealed partial class ThatFields
 			}
 
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<FieldInfo?> subject = [typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)), null,];
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.DoNotHave<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have no ThatFields.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.NoAttributeField,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have no ThatFields.DoNotHave.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.NoAttributeField,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenNoFieldHasAttribute_ShouldSucceed()
 			{
 				IEnumerable<FieldInfo?> subject = new[]
 				{
-					typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)), null,
+					typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)),
 				};
 
 				async Task Act()

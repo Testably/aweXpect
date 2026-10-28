@@ -20,10 +20,10 @@ namespace aweXpect;
 public static partial class ThatAssemblies
 {
 	[GenerateCollectionExpectation("HaveName", "has name {expected}", "have name {expected}",
-		CollectionOverload = true, NegatedName = "DoNotHaveName")]
-	private static ValueTask<bool> HasName(Assembly? assembly, [NegatedParameterName("unexpected")] string expected,
+		CollectionOverload = true, NegatedName = "DoNotHaveName", NullItemFailsBothWays = true)]
+	private static ValueTask<bool> HasName(Assembly assembly, [NegatedParameterName("unexpected")] string expected,
 		[ExpectationOptions] StringEqualityOptions options)
-		=> options.AreConsideredEqual(assembly?.GetName().Name, expected, nameof(expected));
+		=> options.AreConsideredEqual(assembly.GetName().Name, expected, nameof(expected));
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have the name

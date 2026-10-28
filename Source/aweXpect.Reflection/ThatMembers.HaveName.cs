@@ -21,11 +21,12 @@ namespace aweXpect;
 public static partial class ThatMembers
 {
 	[GenerateCollectionExpectation("HaveName", "has name {expected}", "have name {expected}",
-		CollectionOverload = true, NegatedName = "DoNotHaveName", FormattedItem = nameof(ToFormattable))]
-	private static ValueTask<bool> HasName<TMember>(TMember? member, [NegatedParameterName("unexpected")] string expected,
+		CollectionOverload = true, NegatedName = "DoNotHaveName", FormattedItem = nameof(ToFormattable),
+		NullItemFailsBothWays = true)]
+	private static ValueTask<bool> HasName<TMember>(TMember member, [NegatedParameterName("unexpected")] string expected,
 		[ExpectationOptions] StringEqualityOptions options)
 		where TMember : MemberInfo
-		=> options.AreConsideredEqual(member?.Name, expected, nameof(expected));
+		=> options.AreConsideredEqual(member.Name, expected, nameof(expected));
 
 	private static object? ToFormattable(MemberInfo? member) => FormattableMember.From(member);
 

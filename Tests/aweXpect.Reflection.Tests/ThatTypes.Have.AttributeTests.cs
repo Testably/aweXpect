@@ -10,6 +10,47 @@ public sealed partial class ThatTypes
 		public sealed class AttributeTests
 		{
 			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Type?> subject = [typeof(FooClass2), null,];
+
+				async Task Act()
+				{
+					await That(subject).Have<FooAttribute>();
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.Have<FooAttribute>());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have ThatTypes.Have.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.Have.AttributeTests.FooClass2,
+					               <null>
+					             ]
+					             """);
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have ThatTypes.Have.AttributeTests.FooAttribute,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               ThatTypes.Have.AttributeTests.FooClass2,
+					               <null>
+					             ]
+					             """).Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
 			public async Task WhenTypesHaveAttribute_ShouldSucceed()
 			{
 				Filtered.Types subject = In.AssemblyContaining<AttributeTests>().Types().With<FooAttribute>();

@@ -9,9 +9,10 @@ namespace aweXpect;
 public static partial class ThatAssemblies
 {
 	[GenerateCollectionExpectation("DependOn", "has dependency on assembly {expected}",
-		"have dependency on assembly {expected}", CollectionOverload = true, NegatedName = "DoNotDependOn")]
-	private static async ValueTask<bool> DependsOnAssembly(Assembly? assembly,
+		"have dependency on assembly {expected}", CollectionOverload = true, NegatedName = "DoNotDependOn",
+		NullItemFailsBothWays = true)]
+	private static async ValueTask<bool> DependsOnAssembly(Assembly assembly,
 		[NegatedParameterName("unexpected")] string expected, [ExpectationOptions] StringEqualityOptions options)
-		=> assembly is not null && await assembly.GetReferencedAssemblyNames()
+		=> await assembly.GetReferencedAssemblyNames()
 			.AnyAsync(dependency => options.AreConsideredEqual(dependency.Name, expected, nameof(expected)));
 }

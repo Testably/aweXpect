@@ -18,14 +18,17 @@ namespace aweXpect.Reflection.Helpers;
 /// <remarks>
 ///     The collection is read through the <see cref="IEvaluationContext" />, so that it is enumerated only once, also
 ///     when several expectations are combined. A <see langword="null" /> collection fails the expectation and its
-///     negation alike.
+///     negation alike, and so does a <see langword="null" /> item, which cannot be inspected, without reaching the
+///     predicate.
 /// </remarks>
 internal abstract class CollectionConstraintResult<T>(string it, ExpectationGrammars grammars)
 	: ConstraintResult(grammars)
 {
+	private IEnumerable<T>? _collectionWithNullItem;
 	private object? _items;
 	private List<T>? _matching;
 	private List<T>? _notMatching;
+	private int? _nullItemIndex;
 	private Outcome _outcome = Outcome.Undecided;
 	private Type? _subjectType;
 
@@ -105,9 +108,17 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 
 		List<T> matching = [];
 		List<T>? notMatching = null;
-		foreach (T item in context.UseMaterializedEnumerable(items!))
+		IEnumerable<T> materialized = context.UseMaterializedEnumerable(items!);
+		int index = 0;
+		foreach (T item in materialized)
 		{
+			if (item is null)
+			{
+				return FailForNullItem(index, materialized);
+			}
+
 			Add(predicate(item), item, matching, ref notMatching);
+			index++;
 		}
 
 		return Complete(matching, notMatching);
@@ -130,14 +141,22 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 
 		List<T> matching = [];
 		List<T>? notMatching = null;
-		foreach (T item in context.UseMaterializedEnumerable(items!))
+		IEnumerable<T> materialized = context.UseMaterializedEnumerable(items!);
+		int index = 0;
+		foreach (T item in materialized)
 		{
 			if (cancellationToken.IsCancellationRequested)
 			{
 				return this;
 			}
 
+			if (item is null)
+			{
+				return FailForNullItem(index, materialized);
+			}
+
 			Add(await predicate(item), item, matching, ref notMatching);
+			index++;
 		}
 
 		return Complete(matching, notMatching);
@@ -172,21 +191,43 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 
 		List<T> matching = [];
 		List<T>? notMatching = null;
+		IAsyncEnumerable<T> materialized = context.UseMaterializedAsyncEnumerable(items!, cancellationToken);
+		int index = 0;
+		int? nullItemIndex = null;
 		try
 		{
-			await foreach (T item in context.UseMaterializedAsyncEnumerable(items!, cancellationToken))
+			await foreach (T item in materialized)
 			{
 				if (cancellationToken.IsCancellationRequested)
 				{
 					return this;
 				}
 
+				// After a null item, the remaining items are only read to list the whole collection in the failure.
+				if (nullItemIndex is not null)
+				{
+					continue;
+				}
+
+				if (item is null)
+				{
+					nullItemIndex = index;
+					continue;
+				}
+
 				Add(await predicate(item), item, matching, ref notMatching);
+				index++;
 			}
 		}
 		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
 		{
 			return this;
+		}
+
+		if (nullItemIndex is not null)
+		{
+			return FailForNullItem(nullItemIndex.Value,
+				(materialized as IMaterializedAsyncEnumerable<T>)?.MaterializedItems);
 		}
 
 		return Complete(matching, notMatching);
@@ -243,7 +284,11 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public sealed override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 	{
-		if (_outcome == Outcome.FailureBothWays)
+		if (_outcome == Outcome.FailureBothWays && _nullItemIndex is not null)
+		{
+			stringBuilder.Append("for the item at index ").Append(_nullItemIndex.Value).Append(", it was <null>");
+		}
+		else if (_outcome == Outcome.FailureBothWays)
 		{
 			stringBuilder.Append(It).Append(Grammars.IsPlural() && It != "it" ? " were <null>" : " was <null>");
 		}
@@ -268,6 +313,12 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	/// </remarks>
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
+		if (_outcome == Outcome.FailureBothWays && _collectionWithNullItem is { } collection)
+		{
+			contexts.Add(new ResultContext.SyncCallback("Collection", () => FormatCollection(collection), -1));
+			return;
+		}
+
 		if (Outcome != Outcome.Failure)
 		{
 			return;
@@ -292,7 +343,10 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 	///     state that is captured when this method is called.
 	/// </remarks>
 	protected virtual Func<string?> FormatItems(T[] items)
-		=> () => Formatter.Format(FormattableMember.FromAll(items), FormattingOptions.MultipleLines);
+		=> () => FormatCollection(items);
+
+	private static string FormatCollection(IEnumerable<T> items)
+		=> Formatter.Format(FormattableMember.FromAll(items), FormattingOptions.MultipleLines);
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
@@ -319,8 +373,21 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		_subjectType = subjectType;
 		_matching = null;
 		_notMatching = null;
+		_nullItemIndex = null;
+		_collectionWithNullItem = null;
 		_outcome = items is null ? Outcome.FailureBothWays : Outcome.Undecided;
 		return items is not null;
+	}
+
+	/// <remarks>
+	///     The <paramref name="collection" /> is listed in the failure, as the index alone does not show the item.
+	/// </remarks>
+	private CollectionConstraintResult<T> FailForNullItem(int index, IEnumerable<T>? collection)
+	{
+		_nullItemIndex = index;
+		_collectionWithNullItem = collection;
+		_outcome = Outcome.FailureBothWays;
+		return this;
 	}
 
 	private CollectionConstraintResult<T> Complete(List<T> matching, List<T>? notMatching)

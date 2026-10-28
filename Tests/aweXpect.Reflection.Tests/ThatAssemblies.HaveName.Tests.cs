@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
@@ -11,6 +12,71 @@ public sealed partial class ThatAssemblies
 	{
 		public sealed class Tests
 		{
+			[Test]
+			public async Task WhenItemIsNull_ShouldFailBothWays()
+			{
+				IEnumerable<Assembly?> subject = [Assembly.GetExecutingAssembly(), null,];
+
+				async Task Act()
+				{
+					await That(subject).HaveName("aweXpect.Reflection.Tests");
+				}
+
+				async Task ActNegated()
+				{
+					await That(subject).DoesNotComplyWith(they => they.HaveName("aweXpect.Reflection.Tests"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have name equal to "aweXpect.Reflection.Tests",
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard();
+				await That(ActNegated).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             not all have name equal to "aweXpect.Reflection.Tests",
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard().Because("a null item cannot be inspected, like a null subject");
+			}
+
+			[Test]
+			public async Task WhenItemIsNullWithASelector_ShouldNotInvokeTheSelector()
+			{
+				IEnumerable<Assembly?> subject = [Assembly.GetExecutingAssembly(), null,];
+
+				async Task Act()
+				{
+					await That(subject).HaveName(assembly => assembly!.GetName().Name!);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             all have name matching assembly => assembly!.GetName().Name!,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               <null>
+					             ]
+					             """).AsWildcard().Because("the selector is only invoked for the items that can be inspected");
+			}
+
 			[Test]
 			public async Task WhenMoreAssembliesDoNotMatchSelectorThanTheMaximumNumberOfCollectionItems_ShouldLimitTheList()
 			{

@@ -55,7 +55,7 @@ public sealed partial class ThatTypes
 				IEnumerable<Type?> subject =
 				[
 					typeof(Layer1AndLayer2),
-					null,
+					typeof(OnlyLayer2),
 				];
 
 				async Task Act()
@@ -72,14 +72,14 @@ public sealed partial class ThatTypes
 					              Not matching items:
 					              [
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
-					                <null>
+					                OnlyLayer2 depends on ["{Layer2Namespace}"]
 					              ]
 					              """)
 					.Because("the list is only limited when it has more items than the maximum");
 			}
 
 			[Test]
-			public async Task WhenCollectionContainsNull_ShouldListNullWithoutViolations()
+			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				IEnumerable<Type?> subject =
 				[
@@ -96,10 +96,11 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies
+					              but for the item at index 1, it was <null>
 
-					              Not matching items:
+					              Collection:
 					              [
+					                OnlyLayer1,
 					                <null>
 					              ]
 					              """);
@@ -112,7 +113,7 @@ public sealed partial class ThatTypes
 				IEnumerable<Type?> subject =
 				[
 					typeof(Layer1AndLayer2),
-					null,
+					typeof(OnlyLayer2),
 				];
 
 				async Task Act()
