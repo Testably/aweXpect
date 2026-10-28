@@ -1236,6 +1236,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
@@ -1444,7 +1450,8 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
@@ -1656,7 +1663,8 @@ window.BENCHMARK_DATA = {
           549.8113759358724,
           890.4378986358643,
           921.2202224731445,
-          873.6177594111516
+          873.6177594111516,
+          632.6389473597209
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1837,6 +1845,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2093,7 +2102,8 @@ window.BENCHMARK_DATA = {
           507.1231466293335,
           704.6960507120405,
           710.1039289474487,
-          740.8162197113037
+          740.8162197113037,
+          540.954058442797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2105,6 +2115,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3560,6 +3571,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
@@ -3768,7 +3785,8 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
@@ -3980,7 +3998,8 @@ window.BENCHMARK_DATA = {
           3001.093763987223,
           4314.033343505859,
           4454.758040364583,
-          4371.526022338867
+          4371.526022338867,
+          3279.5806364331925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4195,6 +4214,7 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24179,
+          24178,
           24178,
           24178,
           24178
@@ -4417,7 +4437,8 @@ window.BENCHMARK_DATA = {
           3957.9833648681642,
           5140.793170048641,
           5190.540181841169,
-          4925.627370394193
+          4925.627370394193,
+          3794.0204157511394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4429,6 +4450,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -5824,6 +5846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
@@ -6022,7 +6050,8 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
@@ -6224,7 +6253,8 @@ window.BENCHMARK_DATA = {
           1639.05201285226,
           2534.869666290283,
           2532.866598002116,
-          2430.8441907442534
+          2430.8441907442534,
+          1878.433842250279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6405,6 +6435,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -6641,7 +6672,8 @@ window.BENCHMARK_DATA = {
           2255.8057375590006,
           3447.055249786377,
           3572.1844850267685,
-          3381.1653266906737
+          3381.1653266906737,
+          2626.7572768075124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6653,6 +6685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -8038,6 +8071,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
         "message": "feat: add \u0060OptionsProvider.WithOptions\u0060 to apply options to a result with or without copy-on-option (#2147)"
+      },
+      {
+        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
+        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
       }
     ],
     "labels": [
@@ -8236,7 +8275,8 @@ window.BENCHMARK_DATA = {
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
-      "33ef507b"
+      "33ef507b",
+      "f8435557"
     ],
     "datasets": [
       {
@@ -8438,7 +8478,8 @@ window.BENCHMARK_DATA = {
           8782.108249664307,
           13418.562852042061,
           14350.408572387696,
-          13125.01981135777
+          13125.01981135777,
+          10001.813723754884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8619,6 +8660,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -8855,7 +8897,8 @@ window.BENCHMARK_DATA = {
           187054.64772135418,
           350783.5338541667,
           358666.1329101563,
-          335141.2301307091
+          335141.2301307091,
+          240725.7471923828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9060,6 +9103,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544245,
+          544335,
           544335,
           544335,
           544335
