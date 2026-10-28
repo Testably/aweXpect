@@ -100,6 +100,10 @@ public static partial class ThatJsonObject
 	/// <remarks>
 	///     The expected JSON is shown as it is, like in <c>IsEqualTo(expected).AsJson()</c>, because it tells more than
 	///     the expression of a variable.
+	///     <para />
+	///     It is parsed when the expectation is written, like in <c>Matches</c>, so that invalid JSON is rejected also
+	///     when the constraint is never evaluated, e.g. for an empty collection, and a clone of its root element is
+	///     compared with every evaluated value.
 	/// </remarks>
 	private static AndOrResult<T, IThat<T>> IsJsonSerializedAsJson<T>(
 		IThat<T> source,
@@ -109,8 +113,15 @@ public static partial class ThatJsonObject
 		JsonTypeInfo? typeInfo)
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
+		JsonElement expectedElement;
+		using (JsonDocument expectedDocument =
+		       JsonMatchType.ParseExpected(expected, nameof(expected), jsonOptions.DocumentOptions))
+		{
+			expectedElement = expectedDocument.RootElement.Clone();
+		}
+
 		return AddIsJsonSerializedAs(source,
-			_ => JsonMatchType.ParseExpected(expected, nameof(expected), jsonOptions.DocumentOptions),
+			_ => (null, expectedElement),
 			expected, jsonOptions, serializerOptions, typeInfo);
 	}
 
@@ -123,29 +134,38 @@ public static partial class ThatJsonObject
 	{
 		JsonOptions jsonOptions = options?.Invoke(JsonOptions.Default) ?? JsonOptions.Default;
 		return AddIsJsonSerializedAs(source,
-			converter => converter.ParseExpected(expected, jsonOptions.DocumentOptions, jsonOptions.SerializerOptions),
+			converter =>
+			{
+				JsonDocument document =
+					converter.ParseExpected(expected, jsonOptions.DocumentOptions, jsonOptions.SerializerOptions);
+				return (document, document.RootElement);
+			},
 			expectedExpression.TrimCommonWhiteSpace(), jsonOptions, serializerOptions, null);
 	}
 
+	/// <remarks>
+	///     <paramref name="getExpected" /> returns the document only when it was parsed for this evaluation, so that the
+	///     constraint disposes it after the comparison.
+	/// </remarks>
 	private static AndOrResult<T, IThat<T>> AddIsJsonSerializedAs<T>(
 		IThat<T> source,
-		Func<ExpectationJsonConverter, JsonDocument> parseExpected,
+		Func<ExpectationJsonConverter, (JsonDocument? Document, JsonElement RootElement)> getExpected,
 		string expectedText,
 		JsonOptions options,
 		JsonSerializerOptions? serializerOptions,
 		JsonTypeInfo? typeInfo)
 		=> new(
 			source.Get().ExpectationBuilder.AddConstraint(
-				(ParseExpected: parseExpected, ExpectedText: expectedText, Options: options,
+				(GetExpected: getExpected, ExpectedText: expectedText, Options: options,
 					SerializerOptions: serializerOptions, TypeInfo: typeInfo),
-				static (s, it, grammar) => new IsJsonSerializedAsConstraint<T>(it, grammar, s.ParseExpected,
+				static (s, it, grammar) => new IsJsonSerializedAsConstraint<T>(it, grammar, s.GetExpected,
 					s.ExpectedText, s.Options, s.SerializerOptions, s.TypeInfo)),
 			source);
 
 	private sealed class IsJsonSerializedAsConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
-		Func<ExpectationJsonConverter, JsonDocument> parseExpected,
+		Func<ExpectationJsonConverter, (JsonDocument? Document, JsonElement RootElement)> getExpected,
 		string expectedText,
 		JsonOptions options,
 		JsonSerializerOptions? serializerOptions,
@@ -169,7 +189,8 @@ public static partial class ThatJsonObject
 			_serializationError = null;
 			_serialized = null;
 			ExpectationJsonConverter converter = new(context, cancellationToken);
-			using JsonDocument expectedDocument = parseExpected(converter);
+			(JsonDocument? Document, JsonElement RootElement) expected = getExpected(converter);
+			using JsonDocument? expectedDocument = expected.Document;
 			if (!TrySerialize(actual, out byte[] serialized))
 			{
 				Outcome = Outcome.FailureBothWays;
@@ -180,7 +201,7 @@ public static partial class ThatJsonObject
 			using JsonDocument actualDocument = JsonDocument.Parse(serialized, options.DocumentOptions);
 			_comparisonResult = await JsonElementValidator.Compare(
 				actualDocument.RootElement,
-				expectedDocument.RootElement,
+				expected.RootElement,
 				options,
 				converter);
 
