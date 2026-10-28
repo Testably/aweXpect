@@ -252,7 +252,7 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 			bool hasNext;
 			try
 			{
-				hasNext = await moveNext.ConfigureAwait(false);
+				hasNext = await moveNext;
 			}
 			catch
 			{
