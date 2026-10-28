@@ -31,12 +31,6 @@ public static class XmlExtensions
 	{
 		XmlOptions xmlOptions = options?.Invoke(new XmlOptions()) ?? new XmlOptions();
 		XmlMatchType matchType = new(xmlOptions);
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.SetMatchType(matchType, nameof(AsXml)));
-		}
-
-		result.Options.SetMatchType(matchType, nameof(AsXml));
-		return result;
+		return OptionsProvider.WithOptions(result, result.Options.Value.SetMatchType(matchType, nameof(AsXml)));
 	}
 }

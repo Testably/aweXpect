@@ -23,15 +23,7 @@ public static class StringEqualityOptionsExtensions
 	/// </summary>
 	public static TSelf IgnoringCase<TSelf>(this TSelf result, bool ignoreCase = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.IgnoringCase(ignoreCase));
-		}
-
-		result.Options.IgnoringCase(ignoreCase);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.IgnoringCase(ignoreCase));
 
 	/// <summary>
 	///     Ignores the indentation when comparing <see langword="string" />s,
@@ -45,15 +37,7 @@ public static class StringEqualityOptionsExtensions
 	/// </remarks>
 	public static TSelf IgnoringIndentation<TSelf>(this TSelf result, bool ignoreIndentation = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.IgnoringIndentation(ignoreIndentation));
-		}
-
-		result.Options.IgnoringIndentation(ignoreIndentation);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.IgnoringIndentation(ignoreIndentation));
 
 	/// <summary>
 	///     Ignores the newline style when comparing <see langword="string" />s,
@@ -65,15 +49,7 @@ public static class StringEqualityOptionsExtensions
 	/// </remarks>
 	public static TSelf IgnoringNewlineStyle<TSelf>(this TSelf result, bool ignoreNewlineStyle = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.IgnoringNewlineStyle(ignoreNewlineStyle));
-		}
-
-		result.Options.IgnoringNewlineStyle(ignoreNewlineStyle);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.IgnoringNewlineStyle(ignoreNewlineStyle));
 
 	/// <summary>
 	///     Ignores leading whitespace when comparing <see langword="string" />s,
@@ -87,15 +63,7 @@ public static class StringEqualityOptionsExtensions
 	public static TSelf IgnoringLeadingWhiteSpace<TSelf>(this TSelf result,
 		bool ignoreLeadingWhiteSpace = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace));
-		}
-
-		result.Options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace));
 
 	/// <summary>
 	///     Ignores trailing whitespace when comparing <see langword="string" />s,
@@ -104,15 +72,7 @@ public static class StringEqualityOptionsExtensions
 	public static TSelf IgnoringTrailingWhiteSpace<TSelf>(this TSelf result,
 		bool ignoreTrailingWhiteSpace = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace));
-		}
-
-		result.Options.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace));
 
 	/// <summary>
 	///     Normalizes the whitespace when comparing <see langword="string" />s,
@@ -127,60 +87,28 @@ public static class StringEqualityOptionsExtensions
 	/// </remarks>
 	public static TSelf NormalizingWhiteSpace<TSelf>(this TSelf result, bool normalizeWhiteSpace = true)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.NormalizingWhiteSpace(normalizeWhiteSpace));
-		}
-
-		result.Options.NormalizingWhiteSpace(normalizeWhiteSpace);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.NormalizingWhiteSpace(normalizeWhiteSpace));
 
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="string" />s.
 	/// </summary>
 	public static TSelf Using<TSelf>(this TSelf result, IEqualityComparer<string> comparer)
 		where TSelf : IOptionsProvider<StringEqualityOptions>
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.Using(comparer));
-		}
-
-		result.Options.Using(comparer);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.Using(comparer));
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a prefix, so that the actual value starts with it.
 	/// </summary>
 	public static TSelf AsPrefix<TSelf>(this TSelf result)
 		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AsPrefix());
-		}
-
-		result.Options.AsPrefix();
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AsPrefix());
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
 	/// </summary>
 	public static TSelf AsRegex<TSelf>(this TSelf result)
 		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AsRegex());
-		}
-
-		result.Options.AsRegex();
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AsRegex());
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern,
@@ -188,30 +116,14 @@ public static class StringEqualityOptionsExtensions
 	/// </summary>
 	public static TSelf AsRegex<TSelf>(this TSelf result, RegexOptions regexOptions)
 		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AsRegex(regexOptions));
-		}
-
-		result.Options.AsRegex(regexOptions);
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AsRegex(regexOptions));
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a suffix, so that the actual value ends with it.
 	/// </summary>
 	public static TSelf AsSuffix<TSelf>(this TSelf result)
 		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AsSuffix());
-		}
-
-		result.Options.AsSuffix();
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AsSuffix());
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as wildcard pattern.<br />
@@ -219,13 +131,5 @@ public static class StringEqualityOptionsExtensions
 	/// </summary>
 	public static TSelf AsWildcard<TSelf>(this TSelf result)
 		where TSelf : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
-	{
-		if (result is ICopyOnOption<StringEqualityOptions, TSelf> copyOnOption)
-		{
-			return copyOnOption.WithOptions(result.Options.Value.AsWildcard());
-		}
-
-		result.Options.AsWildcard();
-		return result;
-	}
+		=> OptionsProvider.WithOptions(result, result.Options.Value.AsWildcard());
 }

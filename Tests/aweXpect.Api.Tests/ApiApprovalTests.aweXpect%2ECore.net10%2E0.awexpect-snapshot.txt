@@ -602,6 +602,10 @@ namespace aweXpect.Core
         public TOptions Value { get; set; }
         public override string ToString() { }
     }
+    public static class OptionsProvider
+    {
+        public static TSelf WithOptions<TSelf, TOptions>(TSelf result, TOptions options) where TSelf : aweXpect.Core.IOptionsProvider<TOptions> { }
+    }
     public abstract class ResultContext
     {
         protected ResultContext(string title, int priority = 0) { }
