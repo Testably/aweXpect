@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
-      {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          606.8000283922468,
           656.6080237706502,
           357.96529528299965,
           485.09850184122723,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           666.1225430624826,
           717.3313465118408,
           495.3494989871979,
-          504.377131652832
+          504.377131652832,
+          626.4807441575186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          897.3135285059611,
           896.3854001998901,
           545.3626660567063,
           708.5867201487223,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           910.9740199406941,
           892.788693745931,
           719.3923501968384,
-          722.209126663208
+          722.209126663208,
+          862.3000031153362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
-      {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          109.94119653531483,
           105.98728456497193,
           53.8455001860857,
           78.19539122581482,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           109.27381024360656,
           99.74626936117808,
           79.41822300507472,
-          82.49245051237253
+          82.49245051237253,
+          105.15319384733836
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          214.08026609970972,
           248.21908877690632,
           138.7467544078827,
           172.65625494321188,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           199.85296444892884,
           191.67093537403986,
           189.75781162579855,
-          166.57190682093304
+          166.57190682093304,
+          212.387109041214
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
-      {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1913.7210534413655,
           1861.0644271850585,
           980.5618464152018,
           1334.4731621061053,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1814.0170042673747,
           1777.226598103841,
           1456.7349389394124,
-          1372.120185470581
+          1372.120185470581,
+          1785.1845141819545
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1674,7 +1674,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1417.8631495067052,
           1502.5857846577962,
           834.5415642602103,
           1088.1556775753315,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1441.8871121724446,
           1420.5426682692307,
           1130.0748321533204,
-          1090.8119434629168
+          1090.8119434629168,
+          1356.9942136492048
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1953,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
       {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2683.3756768362864,
           2855.267758778163,
           1381.0182583882258,
           1999.697290802002,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2649.084877559117,
           2650.0373083750405,
           2242.3151111602783,
-          1995.9870024461013
+          1995.9870024461013,
+          2590.0441196148213
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2282,7 +2282,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3703.219406568087,
           3803.046391296387,
           2122.3299384483926,
           2979.260217666626,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3780.4813499450684,
           3693.5754152025497,
           3099.5109685262046,
-          2989.4978318895614
+          2989.4978318895614,
+          3824.090456644694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3980,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3981,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
       {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          355.00933027267456,
           393.6206706682841,
           195.19042773246764,
           285.1616200038365,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           369.4645639419556,
           383.47430680592856,
           290.76927932103473,
-          292.48169797261556
+          292.48169797261556,
+          358.0741132222689
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2207.5948312123614,
           2320.0149681091307,
           1319.374270439148,
           1790.130494181315,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2265.78483908517,
           2244.725003378732,
           1820.6675173895699,
-          1818.1370654424031
+          1818.1370654424031,
+          2181.4000129699707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "a2e430d0c54bc27525771e1e2a9aa53525b7c38d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 14:04:58 2026 \u002B0100",
-        "message": "refactor: make the options of aweXpect.Reflection immutable values (#2071)"
-      },
-      {
         "sha": "705c8132c0387a15835e2f167211ab1e24382bde",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 14:35:02 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
         "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
+      },
+      {
+        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
+        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
       }
     ],
     "labels": [
-      "a2e430d0",
       "705c8132",
       "2068b12b",
       "2ce286e6",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "978086a8",
       "e410691e",
       "0027e238",
-      "76331040"
+      "76331040",
+      "7558fdb1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2959.1051738445576,
           3001.027625744159,
           1556.9537018140156,
           2190.3123732346753,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2819.7892905644007,
           2771.5314837864466,
           2241.8845596313477,
-          2167.465690612793
+          2167.465690612793,
+          2871.497319285075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3498,7 +3498,7 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
+          3248,
           3248,
           3248,
           3248,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          303895.9719935826,
           279478.11985677085,
           173705.89926757812,
           241536.76070731026,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           281558.70455729164,
           273418.156266276,
           239728.925390625,
-          243292.83180338543
+          243292.83180338543,
+          304427.7484375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17574,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17577,
-          17577
+          17577,
+          17707
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
