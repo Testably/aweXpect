@@ -13,7 +13,7 @@ namespace aweXpect.Web.ContentProcessors;
 /// <summary>
 ///     Handles JSON contents by pretty-printing them.
 /// </summary>
-public class JsonContentProcessor : IContentProcessor
+public sealed class JsonContentProcessor : IContentProcessor
 {
 	private static readonly JsonWriterOptions WriterOptions = new()
 	{
