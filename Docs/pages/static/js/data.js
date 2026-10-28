@@ -1530,6 +1530,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -1787,7 +1793,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -2048,7 +2055,8 @@ window.BENCHMARK_DATA = {
           10569.880418043871,
           10323.789493560791,
           11040.060776846749,
-          11502.332045335035
+          11502.332045335035,
+          7871.454311664288
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2284,6 +2292,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2583,7 +2592,8 @@ window.BENCHMARK_DATA = {
           377866.3603515625,
           383074.74762834824,
           380447.4959635417,
-          407581.4698242188
+          407581.4698242188,
+          277296.1037597656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2849,6 +2859,7 @@ window.BENCHMARK_DATA = {
           590292,
           590292,
           590292,
+          590287,
           590287
         ],
         "borderColor": "#FF671B",
@@ -3118,7 +3129,8 @@ window.BENCHMARK_DATA = {
           19051.5452205113,
           19679.400137765067,
           19741.100860595703,
-          21357.944913736977
+          21357.944913736977,
+          15653.950175694057
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3130,6 +3142,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -4886,6 +4899,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -5136,7 +5155,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -5390,7 +5410,8 @@ window.BENCHMARK_DATA = {
           219.45206277187054,
           234.3879771232605,
           285.11265789667766,
-          257.73639052708944
+          257.73639052708944,
+          186.9764168580373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5586,6 +5607,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -5911,7 +5933,8 @@ window.BENCHMARK_DATA = {
           496.9493532180786,
           510.2537934621175,
           510.0565294265747,
-          603.7357696805682
+          603.7357696805682,
+          462.91304941177367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5923,6 +5946,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6432,7 +6456,8 @@ window.BENCHMARK_DATA = {
           383.5621375719706,
           407.3969630513872,
           386.60514545440674,
-          439.1301575978597
+          439.1301575978597,
+          310.0391542116801
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6444,6 +6469,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -12813,6 +12839,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -13833,7 +13865,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -14857,7 +14890,8 @@ window.BENCHMARK_DATA = {
           104.8047188838323,
           105.9680711712156,
           107.74966617141452,
-          116.27920695940654
+          116.27920695940654,
+          84.77129473136021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15856,6 +15890,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -16918,7 +16953,8 @@ window.BENCHMARK_DATA = {
           253.95632572968802,
           262.39755325317384,
           270.58932342529295,
-          287.3558907849448
+          287.3558907849448,
+          235.73803017934162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17111,6 +17147,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -18260,7 +18297,8 @@ window.BENCHMARK_DATA = {
           244.28535856519426,
           258.3493342399597,
           243.2597882407052,
-          279.2784065246582
+          279.2784065246582,
+          189.1074573834737
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18272,6 +18310,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -20114,6 +20153,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -20371,7 +20416,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -20632,7 +20678,8 @@ window.BENCHMARK_DATA = {
           230.85084233965193,
           238.63730181966508,
           224.45484442710875,
-          216.61943868001302
+          216.61943868001302,
+          166.81118837424688
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20837,6 +20884,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -21167,7 +21215,8 @@ window.BENCHMARK_DATA = {
           507.7159332547869,
           534.4437497456869,
           525.3062294006347,
-          573.4939267294748
+          573.4939267294748,
+          458.7736264546712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21179,6 +21228,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -21702,7 +21752,8 @@ window.BENCHMARK_DATA = {
           345.0474009195963,
           341.7656743526459,
           333.47159004211426,
-          366.01871445973717
+          366.01871445973717,
+          262.8572775522868
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21714,6 +21765,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -28090,6 +28142,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -29110,7 +29168,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -30134,7 +30193,8 @@ window.BENCHMARK_DATA = {
           695.3184987476894,
           709.5282716751099,
           705.5347908655802,
-          751.0712633768718
+          751.0712633768718,
+          569.5773542949131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31121,6 +31181,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -32195,7 +32256,8 @@ window.BENCHMARK_DATA = {
           1364.768878664289,
           1468.5216963450114,
           1412.1679819652013,
-          1571.4425968757043
+          1571.4425968757043,
+          1242.2306915283202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32388,6 +32450,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -33537,7 +33600,8 @@ window.BENCHMARK_DATA = {
           652.1993022918701,
           673.2488266626993,
           668.6108720143636,
-          696.0671773274739
+          696.0671773274739,
+          520.0890223821004
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -33549,6 +33613,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -39969,6 +40034,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -40989,7 +41060,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -42013,7 +42085,8 @@ window.BENCHMARK_DATA = {
           699.7413908885076,
           794.0034349986485,
           705.3468623479207,
-          748.9268885294597
+          748.9268885294597,
+          530.027265103658
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -43000,6 +43073,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -44074,7 +44148,8 @@ window.BENCHMARK_DATA = {
           27786.776444498697,
           28601.694814046223,
           27886.524348332332,
-          31403.382381184896
+          31403.382381184896,
+          17312.150975153996
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -45103,6 +45178,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -45416,7 +45492,8 @@ window.BENCHMARK_DATA = {
           787.397339185079,
           814.9088574091594,
           800.8299654551914,
-          813.2973634174892
+          813.2973634174892,
+          615.2371544471154
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -45428,6 +45505,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -47618,6 +47696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -47933,7 +48017,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -48252,7 +48337,8 @@ window.BENCHMARK_DATA = {
           620.6628279368083,
           664.2009996414184,
           674.4526850382487,
-          697.2781012217204
+          697.2781012217204,
+          516.9446788200966
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48546,6 +48632,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -48903,7 +48990,8 @@ window.BENCHMARK_DATA = {
           83532.12500813803,
           82879.86361694336,
           82043.75548444476,
-          95980.9520304362
+          95980.9520304362,
+          55902.93911539714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49227,7 +49315,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51119,6 +51208,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -51434,7 +51529,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -51753,7 +51849,8 @@ window.BENCHMARK_DATA = {
           146.90284189156122,
           144.70560571125574,
           138.78400479952495,
-          152.8979833285014
+          152.8979833285014,
+          116.80455354849498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52047,6 +52144,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -52404,7 +52502,8 @@ window.BENCHMARK_DATA = {
           31771.20837871845,
           32975.60360483023,
           32445.901216947117,
-          35181.452185058595
+          35181.452185058595,
+          15057.741507393974
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52728,6 +52827,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -53041,7 +53141,8 @@ window.BENCHMARK_DATA = {
           241.57924728393556,
           272.24875631332395,
           240.69077609266554,
-          268.10425011316937
+          268.10425011316937,
+          182.0034183184306
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -53053,6 +53154,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -54895,6 +54997,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -55152,7 +55260,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -55413,7 +55522,8 @@ window.BENCHMARK_DATA = {
           292.36691398620604,
           303.6053373018901,
           295.5819498062134,
-          326.71692212422687
+          326.71692212422687,
+          228.27548126073984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55618,6 +55728,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -55948,7 +56059,8 @@ window.BENCHMARK_DATA = {
           378.95937837873186,
           400.1997935295105,
           382.11341156278337,
-          401.96247708002727
+          401.96247708002727,
+          355.4234770366124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55960,6 +56072,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -56483,7 +56596,8 @@ window.BENCHMARK_DATA = {
           406.2996953896114,
           418.65790353502547,
           510.0736598332723,
-          435.440534224877
+          435.440534224877,
+          321.15883728436063
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56495,6 +56609,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -58293,6 +58408,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -58550,7 +58671,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -58811,7 +58933,8 @@ window.BENCHMARK_DATA = {
           722.4072289466858,
           714.3178088324411,
           713.2217192967732,
-          763.0974944432577
+          763.0974944432577,
+          580.3030179977417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59047,6 +59170,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -59346,7 +59470,8 @@ window.BENCHMARK_DATA = {
           1894.4751108609712,
           1943.98547261556,
           1914.3262855529786,
-          1948.7437267303467
+          1948.7437267303467,
+          1743.8817689259847
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59358,6 +59483,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -59881,7 +60007,8 @@ window.BENCHMARK_DATA = {
           925.2945395787557,
           958.5127582550049,
           912.8570596694947,
-          966.9812909444173
+          966.9812909444173,
+          795.1447787602742
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59893,6 +60020,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -61691,6 +61819,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -61948,7 +62082,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -62209,7 +62344,8 @@ window.BENCHMARK_DATA = {
           11814.953919630785,
           12072.297448476156,
           11976.10413301908,
-          12846.251729329428
+          12846.251729329428,
+          8539.392781938825
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62448,6 +62584,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -62744,7 +62881,8 @@ window.BENCHMARK_DATA = {
           39752.8958871024,
           40583.94004603795,
           40445.54967447917,
-          44904.441576276506
+          44904.441576276506,
+          27200.608716692244
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63005,6 +63143,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
+          18609,
           18609,
           18609,
           18609,
@@ -63279,7 +63418,8 @@ window.BENCHMARK_DATA = {
           10682.023165021625,
           10500.048513793945,
           10496.540520301232,
-          11220.927234903971
+          11220.927234903971,
+          7987.613770621164
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63291,6 +63431,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -65089,6 +65230,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
         "message": "refactor!: seal the built-in content processors of aweXpect.Web (#2137)"
+      },
+      {
+        "sha": "348ea07491981724d63920d23fa47c9b98ce7a48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 14:41:36 2026 \u002B0100",
+        "message": "refactor!: hand non-nullable values to \u0060WhoseValues\u0060 of headers and query parameters (#2133)"
       }
     ],
     "labels": [
@@ -65346,7 +65493,8 @@ window.BENCHMARK_DATA = {
       "554746c6",
       "fa41546d",
       "5fafaf2a",
-      "2a51fd6f"
+      "2a51fd6f",
+      "348ea074"
     ],
     "datasets": [
       {
@@ -65607,7 +65755,8 @@ window.BENCHMARK_DATA = {
           11577.40517098563,
           11488.69238633376,
           11509.248116629464,
-          12490.163258361816
+          12490.163258361816,
+          8052.052983210637
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65846,6 +65995,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -66142,7 +66292,8 @@ window.BENCHMARK_DATA = {
           57988.149401855466,
           59027.242954799105,
           58416.44586995443,
-          65725.63345772879
+          65725.63345772879,
+          39179.9456258138
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66408,7 +66559,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66677,7 +66829,8 @@ window.BENCHMARK_DATA = {
           20765.1203028361,
           20902.555991036552,
           20798.3135540302,
-          22296.423626708984
+          22296.423626708984,
+          15426.16258591872
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66689,6 +66842,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
