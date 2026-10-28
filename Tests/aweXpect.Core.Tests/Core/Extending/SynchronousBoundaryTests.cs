@@ -15,6 +15,65 @@ public sealed class SynchronousBoundaryTests
 	}
 
 	[Test]
+	public async Task Wait_WhenOperationCompletesRightAway_ShouldReturnTheResultOnABlockedSynchronizationContext()
+	{
+		int result = 0;
+
+		bool completed = BlockedSynchronizationContext.Run(()
+			=> result = SynchronousBoundary.Wait(() => new ValueTask<int>(42)));
+
+		await That(completed).IsTrue();
+		await That(result).IsEqualTo(42);
+	}
+
+	[Test]
+	public async Task Wait_WhenOperationIsCanceled_ShouldThrowTaskCanceledException()
+	{
+		void Act()
+			=> SynchronousBoundary.Wait(() => new ValueTask<int>(Task.FromCanceled<int>(new CancellationToken(true))));
+
+		await That(Act).ThrowsExactly<TaskCanceledException>()
+			.WithMessage(new TaskCanceledException().Message)
+			.Because("a canceled operation throws like an awaited canceled task");
+	}
+
+	[Test]
+	public async Task Wait_WhenOperationIsCanceled_ShouldThrowTaskCanceledExceptionOnABlockedSynchronizationContext()
+	{
+		void Act()
+			=> BlockedSynchronizationContext.Run(() => SynchronousBoundary.Wait(()
+				=> new ValueTask<int>(Task.FromCanceled<int>(new CancellationToken(true)))));
+
+		await That(Act).ThrowsExactly<TaskCanceledException>()
+			.WithMessage(new TaskCanceledException().Message)
+			.Because("a canceled operation throws like an awaited canceled task");
+	}
+
+	[Test]
+	public async Task Wait_WhenOperationIsFaulted_ShouldThrowTheException()
+	{
+		void Act()
+			=> SynchronousBoundary.Wait(()
+				=> new ValueTask<int>(Task.FromException<int>(new InvalidOperationException("the catalog is offline"))));
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("the catalog is offline")
+			.Because("the exception is not wrapped in an AggregateException");
+	}
+
+	[Test]
+	public async Task Wait_WhenOperationIsFaulted_ShouldThrowTheExceptionOnABlockedSynchronizationContext()
+	{
+		void Act()
+			=> BlockedSynchronizationContext.Run(() => SynchronousBoundary.Wait(()
+				=> new ValueTask<int>(Task.FromException<int>(new InvalidOperationException("the catalog is offline")))));
+
+		await That(Act).ThrowsExactly<InvalidOperationException>()
+			.WithMessage("the catalog is offline")
+			.Because("the exception is not wrapped in an AggregateException");
+	}
+
+	[Test]
 	public async Task Wait_WhenOperationIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act()

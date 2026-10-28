@@ -23,8 +23,11 @@ public static class SynchronousBoundary
 	{
 		operation.ThrowIfNull();
 		ValueTask<TResult> result = CallerSchedulesContinuations() ? StartDetached(operation) : operation();
-		return result.AsTask().GetAwaiter().GetResult();
+		return result.IsCompletedSuccessfully ? result.Result : WaitForCompletion(result);
 	}
+
+	private static TResult WaitForCompletion<TResult>(ValueTask<TResult> pending)
+		=> pending.AsTask().GetAwaiter().GetResult();
 
 	internal static bool CallerSchedulesContinuations()
 		=> SynchronizationContext.Current is not null || TaskScheduler.Current != TaskScheduler.Default;
