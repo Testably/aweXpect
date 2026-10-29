@@ -1272,6 +1272,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -1486,7 +1492,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -1704,7 +1711,8 @@ window.BENCHMARK_DATA = {
           482.59102834974016,
           242.05985294977825,
           334.2333171184246,
-          421.8871417045593
+          421.8871417045593,
+          464.33666948171765
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1884,6 +1892,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2153,7 +2162,8 @@ window.BENCHMARK_DATA = {
           1078.6155003767747,
           536.5991641362508,
           858.4158791028536,
-          1114.3946198683518
+          1114.3946198683518,
+          1115.1153530707727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2165,6 +2175,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3662,6 +3673,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -3876,7 +3893,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -4094,7 +4112,8 @@ window.BENCHMARK_DATA = {
           254.96218070983886,
           126.99569839697618,
           217.62261526925224,
-          263.3153391224997
+          263.3153391224997,
+          236.40991017023723
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4241,6 +4260,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4543,7 +4563,8 @@ window.BENCHMARK_DATA = {
           274.15821339289346,
           137.57403254508972,
           244.72689665280856,
-          312.8294974840604
+          312.8294974840604,
+          253.14134384791058
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4555,6 +4576,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5992,6 +6014,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -6196,7 +6224,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -6404,7 +6433,8 @@ window.BENCHMARK_DATA = {
           1008.7345860345023,
           547.5007173538208,
           734.8453954549936,
-          946.3711932046073
+          946.3711932046073,
+          985.2903900146484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6596,6 +6626,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -6833,7 +6864,8 @@ window.BENCHMARK_DATA = {
           1038.1699677785239,
           526.7911093051617,
           847.2734375635783,
-          1086.1869752248128
+          1086.1869752248128,
+          961.5089799245198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6845,6 +6877,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -8272,6 +8305,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -8476,7 +8515,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -8684,7 +8724,8 @@ window.BENCHMARK_DATA = {
           1913.9054886744573,
           1137.0291545574482,
           1214.68724661607,
-          1649.7600509936992
+          1649.7600509936992,
+          1902.9398686545235
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8823,6 +8864,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -9113,7 +9155,8 @@ window.BENCHMARK_DATA = {
           22487.15575467623,
           10507.047151184082,
           13083.991498311361,
-          16852.369388834635
+          16852.369388834635,
+          22497.319272867837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9326,7 +9369,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10552,6 +10596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -10756,7 +10806,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -10964,7 +11015,8 @@ window.BENCHMARK_DATA = {
           829.2920172764705,
           411.2909147262573,
           560.4746482372284,
-          732.8231026331583
+          732.8231026331583,
+          833.7528851191203
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11103,6 +11155,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -11393,7 +11446,8 @@ window.BENCHMARK_DATA = {
           1414.0908218383788,
           699.2265857549814,
           1102.323692175058,
-          1474.845011491042
+          1474.845011491042,
+          1386.600918451945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11405,6 +11459,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -12832,6 +12887,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
         "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
+      },
+      {
+        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
+        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
       }
     ],
     "labels": [
@@ -13036,7 +13097,8 @@ window.BENCHMARK_DATA = {
       "f8435557",
       "b48cdddb",
       "f256c5ca",
-      "fea53298"
+      "fea53298",
+      "583e9cec"
     ],
     "datasets": [
       {
@@ -13244,7 +13306,8 @@ window.BENCHMARK_DATA = {
           1397.5895426823542,
           801.633157661983,
           907.5709164301554,
-          1133.8865387256328
+          1133.8865387256328,
+          1380.075529607137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13414,6 +13477,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -13673,7 +13737,8 @@ window.BENCHMARK_DATA = {
           835.8459091186523,
           429.7902944638179,
           730.3245754241943,
-          908.6576529184978
+          908.6576529184978,
+          770.9685313542684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13685,6 +13750,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
