@@ -1260,6 +1260,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -1472,7 +1478,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -1688,7 +1695,8 @@ window.BENCHMARK_DATA = {
           527.4150661740985,
           490.8544050852458,
           482.59102834974016,
-          242.05985294977825
+          242.05985294977825,
+          334.2333171184246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1868,6 +1876,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2133,7 +2142,8 @@ window.BENCHMARK_DATA = {
           1043.5138197580973,
           1017.8715096987211,
           1078.6155003767747,
-          536.5991641362508
+          536.5991641362508,
+          858.4158791028536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2145,6 +2155,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3628,6 +3639,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -3840,7 +3857,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -4056,7 +4074,8 @@ window.BENCHMARK_DATA = {
           243.46431465148925,
           256.7388755253383,
           254.96218070983886,
-          126.99569839697618
+          126.99569839697618,
+          217.62261526925224
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4203,6 +4222,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4501,7 +4521,8 @@ window.BENCHMARK_DATA = {
           262.91809272766113,
           260.98547519048054,
           274.15821339289346,
-          137.57403254508972
+          137.57403254508972,
+          244.72689665280856
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4513,6 +4534,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5936,6 +5958,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -6138,7 +6166,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -6344,7 +6373,8 @@ window.BENCHMARK_DATA = {
           1031.6353096008302,
           976.9161876678467,
           1008.7345860345023,
-          547.5007173538208
+          547.5007173538208,
+          734.8453954549936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6536,6 +6566,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -6769,7 +6800,8 @@ window.BENCHMARK_DATA = {
           982.7938363393148,
           1087.29874903361,
           1038.1699677785239,
-          526.7911093051617
+          526.7911093051617,
+          847.2734375635783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6781,6 +6813,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -8194,6 +8227,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -8396,7 +8435,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -8602,7 +8642,8 @@ window.BENCHMARK_DATA = {
           2001.2130208333333,
           2024.3861897786458,
           1913.9054886744573,
-          1137.0291545574482
+          1137.0291545574482,
+          1214.68724661607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8741,6 +8782,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -9027,7 +9069,8 @@ window.BENCHMARK_DATA = {
           22024.219218662805,
           22478.297462972005,
           22487.15575467623,
-          10507.047151184082
+          10507.047151184082,
+          13083.991498311361
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9238,7 +9281,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10452,6 +10496,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -10654,7 +10704,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -10860,7 +10911,8 @@ window.BENCHMARK_DATA = {
           835.9516654014587,
           758.2569639205933,
           829.2920172764705,
-          411.2909147262573
+          411.2909147262573,
+          560.4746482372284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10999,6 +11051,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -11285,7 +11338,8 @@ window.BENCHMARK_DATA = {
           1367.5818361554827,
           1431.4166532244,
           1414.0908218383788,
-          699.2265857549814
+          699.2265857549814,
+          1102.323692175058
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11297,6 +11351,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -12710,6 +12765,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
         "message": "refactor!: build the plural type expectations of aweXpect.Reflection on the generated collection constraints (#2146)"
+      },
+      {
+        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
+        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
       }
     ],
     "labels": [
@@ -12912,7 +12973,8 @@ window.BENCHMARK_DATA = {
       "2bba8222",
       "33ef507b",
       "f8435557",
-      "b48cdddb"
+      "b48cdddb",
+      "f256c5ca"
     ],
     "datasets": [
       {
@@ -13118,7 +13180,8 @@ window.BENCHMARK_DATA = {
           1351.9152256011962,
           1322.2692782538277,
           1397.5895426823542,
-          801.633157661983
+          801.633157661983,
+          907.5709164301554
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13288,6 +13351,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -13543,7 +13607,8 @@ window.BENCHMARK_DATA = {
           812.2311939239502,
           788.6927172978719,
           835.8459091186523,
-          429.7902944638179
+          429.7902944638179,
+          730.3245754241943
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13555,6 +13620,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
