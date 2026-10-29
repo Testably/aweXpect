@@ -48,9 +48,14 @@ public sealed class NullableCollectionSubjectTests
 			.WithMessage("""
 			             Expected that subject
 			             all are static and all return int,
-			             but it contained not matching methods
+			             but none of 1 did
 
 			             Not matching items:
+			             [
+			               bool string.IsNullOrEmpty(string value)
+			             ]
+
+			             Collection:
 			             [
 			               bool string.IsNullOrEmpty(string value)
 			             ]
@@ -71,9 +76,14 @@ public sealed class NullableCollectionSubjectTests
 			.WithMessage("""
 			             Expected that subject
 			             all return bool and all return exactly bool and all return void,
-			             but it contained not matching methods
+			             but none of 1 did
 
 			             Not matching items:
+			             [
+			               bool string.IsNullOrEmpty(string value)
+			             ]
+
+			             Collection:
 			             [
 			               bool string.IsNullOrEmpty(string value)
 			             ]

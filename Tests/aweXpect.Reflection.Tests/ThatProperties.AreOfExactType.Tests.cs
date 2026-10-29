@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatProperties
 {
-	public sealed class AreOfExactType
+	public sealed partial class AreOfExactType
 	{
 		public sealed class GenericTests
 		{
@@ -28,14 +28,19 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type *DummyBase,
-					             but it contained not matching properties
+					             all are of exact type ThatProperties.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -90,14 +95,19 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type int or of exact type *DummyBase,
-					             but it contained not matching properties
+					             all are of exact type int or of exact type ThatProperties.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
+					             ]
+					             """);
 			}
 		}
 
@@ -120,14 +130,19 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type *DummyBase,
-					             but it contained not matching properties
+					             all are of exact type ThatProperties.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public ThatProperties.AreOfExactType.Dummy ThatProperties.AreOfExactType.TestClass.DummyProperty { get; set; }
+					             ]
+					             """);
 			}
 
 			[Test]

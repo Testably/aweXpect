@@ -59,10 +59,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type Delegate,
-					             but it contained events of type Delegate
+					             none are of type Delegate,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
+					             ]
+
+					             Collection:
 					             [
 					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
 					             ]
@@ -86,7 +91,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
+					             none are of type EventHandler,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -114,12 +119,18 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
-					             but it contained events of type EventHandler
+					             none are of type EventHandler,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
 					             ]
 					             """);
 			}
@@ -137,7 +148,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
+					             none are of type EventHandler,
 					             but it was <null>
 					             """);
 			}
@@ -160,12 +171,18 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
-					             but it contained events of type EventHandler
+					             none are of type EventHandler,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
 					             ]
 					             """);
 			}
@@ -189,8 +206,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an event of type EventHandler,
-					             but it only contained events not of type EventHandler
+					             at least one is of type EventHandler,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -253,12 +270,18 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
-					             but it contained events of type EventHandler
+					             none are of type EventHandler,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
 					             ]
 					             """);
 			}
@@ -281,12 +304,18 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type EventHandler,
-					             but it contained events of type EventHandler
+					             none are of type EventHandler,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreNotOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreNotOfType.CustomHandler ThatEvents.AreNotOfType.TestClass.CustomHandlerEvent
 					             ]
 					             """);
 			}

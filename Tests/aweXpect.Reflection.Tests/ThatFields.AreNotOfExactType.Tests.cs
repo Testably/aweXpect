@@ -42,7 +42,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             none are of exact type ThatFields.AreNotOfExactType.DummyBase,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -70,12 +70,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it contained fields of exact type ThatFields.AreNotOfExactType.DummyBase
+					             none are of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField
+					             ]
+
+					             Collection:
+					             [
+					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField,
+					               ThatFields.AreNotOfExactType.Dummy ThatFields.AreNotOfExactType.TestClass.DummyField
 					             ]
 					             """);
 			}
@@ -114,12 +120,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it contained fields of exact type ThatFields.AreNotOfExactType.DummyBase
+					             none are of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField
+					             ]
+
+					             Collection:
+					             [
+					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField,
+					               ThatFields.AreNotOfExactType.Dummy ThatFields.AreNotOfExactType.TestClass.DummyField
 					             ]
 					             """);
 			}
@@ -160,8 +172,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a field of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it only contained fields not of exact type ThatFields.AreNotOfExactType.DummyBase
+					             at least one is of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -191,12 +203,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it contained fields of exact type ThatFields.AreNotOfExactType.DummyBase
+					             none are of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField
+					             ]
+
+					             Collection:
+					             [
+					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField,
+					               ThatFields.AreNotOfExactType.Dummy ThatFields.AreNotOfExactType.TestClass.DummyField
 					             ]
 					             """);
 			}
@@ -235,12 +253,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatFields.AreNotOfExactType.DummyBase,
-					             but it contained fields of exact type ThatFields.AreNotOfExactType.DummyBase
+					             none are of exact type ThatFields.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField
+					             ]
+
+					             Collection:
+					             [
+					               ThatFields.AreNotOfExactType.DummyBase ThatFields.AreNotOfExactType.TestClass.DummyBaseField,
+					               ThatFields.AreNotOfExactType.Dummy ThatFields.AreNotOfExactType.TestClass.DummyField
 					             ]
 					             """);
 			}

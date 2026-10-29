@@ -42,7 +42,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return exactly ThatMethods.DummyBase,
+					             none return exactly ThatMethods.DummyBase,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -70,12 +70,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return exactly ThatMethods.DummyBase,
-					             but it contained methods which return exactly ThatMethods.DummyBase
+					             none return exactly ThatMethods.DummyBase,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
+					             ]
+
+					             Collection:
+					             [
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """);
 			}
@@ -114,12 +120,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return exactly ThatMethods.DummyBase,
-					             but it contained methods which return exactly ThatMethods.DummyBase
+					             none return exactly ThatMethods.DummyBase,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
+					             ]
+
+					             Collection:
+					             [
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """);
 			}
@@ -159,8 +171,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a method which returns exactly ThatMethods.DummyBase,
-					             but it only contained methods which do not return exactly ThatMethods.DummyBase
+					             at least one returns exactly ThatMethods.DummyBase,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -189,10 +201,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return exactly ThatMethods.DummyBase,
-					             but it contained methods which return exactly ThatMethods.DummyBase
+					             none return exactly ThatMethods.DummyBase,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
+					             ]
+
+					             Collection:
 					             [
 					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
 					             ]
@@ -232,10 +249,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return exactly ThatMethods.DummyBase,
-					             but it contained methods which return exactly ThatMethods.DummyBase
+					             none return exactly ThatMethods.DummyBase,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
+					             ]
+
+					             Collection:
 					             [
 					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase()
 					             ]

@@ -59,7 +59,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return string,
+					             none return string,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -87,11 +87,17 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return ThatMethods.DummyBase,
-					             but it contained methods which return ThatMethods.DummyBase
+					             none return ThatMethods.DummyBase,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
+					             ]
+
+					             Collection:
+					             [
+					               int ThatMethods.TestClass.GetInt(),
 					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """);
@@ -114,12 +120,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return string,
-					             but it contained methods which return string
+					             none return string,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               string ThatMethods.TestClass.GetString()
+					             ]
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
 			}
@@ -137,7 +149,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return string,
+					             none return string,
 					             but it was <null>
 					             """);
 			}
@@ -160,11 +172,17 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return int,
-					             but it contained methods which return int
+					             none return int,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               int ThatMethods.TestClass.GetInt()
+					             ]
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
 					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
@@ -189,8 +207,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a method which returns string,
-					             but it only contained methods which do not return string
+					             at least one returns string,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -253,12 +271,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return string,
-					             but it contained methods which return string
+					             none return string,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               string ThatMethods.TestClass.GetString()
+					             ]
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
 			}
@@ -281,12 +305,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return string,
-					             but it contained methods which return string
+					             none return string,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               string ThatMethods.TestClass.GetString()
+					             ]
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
 			}

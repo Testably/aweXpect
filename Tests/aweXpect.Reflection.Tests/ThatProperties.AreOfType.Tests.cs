@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatProperties
 {
-	public sealed class AreOfType
+	public sealed partial class AreOfType
 	{
 		public sealed class GenericTests
 		{
@@ -29,14 +29,20 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type int,
-					             but it contained not matching properties
+					             all are of type int,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -92,14 +98,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are not all of type int,
-					             but it only contained matching properties
+					             not all are of type int,
+					             but all 2 were
 
 					             Collection:
 					             [
-					               *
+					               public int ThatProperties.AreOfType.TestClass.IntProperty { get; set; },
+					               public int ThatProperties.AreOfType.TestClass.OtherIntProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+					             """);
 			}
 
 			[Test]
@@ -139,14 +146,20 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type int,
-					             but it contained not matching properties
+					             all are of type int,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -258,14 +271,21 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type bool or of type long,
-					             but it contained not matching properties
+					             all are of type bool or of type long,
+					             but none of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               public int ThatProperties.AreOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreOfType.TestClass.StringProperty { get; set; }
+					             ]
+					             """);
 			}
 		}
 #pragma warning restore CA2263

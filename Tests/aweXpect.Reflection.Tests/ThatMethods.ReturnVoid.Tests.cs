@@ -28,10 +28,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all return void,
-					             but it contained not matching methods
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               int ThatMethods.TestClass.GetInt()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.TestClass.VoidMethod(),
 					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
@@ -91,10 +97,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all return void or int,
-					             but it contained not matching methods
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               string ThatMethods.TestClass.GetString()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.TestClass.VoidMethod(),
 					               string ThatMethods.TestClass.GetString()
 					             ]
 					             """);
@@ -118,7 +130,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.VoidMethod) in type ThatMethods.TestClass
 					             not all return void,
-					             but it only contained matching methods
+					             but all 1 did
 
 					             Collection:
 					             [

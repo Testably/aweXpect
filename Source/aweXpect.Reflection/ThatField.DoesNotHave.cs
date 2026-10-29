@@ -17,10 +17,20 @@ public static partial class ThatField
 	[GuaranteesNotNull]
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> DoesNotHave<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
+		=> subject.DoesNotHave(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that the <see cref="FieldInfo" /> does not have attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> DoesNotHave(
+		this IThat<FieldInfo?> subject,
+		Type attributeType)
 	{
 		AttributeFilter<FieldInfo?> attributeFilter = new(
-			new AttributeFilterOptions<FieldInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
+			new AttributeFilterOptions<FieldInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
+				.WithAttribute(attributeType));
 		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),

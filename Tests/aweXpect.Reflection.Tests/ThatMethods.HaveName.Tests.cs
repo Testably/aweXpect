@@ -7,7 +7,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public sealed class HaveName
+	public sealed partial class HaveName
 	{
 		public sealed class EnumerableTests
 		{
@@ -53,6 +53,12 @@ public sealed partial class ThatMethods
 					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
 					               (… and 1 more)
 					             ]
+
+					             Collection:
+					             [
+					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
+					               (… and 1 more)
+					             ]
 					             """)
 					.Because("the not matching members are limited like any other collection in a failure message");
 			}
@@ -78,6 +84,12 @@ public sealed partial class ThatMethods
 					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
+					               int ThatMethods.ClassWithMethods.PublicMethod2() with name "PublicMethod2" instead of "PublicMethod2X"
+					             ]
+
+					             Collection:
 					             [
 					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
 					               int ThatMethods.ClassWithMethods.PublicMethod2() with name "PublicMethod2" instead of "PublicMethod2X"
@@ -165,6 +177,11 @@ public sealed partial class ThatMethods
 					             all have name matching _ => throw new InvalidOperationException("boom"),
 					             but the name selector did throw an InvalidOperationException:
 					               boom
+
+					             Collection:
+					             [
+					               int ThatMethods.ClassWithMethods.PublicMethod1()
+					             ]
 					             """)
 					.Because("an exception of the name selector must fail the expectation instead of aborting the evaluation");
 			}
@@ -189,6 +206,11 @@ public sealed partial class ThatMethods
 					             not all have name matching _ => throw new InvalidOperationException("boom"),
 					             but the name selector did throw an InvalidOperationException:
 					               boom
+
+					             Collection:
+					             [
+					               int ThatMethods.ClassWithMethods.PublicMethod1()
+					             ]
 					             """)
 					.Because("a name selector that throws answers neither the expectation nor its negation");
 			}
@@ -327,9 +349,14 @@ public sealed partial class ThatMethods
 
 					             Not matching items:
 					             [
-					               * with name "MyMethod" instead of "MyMethodX"
+					               int ThatMethod.ClassWithSingleMethod.MyMethod() with name "MyMethod" instead of "MyMethodX"
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               int ThatMethod.ClassWithSingleMethod.MyMethod() with name "MyMethod" instead of "MyMethodX"
+					             ]
+					             """);
 			}
 
 			[Test]

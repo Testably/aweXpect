@@ -39,6 +39,26 @@ public sealed partial class ThatField
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenFieldHasAttribute_ShouldFail()
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.TestField))!;
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatField.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in string ThatField.DoesNotHave.AttributeTests.TestClass.TestField
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Field)]
 			private class FooAttribute : Attribute
 			{

@@ -21,6 +21,12 @@ internal static class AttributePredicates
 		=> TypeCheck<TAttribute>.Predicate;
 
 	/// <summary>
+	///     Returns a predicate that checks that the attribute is an <paramref name="attributeType" />.
+	/// </summary>
+	public static Func<Attribute, bool> IsOfType(Type attributeType)
+		=> new TypeCheckOf(attributeType).Matches;
+
+	/// <summary>
 	///     Checks if the <paramref name="predicate" /> is missing or only checks the type of the attribute.
 	/// </summary>
 	public static bool OnlyChecksType([NotNullWhen(false)] Func<Attribute, bool>? predicate)
@@ -34,5 +40,10 @@ internal static class AttributePredicates
 		public static readonly Func<Attribute, bool> Predicate = new TypeCheck<TAttribute>().Matches;
 
 		public bool Matches(Attribute attribute) => attribute is TAttribute;
+	}
+
+	private sealed class TypeCheckOf(Type attributeType) : TypeCheck
+	{
+		public bool Matches(Attribute attribute) => attributeType.IsInstanceOfType(attribute);
 	}
 }

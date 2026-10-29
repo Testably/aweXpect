@@ -110,6 +110,17 @@ In.AllLoadedAssemblies().Types().WhichDependOn(dbContextType)
 All dependency families additionally accept a reusable `Filtered.Types` selection as target; see
 [Layers as type selections](#layers-as-type-selections).
 
+On collections of types, `DependOn`, `DependOnlyOn` and `HaveDependenciesOutside` also follow aweXpect's
+quantifiers and keep their options, like `.OrOn(…)` or `.ExcludingSubNamespaces()`. `DoNotDependOn` means that no
+type depends on the target (`none depend on namespace "MusicStore.Data"`), the same as `None().DependOn(…)`:
+
+```csharp
+await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
+    .AtMost(1).DependOn<DbContext>();
+await Expect.That(Types.InNamespace("MusicStore.Domain"))
+    .AtLeast(2).DependOnlyOn("MusicStore.Domain").ExcludingOwnSubNamespaces();
+```
+
 :::warning[Framework dependencies are ignored unless you name one explicitly]
 `DependOnlyOn` ignores dependencies whose assembly name matches one of the
 [`ExcludedAssemblyPrefixes`](./04-customization.md#assembly-exclusions) (e.g. `System` covers `System` and

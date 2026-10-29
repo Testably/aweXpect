@@ -29,12 +29,18 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int at index 0,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int at index 0,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
+					               ThatConstructors.DoNotHaveParameter.TestClass(string text, int value)
 					             ]
 					             """);
 			}
@@ -73,11 +79,17 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter with name "dum",
-					             but it contained constructors with a matching parameter
+					             none have parameter with name "dum",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
 					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
 					             ]
 					             """);
@@ -130,11 +142,17 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type ThatConstructors.DoNotHaveParameter.DummyBase,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type ThatConstructors.DoNotHaveParameter.DummyBase,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
 					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
 					             ]
 					             """);
@@ -157,7 +175,7 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type long,
+					             none have parameter of type long,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -181,7 +199,7 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int,
+					             none have parameter of type int,
 					             but it was <null>
 					             """);
 			}
@@ -203,12 +221,18 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type string with name "text",
-					             but it contained constructors with a matching parameter
+					             none have parameter of type string with name "text",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
+					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
 					             ]
 					             """);
 			}
@@ -248,12 +272,18 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
+					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
 					             ]
 					             """);
 			}
@@ -276,12 +306,18 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int with name "value",
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int with name "value",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
+					               ThatConstructors.DoNotHaveParameter.TestClass(ThatConstructors.DoNotHaveParameter.Dummy dummy)
 					             ]
 					             """);
 			}
@@ -320,11 +356,17 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(bool flag, int value = 42)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text),
 					               ThatConstructors.DoNotHaveParameter.TestClass(bool flag, int value = 42)
 					             ]
 					             """);
@@ -349,8 +391,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a constructor with parameter of type long,
-					             but it only contained constructors without a matching parameter
+					             at least one has parameter of type long,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -396,10 +438,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter with name "value",
-					             but it contained constructors with a matching parameter
+					             none have parameter with name "value",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
 					             ]
@@ -438,10 +485,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
 					             ]
@@ -464,10 +516,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type int with name "value",
-					             but it contained constructors with a matching parameter
+					             none have parameter of type int with name "value",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
 					             ]
@@ -491,10 +548,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type string,
-					             but it contained constructors with a matching parameter
+					             none have parameter of type string,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
 					             ]
@@ -518,10 +580,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not have parameter of type string with name "text",
-					             but it contained constructors with a matching parameter
+					             none have parameter of type string with name "text",
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHaveParameter.TestClass(int value, string text)
 					             ]

@@ -59,11 +59,17 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type ThatFields.AreNotOfType.DummyBase,
-					             but it contained fields of type ThatFields.AreNotOfType.DummyBase
+					             none are of type ThatFields.AreNotOfType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               ThatFields.AreNotOfType.Dummy ThatFields.AreNotOfType.TestClass.DummyField
+					             ]
+
+					             Collection:
+					             [
+					               string ThatFields.AreNotOfType.TestClass.StringField,
 					               ThatFields.AreNotOfType.Dummy ThatFields.AreNotOfType.TestClass.DummyField
 					             ]
 					             """);
@@ -86,7 +92,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
+					             none are of type int,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -114,12 +120,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained fields of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               int ThatFields.AreNotOfType.TestClass.IntField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatFields.AreNotOfType.TestClass.IntField,
+					               string ThatFields.AreNotOfType.TestClass.StringField
 					             ]
 					             """);
 			}
@@ -137,7 +149,7 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
+					             none are of type int,
 					             but it was <null>
 					             """);
 			}
@@ -160,11 +172,17 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type string,
-					             but it contained fields of type string
+					             none are of type string,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               string ThatFields.AreNotOfType.TestClass.StringField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatFields.AreNotOfType.TestClass.IntField,
 					               string ThatFields.AreNotOfType.TestClass.StringField
 					             ]
 					             """);
@@ -189,8 +207,8 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a field of type int,
-					             but it only contained fields not of type int
+					             at least one is of type int,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -253,12 +271,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained fields of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               int ThatFields.AreNotOfType.TestClass.IntField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatFields.AreNotOfType.TestClass.IntField,
+					               string ThatFields.AreNotOfType.TestClass.StringField
 					             ]
 					             """);
 			}
@@ -281,12 +305,18 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained fields of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               int ThatFields.AreNotOfType.TestClass.IntField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatFields.AreNotOfType.TestClass.IntField,
+					               string ThatFields.AreNotOfType.TestClass.StringField
 					             ]
 					             """);
 			}

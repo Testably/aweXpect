@@ -167,6 +167,22 @@ public sealed partial class ThatType
 					             but it was <null>
 					             """);
 			}
+
+			[Test]
+			public async Task WithType_WhenTypeHasAttribute_ShouldSucceed()
+			{
+				Type subject = typeof(FooClass2);
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Class)]
 			private class FooAttribute : Attribute
 			{

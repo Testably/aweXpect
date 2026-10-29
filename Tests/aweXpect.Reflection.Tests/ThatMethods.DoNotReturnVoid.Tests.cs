@@ -59,7 +59,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return void,
+					             none return void,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -87,11 +87,17 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return void,
-					             but it contained methods which return void
+					             none return void,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               void ThatMethods.TestClass.VoidMethod()
+					             ]
+
+					             Collection:
+					             [
+					               int ThatMethods.TestClass.GetInt(),
 					               void ThatMethods.TestClass.VoidMethod()
 					             ]
 					             """);
@@ -116,8 +122,8 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a method which returns void,
-					             but it only contained methods which do not return void
+					             at least one returns void,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -178,10 +184,15 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not return void,
-					             but it contained methods which return void
+					             none return void,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               void ThatMethods.TestClass.VoidMethod()
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.TestClass.VoidMethod()
 					             ]

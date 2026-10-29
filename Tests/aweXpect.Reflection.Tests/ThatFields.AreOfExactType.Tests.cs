@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatFields
 {
-	public sealed class AreOfExactType
+	public sealed partial class AreOfExactType
 	{
 		public sealed class GenericTests
 		{
@@ -28,14 +28,19 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type *DummyBase,
-					             but it contained not matching fields
+					             all are of exact type ThatFields.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -90,14 +95,19 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type int or of exact type *DummyBase,
-					             but it contained not matching fields
+					             all are of exact type int or of exact type ThatFields.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
+					             ]
+					             """);
 			}
 		}
 
@@ -120,14 +130,19 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type *DummyBase,
-					             but it contained not matching fields
+					             all are of exact type ThatFields.AreOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               ThatFields.AreOfExactType.Dummy ThatFields.AreOfExactType.TestClass.DummyField
+					             ]
+					             """);
 			}
 
 			[Test]

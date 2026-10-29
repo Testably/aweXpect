@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatEvents
 {
-	public sealed class AreOfType
+	public sealed partial class AreOfType
 	{
 		public delegate void CustomHandler();
 
@@ -31,14 +31,20 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type EventHandler,
-					             but it contained not matching events
+					             all are of type EventHandler,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -94,14 +100,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are not all of type EventHandler,
-					             but it only contained matching events
+					             not all are of type EventHandler,
+					             but all 2 were
 
 					             Collection:
 					             [
-					               *
+					               event EventHandler ThatEvents.AreOfType.TestClass.EventHandlerEvent,
+					               event EventHandler ThatEvents.AreOfType.TestClass.OtherEventHandlerEvent
 					             ]
-					             """).AsWildcard();
+					             """);
 			}
 
 			[Test]
@@ -141,14 +148,20 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type EventHandler,
-					             but it contained not matching events
+					             all are of type EventHandler,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -251,14 +264,20 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type Action or of type EventHandler,
-					             but it contained not matching events
+					             all are of type Action or of type EventHandler,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfType.TestClass.EventHandlerEvent,
+					               event ThatEvents.AreOfType.CustomHandler ThatEvents.AreOfType.TestClass.CustomHandlerEvent
+					             ]
+					             """);
 			}
 		}
 #pragma warning restore CA2263

@@ -88,6 +88,21 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenMethodHasAttribute_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod("TestMethod")!;
+
+				Type attributeType = typeof(MarkerAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Method)]
 			private class MarkerAttribute : Attribute
 			{

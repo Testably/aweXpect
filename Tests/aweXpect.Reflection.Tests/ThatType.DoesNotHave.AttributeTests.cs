@@ -68,6 +68,26 @@ public sealed partial class ThatType
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenTypeHasAttribute_ShouldFail()
+			{
+				Type subject = typeof(FooClass2);
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatType.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in ThatType.DoesNotHave.AttributeTests.FooClass2
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Class)]
 			private class FooAttribute : Attribute
 			{

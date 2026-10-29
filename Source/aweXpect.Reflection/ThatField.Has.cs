@@ -20,10 +20,20 @@ public static partial class ThatField
 	[GuaranteesNotNull]
 	public static HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
+		=> subject.Has(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	[GuaranteesNotNull]
+	public static HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?> Has(
+		this IThat<FieldInfo?> subject,
+		Type attributeType)
 	{
 		AttributeFilter<FieldInfo?> attributeFilter = new(
-			new AttributeFilterOptions<FieldInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
+			new AttributeFilterOptions<FieldInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
+				.WithAttribute(attributeType));
 		return new HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter)),

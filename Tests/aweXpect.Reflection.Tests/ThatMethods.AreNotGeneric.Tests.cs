@@ -44,7 +44,7 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not generic,
+					             none are generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -56,7 +56,7 @@ public sealed partial class ThatMethods
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a generic method,
+					             at least one is generic,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -83,14 +83,19 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not generic,
-					             but it contained generic methods
+					             none are generic,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
 					             [
-					               *
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value)
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value)
+					             ]
+					             """);
 			}
 		}
 
@@ -109,14 +114,21 @@ public sealed partial class ThatMethods
 				await That(Act).Throws()
 					.WithMessage("""
 					             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-					             are all not generic,
-					             but it contained generic methods
+					             none are generic,
+					             but 2 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
-					               *
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value),
+					               U ThatMethods.ClassWithMethods.GenericMethod2<T, U>(T first, U second)
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value),
+					               U ThatMethods.ClassWithMethods.GenericMethod2<T, U>(T first, U second)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -160,15 +172,16 @@ public sealed partial class ThatMethods
 
 				await That(Act).Throws()
 					.WithMessage("""
-					             Expected that *
-					             also contain a generic method,
-					             but it only contained non-generic methods
+					             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
+					             at least one is generic,
+					             but none of 2 were
 
 					             Collection:
 					             [
-					               *
+					               int ThatMethods.ClassWithMethods.NonGenericMethod1(),
+					               int ThatMethods.ClassWithMethods.NonGenericMethod2()
 					             ]
-					             """).AsWildcard();
+					             """);
 			}
 		}
 	}

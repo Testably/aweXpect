@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class HaveName
+	public sealed partial class HaveName
 	{
 		public sealed class Tests
 		{
@@ -99,6 +99,12 @@ public sealed partial class ThatAssemblies
 					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
 					               (… and 1 more)
 					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
+					               (… and 1 more)
+					             ]
 					             """).AsWildcard()
 					.Because("the not matching assemblies are limited like any other collection in a failure message");
 			}
@@ -122,7 +128,13 @@ public sealed partial class ThatAssemblies
 					             Not matching items:
 					             [
 					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
-					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection, Version=* with name "aweXpect.Reflection" instead of "WrongName",
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null with name "aweXpect.Reflection.Tests" instead of "WrongName"
 					             ]
 					             """).AsWildcard();
 			}
@@ -159,7 +171,12 @@ public sealed partial class ThatAssemblies
 
 					             Not matching items:
 					             [
-					               aweXpect.Reflection.Tests, Version=* with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null with name "aweXpect.Reflection.Tests" instead of "WrongName"
+					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null with name "aweXpect.Reflection.Tests" instead of "WrongName"
 					             ]
 					             """).AsWildcard();
 			}
@@ -208,7 +225,13 @@ public sealed partial class ThatAssemblies
 					             all have name matching _ => throw new InvalidOperationException("boom"),
 					             but the name selector did throw an InvalidOperationException:
 					               boom
-					             """)
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               (… and maybe more)
+					             ]
+					             """).AsWildcard()
 					.Because("an exception of the name selector must fail the expectation instead of aborting the evaluation");
 			}
 

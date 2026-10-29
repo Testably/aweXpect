@@ -59,11 +59,17 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type ThatProperties.AreNotOfType.DummyBase,
-					             but it contained properties of type ThatProperties.AreNotOfType.DummyBase
+					             none are of type ThatProperties.AreNotOfType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               public ThatProperties.AreNotOfType.Dummy ThatProperties.AreNotOfType.TestClass.DummyProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; },
 					               public ThatProperties.AreNotOfType.Dummy ThatProperties.AreNotOfType.TestClass.DummyProperty { get; set; }
 					             ]
 					             """);
@@ -86,7 +92,7 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
+					             none are of type int,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -114,12 +120,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained properties of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -137,7 +149,7 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
+					             none are of type int,
 					             but it was <null>
 					             """);
 			}
@@ -160,11 +172,17 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type string,
-					             but it contained properties of type string
+					             none are of type string,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; },
 					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; }
 					             ]
 					             """);
@@ -189,8 +207,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a property of type int,
-					             but it only contained properties not of type int
+					             at least one is of type int,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -253,12 +271,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained properties of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -281,12 +305,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of type int,
-					             but it contained properties of type int
+					             none are of type int,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public int ThatProperties.AreNotOfType.TestClass.IntProperty { get; set; },
+					               public string ThatProperties.AreNotOfType.TestClass.StringProperty { get; set; }
 					             ]
 					             """);
 			}

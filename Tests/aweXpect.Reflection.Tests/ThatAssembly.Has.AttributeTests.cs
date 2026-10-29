@@ -101,6 +101,21 @@ public sealed partial class ThatAssembly
 					.Because("the attributes of assemblies, constructors and fields cannot be inherited");
 			}
 
+			[Test]
+			public async Task WithType_WhenAssemblyHasAttribute_ShouldSucceed()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				Type attributeType = typeof(AssemblyTitleAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Assembly)]
 			private class MarkerAttribute : Attribute;
 		}

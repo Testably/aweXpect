@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class DependOn
+	public sealed partial class DependOn
 	{
 		private const string Layer1Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";
 
@@ -67,10 +67,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on namespace "{Layer1Namespace}",
-					              but it contained types without the dependency
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                FrameworkConsumer
+					              ]
+
+					              Collection:
+					              [
+					                ViaField,
 					                FrameworkConsumer
 					              ]
 					              """);
@@ -132,10 +138,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types without the dependency
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                FrameworkConsumer
+					              ]
+
+					              Collection:
+					              [
+					                ViaField,
 					                FrameworkConsumer
 					              ]
 					              """);
@@ -217,10 +229,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               OnlyLayer2
+					             ]
+
+					             Collection:
+					             [
+					               ViaField,
 					               OnlyLayer2
 					             ]
 					             """);
@@ -246,10 +264,16 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               OnlyLayer2
+					             ]
+
+					             Collection:
+					             [
+					               ViaField,
 					               OnlyLayer2
 					             ]
 					             """);
@@ -382,7 +406,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all depend on type TargetA,
-					             but it only contained types with the dependency
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -410,7 +434,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all depend on type TargetA,
-					             but it only contained types with the dependency
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -510,10 +534,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but only 1 of 3 did
 
 					             Not matching items:
 					             [
+					               OnlyLayer2,
+					               FrameworkConsumer
+					             ]
+
+					             Collection:
+					             [
+					               ViaField,
 					               OnlyLayer2,
 					               FrameworkConsumer
 					             ]
@@ -539,10 +570,17 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all depend on type TargetA,
-					             but it contained types without the dependency
+					             but only 1 of 3 did
 
 					             Not matching items:
 					             [
+					               OnlyLayer2,
+					               FrameworkConsumer
+					             ]
+
+					             Collection:
+					             [
+					               ViaField,
 					               OnlyLayer2,
 					               FrameworkConsumer
 					             ]

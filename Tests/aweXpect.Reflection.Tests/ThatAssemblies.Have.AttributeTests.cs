@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -100,7 +100,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,
-					             but it only contained matching assemblies
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -126,9 +126,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching assemblies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -152,9 +157,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
-					             but it contained not matching assemblies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -194,9 +204,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching assemblies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -218,9 +233,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
-					             but it contained not matching assemblies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -341,9 +361,14 @@ public sealed partial class ThatAssemblies
 						.WithMessage("""
 						             Expected that subjects
 						             all have ThatAssemblies.Have.OrHave.AttributeTests.MarkerAttribute or ThatAssemblies.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching assemblies
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+						             ]
+
+						             Collection:
 						             [
 						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 						             ]
@@ -384,9 +409,14 @@ public sealed partial class ThatAssemblies
 						.WithMessage("""
 						             Expected that subjects
 						             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistent" or ThatAssemblies.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "NonExistent",
-						             but it contained not matching assemblies
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+						             ]
+
+						             Collection:
 						             [
 						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 						             ]
@@ -456,7 +486,12 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,
-					             but it only contained matching assemblies*
+					             but all 1 did
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
 					             """).AsWildcard();
 			}
 

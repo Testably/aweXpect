@@ -105,9 +105,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -131,9 +136,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -157,9 +167,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -183,9 +198,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -209,9 +229,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -235,9 +260,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -289,9 +319,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -342,9 +377,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -366,9 +406,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -390,9 +435,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -414,9 +464,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -438,9 +493,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
 					             ]
@@ -468,7 +528,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of exact type Stream,
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -495,7 +555,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of exact type Stream,
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [

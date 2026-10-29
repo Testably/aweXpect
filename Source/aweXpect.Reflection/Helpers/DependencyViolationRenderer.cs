@@ -33,14 +33,17 @@ internal static class DependencyViolationRenderer
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> item has no violations to list; it fails because it cannot satisfy the
-	///     expectation, so it is rendered without a (contradictory empty) violation list.
+	///     expectation, so it is rendered without a (contradictory empty) violation list.<br />
+	///     The <paramref name="totalCount" /> is the number of items in total, when the <paramref name="items" /> are
+	///     only the first of them.
 	/// </remarks>
 	public static string FormatItemsWithDisallowedDependencies<TItem, TViolations>(
 		IReadOnlyList<TItem?> items,
-		IReadOnlyDictionary<TItem, TViolations> violations)
+		IReadOnlyDictionary<TItem, TViolations> violations,
+		int? totalCount)
 		where TItem : class
 		where TViolations : IEnumerable<string?>
-		=> ItemListRenderer.Format(items, (stringBuilder, item) =>
+		=> ItemListRenderer.Format(items, totalCount, (stringBuilder, item) =>
 		{
 			stringBuilder.Append(Formatter.Format(item));
 			if (item is not null && violations.TryGetValue(item, out TViolations? value))

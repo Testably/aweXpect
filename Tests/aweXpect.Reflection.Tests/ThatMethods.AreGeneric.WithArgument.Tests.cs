@@ -29,10 +29,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass at index {{index}},
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass at index {{index}},
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -57,10 +62,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass at index {{index}} from end,
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass at index {{index}} from end,
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -93,10 +103,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.DerivedClass,
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.DerivedClass,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]
@@ -116,10 +131,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.BaseClass,
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.BaseClass,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
 						             ]
@@ -147,10 +167,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}},
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}},
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -175,10 +200,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}} from end,
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name equal to "TBar" at index {{index}} from end,
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -211,10 +241,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.BaseClass and name equal to "Tbar",
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.BaseClass and name equal to "Tbar",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]
@@ -234,10 +269,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]
@@ -257,10 +297,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.BaseClass and name equal to "TBar",
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.BaseClass and name equal to "TBar",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithUnrestrictedArgumentMethod<TFoo>()
 						             ]
@@ -283,10 +328,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name starting with "{{prefix}}",
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name starting with "{{prefix}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -309,10 +359,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name matching regex "{{regex}}",
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name matching regex "{{regex}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -335,10 +390,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name ending with "{{suffix}}",
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name ending with "{{suffix}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -361,10 +421,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument of type ThatMethod.BaseClass and name matching "{{wildcard}}",
-						               but it contained not matching methods
+						               all are generic with argument of type ThatMethod.BaseClass and name matching "{{wildcard}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -388,10 +453,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument of type ThatMethod.BaseClass and name equal to "TBAR",
-						             but it contained not matching methods
+						             all are generic with argument of type ThatMethod.BaseClass and name equal to "TBAR",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]
@@ -433,10 +503,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name equal to "TBar" at index {{index}},
-						               but it contained not matching methods
+						               all are generic with argument name equal to "TBar" at index {{index}},
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -462,10 +537,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name equal to "TBar" at index {{index}} from end,
-						               but it contained not matching methods
+						               all are generic with argument name equal to "TBar" at index {{index}} from end,
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -498,10 +578,15 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument name equal to "Tbar",
-						             but it contained not matching methods
+						             all are generic with argument name equal to "Tbar",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]
@@ -524,10 +609,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name starting with "{{prefix}}",
-						               but it contained not matching methods
+						               all are generic with argument name starting with "{{prefix}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -550,10 +640,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name matching regex "{{regex}}",
-						               but it contained not matching methods
+						               all are generic with argument name matching regex "{{regex}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -576,10 +671,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name ending with "{{suffix}}",
-						               but it contained not matching methods
+						               all are generic with argument name ending with "{{suffix}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -602,10 +702,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage($$"""
 						               Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						               are all generic with argument name matching "{{wildcard}}",
-						               but it contained not matching methods
+						               all are generic with argument name matching "{{wildcard}}",
+						               but none of 1 were
 
 						               Not matching items:
+						               [
+						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						               ]
+
+						               Collection:
 						               [
 						                 void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						               ]
@@ -628,10 +733,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with argument name equal to "TBAR",
-						             but it contained not matching methods
+						             all are generic with argument name equal to "TBAR",
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.ClassWithMethods.GenericWithRestrictedSecondArgumentMethod<TFoo, TBar>()
 						             ]

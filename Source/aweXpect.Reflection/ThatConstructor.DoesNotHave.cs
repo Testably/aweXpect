@@ -19,10 +19,21 @@ public static partial class ThatConstructor
 	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> DoesNotHave<TAttribute>(
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
+		=> subject.DoesNotHave(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> does not have attribute of type
+	///     <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> DoesNotHave(
+		this IThat<ConstructorInfo?> subject,
+		Type attributeType)
 	{
 		AttributeFilter<ConstructorInfo?> attributeFilter = new(
-			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
+			new AttributeFilterOptions<ConstructorInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
+				.WithAttribute(attributeType));
 		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),

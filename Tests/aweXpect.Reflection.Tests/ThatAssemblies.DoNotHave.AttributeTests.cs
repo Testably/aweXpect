@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class DoNotHave
+	public sealed partial class DoNotHave
 	{
 		public sealed class AttributeTests
 		{
@@ -27,10 +27,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             all have no AssemblyTitleAttribute,
-					             but it contained not matching assemblies
+					             none have AssemblyTitleAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -54,8 +59,8 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have no ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
-					             but it only contained matching assemblies
+					             at least one has ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -80,10 +85,15 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             all have no AssemblyTitleAttribute,
-					             but it contained not matching assemblies
+					             none have AssemblyTitleAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -108,7 +118,7 @@ public sealed partial class ThatAssemblies
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
+					             none have ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -120,7 +130,7 @@ public sealed partial class ThatAssemblies
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
+					             at least one has ThatAssemblies.DoNotHave.AttributeTests.MarkerAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:

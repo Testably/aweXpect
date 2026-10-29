@@ -36,7 +36,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all do not depend on namespace "{Layer2Namespace}",
+					              none depend on namespace "{Layer2Namespace}",
 					              but for the item at index 1, it was <null>
 
 					              Collection:
@@ -81,11 +81,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all do not depend on namespace "{Layer2Namespace}",
-					              but it contained types with the dependency
+					              none depend on namespace "{Layer2Namespace}",
+					              but 1 of 2 did
 
-					              Not matching items:
+					              Matching items:
 					              [
+					                Layer1AndLayer2
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
 					                Layer1AndLayer2
 					              ]
 					              """);
@@ -128,11 +134,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all do not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies,
-					              but it contained types with the dependency
+					              none depend on types within namespace "{Layer2Namespace}" in all loaded assemblies,
+					              but 1 of 2 did
 
-					              Not matching items:
+					              Matching items:
 					              [
+					                Layer1AndLayer2
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
 					                Layer1AndLayer2
 					              ]
 					              """);
@@ -173,10 +185,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2" in all loaded assemblies or types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1" in all loaded assemblies,
-					             but it contained types with the dependency
+					             none depend on types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2" in all loaded assemblies or types within namespace "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1" in all loaded assemblies,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               OnlyLayer1
+					             ]
+
+					             Collection:
 					             [
 					               OnlyLayer1
 					             ]
@@ -203,11 +220,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             none depend on type TargetB,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               Layer1AndLayer2
+					             ]
+
+					             Collection:
+					             [
+					               OnlyLayer1,
 					               Layer1AndLayer2
 					             ]
 					             """);
@@ -232,11 +255,17 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             none depend on type TargetB,
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               Layer1AndLayer2
+					             ]
+
+					             Collection:
+					             [
+					               OnlyLayer1,
 					               Layer1AndLayer2
 					             ]
 					             """);
@@ -297,7 +326,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
+					             none depend on type TargetB,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -340,7 +369,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
+					             none depend on type TargetB,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -370,8 +399,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all do not depend on type TargetB,
-					             but it only contained types without the dependency
+					             at least one depends on type TargetB,
+					             but none of 2 did
 
 					             Collection:
 					             [
@@ -432,7 +461,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
+					             none depend on type TargetB,
 					             but it was <null>
 					             """);
 			}
@@ -456,11 +485,18 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             none depend on type TargetB,
+					             but 2 of 3 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               OnlyLayer2,
+					               Layer1AndLayer2
+					             ]
+
+					             Collection:
+					             [
+					               OnlyLayer1,
 					               OnlyLayer2,
 					               Layer1AndLayer2
 					             ]
@@ -485,11 +521,18 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
-					             but it contained types with the dependency
+					             none depend on type TargetB,
+					             but 2 of 3 did
 
-					             Not matching items:
+					             Matching items:
 					             [
+					               OnlyLayer2,
+					               Layer1AndLayer2
+					             ]
+
+					             Collection:
+					             [
+					               OnlyLayer1,
 					               OnlyLayer2,
 					               Layer1AndLayer2
 					             ]
@@ -530,10 +573,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB or TargetA,
-					             but it contained types with the dependency
+					             none depend on type TargetB or TargetA,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               OnlyLayer1
+					             ]
+
+					             Collection:
 					             [
 					               OnlyLayer1
 					             ]
@@ -553,7 +601,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB,
+					             none depend on type TargetB,
 					             but it was <null>
 					             """);
 			}
@@ -574,10 +622,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all do not depend on type TargetB or TargetA,
-					             but it contained types with the dependency
+					             none depend on type TargetB or TargetA,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               OnlyLayer1
+					             ]
+
+					             Collection:
 					             [
 					               OnlyLayer1
 					             ]

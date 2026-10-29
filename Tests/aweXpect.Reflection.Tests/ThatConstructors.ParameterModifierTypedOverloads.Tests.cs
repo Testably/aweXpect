@@ -62,10 +62,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with ref modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.ParameterModifierTypedOverloads.PlainIntCtor(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.ParameterModifierTypedOverloads.RefIntCtor(ref int value),
 					               ThatConstructors.ParameterModifierTypedOverloads.PlainIntCtor(int value)
 					             ]
 					             """);

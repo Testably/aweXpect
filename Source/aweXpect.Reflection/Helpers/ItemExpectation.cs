@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Formatting;
 
@@ -35,6 +36,21 @@ internal abstract class ItemExpectation<TItem>
 	///     "inherit from Base" when the grammars are plural.
 	/// </summary>
 	public abstract void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars);
+
+	/// <summary>
+	///     Called when an evaluation starts, before the items are checked, e.g. to get the options of the evaluation
+	///     from the <paramref name="context" />.
+	/// </summary>
+	public virtual void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+	}
+
+	/// <summary>
+	///     Adds the contexts of the expectation to the failure message, e.g. those of its options.
+	/// </summary>
+	public virtual void AppendContexts(ResultContextCollector contexts)
+	{
+	}
 
 	/// <summary>
 	///     Formats the <paramref name="items" /> that the failure message lists.

@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -31,32 +26,44 @@ public static partial class ThatAssemblies
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
 		string doNotPopulateThisValue = "")
-	{
-		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Func<Version, bool> Predicate, string DoNotPopulateThisValue), IEnumerable<Assembly?>>((predicate, doNotPopulateThisValue),
-				static (s, it, grammars)
-				=> new HaveVersionConstraint(it, grammars, s.Predicate, s.DoNotPopulateThisValue.TrimExpression())),
-			subject);
-	}
+		=> new(subject.ExpectAll(new HaveVersionExpectation(predicate, doNotPopulateThisValue)), subject);
+
+	/// <summary>
+	///     …have a <see cref="AssemblyName.Version" /> that satisfies the <paramref name="predicate" />.
+	/// </summary>
+	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveVersion(
+		this IEnumerableItems<Assembly?> items,
+		Func<Version, bool> predicate,
+		[CallerArgumentExpression(nameof(predicate))]
+		string doNotPopulateThisValue = "")
+		=> new(items.ExpectItems(new HaveVersionExpectation(predicate, doNotPopulateThisValue)), items.Subject);
+
+	/// <inheritdoc cref="HaveVersion(IEnumerableItems{Assembly?}, Func{Version, bool}, string)" />
+	public static AndOrResult<TCollection, IThat<TCollection>> HaveVersion<TCollection>(
+		this IStructEnumerableItems<TCollection, Assembly?> items,
+		Func<Version, bool> predicate,
+		[CallerArgumentExpression(nameof(predicate))]
+		string doNotPopulateThisValue = "")
+		where TCollection : struct, IEnumerable<Assembly?>
+		=> new(items.ExpectItems(new HaveVersionExpectation(predicate, doNotPopulateThisValue)), items.Subject);
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
-	///     a <see cref="AssemblyName.Version" /> that satisfies the <paramref name="predicate" />.
-	/// </summary>
+	/// <inheritdoc cref="HaveVersion(IThat{IEnumerable{Assembly?}}, Func{Version, bool}, string)" />
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveVersion(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject,
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
 		string doNotPopulateThisValue = "")
-	{
-		ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
-		return new(subject.Get().ExpectationBuilder.AddConstraint<(Func<Version, bool> Predicate, string DoNotPopulateThisValue), IAsyncEnumerable<Assembly?>>((predicate, doNotPopulateThisValue),
-				static (s, it, grammars)
-				=> new HaveVersionConstraint(it, grammars, s.Predicate, s.DoNotPopulateThisValue.TrimExpression())),
-			subject);
-	}
+		=> new(subject.ExpectAll(new HaveVersionExpectation(predicate, doNotPopulateThisValue)), subject);
+
+	/// <inheritdoc cref="HaveVersion(IEnumerableItems{Assembly?}, Func{Version, bool}, string)" />
+	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveVersion(
+		this IAsyncEnumerableItems<Assembly?> items,
+		Func<Version, bool> predicate,
+		[CallerArgumentExpression(nameof(predicate))]
+		string doNotPopulateThisValue = "")
+		=> new(items.ExpectItems(new HaveVersionExpectation(predicate, doNotPopulateThisValue)), items.Subject);
 #endif
 
 	/// <summary>
@@ -65,123 +72,73 @@ public static partial class ThatAssemblies
 	/// </summary>
 	[GuaranteesNotNull]
 	public static VersionResult<IEnumerable<Assembly?>> HaveVersion(this IThat<IEnumerable<Assembly?>?> subject)
-		=> new(subject, (expectationBuilder, checks)
-			=> expectationBuilder.AddConstraint<IReadOnlyOptionsHolder<VersionComponentCheck[]>, IEnumerable<Assembly?>>(checks,
-				static (checks, it, grammars)
-				=> new HaveVersionComponentsConstraint(it, grammars, checks)));
+		=> new(subject, (_, checks) => subject.ExpectAll(new HaveVersionComponentsExpectation(checks)));
+
+	/// <summary>
+	///     …have a <see cref="AssemblyName.Version" />, whose individual components the result verifies.
+	/// </summary>
+	public static VersionResult<IEnumerable<Assembly?>> HaveVersion(this IEnumerableItems<Assembly?> items)
+		=> new(items.Subject, (_, checks) => items.ExpectItems(new HaveVersionComponentsExpectation(checks)));
+
+	/// <inheritdoc cref="HaveVersion(IEnumerableItems{Assembly?})" />
+	public static VersionResult<TCollection> HaveVersion<TCollection>(
+		this IStructEnumerableItems<TCollection, Assembly?> items)
+		where TCollection : struct, IEnumerable<Assembly?>
+		=> new(items.Subject, (_, checks) => items.ExpectItems(new HaveVersionComponentsExpectation(checks)));
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies the individual components of the <see cref="AssemblyName.Version" /> of all items in the filtered
-	///     collection of <see cref="Assembly" />.
-	/// </summary>
+	/// <inheritdoc cref="HaveVersion(IThat{IEnumerable{Assembly?}})" />
 	[GuaranteesNotNull]
 	public static VersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
-		=> new(subject, (expectationBuilder, checks)
-			=> expectationBuilder.AddConstraint<IReadOnlyOptionsHolder<VersionComponentCheck[]>, IAsyncEnumerable<Assembly?>>(checks,
-				static (checks, it, grammars)
-				=> new HaveVersionComponentsConstraint(it, grammars, checks)));
+		=> new(subject, (_, checks) => subject.ExpectAll(new HaveVersionComponentsExpectation(checks)));
+
+	/// <inheritdoc cref="HaveVersion(IEnumerableItems{Assembly?})" />
+	public static VersionResult<IAsyncEnumerable<Assembly?>> HaveVersion(this IAsyncEnumerableItems<Assembly?> items)
+		=> new(items.Subject, (_, checks) => items.ExpectItems(new HaveVersionComponentsExpectation(checks)));
 #endif
 
-	private sealed class HaveVersionComponentsConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		IReadOnlyOptionsHolder<VersionComponentCheck[]> checks)
-		: CollectionConstraintResult<Assembly?>(it, grammars),
-			IContextConstraint<IEnumerable<Assembly?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
-#endif
+	private sealed class HaveVersionComponentsExpectation(IReadOnlyOptionsHolder<VersionComponentCheck[]> checks)
+		: ItemExpectation<Assembly>
 	{
-		private bool _isUnanswered;
-
-		/// <inheritdoc />
 		/// <remarks>
 		///     A comparison that cannot be answered, e.g. an ordering against a <see langword="null" /> bound, fails the
 		///     expectation and its negation.
 		/// </remarks>
-		public override Outcome Outcome => _isUnanswered ? Outcome.FailureBothWays : base.Outcome;
-
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
+		public override ValueTask<PredicateResult> IsMatch(Assembly item, CancellationToken cancellationToken)
 		{
-			_isUnanswered = false;
-			return await SetAsyncValue(actual, context, Matches, cancellationToken);
-		}
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-		{
-			_isUnanswered = false;
-			return SetValue(actual, context, Matches);
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (checks.Value.Length == 0)
-			{
-				stringBuilder.Append("all have a version");
-				return;
-			}
-
-			stringBuilder.Append("all have ");
-			AppendComponents(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained assemblies with a non-matching version");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (checks.Value.Length == 0)
-			{
-				stringBuilder.Append("not all have a version");
-				return;
-			}
-
-			stringBuilder.Append("not all have ");
-			AppendComponents(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_isUnanswered)
-			{
-				AppendNormalResult(stringBuilder, indentation);
-				return;
-			}
-
-			stringBuilder.Append(It).Append(" only contained assemblies with a matching version");
-		}
-
-		private bool Matches(Assembly? assembly)
-		{
-			Version? version = assembly?.GetName().Version;
+			Version? version = item.GetName().Version;
 			if (version is null)
 			{
-				return false;
+				return new ValueTask<PredicateResult>(false);
 			}
 
 			bool isMatching = true;
 			foreach (VersionComponentCheck check in checks.Value)
 			{
-				Outcome outcome = check.Comparison.Evaluate(check.Selector(version));
+				int component = check.Selector(version);
+				Outcome outcome = check.Comparison.Evaluate(component);
 				if (outcome == Outcome.FailureBothWays)
 				{
-					_isUnanswered = true;
-					return false;
+					return new ValueTask<PredicateResult>(PredicateResult.FailureBothWays(
+						$"had {check.Component} {Formatter.Format(component)}"));
 				}
 
 				isMatching &= outcome == Outcome.Success;
 			}
 
-			return isMatching;
+			return new ValueTask<PredicateResult>(isMatching);
 		}
 
-		private void AppendComponents(StringBuilder stringBuilder)
+		public override void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
 		{
+			stringBuilder.Append(grammars.IsPlural() ? "have " : "has ");
+			if (checks.Value.Length == 0)
+			{
+				stringBuilder.Append("a version");
+				return;
+			}
+
 			for (int i = 0; i < checks.Value.Length; i++)
 			{
 				if (i > 0)
@@ -200,39 +157,24 @@ public static partial class ThatAssemblies
 		}
 	}
 
-	private sealed class HaveVersionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Version, bool> predicate,
-		string predicateExpression)
-		: CollectionConstraintResult<Assembly?>(it, grammars),
-			IContextConstraint<IEnumerable<Assembly?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
-#endif
+	private sealed class HaveVersionExpectation : ItemExpectation<Assembly>
 	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
-#endif
+		private readonly Func<Version, bool> _predicate;
+		private readonly string _predicateExpression;
 
-		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, Matches);
+		public HaveVersionExpectation(Func<Version, bool> predicate, string predicateExpression)
+		{
+			ThrowHelper.ThrowIfNull(predicate, nameof(predicate));
+			_predicate = predicate;
+			_predicateExpression = predicateExpression.TrimExpression();
+		}
 
-		private bool Matches(Assembly? assembly)
-			=> assembly?.GetName().Version is { } version && UserCode.Invoke(predicate, version, "the predicate");
+		public override ValueTask<PredicateResult> IsMatch(Assembly item, CancellationToken cancellationToken)
+			=> new(item.GetName().Version is { } version &&
+			       UserCode.Invoke(_predicate, version, "the predicate"));
 
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have version matching ").Append(predicateExpression);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained assemblies with a non-matching version");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have version matching ").Append(predicateExpression);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained assemblies with a matching version");
+		public override void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
+			=> stringBuilder.Append(grammars.IsPlural() ? "have version matching " : "has version matching ")
+				.Append(_predicateExpression);
 	}
 }

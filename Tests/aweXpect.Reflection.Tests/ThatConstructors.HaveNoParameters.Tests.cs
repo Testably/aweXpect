@@ -42,8 +42,19 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have no parameters,
-					             but it contained constructors with a different number of parameters*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveNoParameters.TestClass(int value, string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveNoParameters.TestClass(),
+					               ThatConstructors.HaveNoParameters.TestClass(int value, string name)
+					             ]
+					             """);
 			}
 		}
 
@@ -66,8 +77,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have no parameters,
-					             but it only contained constructors with no parameters*
-					             """).AsWildcard();
+					             but all 2 did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveNoParameters.TestClass(),
+					               ThatConstructors.HaveNoParameters.OtherClass()
+					             ]
+					             """);
 			}
 
 			[Test]

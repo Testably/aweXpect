@@ -38,9 +38,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -64,9 +69,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -90,9 +100,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -116,9 +131,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -142,9 +162,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -184,10 +209,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -226,9 +257,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -268,9 +304,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -310,9 +351,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -352,10 +398,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have a params parameter,
-					             but it contained constructors without a params parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -410,10 +462,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -452,10 +510,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -508,10 +572,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -562,10 +632,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have a params parameter,
-					             but it contained constructors without a params parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithParamsParameter(params int[] values),
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -586,9 +662,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -610,9 +691,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -634,9 +720,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -658,9 +749,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -682,9 +778,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -706,9 +807,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -730,9 +836,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -754,9 +865,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParamsParameter.ClassWithoutModifiers(int[] values)
 					             ]
@@ -784,7 +900,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have a params parameter,
-					             but it only contained constructors with a params parameter
+					             but all 2 did
 
 					             Collection:
 					             [

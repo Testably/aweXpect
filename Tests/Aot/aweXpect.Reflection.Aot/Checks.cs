@@ -99,6 +99,12 @@ internal static class Checks
 		new("the domain fails to not depend on the customer type",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(DomainTypes()).DoNotDependOn<Customer>(), "Order")),
+		new("at least one of the infrastructure types depends on the domain",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(InfrastructureTypes()).AtLeast(1).DependOn(DomainTypes()))),
+		new("the infrastructure fails when no type has to depend on the order type",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(InfrastructureTypes()).None().DependOn(typeof(Order)), "depends on type Order for no items")),
 		new("the infrastructure types filtered by their dependency on the order type contain the repository",
 			() => ShouldPassOrFailLoudly(async ()
 				=> await That(InfrastructureTypes().WhichDependOn<Order>()).Contains(typeof(Repository)))),
@@ -121,9 +127,22 @@ internal static class Checks
 			() => ShouldPassOrFailLoudly(async () => await That(typeof(Order).Assembly).DoesNotTarget("net48"))),
 		new("the methods of a type do not return void",
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).DoNotReturnVoid())),
+		new("at least one method of a type has the parameter",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Repository>().Methods()).AtLeast(1).HaveParameter(typeof(int)).AtIndex(0))),
+		new("the methods of a type fail when too few return void",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(In.Type<Order>().Methods()).AtLeast(1).Return(typeof(void)),
+				"returns void for at least one item")),
 		new("the properties of a type not of a type are of the other type",
 			() => ShouldPassOrFailLoudly(async ()
 				=> await That(In.Type<Order>().Properties().WhichAreNotOfType<int>()).AreOfType<Customer>())),
+		new("exactly one property of a type is of the other type",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Order>().Properties()).Exactly(1).AreOfType(typeof(Customer)))),
+		new("none of the named types has the attribute",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Types<Order, Customer>()).None().Have(typeof(ObsoleteAttribute)))),
 	];
 
 	private static Filtered.Types DomainTypes()

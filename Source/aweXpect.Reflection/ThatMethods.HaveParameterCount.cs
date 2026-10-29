@@ -1,18 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -25,10 +15,20 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> HaveParameterCount(
 		this IThat<IEnumerable<MethodInfo?>?> subject, int expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<int, IEnumerable<MethodInfo?>>(expected,
-				static (expected, it, grammars)
-				=> new HaveParameterCountConstraint(it, grammars, expected)),
-			subject);
+		=> new(subject.ExpectAll(new HaveParameterCountExpectation<MethodInfo>(expected)), subject);
+
+	/// <summary>
+	///     …have the <paramref name="expected" /> number of parameters.
+	/// </summary>
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> HaveParameterCount(
+		this IEnumerableItems<MethodInfo?> items, int expected)
+		=> new(items.ExpectItems(new HaveParameterCountExpectation<MethodInfo>(expected)), items.Subject);
+
+	/// <inheritdoc cref="HaveParameterCount(IEnumerableItems{MethodInfo}, int)" />
+	public static AndOrResult<TCollection, IThat<TCollection>> HaveParameterCount<TCollection>(
+		this IStructEnumerableItems<TCollection, MethodInfo?> items, int expected)
+		where TCollection : struct, IEnumerable<MethodInfo?>
+		=> new(items.ExpectItems(new HaveParameterCountExpectation<MethodInfo>(expected)), items.Subject);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -38,50 +38,11 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> HaveParameterCount(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, int expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint<int, IAsyncEnumerable<MethodInfo?>>(expected,
-				static (expected, it, grammars)
-				=> new HaveParameterCountConstraint(it, grammars, expected)),
-			subject);
+		=> new(subject.ExpectAll(new HaveParameterCountExpectation<MethodInfo>(expected)), subject);
+
+	/// <inheritdoc cref="HaveParameterCount(IEnumerableItems{MethodInfo}, int)" />
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> HaveParameterCount(
+		this IAsyncEnumerableItems<MethodInfo?> items, int expected)
+		=> new(items.ExpectItems(new HaveParameterCountExpectation<MethodInfo>(expected)), items.Subject);
 #endif
-
-	private static string ParameterCountDescription(int count)
-		=> count switch
-		{
-			0 => "no parameters",
-			1 => "one parameter",
-			_ => $"{count} parameters",
-		};
-
-	private sealed class HaveParameterCountConstraint(string it, ExpectationGrammars grammars, int expected)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				method => method?.GetParameters().Length == expected, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => method?.GetParameters().Length == expected);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all have ").Append(ParameterCountDescription(expected));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained methods with a different number of parameters");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("not all have ").Append(ParameterCountDescription(expected));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" only contained methods with ")
-				.Append(ParameterCountDescription(expected));
-		}
-	}
 }

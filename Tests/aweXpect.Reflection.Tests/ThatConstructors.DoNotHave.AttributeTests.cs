@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatConstructors
 {
-	public sealed class DoNotHave
+	public sealed partial class DoNotHave
 	{
 		public sealed class AttributeTests
 		{
@@ -27,10 +27,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching constructors
+					             none have ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
 					             ]
@@ -54,8 +59,8 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching constructors
+					             at least one has ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -80,10 +85,15 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching constructors
+					             none have ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
 					             ]
@@ -108,7 +118,7 @@ public sealed partial class ThatConstructors
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             none have ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -120,7 +130,7 @@ public sealed partial class ThatConstructors
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
+					             at least one has ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:

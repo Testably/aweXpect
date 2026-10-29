@@ -10,7 +10,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class DependOnlyOn
+	public sealed partial class DependOnlyOn
 	{
 		public sealed class Tests
 		{
@@ -41,7 +41,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it contained assemblies with disallowed dependencies*
+					             but none of 1 did*
 					             """).AsWildcard();
 			}
 
@@ -72,9 +72,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it contained assemblies with disallowed dependencies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "AutoFixture", "aweXpect"]
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "AutoFixture", "aweXpect"]
 					             ]
@@ -136,9 +141,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it contained assemblies with disallowed dependencies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
 					             ]
@@ -174,9 +184,15 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             all have dependencies only on assemblies equal to "NonExistentAssembly",
-					             but it contained assemblies with disallowed dependencies
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on *,
+					               aweXpect.Reflection.Tests, Version=* depends on *
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection, Version=* depends on *,
 					               aweXpect.Reflection.Tests, Version=* depends on *
@@ -198,7 +214,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on no assemblies,
-					             but it contained assemblies with disallowed dependencies*
+					             but none of 1 did*
 					             """).AsWildcard();
 			}
 		}
@@ -219,7 +235,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             not all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it only contained assemblies depending only on the allowed assemblies
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -280,9 +296,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it contained assemblies with disallowed dependencies
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection, Version=* depends on ["aweXpect.Core"]
 					             ]

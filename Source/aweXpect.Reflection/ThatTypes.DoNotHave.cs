@@ -1,19 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -31,80 +20,42 @@ public static partial class ThatTypes
 	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<Type?>?> subject)
 		where TAttribute : Attribute
-	{
-		AttributeFilter<Type?> attributeFilter = new(
-			new AttributeFilterOptions<Type?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Type?>, IEnumerable<Type?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter.Scope);
-	}
+		=> subject.DoNotHave(typeof(TAttribute));
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
+	///     attribute of type <paramref name="attributeType" />.
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
 	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
 	/// </remarks>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	[GuaranteesNotNull]
+	public static InheritanceScopeResult<IEnumerable<Type?>, IEnumerable<Type?>?> DoNotHave(
+		this IThat<IEnumerable<Type?>?> subject,
+		Type attributeType)
+	{
+		HaveAttributeExpectation<Type> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{Type}})" />
 	[GuaranteesNotNull]
 	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHave<TAttribute>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 		where TAttribute : Attribute
+		=> subject.DoNotHave(typeof(TAttribute));
+
+	/// <inheritdoc cref="DoNotHave(IThat{IEnumerable{Type}}, Type)" />
+	[GuaranteesNotNull]
+	public static InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> DoNotHave(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
+		Type attributeType)
 	{
-		AttributeFilter<Type?> attributeFilter = new(
-			new AttributeFilterOptions<Type?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new InheritanceScopeResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Type?>, IAsyncEnumerable<Type?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter.Scope);
+		HaveAttributeExpectation<Type> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
 	}
 #endif
-
-	private sealed class DoNotHaveAttributeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		AttributeFilter<Type?> attributeFilter)
-		: CollectionConstraintResult<Type?>(it, grammars),
-			IContextConstraint<IEnumerable<Type?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				member => !attributeFilter.Matches(member), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => !attributeFilter.Matches(member));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching types");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("not all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching types");
-	}
 }

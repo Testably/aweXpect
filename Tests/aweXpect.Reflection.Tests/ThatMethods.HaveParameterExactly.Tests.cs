@@ -73,10 +73,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -99,9 +105,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
@@ -126,10 +138,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -184,9 +202,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
@@ -211,10 +235,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -237,10 +267,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -293,10 +329,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -318,10 +360,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -343,9 +391,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
@@ -399,10 +453,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -424,10 +484,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
 					             ]
 					             """);
@@ -449,9 +515,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
 					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
@@ -480,7 +552,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -523,7 +595,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [

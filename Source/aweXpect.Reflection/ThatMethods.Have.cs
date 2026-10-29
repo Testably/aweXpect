@@ -2,20 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -33,21 +23,11 @@ public static partial class ThatMethods
 	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
-	{
-		AttributeFilter<MethodInfo?> attributeFilter = new(
-			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
-	}
+		=> subject.Have(typeof(TAttribute));
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
+	///     attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
@@ -60,53 +40,73 @@ public static partial class ThatMethods
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
-	{
-		AttributeFilter<MethodInfo?> attributeFilter = new(
-			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
-		return new HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<MethodInfo?>, IEnumerable<MethodInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
-	}
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
+	///     attribute of type <paramref name="attributeType" />.
 	/// </summary>
 	/// <remarks>
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
 	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	[GuaranteesNotNull]
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have(
+		this IThat<IEnumerable<MethodInfo?>?> subject,
+		Type attributeType)
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <summary>
+	///     …have attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{MethodInfo}})" path="/remarks" />
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
+		this IEnumerableItems<MethodInfo?> items)
+		where TAttribute : Attribute
+		=> items.Have(typeof(TAttribute));
+
+	/// <summary>
+	///     …have attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{MethodInfo}})" path="/remarks" />
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
+		this IEnumerableItems<MethodInfo?> items,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <summary>
+	///     …have attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{MethodInfo}})" path="/remarks" />
+	/// <inheritdoc cref="Have(IThat{IEnumerable{MethodInfo}}, Type)" path="/exception" />
+	public static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> Have(
+		this IEnumerableItems<MethodInfo?> items,
+		Type attributeType)
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <inheritdoc cref="Have(IEnumerableItems{MethodInfo}, Type)" />
+	public static HaveAttributeResult<TCollection, MethodInfo?> Have<TCollection>(
+		this IStructEnumerableItems<TCollection, MethodInfo?> items,
+		Type attributeType)
+		where TCollection : struct, IEnumerable<MethodInfo?>
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
+	}
+
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{MethodInfo}})" />
 	[GuaranteesNotNull]
 	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		where TAttribute : Attribute
-	{
-		AttributeFilter<MethodInfo?> attributeFilter = new(
-			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
-	}
-#endif
+		=> subject.Have(typeof(TAttribute));
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
-	/// </summary>
-	/// <remarks>
-	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
-	///     to the attributes declared directly on the member with <see cref="HaveAttributeResult{TType, TMember}.Directly" />.
-	/// </remarks>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{MethodInfo}}, Func{TAttribute, bool}, string)" />
 	[GuaranteesNotNull]
 	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
@@ -114,54 +114,71 @@ public static partial class ThatMethods
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <inheritdoc cref="Have(IThat{IEnumerable{MethodInfo}}, Type)" />
+	[GuaranteesNotNull]
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
+		Type attributeType)
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <inheritdoc cref="Have{TAttribute}(IEnumerableItems{MethodInfo})" />
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
+		this IAsyncEnumerableItems<MethodInfo?> items)
+		where TAttribute : Attribute
+		=> items.Have(typeof(TAttribute));
+
+	/// <inheritdoc cref="Have{TAttribute}(IEnumerableItems{MethodInfo}, Func{TAttribute, bool}, string)" />
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have<TAttribute>(
+		this IAsyncEnumerableItems<MethodInfo?> items,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <inheritdoc cref="Have(IEnumerableItems{MethodInfo}, Type)" />
+	public static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> Have(
+		this IAsyncEnumerableItems<MethodInfo?> items,
+		Type attributeType)
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+#endif
+
+	private static AttributeFilterOptions<MethodInfo?> AttributeOptions()
+		=> new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+
+	private static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> HaveAttribute(
+		this IThat<IEnumerable<MethodInfo?>?> subject,
+		AttributeFilterOptions<MethodInfo?> options)
 	{
-		AttributeFilter<MethodInfo?> attributeFilter = new(
-			new AttributeFilterOptions<MethodInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
-		return new HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<MethodInfo?>, IAsyncEnumerable<MethodInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
+		HaveAttributeExpectation<MethodInfo> expectation = new(options);
+		return new(subject.ExpectAll(expectation), subject, expectation.Filter);
+	}
+
+	private static HaveAttributeResult<IEnumerable<MethodInfo?>, MethodInfo?> HaveAttribute(
+		this IEnumerableItems<MethodInfo?> items,
+		AttributeFilterOptions<MethodInfo?> options)
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(options);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
+	}
+
+#if NET8_0_OR_GREATER
+	private static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> HaveAttribute(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
+		AttributeFilterOptions<MethodInfo?> options)
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(options);
+		return new(subject.ExpectAll(expectation), subject, expectation.Filter);
+	}
+
+	private static HaveAttributeResult<IAsyncEnumerable<MethodInfo?>, MethodInfo?> HaveAttribute(
+		this IAsyncEnumerableItems<MethodInfo?> items,
+		AttributeFilterOptions<MethodInfo?> options)
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(options);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
 	}
 #endif
-
-	private sealed class HaveAttributeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		AttributeFilter<MethodInfo?> attributeFilter)
-		: CollectionConstraintResult<MethodInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, attributeFilter.Matches, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, attributeFilter.Matches);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching methods");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("not all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching methods");
-	}
 }

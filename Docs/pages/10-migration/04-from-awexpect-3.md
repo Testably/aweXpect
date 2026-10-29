@@ -184,8 +184,7 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
 - The expectations on all items that check a condition on each item, such as `AreSealed()`, `InheritFrom<T>()`,
   `Implement<T>()`, `HaveOperator(…)` or `ContainMethods(…)`, use the quantifier wording of aweXpect
   (`all are sealed, but only 2 of 5 were`, and `none inherit from Base` for a negation), work with quantifiers
-  (`AtLeast(2).InheritFrom<Base>().Directly()`), and a `null` item fails them and their negation. The expectations on
-  attributes, parameters, return types, member types and dependencies do not take quantifiers yet.
+  (`AtLeast(2).InheritFrom<Base>().Directly()`), and a `null` item fails them and their negation.
 - The version components (`HasVersion().WithMajor`) offer all comparisons of an `int` property, including
   `Between(…).And(…)`.
 - `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`.

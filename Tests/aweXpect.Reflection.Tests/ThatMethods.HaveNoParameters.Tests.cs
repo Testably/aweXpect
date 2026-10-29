@@ -42,8 +42,19 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have no parameters,
-					             but it contained methods with a different number of parameters*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveNoParameters.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveNoParameters.TestClass.FirstMethodWithoutParameters(),
+					               void ThatMethods.HaveNoParameters.TestClass.MethodWithInt(int value)
+					             ]
+					             """);
 			}
 		}
 
@@ -66,8 +77,14 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have no parameters,
-					             but it only contained methods with no parameters*
-					             """).AsWildcard();
+					             but all 2 did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveNoParameters.TestClass.FirstMethodWithoutParameters(),
+					               void ThatMethods.HaveNoParameters.TestClass.SecondMethodWithoutParameters()
+					             ]
+					             """);
 			}
 
 			[Test]

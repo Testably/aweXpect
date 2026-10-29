@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class AreAssignableTo
+	public sealed partial class AreAssignableTo
 	{
 		public sealed class Tests
 		{
@@ -301,7 +301,7 @@ public sealed partial class ThatTypes
 		}
 	}
 
-	public sealed class AreAssignableFrom
+	public sealed partial class AreAssignableFrom
 	{
 		public sealed class Tests
 		{

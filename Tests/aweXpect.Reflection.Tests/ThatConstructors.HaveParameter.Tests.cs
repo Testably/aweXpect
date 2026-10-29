@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatConstructors
 {
-	public sealed class HaveParameter
+	public sealed partial class HaveParameter
 	{
 		public sealed class Tests
 		{
@@ -46,10 +46,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value",
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -146,10 +152,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -188,10 +200,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -214,9 +232,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
 					             ]
@@ -272,10 +295,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -314,10 +343,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -340,9 +375,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
 					             ]
@@ -382,7 +422,8 @@ public sealed partial class ThatConstructors
 
 					             Collection:
 					             [
-					               <null>
+					               <null>,
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -402,9 +443,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
 					             ]
@@ -426,9 +472,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
 					             ]
@@ -480,10 +531,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -520,10 +577,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name),
 					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
 					             ]
 					             """);
@@ -550,7 +613,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int at index 0,
-					             but it only contained constructors with a matching parameter
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -576,7 +639,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter with name "value",
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -619,7 +682,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -662,7 +725,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -705,7 +768,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -748,7 +811,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
-					             but it only contained constructors with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -791,7 +854,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with in modifier,
-					             but it only contained constructors with a matching parameter
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -924,11 +987,17 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value),
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(int value)
 					             ]
 					             """);
 			}
@@ -951,10 +1020,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 1,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(int value, string name)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value),
 					               ThatConstructors.HaveParameter.ChainingTests.TestClass(int value, string name)
 					             ]
 					             """)
@@ -1100,11 +1175,17 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value),
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(int value)
 					             ]
 					             """);
 			}

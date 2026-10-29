@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssemblies
 {
-	public sealed class HaveVersion
+	public sealed partial class HaveVersion
 	{
 		public sealed class Tests
 		{
@@ -37,7 +37,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have version matching version => version.Major < 0,
-					             but it contained assemblies with a non-matching version*
+					             but none of 1 did*
 					             """).AsWildcard();
 			}
 
@@ -72,7 +72,13 @@ public sealed partial class ThatAssemblies
 					             all have version matching _ => throw new InvalidOperationException("boom"),
 					             but the predicate did throw an InvalidOperationException:
 					               boom
-					             """)
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               (… and maybe more)
+					             ]
+					             """).AsWildcard()
 					.Because("an exception of the predicate must fail the expectation instead of aborting the evaluation");
 			}
 		}
@@ -96,7 +102,13 @@ public sealed partial class ThatAssemblies
 					             not all have version matching _ => throw new InvalidOperationException("boom"),
 					             but the predicate did throw an InvalidOperationException:
 					               boom
-					             """)
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               (… and maybe more)
+					             ]
+					             """).AsWildcard()
 					.Because("a predicate that throws answers neither the expectation nor its negation");
 			}
 
@@ -114,7 +126,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have version matching version => version.Major >= 0,
-					             but it only contained assemblies with a matching version*
+					             but all 1 did*
 					             """).AsWildcard();
 			}
 
@@ -200,9 +212,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have major version between {major + 1} and {major + 2},
-					              but it contained assemblies with a non-matching version
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+
+					              Collection:
 					              [
 					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					              ]
@@ -240,7 +257,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have major version {wording} {expected},
-					              but it contained assemblies with a non-matching version*
+					              but none of 1 did*
 					              """).AsWildcard();
 			}
 
@@ -274,9 +291,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have major version {wording} {expected},
-					              but it contained assemblies with a non-matching version
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                {assembly.FullName}
+					              ]
+
+					              Collection:
 					              [
 					                {assembly.FullName}
 					              ]
@@ -315,7 +337,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have {name} version greater than {actual},
-					              but it contained assemblies with a non-matching version*
+					              but none of 1 did*
 					              """).AsWildcard();
 			}
 
@@ -333,7 +355,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have major version less than 0,
-					             but it contained assemblies with a non-matching version*
+					             but none of 1 did*
 					             """).AsWildcard();
 			}
 
@@ -351,9 +373,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have major version less than 0,
-					             but it contained assemblies with a non-matching version
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
 					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
@@ -375,7 +402,7 @@ public sealed partial class ThatAssemblies
 
 				await That(Act).Throws<FailException>()
 					.WithMessage(
-						$"*all have major version equal to {version.Major} and minor version greater than {version.Minor}*non-matching version*")
+						$"*all have major version equal to {version.Major} and minor version greater than {version.Minor}*but none of 1 did*")
 					.AsWildcard();
 			}
 
@@ -393,7 +420,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have major version greater than or equal to 0,
-					             but it only contained assemblies with a matching version*
+					             but all 1 did*
 					             """).AsWildcard();
 			}
 
@@ -438,7 +465,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have major version greater than or equal to 0,
-					             but it only contained assemblies with a matching version
+					             but all 1 did
 
 					             Collection:
 					             [
@@ -461,8 +488,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have major version greater than <null>,
-					             but it contained assemblies with a non-matching version
-					             """)
+					             but for the item at index 0, it had major version *
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null,
+					               (… and maybe more)
+					             ]
+					             """).AsWildcard()
 					.Because("an ordering against null answers neither the expectation nor its negation");
 			}
 
@@ -481,9 +514,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have major version not greater than {major - 1},
-					              but it contained assemblies with a non-matching version
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					              ]
+
+					              Collection:
 					              [
 					                aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					              ]
@@ -520,9 +558,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies [VersionlessAssembly]
 					             all have a version,
-					             but it contained assemblies with a non-matching version
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               VersionlessAssembly
+					             ]
+
+					             Collection:
 					             [
 					               VersionlessAssembly
 					             ]
@@ -543,9 +586,14 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies [VersionlessAssembly]
 					             all have major version greater than or equal to 0,
-					             but it contained assemblies with a non-matching version
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               VersionlessAssembly
+					             ]
+
+					             Collection:
 					             [
 					               VersionlessAssembly
 					             ]

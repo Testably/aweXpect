@@ -54,8 +54,20 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have one parameter,
-					             but it contained methods with a different number of parameters*
-					             """).AsWildcard();
+					             but none of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -75,8 +87,19 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
-					             but it contained methods with a different number of parameters*MethodWithInt(*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithInt(int value)
+					             ]
+					             """);
 			}
 
 #if NET8_0_OR_GREATER
@@ -111,8 +134,19 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
-					             but it contained methods with a different number of parameters*MethodWithInt(*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithInt(int value)
+					             ]
+					             """);
 			}
 #endif
 		}
@@ -136,8 +170,14 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have 2 parameters,
-					             but it only contained methods with 2 parameters*MethodWithIntAndString(*
-					             """).AsWildcard();
+					             but all 2 did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameterCount.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
+					             """);
 			}
 
 			[Test]

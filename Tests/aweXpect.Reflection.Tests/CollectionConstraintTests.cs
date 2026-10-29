@@ -154,49 +154,6 @@ public sealed class CollectionConstraintTests
 	}
 
 	[Test]
-	public async Task WhenItemIsNullAfterANotMatchingItem_ShouldFailBothWays()
-	{
-		IEnumerable<Type?> subject = [typeof(object), null, typeof(string),];
-
-		async Task Act()
-		{
-			await That(subject).Have<ObsoleteAttribute>();
-		}
-
-		async Task ActNegated()
-		{
-			await That(subject).DoesNotComplyWith(they => they.Have<ObsoleteAttribute>());
-		}
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all have ObsoleteAttribute,
-			             but for the item at index 1, it was <null>
-
-			             Collection:
-			             [
-			               object,
-			               <null>,
-			               string
-			             ]
-			             """);
-		await That(ActNegated).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             not all have ObsoleteAttribute,
-			             but for the item at index 1, it was <null>
-
-			             Collection:
-			             [
-			               object,
-			               <null>,
-			               string
-			             ]
-			             """).Because("the null item is not answered, even though the item before already fails the expectation");
-	}
-
-	[Test]
 	public async Task WhenNegatedAndCombinedWithAnd_ShouldNotRepeatTheSubject()
 	{
 		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.Clone))!,];
@@ -409,49 +366,6 @@ public sealed class CollectionConstraintTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Test]
-	public async Task WhenAsyncSubjectContainsNull_ShouldFailBothWaysAndListAllItems()
-	{
-		IAsyncEnumerable<Type?> subject = ToAsyncEnumerable(typeof(string), null, typeof(int));
-
-		async Task Act()
-		{
-			await That(subject).Have<ObsoleteAttribute>();
-		}
-
-		async Task ActNegated()
-		{
-			await That(subject).DoesNotComplyWith(they => they.Have<ObsoleteAttribute>());
-		}
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             all have ObsoleteAttribute,
-			             but for the item at index 1, it was <null>
-
-			             Collection:
-			             [
-			               string,
-			               <null>,
-			               int
-			             ]
-			             """);
-		await That(ActNegated).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             not all have ObsoleteAttribute,
-			             but for the item at index 1, it was <null>
-
-			             Collection:
-			             [
-			               string,
-			               <null>,
-			               int
-			             ]
-			             """).Because("the items after the null item are still read to list the whole collection");
-	}
-
 	[Test]
 	public async Task WhenAsyncSubjectIsCanceled_ShouldNotBeVerified()
 	{

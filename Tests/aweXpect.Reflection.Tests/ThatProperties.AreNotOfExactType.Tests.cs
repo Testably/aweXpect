@@ -42,7 +42,7 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             none are of exact type ThatProperties.AreNotOfExactType.DummyBase,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -70,12 +70,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatProperties.AreNotOfExactType.DummyBase,
-					             but it contained properties of exact type ThatProperties.AreNotOfExactType.DummyBase
+					             none are of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; },
+					               public ThatProperties.AreNotOfExactType.Dummy ThatProperties.AreNotOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -114,12 +120,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatProperties.AreNotOfExactType.DummyBase,
-					             but it contained properties of exact type ThatProperties.AreNotOfExactType.DummyBase
+					             none are of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; },
+					               public ThatProperties.AreNotOfExactType.Dummy ThatProperties.AreNotOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -160,8 +172,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain a property of exact type ThatProperties.AreNotOfExactType.DummyBase,
-					             but it only contained properties not of exact type ThatProperties.AreNotOfExactType.DummyBase
+					             at least one is of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -191,12 +203,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatProperties.AreNotOfExactType.DummyBase,
-					             but it contained properties of exact type ThatProperties.AreNotOfExactType.DummyBase
+					             none are of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; },
+					               public ThatProperties.AreNotOfExactType.Dummy ThatProperties.AreNotOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
 					             """);
 			}
@@ -235,12 +253,18 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type ThatProperties.AreNotOfExactType.DummyBase,
-					             but it contained properties of exact type ThatProperties.AreNotOfExactType.DummyBase
+					             none are of exact type ThatProperties.AreNotOfExactType.DummyBase,
+					             but 1 of 2 were
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public ThatProperties.AreNotOfExactType.DummyBase ThatProperties.AreNotOfExactType.TestClass.DummyBaseProperty { get; set; },
+					               public ThatProperties.AreNotOfExactType.Dummy ThatProperties.AreNotOfExactType.TestClass.DummyProperty { get; set; }
 					             ]
 					             """);
 			}
