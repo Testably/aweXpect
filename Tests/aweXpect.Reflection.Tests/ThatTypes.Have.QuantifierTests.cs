@@ -217,6 +217,7 @@ public sealed partial class ThatTypes
 			{
 			}
 
+			[AttributeUsage(AttributeTargets.All)]
 			// ReSharper disable once UnusedTypeParameter
 			private sealed class GenericAttribute<T> : Attribute
 			{

@@ -77,15 +77,15 @@ public sealed partial class ThatMethods
 			private class TestClass
 			{
 				[Foo(Value = 1)]
-				public void WithFoo1() { }
+				public static void WithFoo1() { }
 
 				[Foo(Value = 2)]
-				public void WithFoo2() { }
+				public static void WithFoo2() { }
 
 				[Bar]
-				public void WithBar() { }
+				public static void WithBar() { }
 
-				public void WithoutFoo() { }
+				public static void WithoutFoo() { }
 			}
 		}
 	}
