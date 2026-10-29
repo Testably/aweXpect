@@ -23,7 +23,9 @@ public static class SynchronousBoundary
 	{
 		operation.ThrowIfNull();
 		ValueTask<TResult> result = CallerSchedulesContinuations() ? StartDetached(operation) : operation();
-		return result.AsTask().GetAwaiter().GetResult();
+#pragma warning disable S5034 // The ValueTask is consumed only once: either its completed result or its task
+		return result.IsCompletedSuccessfully ? result.Result : result.AsTask().GetAwaiter().GetResult();
+#pragma warning restore S5034
 	}
 
 	internal static bool CallerSchedulesContinuations()
