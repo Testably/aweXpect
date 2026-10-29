@@ -23,7 +23,7 @@ public static partial class ThatConstructors
 	///     Verifies that none of the items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     attribute of type <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> DoNotHave(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject,

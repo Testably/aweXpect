@@ -91,19 +91,19 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).AtLeast(1).HaveName(assembly => assembly!.GetName().Name!);
+					await That(subject).AtLeast(1).HaveName(assembly => assembly.GetName().Name!);
 				}
 
 				async Task ActNegated()
 				{
 					await That(subject).DoesNotComplyWith(they
-						=> they.AtLeast(1).HaveName(assembly => assembly!.GetName().Name!));
+						=> they.AtLeast(1).HaveName(assembly => assembly.GetName().Name!));
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has name matching assembly => assembly!.GetName().Name! for at least one item,
+					             has name matching assembly => assembly.GetName().Name! for at least one item,
 					             but for the item at index 0, it was <null>
 
 					             Collection:
@@ -115,7 +115,7 @@ public sealed partial class ThatAssemblies
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has name matching assembly => assembly!.GetName().Name! for no items,
+					             has name matching assembly => assembly.GetName().Name! for no items,
 					             but for the item at index 0, it was <null>
 
 					             Collection:
@@ -217,7 +217,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveName(assembly => assembly!.GetName().Name!.ToUpperInvariant()).IgnoringCase();
+					await That(subject).HaveName(assembly => assembly.GetName().Name!.ToUpperInvariant()).IgnoringCase();
 				}
 
 				await That(Act).DoesNotThrow();

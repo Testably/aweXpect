@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 using aweXpect.Reflection.Options;
@@ -21,15 +22,16 @@ internal sealed class HaveParameterExpectation<TMethod> : ItemExpectation<TMetho
 	private readonly string? _expectedName;
 	private readonly string? _kind;
 	private readonly Type? _parameterType;
+	private StringEqualityOptions? _evaluationNameEquality;
 
 	private HaveParameterExpectation(Type? parameterType, string? expectedName, bool exactType, string? kind,
-		Func<OptionsHolder<StringEqualityOptions>, ParameterFilterOptions> parameterFilter)
+		Func<HaveParameterExpectation<TMethod>, ParameterFilterOptions> parameterFilter)
 	{
 		_parameterType = parameterType;
 		_expectedName = expectedName;
 		_exactType = exactType;
 		_kind = kind;
-		ParameterFilter = new OptionsHolder<ParameterFilterOptions>(parameterFilter(NameEquality));
+		ParameterFilter = new OptionsHolder<ParameterFilterOptions>(parameterFilter(this));
 	}
 
 	/// <summary>
@@ -46,6 +48,8 @@ internal sealed class HaveParameterExpectation<TMethod> : ItemExpectation<TMetho
 	///     The options of the name comparison of the result, e.g. <c>IgnoringCase()</c>.
 	/// </summary>
 	public OptionsHolder<StringEqualityOptions> NameEquality { get; } = new(StringEqualityOptions.Default);
+
+	private StringEqualityOptions EvaluationNameEquality => _evaluationNameEquality ?? NameEquality.Value;
 
 	/// <summary>
 	///     Expects a parameter of the <paramref name="parameterType" />, or of a subtype unless
@@ -65,10 +69,10 @@ internal sealed class HaveParameterExpectation<TMethod> : ItemExpectation<TMetho
 	/// <param name="parameterName">The name of the caller's parameter that received <paramref name="expected" />.</param>
 	public static HaveParameterExpectation<TMethod> Named(Type? parameterType, string expected,
 		bool exactType = false, string parameterName = "expected")
-		=> new(parameterType, expected, exactType, null, nameEquality =>
+		=> new(parameterType, expected, exactType, null, expectation =>
 		{
 			ParameterFilterOptions options = new(p
-				=> nameEquality.Value.AreConsideredEqual(p.Name, expected, parameterName));
+				=> expectation.EvaluationNameEquality.AreConsideredEqual(p.Name, expected, parameterName));
 			return parameterType is null
 				? options
 				: options.WithPredicate(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, exactType));
@@ -80,6 +84,17 @@ internal sealed class HaveParameterExpectation<TMethod> : ItemExpectation<TMetho
 	/// </summary>
 	public static HaveParameterExpectation<TMethod> OfKind(Func<ParameterInfo, bool> predicate, string kind)
 		=> new(null, null, false, kind, _ => new ParameterFilterOptions(predicate));
+
+	public override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+		=> _evaluationNameEquality = NameEquality.Value.ForEvaluation(context, cancellationToken);
+
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		if (_expectedName is not null)
+		{
+			EvaluationNameEquality.AppendContexts(contexts);
+		}
+	}
 
 	public override async ValueTask<PredicateResult> IsMatch(TMethod item, CancellationToken cancellationToken)
 		=> await item.HasMatchingParameter(CollectionIndex.Value, ParameterFilter.Value);

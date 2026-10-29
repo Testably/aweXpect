@@ -22,7 +22,7 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> does not have attribute of type <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> DoesNotHave(
 		this IThat<FieldInfo?> subject,

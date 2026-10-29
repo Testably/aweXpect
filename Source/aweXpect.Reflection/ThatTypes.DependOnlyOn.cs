@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
@@ -188,6 +189,9 @@ public static partial class ThatTypes
 
 		protected abstract ValueTask<IReadOnlyList<string>> GetViolations(Type item,
 			CancellationToken cancellationToken);
+
+		public override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+			=> _violations.Clear();
 
 		public override async ValueTask<PredicateResult> IsMatch(Type item, CancellationToken cancellationToken)
 		{

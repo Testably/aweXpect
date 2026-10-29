@@ -23,7 +23,7 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies that the <see cref="Assembly" /> does not have attribute of type <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<Assembly, IThat<Assembly?>> DoesNotHave(
 		this IThat<Assembly?> subject,

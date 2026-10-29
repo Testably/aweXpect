@@ -23,7 +23,7 @@ public static partial class ThatAssemblies
 	///     Verifies that none of the items in the filtered collection of <see cref="Assembly" /> have
 	///     attribute of type <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotHave(
 		this IThat<IEnumerable<Assembly?>?> subject,

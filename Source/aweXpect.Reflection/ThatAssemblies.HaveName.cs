@@ -26,7 +26,7 @@ public static partial class ThatAssemblies
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
 		this IThat<IEnumerable<Assembly?>?> subject,
-		Func<Assembly?, string> expectedNameSelector,
+		Func<Assembly, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
@@ -40,7 +40,7 @@ public static partial class ThatAssemblies
 	/// </summary>
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
 		this IEnumerableItems<Assembly?> items,
-		Func<Assembly?, string> expectedNameSelector,
+		Func<Assembly, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
@@ -49,10 +49,10 @@ public static partial class ThatAssemblies
 		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
 	}
 
-	/// <inheritdoc cref="HaveName(IEnumerableItems{Assembly?}, Func{Assembly?, string}, string)" />
+	/// <inheritdoc cref="HaveName(IEnumerableItems{Assembly?}, Func{Assembly, string}, string)" />
 	public static StringEqualityTypeResult<TCollection, IThat<TCollection>> HaveName<TCollection>(
 		this IStructEnumerableItems<TCollection, Assembly?> items,
-		Func<Assembly?, string> expectedNameSelector,
+		Func<Assembly, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 		where TCollection : struct, IEnumerable<Assembly?>
@@ -63,11 +63,11 @@ public static partial class ThatAssemblies
 	}
 
 #if NET8_0_OR_GREATER
-	/// <inheritdoc cref="HaveName(IThat{IEnumerable{Assembly?}}, Func{Assembly?, string}, string)" />
+	/// <inheritdoc cref="HaveName(IThat{IEnumerable{Assembly?}}, Func{Assembly, string}, string)" />
 	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject,
-		Func<Assembly?, string> expectedNameSelector,
+		Func<Assembly, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
@@ -76,10 +76,10 @@ public static partial class ThatAssemblies
 		return new(subject.ExpectAll(expectation), subject, expectation.Options);
 	}
 
-	/// <inheritdoc cref="HaveName(IEnumerableItems{Assembly?}, Func{Assembly?, string}, string)" />
+	/// <inheritdoc cref="HaveName(IEnumerableItems{Assembly?}, Func{Assembly, string}, string)" />
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
 		this IAsyncEnumerableItems<Assembly?> items,
-		Func<Assembly?, string> expectedNameSelector,
+		Func<Assembly, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{

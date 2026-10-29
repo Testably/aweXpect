@@ -31,7 +31,7 @@ public static partial class ThatType
 	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
 	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
 	/// </remarks>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static HasAttributeResult<Type, Type?> Has(
 		this IThat<Type?> subject,

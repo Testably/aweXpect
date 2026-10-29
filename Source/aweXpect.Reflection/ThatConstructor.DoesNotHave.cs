@@ -25,7 +25,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> does not have attribute of type
 	///     <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> DoesNotHave(
 		this IThat<ConstructorInfo?> subject,

@@ -60,13 +60,13 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveName(assembly => assembly!.GetName().Name!);
+					await That(subject).HaveName(assembly => assembly.GetName().Name!);
 				}
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have name matching assembly => assembly!.GetName().Name!,
+					             all have name matching assembly => assembly.GetName().Name!,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -146,7 +146,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveName(assembly => assembly!.GetName().Name!.ToUpperInvariant())
+					await That(subject).HaveName(assembly => assembly.GetName().Name!.ToUpperInvariant())
 						.IgnoringCase();
 				}
 
@@ -188,7 +188,7 @@ public sealed partial class ThatAssemblies
 
 				async Task Act()
 				{
-					await That(subject).HaveName(assembly => assembly!.GetName().Name!);
+					await That(subject).HaveName(assembly => assembly.GetName().Name!);
 				}
 
 				await That(Act).DoesNotThrow();

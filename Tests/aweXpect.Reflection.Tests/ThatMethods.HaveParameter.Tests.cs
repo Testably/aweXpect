@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -1266,6 +1267,43 @@ public sealed partial class ThatMethods
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithMatchTypeContext_WhenNotAllHaveParameter_ShouldListContext()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter("VALUE").AsCaseFoldedWithContext();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter with name "VALUE",
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Case folding:
+					             invariant culture
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithInt(int value),
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithString(string name)
+					             ]
+					             """)
+					.Because("the match type of the name comparison is evaluated per assertion and explains the failure");
 			}
 
 			[Test]

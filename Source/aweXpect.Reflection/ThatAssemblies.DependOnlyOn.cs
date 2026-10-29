@@ -123,7 +123,10 @@ public static partial class ThatAssemblies
 		private StringEqualityOptions EvaluationOptions => _evaluationOptions ?? Options.Value;
 
 		public override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
-			=> _evaluationOptions = Options.Value.ForEvaluation(context, cancellationToken);
+		{
+			_evaluationOptions = Options.Value.ForEvaluation(context, cancellationToken);
+			_disallowedDependencies.Clear();
+		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> EvaluationOptions.AppendContexts(contexts);

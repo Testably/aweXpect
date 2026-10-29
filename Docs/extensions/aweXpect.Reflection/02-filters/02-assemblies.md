@@ -58,7 +58,7 @@ On a collection of assemblies, `HaveVersion` and `DependOnlyOn` also follow aweX
 
 ```csharp
 await Expect.That(subjects).AtLeast(2).HaveVersion().WithMajor.EqualTo(1);
-await Expect.That(subjects).None().DependOnlyOn("MusicStore.Domain");
+await Expect.That(subjects).AtLeast(2).DependOnlyOn("MusicStore.Domain");
 ```
 
 <details>

@@ -39,7 +39,8 @@ internal abstract class ItemExpectation<TItem>
 
 	/// <summary>
 	///     Called when an evaluation starts, before the items are checked, e.g. to get the options of the evaluation
-	///     from the <paramref name="context" />.
+	///     from the <paramref name="context" /> or to clear the state that a previous evaluation kept for the failure
+	///     message.
 	/// </summary>
 	public virtual void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
 	{

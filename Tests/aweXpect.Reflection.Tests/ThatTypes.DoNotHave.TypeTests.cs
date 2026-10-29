@@ -62,6 +62,23 @@ public sealed partial class ThatTypes
 					             """);
 			}
 
+			[Test]
+			public async Task WhenAttributeTypeIsOpenGeneric_ShouldThrowArgumentException()
+			{
+				IEnumerable<Type?> subject = [typeof(WithoutFoo),];
+
+				Type attributeType = typeof(GenericAttribute<>);
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave(attributeType);
+				}
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The attribute type must be closed, but it was the open generic type ThatTypes.DoNotHave.TypeTests.GenericAttribute<>.")
+					.Because("no attribute instance is of an open generic type, so the negation would always pass");
+			}
+
 			[AttributeUsage(AttributeTargets.All)]
 			private sealed class FooAttribute : Attribute
 			{
@@ -70,6 +87,11 @@ public sealed partial class ThatTypes
 
 			[AttributeUsage(AttributeTargets.All)]
 			private sealed class BarAttribute : Attribute
+			{
+			}
+
+			// ReSharper disable once UnusedTypeParameter
+			private sealed class GenericAttribute<T> : Attribute
 			{
 			}
 

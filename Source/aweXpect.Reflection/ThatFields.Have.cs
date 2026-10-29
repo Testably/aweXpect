@@ -38,7 +38,7 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <paramref name="attributeType" />.
 	/// </summary>
-	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute.</exception>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
 	[GuaranteesNotNull]
 	public static HaveAttributeWithoutInheritResult<IEnumerable<FieldInfo?>, FieldInfo?> Have(
 		this IThat<IEnumerable<FieldInfo?>?> subject,
