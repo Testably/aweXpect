@@ -1266,6 +1266,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -1479,7 +1485,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -1696,7 +1703,8 @@ window.BENCHMARK_DATA = {
           490.8544050852458,
           482.59102834974016,
           242.05985294977825,
-          334.2333171184246
+          334.2333171184246,
+          421.8871417045593
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1876,6 +1884,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2143,7 +2152,8 @@ window.BENCHMARK_DATA = {
           1017.8715096987211,
           1078.6155003767747,
           536.5991641362508,
-          858.4158791028536
+          858.4158791028536,
+          1114.3946198683518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2155,6 +2165,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3645,6 +3656,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -3858,7 +3875,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -4075,7 +4093,8 @@ window.BENCHMARK_DATA = {
           256.7388755253383,
           254.96218070983886,
           126.99569839697618,
-          217.62261526925224
+          217.62261526925224,
+          263.3153391224997
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4222,6 +4241,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4522,7 +4542,8 @@ window.BENCHMARK_DATA = {
           260.98547519048054,
           274.15821339289346,
           137.57403254508972,
-          244.72689665280856
+          244.72689665280856,
+          312.8294974840604
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4534,6 +4555,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -5964,6 +5986,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -6167,7 +6195,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -6374,7 +6403,8 @@ window.BENCHMARK_DATA = {
           976.9161876678467,
           1008.7345860345023,
           547.5007173538208,
-          734.8453954549936
+          734.8453954549936,
+          946.3711932046073
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6566,6 +6596,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -6801,7 +6832,8 @@ window.BENCHMARK_DATA = {
           1087.29874903361,
           1038.1699677785239,
           526.7911093051617,
-          847.2734375635783
+          847.2734375635783,
+          1086.1869752248128
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6813,6 +6845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -8233,6 +8266,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -8436,7 +8475,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -8643,7 +8683,8 @@ window.BENCHMARK_DATA = {
           2024.3861897786458,
           1913.9054886744573,
           1137.0291545574482,
-          1214.68724661607
+          1214.68724661607,
+          1649.7600509936992
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8782,6 +8823,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -9070,7 +9112,8 @@ window.BENCHMARK_DATA = {
           22478.297462972005,
           22487.15575467623,
           10507.047151184082,
-          13083.991498311361
+          13083.991498311361,
+          16852.369388834635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9282,6 +9325,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
+          34712,
           34712
         ],
         "borderColor": "#FF671B",
@@ -10502,6 +10546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -10705,7 +10755,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -10912,7 +10963,8 @@ window.BENCHMARK_DATA = {
           758.2569639205933,
           829.2920172764705,
           411.2909147262573,
-          560.4746482372284
+          560.4746482372284,
+          732.8231026331583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11051,6 +11103,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -11339,7 +11392,8 @@ window.BENCHMARK_DATA = {
           1431.4166532244,
           1414.0908218383788,
           699.2265857549814,
-          1102.323692175058
+          1102.323692175058,
+          1474.845011491042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11351,6 +11405,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -12771,6 +12826,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
         "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
+      },
+      {
+        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
+        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
       }
     ],
     "labels": [
@@ -12974,7 +13035,8 @@ window.BENCHMARK_DATA = {
       "33ef507b",
       "f8435557",
       "b48cdddb",
-      "f256c5ca"
+      "f256c5ca",
+      "fea53298"
     ],
     "datasets": [
       {
@@ -13181,7 +13243,8 @@ window.BENCHMARK_DATA = {
           1322.2692782538277,
           1397.5895426823542,
           801.633157661983,
-          907.5709164301554
+          907.5709164301554,
+          1133.8865387256328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13351,6 +13414,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -13608,7 +13672,8 @@ window.BENCHMARK_DATA = {
           788.6927172978719,
           835.8459091186523,
           429.7902944638179,
-          730.3245754241943
+          730.3245754241943,
+          908.6576529184978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13620,6 +13685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
