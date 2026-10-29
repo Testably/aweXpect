@@ -1,21 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -36,44 +25,68 @@ public static partial class ThatProperties
 	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
-		return new OfTypeResult<IEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject,
-			typeFilterOptions);
+		OfTypeExpectation<PropertyInfo> expectation = new(static property => property.PropertyType, propertyType, false);
+		return new(subject.ExpectAll(expectation), subject, expectation.Options);
+	}
+
+	/// <summary>
+	///     …are of type <typeparamref name="TProperty" /> (or a subtype).
+	/// </summary>
+	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfType<TProperty>(
+		this IEnumerableItems<PropertyInfo?> items)
+		=> AreOfType(items, typeof(TProperty));
+
+	/// <summary>
+	///     …are of type <paramref name="propertyType" /> (or a subtype).
+	/// </summary>
+	public static OfTypeResult<IEnumerable<PropertyInfo?>> AreOfType(
+		this IEnumerableItems<PropertyInfo?> items, Type propertyType)
+	{
+		OfTypeExpectation<PropertyInfo> expectation = new(static property => property.PropertyType, propertyType, false);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
+	}
+
+	/// <inheritdoc cref="AreOfType(IEnumerableItems{PropertyInfo}, Type)" />
+	public static OfTypeResult<TCollection> AreOfType<TCollection>(
+		this IStructEnumerableItems<TCollection, PropertyInfo?> items, Type propertyType)
+		where TCollection : struct, IEnumerable<PropertyInfo?>
+	{
+		OfTypeExpectation<PropertyInfo> expectation = new(static property => property.PropertyType, propertyType, false);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
-	/// </summary>
+	/// <inheritdoc cref="AreOfType{TProperty}(IThat{IEnumerable{PropertyInfo}})" />
 	[GuaranteesNotNull]
 	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfType<TProperty>(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> AreOfType(subject, typeof(TProperty));
 
-	/// <summary>
-	///     Verifies that all properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
-	/// </summary>
+	/// <inheritdoc cref="AreOfType(IThat{IEnumerable{PropertyInfo}}, Type)" />
 	[GuaranteesNotNull]
 	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfType(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
-		return new OfTypeResult<IAsyncEnumerable<PropertyInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject,
-			typeFilterOptions);
+		OfTypeExpectation<PropertyInfo> expectation = new(static property => property.PropertyType, propertyType, false);
+		return new(subject.ExpectAll(expectation), subject, expectation.Options);
+	}
+
+	/// <inheritdoc cref="AreOfType{TProperty}(IEnumerableItems{PropertyInfo})" />
+	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfType<TProperty>(
+		this IAsyncEnumerableItems<PropertyInfo?> items)
+		=> AreOfType(items, typeof(TProperty));
+
+	/// <inheritdoc cref="AreOfType(IEnumerableItems{PropertyInfo}, Type)" />
+	public static OfTypeResult<IAsyncEnumerable<PropertyInfo?>> AreOfType(
+		this IAsyncEnumerableItems<PropertyInfo?> items, Type propertyType)
+	{
+		OfTypeExpectation<PropertyInfo> expectation = new(static property => property.PropertyType, propertyType, false);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
 	}
 #endif
 
 	/// <summary>
-	///     Verifies that none of the properties in the filtered collection are of type <typeparamref name="TProperty" />
-	///     (or a subtype).
+	///     Verifies that none of the properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotOfType<TProperty>(
@@ -81,132 +94,24 @@ public static partial class ThatProperties
 		=> AreNotOfType(subject, typeof(TProperty));
 
 	/// <summary>
-	///     Verifies that none of the properties in the filtered collection are of type <paramref name="propertyType" />
-	///     (or a subtype).
+	///     Verifies that none of the properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotOfType(
 		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
-	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
-		return new AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<PropertyInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject);
-	}
+		=> new(subject.ExpectNone(new OfTypeExpectation<PropertyInfo>(static property => property.PropertyType, propertyType, false)), subject);
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the properties in the filtered collection are of type <typeparamref name="TProperty" />
-	///     (or a subtype).
-	/// </summary>
+	/// <inheritdoc cref="AreNotOfType{TProperty}(IThat{IEnumerable{PropertyInfo}})" />
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
-		AreNotOfType<TProperty>(
-			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotOfType<TProperty>(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> AreNotOfType(subject, typeof(TProperty));
 
-	/// <summary>
-	///     Verifies that none of the properties in the filtered collection are of type <paramref name="propertyType" />
-	///     (or a subtype).
-	/// </summary>
+	/// <inheritdoc cref="AreNotOfType(IThat{IEnumerable{PropertyInfo}}, Type)" />
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotOfType(
 		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
-	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(propertyType, false));
-		return new AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<PropertyInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new AreNotOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject);
-	}
+		=> new(subject.ExpectNone(new OfTypeExpectation<PropertyInfo>(static property => property.PropertyType, propertyType, false)), subject);
 #endif
-
-	private sealed class AreOfTypeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
-		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<PropertyInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				property => typeFilterOptions.Value.Matches(property?.PropertyType), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, property => typeFilterOptions.Value.Matches(property?.PropertyType));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("are all ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching properties");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("are not all ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching properties");
-	}
-
-	private sealed class AreNotOfTypeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		IReadOnlyOptionsHolder<TypeFilterOptions> typeFilterOptions)
-		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<PropertyInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				property => property is not null && !typeFilterOptions.Value.Matches(property.PropertyType),
-				cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context,
-				property => property is not null && !typeFilterOptions.Value.Matches(property.PropertyType));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("are all not ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" contained properties ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("also contain a property ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" only contained properties not ");
-			typeFilterOptions.Value.AppendOfTypeDescription(stringBuilder);
-		}
-	}
 }

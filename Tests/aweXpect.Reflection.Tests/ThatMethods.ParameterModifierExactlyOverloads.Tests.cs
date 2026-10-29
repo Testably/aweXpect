@@ -185,9 +185,14 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with ref modifier,
-					             but it contained methods without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.RefMemoryStream(ref MemoryStream value)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.RefMemoryStream(ref MemoryStream value)
 					             ]
@@ -227,10 +232,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.RefInt(ref int value),
 					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
 					             ]
 					             """);
@@ -284,10 +295,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.RefInt(ref int value),
 					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
 					             ]
 					             """);

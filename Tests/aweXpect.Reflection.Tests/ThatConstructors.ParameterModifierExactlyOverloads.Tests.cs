@@ -186,9 +186,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type Stream with ref modifier,
-					             but it contained constructors without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.RefMemoryStreamCtor(ref MemoryStream value)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.ParameterModifierExactlyOverloads.RefMemoryStreamCtor(ref MemoryStream value)
 					             ]
@@ -228,10 +233,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with ref modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.RefIntCtor(ref int value),
 					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
 					             ]
 					             """);
@@ -284,10 +295,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with ref modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.RefIntCtor(ref int value),
 					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
 					             ]
 					             """);

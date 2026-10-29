@@ -88,6 +88,21 @@ public sealed partial class ThatField
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenFieldHasAttribute_ShouldSucceed()
+			{
+				FieldInfo subject = typeof(TestClass).GetField("TestField")!;
+
+				Type attributeType = typeof(MarkerAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Field)]
 			private class MarkerAttribute : Attribute
 			{

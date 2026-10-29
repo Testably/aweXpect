@@ -2,20 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -29,21 +19,11 @@ public static partial class ThatAssemblies
 	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
-	{
-		AttributeFilter<Assembly?> attributeFilter = new(
-			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IEnumerable<Assembly?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
-	}
+		=> subject.Have(typeof(TAttribute));
 
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
+	///     attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
 	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
@@ -52,45 +32,66 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <summary>
+	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
+	///     attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
+	[GuaranteesNotNull]
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have(
+		this IThat<IEnumerable<Assembly?>?> subject,
+		Type attributeType)
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <summary>
+	///     …have attribute of type <typeparamref name="TAttribute" />.
+	/// </summary>
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
+		this IEnumerableItems<Assembly?> items)
+		where TAttribute : Attribute
+		=> items.Have(typeof(TAttribute));
+
+	/// <summary>
+	///     …have attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
+		this IEnumerableItems<Assembly?> items,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <summary>
+	///     …have attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <inheritdoc cref="Have(IThat{IEnumerable{Assembly}}, Type)" path="/exception" />
+	public static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> Have(
+		this IEnumerableItems<Assembly?> items,
+		Type attributeType)
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <inheritdoc cref="Have(IEnumerableItems{Assembly}, Type)" />
+	public static HaveAttributeWithoutInheritResult<TCollection, Assembly?> Have<TCollection>(
+		this IStructEnumerableItems<TCollection, Assembly?> items,
+		Type attributeType)
+		where TCollection : struct, IEnumerable<Assembly?>
 	{
-		AttributeFilter<Assembly?> attributeFilter = new(
-			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
-		return new HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IEnumerable<Assembly?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
+		HaveAttributeExpectation<Assembly> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
-	/// </summary>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{Assembly}})" />
 	[GuaranteesNotNull]
 	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		where TAttribute : Attribute
-	{
-		AttributeFilter<Assembly?> attributeFilter = new(
-			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
-	}
-#endif
+		=> subject.Have(typeof(TAttribute));
 
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
-	/// </summary>
+	/// <inheritdoc cref="Have{TAttribute}(IThat{IEnumerable{Assembly}}, Func{TAttribute, bool}, string)" />
 	[GuaranteesNotNull]
 	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Assembly?>?> subject,
@@ -98,54 +99,71 @@ public static partial class ThatAssemblies
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TAttribute : Attribute
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <inheritdoc cref="Have(IThat{IEnumerable{Assembly}}, Type)" />
+	[GuaranteesNotNull]
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject,
+		Type attributeType)
+		=> subject.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+
+	/// <inheritdoc cref="Have{TAttribute}(IEnumerableItems{Assembly})" />
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
+		this IAsyncEnumerableItems<Assembly?> items)
+		where TAttribute : Attribute
+		=> items.Have(typeof(TAttribute));
+
+	/// <inheritdoc cref="Have{TAttribute}(IEnumerableItems{Assembly}, Func{TAttribute, bool}, string)" />
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have<TAttribute>(
+		this IAsyncEnumerableItems<Assembly?> items,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+
+	/// <inheritdoc cref="Have(IEnumerableItems{Assembly}, Type)" />
+	public static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> Have(
+		this IAsyncEnumerableItems<Assembly?> items,
+		Type attributeType)
+		=> items.HaveAttribute(AttributeOptions().WithAttribute(attributeType));
+#endif
+
+	private static AttributeFilterOptions<Assembly?> AttributeOptions()
+		=> new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
+
+	private static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> HaveAttribute(
+		this IThat<IEnumerable<Assembly?>?> subject,
+		AttributeFilterOptions<Assembly?> options)
 	{
-		AttributeFilter<Assembly?> attributeFilter = new(
-			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
-		return new HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<Assembly?>, IAsyncEnumerable<Assembly?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject,
-			attributeFilter);
+		HaveAttributeExpectation<Assembly> expectation = new(options);
+		return new(subject.ExpectAll(expectation), subject, expectation.Filter);
+	}
+
+	private static HaveAttributeWithoutInheritResult<IEnumerable<Assembly?>, Assembly?> HaveAttribute(
+		this IEnumerableItems<Assembly?> items,
+		AttributeFilterOptions<Assembly?> options)
+	{
+		HaveAttributeExpectation<Assembly> expectation = new(options);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
+	}
+
+#if NET8_0_OR_GREATER
+	private static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> HaveAttribute(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject,
+		AttributeFilterOptions<Assembly?> options)
+	{
+		HaveAttributeExpectation<Assembly> expectation = new(options);
+		return new(subject.ExpectAll(expectation), subject, expectation.Filter);
+	}
+
+	private static HaveAttributeWithoutInheritResult<IAsyncEnumerable<Assembly?>, Assembly?> HaveAttribute(
+		this IAsyncEnumerableItems<Assembly?> items,
+		AttributeFilterOptions<Assembly?> options)
+	{
+		HaveAttributeExpectation<Assembly> expectation = new(options);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Filter);
 	}
 #endif
-
-	private sealed class HaveAttributeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		AttributeFilter<Assembly?> attributeFilter)
-		: CollectionConstraintResult<Assembly?>(it, grammars),
-			IContextConstraint<IEnumerable<Assembly?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context, attributeFilter.Matches, cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, attributeFilter.Matches);
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("not all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
-	}
 }

@@ -135,6 +135,21 @@ public sealed partial class ThatEvent
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenEventHasAttribute_ShouldSucceed()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent("TestEvent")!;
+
+				Type attributeType = typeof(MarkerAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Event)]
 			private class MarkerAttribute : Attribute
 			{

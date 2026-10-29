@@ -72,6 +72,26 @@ public sealed partial class ThatProperty
 					.Because("the attribute on the overridden base property is inherited, as in the Properties().With<TAttribute>() filter");
 			}
 
+			[Test]
+			public async Task WithType_WhenPropertyHasAttribute_ShouldFail()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.TestProperty))!;
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatProperty.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in public string ThatProperty.DoesNotHave.AttributeTests.TestClass.TestProperty { get; set; }
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Property)]
 			private class FooAttribute : Attribute
 			{

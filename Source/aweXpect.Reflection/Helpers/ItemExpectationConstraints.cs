@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Options;
 
@@ -102,6 +103,15 @@ internal static class ItemExpectationConstraints
 	{
 		protected override string Verb => expectation.Verb;
 
+		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+			=> expectation.OnEvaluating(context, cancellationToken);
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			expectation.AppendContexts(contexts);
+		}
+
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
 			=> item is null
 				? new ValueTask<PredicateResult>(ItemResults.Null)
@@ -126,6 +136,15 @@ internal static class ItemExpectationConstraints
 		where TItem : class
 	{
 		protected override string Verb => expectation.Verb;
+
+		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+			=> expectation.OnEvaluating(context, cancellationToken);
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			base.AppendContexts(contexts);
+			expectation.AppendContexts(contexts);
+		}
 
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
 			=> item is null

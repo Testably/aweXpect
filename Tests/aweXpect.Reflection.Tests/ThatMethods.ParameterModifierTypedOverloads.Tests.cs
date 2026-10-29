@@ -77,10 +77,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.ParameterModifierTypedOverloads.ModifierMethods.PlainInt(int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.ParameterModifierTypedOverloads.ModifierMethods.RefInt(ref int value),
 					               void ThatMethods.ParameterModifierTypedOverloads.ModifierMethods.PlainInt(int value)
 					             ]
 					             """);

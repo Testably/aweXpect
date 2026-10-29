@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class DependOnlyOn
+	public sealed partial class DependOnlyOn
 	{
 		private const string Layer1Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";
 		private const string Layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
@@ -67,9 +67,15 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies
+					              but none of 2 did
 
 					              Not matching items:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
+					                OnlyLayer2 depends on ["{Layer2Namespace}"]
+					              ]
+
+					              Collection:
 					              [
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                OnlyLayer2 depends on ["{Layer2Namespace}"]
@@ -125,9 +131,15 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies
+					              but none of 2 did
 
 					              Not matching items:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
+					                (… and 1 more)
+					              ]
+
+					              Collection:
 					              [
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                (… and 1 more)
@@ -154,10 +166,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"]
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"]
 					              ]
 					              """);
@@ -203,10 +221,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types with disallowed dependencies
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                ReferencesOwnSubNamespace depends on ["OwnSubTarget"]
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
 					                ReferencesOwnSubNamespace depends on ["OwnSubTarget"]
 					              ]
 					              """);
@@ -230,10 +254,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types with disallowed dependencies
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                Layer1AndLayer2 depends on ["TargetB"]
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
 					                Layer1AndLayer2 depends on ["TargetB"]
 					              ]
 					              """);

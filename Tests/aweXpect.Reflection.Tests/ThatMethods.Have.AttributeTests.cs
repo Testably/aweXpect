@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -102,10 +102,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatMethods.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching methods
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
 					               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
 					             ]
 					             """);
@@ -128,9 +134,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatMethods.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-					             but it contained not matching methods
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
 					               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
@@ -190,10 +202,16 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatMethods.Have.AttributeTests.MarkerAttribute,
-						             but it contained not matching methods
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
+						             ]
+
+						             Collection:
+						             [
+						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
 						               void ThatMethods.Have.AttributeTests.TestClass.NoAttributeMethod()
 						             ]
 						             """);
@@ -216,9 +234,15 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatMethods.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-						             but it contained not matching methods
+						             but none of 2 did
 
 						             Not matching items:
+						             [
+						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
+						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod1(),
 						               void ThatMethods.Have.AttributeTests.TestClass.TestMethod2()
@@ -335,9 +359,14 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatMethods.Have.OrHave.AttributeTests.MarkerAttribute or ThatMethods.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching methods
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.NoAttributeMethod()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.NoAttributeMethod()
 						             ]
@@ -378,9 +407,14 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatMethods.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatMethods.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
-						             but it contained not matching methods
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.TestMethod1()
+						             ]
+
+						             Collection:
 						             [
 						               void ThatMethods.Have.OrHave.AttributeTests.TestClass.TestMethod1()
 						             ]
@@ -471,7 +505,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatMethods.Have.NegatedTests.MarkerAttribute or ThatMethods.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
-					             but it only contained matching methods
+					             but all 1 did
 
 					             Collection:
 					             [

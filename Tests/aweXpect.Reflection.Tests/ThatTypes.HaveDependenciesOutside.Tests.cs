@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class HaveDependenciesOutside
+	public sealed partial class HaveDependenciesOutside
 	{
 		private const string Layer1Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1";
 		private const string Layer2Namespace = "aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer2";
@@ -32,9 +32,14 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}" or "{Layer2Namespace}",
-					              but it contained types depending only on the allowed namespaces
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                Layer1AndLayer2
+					              ]
+
+					              Collection:
 					              [
 					                Layer1AndLayer2
 					              ]
@@ -80,7 +85,7 @@ public sealed partial class ThatTypes
 
 					              Collection:
 					              [
-					                Layer1AndLayer2,
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                <null>
 					              ]
 					              """);
@@ -104,10 +109,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                OnlyLayer1
+					              ]
+
+					              Collection:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                OnlyLayer1
 					              ]
 					              """);
@@ -147,10 +158,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                OnlyLayer1
+					              ]
+
+					              Collection:
+					              [
+					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                OnlyLayer1
 					              ]
 					              """);
@@ -199,7 +216,7 @@ public sealed partial class ThatTypes
 
 					              Collection:
 					              [
-					                Layer1AndLayer2,
+					                Layer1AndLayer2 depends on ["TargetB"],
 					                <null>
 					              ]
 					              """);
@@ -241,7 +258,7 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it only contained types with dependencies outside the allowed types
+					              but all 2 did
 
 					              Collection:
 					              [
@@ -286,9 +303,14 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                ReferencesOwnSubNamespace
+					              ]
+
+					              Collection:
 					              [
 					                ReferencesOwnSubNamespace
 					              ]
@@ -313,10 +335,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                OnlyLayer1
+					              ]
+
+					              Collection:
+					              [
+					                Layer1AndLayer2 depends on ["TargetB"],
 					                OnlyLayer1
 					              ]
 					              """);
@@ -340,9 +368,14 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies or types within namespace "{Layer2Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types
+					              but none of 1 did
 
 					              Not matching items:
+					              [
+					                Layer1AndLayer2
+					              ]
+
+					              Collection:
 					              [
 					                Layer1AndLayer2
 					              ]
@@ -383,10 +416,16 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types
+					              but only 1 of 2 did
 
 					              Not matching items:
 					              [
+					                OnlyLayer1
+					              ]
+
+					              Collection:
+					              [
+					                Layer1AndLayer2 depends on ["TargetB"],
 					                OnlyLayer1
 					              ]
 					              """);
@@ -415,7 +454,7 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside namespace "{Layer1Namespace}",
-					              but it only contained types with dependencies outside the allowed namespaces
+					              but all 2 did
 
 					              Collection:
 					              [

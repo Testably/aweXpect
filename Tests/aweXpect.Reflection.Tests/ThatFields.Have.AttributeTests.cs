@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatFields
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -102,10 +102,16 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatFields.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching fields
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
+					             ]
+
+					             Collection:
+					             [
+					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
 					               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
 					             ]
 					             """);
@@ -128,9 +134,15 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatFields.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-					             but it contained not matching fields
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+					               string ThatFields.Have.AttributeTests.TestClass.TestField2
+					             ]
+
+					             Collection:
 					             [
 					               string ThatFields.Have.AttributeTests.TestClass.TestField1,
 					               string ThatFields.Have.AttributeTests.TestClass.TestField2
@@ -190,10 +202,16 @@ public sealed partial class ThatFields
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatFields.Have.AttributeTests.MarkerAttribute,
-						             but it contained not matching fields
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
+						             ]
+
+						             Collection:
+						             [
+						               string ThatFields.Have.AttributeTests.TestClass.TestField1,
 						               string ThatFields.Have.AttributeTests.TestClass.NoAttributeField
 						             ]
 						             """);
@@ -216,9 +234,15 @@ public sealed partial class ThatFields
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatFields.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-						             but it contained not matching fields
+						             but none of 2 did
 
 						             Not matching items:
+						             [
+						               string ThatFields.Have.AttributeTests.TestClass.TestField1,
+						               string ThatFields.Have.AttributeTests.TestClass.TestField2
+						             ]
+
+						             Collection:
 						             [
 						               string ThatFields.Have.AttributeTests.TestClass.TestField1,
 						               string ThatFields.Have.AttributeTests.TestClass.TestField2
@@ -333,9 +357,14 @@ public sealed partial class ThatFields
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatFields.Have.OrHave.AttributeTests.MarkerAttribute or ThatFields.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching fields
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               string ThatFields.Have.OrHave.AttributeTests.TestClass.NoAttributeField
+						             ]
+
+						             Collection:
 						             [
 						               string ThatFields.Have.OrHave.AttributeTests.TestClass.NoAttributeField
 						             ]
@@ -376,9 +405,14 @@ public sealed partial class ThatFields
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatFields.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatFields.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
-						             but it contained not matching fields
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               string ThatFields.Have.OrHave.AttributeTests.TestClass.TestField1
+						             ]
+
+						             Collection:
 						             [
 						               string ThatFields.Have.OrHave.AttributeTests.TestClass.TestField1
 						             ]
@@ -466,7 +500,7 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatFields.Have.NegatedTests.MarkerAttribute or ThatFields.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
-					             but it only contained matching fields
+					             but all 1 did
 
 					             Collection:
 					             [

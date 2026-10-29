@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Core;
-using aweXpect.Core.Extending;
-using aweXpect.Reflection.Options;
+using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
 using aweXpect.Results;
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -28,13 +25,34 @@ public static partial class ThatMethods
 	public static ReturnResult<IEnumerable<MethodInfo?>> ReturnExactly(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
-		return new ReturnResult<IEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject,
-			typeFilterOptions);
+		ReturnExpectation expectation = new(returnType, true);
+		return new(subject.ExpectAll(expectation), subject, expectation.Options);
+	}
+
+	/// <summary>
+	///     …return exactly type <typeparamref name="TReturn" />.
+	/// </summary>
+	public static ReturnResult<IEnumerable<MethodInfo?>> ReturnExactly<TReturn>(
+		this IEnumerableItems<MethodInfo?> items)
+		=> items.ReturnExactly(typeof(TReturn));
+
+	/// <summary>
+	///     …return exactly type <paramref name="returnType" />.
+	/// </summary>
+	public static ReturnResult<IEnumerable<MethodInfo?>> ReturnExactly(
+		this IEnumerableItems<MethodInfo?> items, Type returnType)
+	{
+		ReturnExpectation expectation = new(returnType, true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
+	}
+
+	/// <inheritdoc cref="ReturnExactly(IEnumerableItems{MethodInfo}, Type)" />
+	public static ReturnResult<TCollection> ReturnExactly<TCollection>(
+		this IStructEnumerableItems<TCollection, MethodInfo?> items, Type returnType)
+		where TCollection : struct, IEnumerable<MethodInfo?>
+	{
+		ReturnExpectation expectation = new(returnType, true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
 	}
 
 #if NET8_0_OR_GREATER
@@ -45,9 +63,7 @@ public static partial class ThatMethods
 	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> ReturnExactly<TReturn>(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> ReturnExactly(subject, typeof(TReturn));
-#endif
 
-#if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all methods in the filtered collection return exactly type <paramref name="returnType" />.
 	/// </summary>
@@ -55,13 +71,21 @@ public static partial class ThatMethods
 	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> ReturnExactly(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
-		return new ReturnResult<IAsyncEnumerable<MethodInfo?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject,
-			typeFilterOptions);
+		ReturnExpectation expectation = new(returnType, true);
+		return new(subject.ExpectAll(expectation), subject, expectation.Options);
+	}
+
+	/// <inheritdoc cref="ReturnExactly{TReturn}(IEnumerableItems{MethodInfo})" />
+	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> ReturnExactly<TReturn>(
+		this IAsyncEnumerableItems<MethodInfo?> items)
+		=> items.ReturnExactly(typeof(TReturn));
+
+	/// <inheritdoc cref="ReturnExactly(IEnumerableItems{MethodInfo}, Type)" />
+	public static ReturnResult<IAsyncEnumerable<MethodInfo?>> ReturnExactly(
+		this IAsyncEnumerableItems<MethodInfo?> items, Type returnType)
+	{
+		ReturnExpectation expectation = new(returnType, true);
+		return new(items.ExpectItems(expectation), items.Subject, expectation.Options);
 	}
 #endif
 
@@ -79,14 +103,7 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> DoNotReturnExactly(
 		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
-	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
-		return new AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IEnumerable<MethodInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject);
-	}
+		=> new(subject.ExpectNone(new ReturnExpectation(returnType, true)), subject);
 
 #if NET8_0_OR_GREATER
 	/// <summary>
@@ -104,13 +121,6 @@ public static partial class ThatMethods
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> DoNotReturnExactly(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
-	{
-		OptionsHolder<TypeFilterOptions> typeFilterOptions = new(TypeFilterOptions.Default.WithType(returnType, true));
-		return new AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<OptionsHolder<TypeFilterOptions>, IAsyncEnumerable<MethodInfo?>>(typeFilterOptions,
-				static (typeFilterOptions, it, grammars)
-				=> new DoNotReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
-			subject);
-	}
+		=> new(subject.ExpectNone(new ReturnExpectation(returnType, true)), subject);
 #endif
 }

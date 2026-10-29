@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatProperties
 {
-	public sealed class DoNotHave
+	public sealed partial class DoNotHave
 	{
 		public sealed class AttributeTests
 		{
@@ -27,10 +27,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties
+					             none have ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
+					             ]
+
+					             Collection:
 					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
 					             ]
@@ -54,8 +59,8 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching properties
+					             at least one has ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -80,10 +85,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties
+					             none have ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
+					             ]
+
+					             Collection:
 					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
 					             ]
@@ -108,7 +118,7 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             none have ThatProperties.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -120,7 +130,7 @@ public sealed partial class ThatProperties
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             at least one has ThatProperties.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -180,10 +190,15 @@ public sealed partial class ThatProperties
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties
+					             none have ThatProperties.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               public string ThatProperties.DoNotHave.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             ]
+
+					             Collection:
 					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.DerivedClass.InheritedProperty { get; set; }
 					             ]

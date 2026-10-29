@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -83,6 +84,9 @@ public static partial class ThatTypes
 		private readonly Dictionary<Type, MemberInfo[]> _violatingMembers = new();
 
 		public OptionsHolder<MemberScopes> Scope { get; } = new(MemberScopes.None);
+
+		public override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+			=> _violatingMembers.Clear();
 
 		public override ValueTask<PredicateResult> IsMatch(Type item, CancellationToken cancellationToken)
 		{

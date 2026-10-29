@@ -6,7 +6,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatEvents
 {
-	public sealed class DoNotHave
+	public sealed partial class DoNotHave
 	{
 		public sealed class AttributeTests
 		{
@@ -27,10 +27,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events
+					             none have ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
+					             ]
+
+					             Collection:
 					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
 					             ]
@@ -54,8 +59,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching events
+					             at least one has ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but none of 1 did
 
 					             Collection:
 					             [
@@ -80,10 +85,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events
+					             none have ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
+					             ]
+
+					             Collection:
 					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
 					             ]
@@ -123,10 +133,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events
+					             none have ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event Action ThatEvents.DoNotHave.AttributeTests.DerivedClass.InheritedEvent
+					             ]
+
+					             Collection:
 					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.DerivedClass.InheritedEvent
 					             ]
@@ -152,7 +167,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             none have ThatEvents.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -164,7 +179,7 @@ public sealed partial class ThatEvents
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
+					             at least one has ThatEvents.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:

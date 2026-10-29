@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatEvents
 {
-	public sealed class AreOfExactType
+	public sealed partial class AreOfExactType
 	{
 		public delegate void CustomHandler();
 
@@ -30,14 +30,19 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type MulticastDelegate,
-					             but it contained not matching events
+					             all are of exact type MulticastDelegate,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -93,14 +98,19 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type Action or of exact type MulticastDelegate,
-					             but it contained not matching events
+					             all are of exact type Action or of exact type MulticastDelegate,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
+					             ]
+					             """);
 			}
 		}
 
@@ -123,14 +133,19 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of exact type MulticastDelegate,
-					             but it contained not matching events
+					             all are of exact type MulticastDelegate,
+					             but none of 1 were
 
 					             Not matching items:
 					             [
-					               *
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               event EventHandler ThatEvents.AreOfExactType.TestClass.EventHandlerEvent
+					             ]
+					             """);
 			}
 
 			[Test]

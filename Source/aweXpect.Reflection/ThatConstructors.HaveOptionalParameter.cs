@@ -128,80 +128,100 @@ public static partial class ThatConstructors
 #endif
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <typeparamref name="TParameter" />.
+	///     …have an optional parameter.
 	/// </summary>
-	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameterExactly<TParameter>(
-		this IThat<IEnumerable<ConstructorInfo?>?> subject)
-		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IEnumerableItems<ConstructorInfo?> items)
+		=> HaveParameterOfKind(items, p => p.IsOptionalParameter(), "an optional");
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <paramref name="parameterType" />.
+	///     …have an optional parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
-	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameterExactly(
-		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
-		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameter<TParameter>(
+		this IEnumerableItems<ConstructorInfo?> items)
+		=> items.HaveParameter<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <typeparamref name="TParameter" /> with the
-	///     <paramref name="expected" /> name.
+	///     …have an optional parameter of type <paramref name="parameterType" />.
 	/// </summary>
-	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameterExactly<TParameter>(
-		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
-		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IEnumerableItems<ConstructorInfo?> items, Type parameterType)
+		=> items.HaveParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <paramref name="parameterType" /> with the
-	///     <paramref name="expected" /> name.
+	///     …have an optional parameter of type <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
-	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameterExactly(
-		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
-		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameter<TParameter>(
+		this IEnumerableItems<ConstructorInfo?> items, string expected)
+		=> items.HaveParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     …have an optional parameter of type <paramref name="parameterType" /> with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IEnumerableItems<ConstructorInfo?> items, Type parameterType, string expected)
+		=> items.HaveParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <summary>
+	///     …have an optional parameter with the <paramref name="expected" /> name.
+	/// </summary>
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IEnumerableItems<ConstructorInfo?> items, string expected)
+		=> items.HaveParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo})" />
+	public static ParameterCollectionResult<TCollection, TCollection, object?> HaveOptionalParameter<TCollection>(
+		this IStructEnumerableItems<TCollection, ConstructorInfo?> items)
+		where TCollection : struct, IEnumerable<ConstructorInfo?>
+		=> HaveParameterOfKind(items, p => p.IsOptionalParameter(), "an optional");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, Type)" />
+	public static ParameterCollectionResult<TCollection, TCollection, object?> HaveOptionalParameter<TCollection>(
+		this IStructEnumerableItems<TCollection, ConstructorInfo?> items, Type parameterType)
+		where TCollection : struct, IEnumerable<ConstructorInfo?>
+		=> items.HaveParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, Type, string)" />
+	public static NamedParameterCollectionResult<TCollection, TCollection, object?> HaveOptionalParameter<TCollection>(
+		this IStructEnumerableItems<TCollection, ConstructorInfo?> items, Type parameterType, string expected)
+		where TCollection : struct, IEnumerable<ConstructorInfo?>
+		=> items.HaveParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, string)" />
+	public static NamedParameterCollectionResult<TCollection, TCollection, object?> HaveOptionalParameter<TCollection>(
+		this IStructEnumerableItems<TCollection, ConstructorInfo?> items, string expected)
+		where TCollection : struct, IEnumerable<ConstructorInfo?>
+		=> items.HaveParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <typeparamref name="TParameter" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameterExactly<TParameter>(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
-		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo})" />
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IAsyncEnumerableItems<ConstructorInfo?> items)
+		=> HaveParameterOfKind(items, p => p.IsOptionalParameter(), "an optional");
 
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <paramref name="parameterType" />.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameterExactly(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
-		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	/// <inheritdoc cref="HaveOptionalParameter{TParameter}(IEnumerableItems{ConstructorInfo})" />
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameter<TParameter>(
+		this IAsyncEnumerableItems<ConstructorInfo?> items)
+		=> items.HaveParameter<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <typeparamref name="TParameter" /> with the
-	///     <paramref name="expected" /> name.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameterExactly<TParameter>(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
-		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, Type)" />
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IAsyncEnumerableItems<ConstructorInfo?> items, Type parameterType)
+		=> items.HaveParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
-	/// <summary>
-	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have
-	///     an optional parameter of exact type <paramref name="parameterType" /> with the
-	///     <paramref name="expected" /> name.
-	/// </summary>
-	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameterExactly(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
-		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+	/// <inheritdoc cref="HaveOptionalParameter{TParameter}(IEnumerableItems{ConstructorInfo}, string)" />
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveOptionalParameter<TParameter>(
+		this IAsyncEnumerableItems<ConstructorInfo?> items, string expected)
+		=> items.HaveParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, Type, string)" />
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IAsyncEnumerableItems<ConstructorInfo?> items, Type parameterType, string expected)
+		=> items.HaveParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
+
+	/// <inheritdoc cref="HaveOptionalParameter(IEnumerableItems{ConstructorInfo}, string)" />
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveOptionalParameter(
+		this IAsyncEnumerableItems<ConstructorInfo?> items, string expected)
+		=> items.HaveParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 #endif
 }

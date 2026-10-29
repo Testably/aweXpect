@@ -24,10 +24,24 @@ public static partial class ThatEvent
 	[GuaranteesNotNull]
 	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject)
 		where TAttribute : Attribute
+		=> subject.Has(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that the <see cref="EventInfo" /> has attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <remarks>
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="HasAttributeResult{TType, TMember}.Directly" />.
+	/// </remarks>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
+	[GuaranteesNotNull]
+	public static HasAttributeResult<EventInfo, EventInfo?> Has(
+		this IThat<EventInfo?> subject,
+		Type attributeType)
 	{
 		AttributeFilter<EventInfo?> attributeFilter = new(
-			new AttributeFilterOptions<EventInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
+			new AttributeFilterOptions<EventInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
+				.WithAttribute(attributeType));
 		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter)),

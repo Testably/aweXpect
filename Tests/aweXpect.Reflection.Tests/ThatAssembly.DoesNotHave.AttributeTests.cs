@@ -39,6 +39,26 @@ public sealed partial class ThatAssembly
 					             """).AsWildcard();
 			}
 
+			[Test]
+			public async Task WithType_WhenAssemblyHasAttribute_ShouldFail()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				Type attributeType = typeof(AssemblyTitleAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no AssemblyTitleAttribute,
+					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             """).AsWildcard();
+			}
+
 			[AttributeUsage(AttributeTargets.Assembly)]
 			private class MarkerAttribute : Attribute;
 		}

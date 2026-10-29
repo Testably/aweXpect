@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using aweXpect.Reflection.Tests.TestHelpers;
 
 namespace aweXpect.Reflection.Tests;
 
@@ -9,7 +10,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public sealed class HaveParameter
+	public sealed partial class HaveParameter
 	{
 		public sealed class Tests
 		{
@@ -74,10 +75,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "value",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -97,9 +104,14 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "na\"me",
-					             but it contained methods without a matching parameter
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
@@ -156,10 +168,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -199,10 +217,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -226,9 +250,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
@@ -285,10 +315,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -328,10 +364,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -355,9 +397,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
@@ -412,10 +460,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -452,10 +506,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
 					             ]
 					             """);
@@ -477,9 +537,15 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but it contained methods without a matching parameter
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
+
+					             Collection:
 					             [
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
@@ -507,7 +573,8 @@ public sealed partial class ThatMethods
 					             Collection:
 					             [
 					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value),
-					               <null>
+					               <null>,
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -534,7 +601,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int at index 0,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -561,7 +628,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter with name "value",
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -605,7 +672,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -648,7 +715,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -692,7 +759,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -735,7 +802,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -779,7 +846,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with ref modifier,
-					             but it only contained methods with a matching parameter
+					             but all 2 did
 
 					             Collection:
 					             [
@@ -912,11 +979,17 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value),
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithInt(int value)
 					             ]
 					             """);
 			}
@@ -939,10 +1012,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 1,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithIntAndString(int value, string name)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value),
 					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithIntAndString(int value, string name)
 					             ]
 					             """)
@@ -1088,11 +1167,17 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value),
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithInt(int value)
 					             ]
 					             """);
 			}
@@ -1182,6 +1267,43 @@ public sealed partial class ThatMethods
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithMatchTypeContext_WhenNotAllHaveParameter_ShouldListContext()
+			{
+				IEnumerable<MethodInfo> methods = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithInt))!,
+					typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!,
+				};
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter("VALUE").AsCaseFoldedWithContext();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter with name "VALUE",
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithString(string name)
+					             ]
+
+					             Case folding:
+					             invariant culture
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithInt(int value),
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithString(string name)
+					             ]
+					             """)
+					.Because("the match type of the name comparison is evaluated per assertion and explains the failure");
 			}
 
 			[Test]

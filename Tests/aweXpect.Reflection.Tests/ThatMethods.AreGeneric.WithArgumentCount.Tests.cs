@@ -27,10 +27,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with 2 generic arguments,
-						             but it contained not matching methods
+						             all are generic with 2 generic arguments,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value)
+						             ]
+
+						             Collection:
 						             [
 						               T ThatMethods.ClassWithMethods.GenericMethod1<T>(T value)
 						             ]
@@ -54,10 +59,15 @@ public sealed partial class ThatMethods
 						.OnlyIf(!expectSuccess)
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with 1 generic argument,
-						             but it contained not matching methods
+						             all are generic with 1 generic argument,
+						             but none of 1 were
 
 						             Not matching items:
+						             [
+						               U ThatMethods.ClassWithMethods.GenericMethod2<T, U>(T first, U second)
+						             ]
+
+						             Collection:
 						             [
 						               U ThatMethods.ClassWithMethods.GenericMethod2<T, U>(T first, U second)
 						             ]
@@ -78,10 +88,16 @@ public sealed partial class ThatMethods
 					await That(Act).Throws()
 						.WithMessage("""
 						             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
-						             are all generic with 1 generic argument,
-						             but it contained not matching methods
+						             all are generic with 1 generic argument,
+						             but none of 2 were
 
 						             Not matching items:
+						             [
+						               int ThatMethods.ClassWithMethods.NonGenericMethod1(),
+						               int ThatMethods.ClassWithMethods.NonGenericMethod2()
+						             ]
+
+						             Collection:
 						             [
 						               int ThatMethods.ClassWithMethods.NonGenericMethod1(),
 						               int ThatMethods.ClassWithMethods.NonGenericMethod2()

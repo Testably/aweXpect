@@ -38,10 +38,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -80,10 +86,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -122,10 +134,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -164,10 +182,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -206,10 +230,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -232,10 +262,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -258,10 +294,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -284,10 +326,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -310,10 +358,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -368,13 +422,19 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have an out parameter,
-					             but it contained constructors without an out parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
-					               *ClassWithoutModifiers*
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -410,10 +470,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -452,10 +518,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -508,10 +580,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -549,13 +627,19 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have an out parameter,
-					             but it contained constructors without an out parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
-					               *ClassWithoutModifiers*
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -590,10 +674,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -615,10 +705,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -640,10 +736,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -665,10 +767,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -690,10 +798,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -715,10 +829,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -740,10 +860,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -765,10 +891,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -790,10 +922,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with out modifier,
-					             but it contained constructors without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
 					               ThatConstructors.HaveOutParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -820,13 +958,14 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have an out parameter,
-					             but it only contained constructors with an out parameter
+					             but all 2 did
 
 					             Collection:
 					             [
-					               *ClassWithOutParameter*
+					               ThatConstructors.HaveOutParameter.ClassWithOutParameter(out int value),
+					               ThatConstructors.HaveOutParameter.AnotherClassWithOutParameter(out string text)
 					             ]
-					             """).AsWildcard();
+					             """);
 			}
 
 			[Test]

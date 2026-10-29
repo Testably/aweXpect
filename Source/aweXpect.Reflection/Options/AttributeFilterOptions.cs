@@ -87,6 +87,32 @@ internal sealed class AttributeFilterOptions<TMember>
 			sb => Formatter.Format(sb, typeof(TAttribute))));
 
 	/// <summary>
+	///     Returns options with the alternative <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">
+	///     Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.
+	/// </exception>
+	public AttributeFilterOptions<TMember> WithAttribute(Type attributeType)
+	{
+		ThrowHelper.ThrowIfNull(attributeType, nameof(attributeType));
+		if (!typeof(Attribute).IsAssignableFrom(attributeType))
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The type must be an attribute, but it was {Formatter.Format(attributeType)}."));
+		}
+
+		// No attribute instance is of an open generic type, so it would never match and a negation would always pass.
+		if (attributeType.ContainsGenericParameters)
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				$"The attribute type must be closed, but it was the open generic type {Formatter.Format(attributeType)}."));
+		}
+
+		return With(new Alternative(attributeType, AttributePredicates.IsOfType(attributeType),
+			sb => Formatter.Format(sb, attributeType)));
+	}
+
+	/// <summary>
 	///     Returns options with the alternative <typeparamref name="TAttribute" /> that matches the
 	///     <paramref name="predicate" />.
 	/// </summary>

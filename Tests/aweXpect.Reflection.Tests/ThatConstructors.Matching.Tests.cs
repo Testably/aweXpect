@@ -44,11 +44,17 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have a params parameter matching p => !p.ParameterType.IsArray,
-					             but it contained constructors without a params parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               ThatConstructors.Matching.ClassWithParamsArray(params int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.Matching.ClassWithParamsArray(params int[] values),
+					               ThatConstructors.Matching.ClassWithParamsCollection(params List<int> values)
 					             ]
 					             """);
 			}

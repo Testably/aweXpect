@@ -1,20 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Extending;
 using aweXpect.Reflection.Helpers;
-using aweXpect.Reflection.Options;
 using aweXpect.Results;
-#if NET8_0_OR_GREATER
-using System.Threading;
-using System.Threading.Tasks;
-#endif
-
-// ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect;
 
@@ -28,74 +17,38 @@ public static partial class ThatFields
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<FieldInfo?>?> subject)
 		where TAttribute : Attribute
+		=> subject.DoNotHave(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="FieldInfo" /> have
+	///     attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> DoNotHave(
+		this IThat<IEnumerable<FieldInfo?>?> subject,
+		Type attributeType)
 	{
-		AttributeFilter<FieldInfo?> attributeFilter = new(
-			new AttributeFilterOptions<FieldInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<FieldInfo?>, IEnumerable<FieldInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject);
+		HaveAttributeExpectation<FieldInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject);
 	}
 
 #if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies that none of the items in the filtered collection of <see cref="FieldInfo" /> have
-	///     attribute of type <typeparamref name="TAttribute" />.
-	/// </summary>
+	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{FieldInfo}})" />
 	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> DoNotHave<TAttribute>(
 		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		where TAttribute : Attribute
+		=> subject.DoNotHave(typeof(TAttribute));
+
+	/// <inheritdoc cref="DoNotHave(IThat{IEnumerable{FieldInfo}}, Type)" />
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> DoNotHave(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject,
+		Type attributeType)
 	{
-		AttributeFilter<FieldInfo?> attributeFilter = new(
-			new AttributeFilterOptions<FieldInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
-		return new AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<AttributeFilter<FieldInfo?>, IAsyncEnumerable<FieldInfo?>>(attributeFilter,
-				static (attributeFilter, it, grammars)
-				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilter)),
-			subject);
+		HaveAttributeExpectation<FieldInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject);
 	}
 #endif
-
-	private sealed class DoNotHaveAttributeConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		AttributeFilter<FieldInfo?> attributeFilter)
-		: CollectionConstraintResult<FieldInfo?>(it, grammars),
-			IContextConstraint<IEnumerable<FieldInfo?>>
-#if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
-#endif
-	{
-#if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			IEvaluationContext context, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, context,
-				member => !attributeFilter.Matches(member), cancellationToken);
-#endif
-
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
-			=> SetValue(actual, context, member => !attributeFilter.Matches(member));
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" contained not matching fields");
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("not all ");
-			attributeFilter.AppendExpectation(stringBuilder, Grammars.Negate());
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" only contained matching fields");
-	}
 }

@@ -72,6 +72,26 @@ public sealed partial class ThatEvent
 					.Because("the attribute on the overridden base event is inherited, as in the Events().With<TAttribute>() filter");
 			}
 
+			[Test]
+			public async Task WithType_WhenEventHasAttribute_ShouldFail()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.TestClass.TestEvent
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Event)]
 			private class FooAttribute : Attribute
 			{

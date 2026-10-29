@@ -26,12 +26,18 @@ public sealed partial class ThatMethods
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that methods
-					             all do not have parameter of type int matching p => p.Name == "count",
-					             but it contained methods with a matching parameter
+					             none have parameter of type int matching p => p.Name == "count",
+					             but 1 of 2 did
 
-					             Not matching items:
+					             Matching items:
 					             [
 					               void ThatMethods.Matching.TestClass.Count(int count)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.Matching.TestClass.Count(int count),
+					               void ThatMethods.Matching.TestClass.Index(int index, string value)
 					             ]
 					             """);
 			}
@@ -71,10 +77,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int matching p => p.Name == "count",
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.Matching.TestClass.Index(int index, string value)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.Matching.TestClass.Count(int count),
 					               void ThatMethods.Matching.TestClass.Index(int index, string value)
 					             ]
 					             """);
@@ -114,11 +126,17 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a params parameter matching p => !p.ParameterType.IsArray,
-					             but it contained methods without a params parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
 					               void ThatMethods.Matching.TestClass.ParamsArray(params int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.Matching.TestClass.ParamsArray(params int[] values),
+					               void ThatMethods.Matching.TestClass.ParamsCollection(params List<int> values)
 					             ]
 					             """);
 			}

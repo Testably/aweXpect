@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatProperties
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -61,9 +61,14 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have direct ThatProperties.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching properties
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               public string ThatProperties.Have.AttributeTests.DerivedClass.InheritedProperty { get; set; }
+					             ]
+
+					             Collection:
 					             [
 					               public string ThatProperties.Have.AttributeTests.DerivedClass.InheritedProperty { get; set; }
 					             ]
@@ -146,10 +151,16 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching properties
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
+					             ]
+
+					             Collection:
+					             [
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
 					               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             ]
 					             """);
@@ -172,9 +183,15 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatProperties.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-					             but it contained not matching properties
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
+					             ]
+
+					             Collection:
 					             [
 					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
 					               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
@@ -247,10 +264,16 @@ public sealed partial class ThatProperties
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.AttributeTests.MarkerAttribute,
-						             but it contained not matching properties
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
+						             ]
+
+						             Collection:
+						             [
+						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
 						               public string ThatProperties.Have.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 						             ]
 						             """);
@@ -273,9 +296,15 @@ public sealed partial class ThatProperties
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-						             but it contained not matching properties
+						             but none of 2 did
 
 						             Not matching items:
+						             [
+						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
+						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
+						             ]
+
+						             Collection:
 						             [
 						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty1 { get; set; },
 						               public string ThatProperties.Have.AttributeTests.TestClass.TestProperty2 { get; set; }
@@ -400,9 +429,14 @@ public sealed partial class ThatProperties
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.MarkerAttribute or ThatProperties.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching properties
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.NoAttributeProperty { get; set; }
+						             ]
+
+						             Collection:
 						             [
 						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 						             ]
@@ -443,9 +477,14 @@ public sealed partial class ThatProperties
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatProperties.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatProperties.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
-						             but it contained not matching properties
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.TestProperty1 { get; set; }
+						             ]
+
+						             Collection:
 						             [
 						               public string ThatProperties.Have.OrHave.AttributeTests.TestClass.TestProperty1 { get; set; }
 						             ]
@@ -534,7 +573,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatProperties.Have.NegatedTests.MarkerAttribute or ThatProperties.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
-					             but it only contained matching properties
+					             but all 1 did
 
 					             Collection:
 					             [

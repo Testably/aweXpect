@@ -37,10 +37,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -63,10 +69,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -89,10 +101,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -115,10 +133,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -173,8 +197,19 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a params parameter,
-					             but it contained methods without a params parameter*MethodWithoutModifiers(*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -194,10 +229,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "values" with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -236,10 +277,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -278,10 +325,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -320,10 +373,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -362,10 +421,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -417,8 +482,19 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a params parameter,
-					             but it contained methods without a params parameter*MethodWithoutModifiers(*
-					             """).AsWildcard();
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -451,10 +527,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with params modifier,
-					             but it contained methods without a matching parameter
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
 					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithoutModifiers(int[] values)
 					             ]
 					             """);
@@ -481,8 +563,14 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have a params parameter,
-					             but it only contained methods with a params parameter*MethodWithParamsParameter(*
-					             """).AsWildcard();
+					             but all 2 did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParamsParameter.TestClass.MethodWithParamsParameter(params int[] values),
+					               void ThatMethods.HaveParamsParameter.TestClass.AnotherMethodWithParamsParameter(params string[] texts)
+					             ]
+					             """);
 			}
 
 			[Test]

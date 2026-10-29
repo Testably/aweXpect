@@ -24,6 +24,14 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreAssignableTo(typeof(TType));
 
+	/// <summary>
+	///     …are assignable to <typeparamref name="TType" />.
+	/// </summary>
+	/// <inheritdoc cref="AreAssignableTo{TType}(IThat{IEnumerable{Type}})" path="/remarks" />
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableTo<TType>(
+		this IEnumerableItems<Type?> items)
+		=> items.AreAssignableTo(typeof(TType));
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are assignable to
@@ -39,6 +47,11 @@ public static partial class ThatTypes
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableTo<TType>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreAssignableTo(typeof(TType));
+
+	/// <inheritdoc cref="AreAssignableTo{TType}(IEnumerableItems{Type})" />
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableTo<TType>(
+		this IAsyncEnumerableItems<Type?> items)
+		=> items.AreAssignableTo(typeof(TType));
 #endif
 
 	/// <summary>
@@ -87,6 +100,14 @@ public static partial class ThatTypes
 		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
 
+	/// <summary>
+	///     …are assignable from <typeparamref name="TType" />.
+	/// </summary>
+	/// <inheritdoc cref="AreAssignableFrom{TType}(IThat{IEnumerable{Type}})" path="/remarks" />
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableFrom<TType>(
+		this IEnumerableItems<Type?> items)
+		=> items.AreAssignableFrom(typeof(TType));
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are assignable from
@@ -101,6 +122,11 @@ public static partial class ThatTypes
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableFrom<TType>(
 		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
+
+	/// <inheritdoc cref="AreAssignableFrom{TType}(IEnumerableItems{Type})" />
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableFrom<TType>(
+		this IAsyncEnumerableItems<Type?> items)
+		=> items.AreAssignableFrom(typeof(TType));
 #endif
 
 	/// <summary>

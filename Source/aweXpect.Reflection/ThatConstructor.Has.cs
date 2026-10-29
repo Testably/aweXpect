@@ -21,10 +21,20 @@ public static partial class ThatConstructor
 	public static HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
+		=> subject.Has(typeof(TAttribute));
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <paramref name="attributeType" />.
+	/// </summary>
+	/// <exception cref="ArgumentException">Thrown if <paramref name="attributeType" /> is no attribute or an open generic type.</exception>
+	[GuaranteesNotNull]
+	public static HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?> Has(
+		this IThat<ConstructorInfo?> subject,
+		Type attributeType)
 	{
 		AttributeFilter<ConstructorInfo?> attributeFilter = new(
-			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
-				.WithAttribute<TAttribute>());
+			new AttributeFilterOptions<ConstructorInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
+				.WithAttribute(attributeType));
 		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter)),

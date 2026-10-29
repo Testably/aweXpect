@@ -88,6 +88,21 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenConstructorHasAttribute_ShouldSucceed()
+			{
+				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
+
+				Type attributeType = typeof(MarkerAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Constructor)]
 			private class MarkerAttribute : Attribute
 			{

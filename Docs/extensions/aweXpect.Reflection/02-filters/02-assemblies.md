@@ -54,6 +54,13 @@ await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
 await Expect.That(subject).HasVersion().WithMajor.Between(2).And(4).WithMinor.NotEqualTo(0);
 ```
 
+On a collection of assemblies, `HaveVersion` and `DependOnlyOn` also follow aweXpect's quantifiers:
+
+```csharp
+await Expect.That(subjects).AtLeast(2).HaveVersion().WithMajor.EqualTo(1);
+await Expect.That(subjects).AtLeast(2).DependOnlyOn("MusicStore.Domain");
+```
+
 <details>
 <summary>Assemblies without a target framework or version</summary>
 

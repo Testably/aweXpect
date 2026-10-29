@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatFields
 {
-	public sealed class AreOfType
+	public sealed partial class AreOfType
 	{
 		public sealed class GenericTests
 		{
@@ -29,14 +29,20 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type int,
-					             but it contained not matching fields
+					             all are of type int,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               string ThatFields.AreOfType.TestClass.StringField
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               int ThatFields.AreOfType.TestClass.IntField,
+					               string ThatFields.AreOfType.TestClass.StringField
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -92,14 +98,15 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are not all of type int,
-					             but it only contained matching fields
+					             not all are of type int,
+					             but all 2 were
 
 					             Collection:
 					             [
-					               *
+					               int ThatFields.AreOfType.TestClass.IntField,
+					               int ThatFields.AreOfType.TestClass.OtherIntField
 					             ]
-					             """).AsWildcard();
+					             """);
 			}
 
 			[Test]
@@ -139,11 +146,17 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type int,
-					             but it contained not matching fields
+					             all are of type int,
+					             but only 1 of 2 were
 
 					             Not matching items:
 					             [
+					               string ThatFields.AreOfType.TestClass.StringField
+					             ]
+
+					             Collection:
+					             [
+					               int ThatFields.AreOfType.TestClass.IntField,
 					               string ThatFields.AreOfType.TestClass.StringField
 					             ]
 					             """);
@@ -260,14 +273,21 @@ public sealed partial class ThatFields
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all of type bool or of type long,
-					             but it contained not matching fields
+					             all are of type bool or of type long,
+					             but none of 2 were
 
 					             Not matching items:
 					             [
-					               *
+					               int ThatFields.AreOfType.TestClass.IntField,
+					               string ThatFields.AreOfType.TestClass.StringField
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               int ThatFields.AreOfType.TestClass.IntField,
+					               string ThatFields.AreOfType.TestClass.StringField
+					             ]
+					             """);
 			}
 		}
 #pragma warning restore CA2263

@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatConstructors
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -115,10 +115,16 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatConstructors.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching constructors
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               ThatConstructors.Have.AttributeTests.TestClass()
+					             ]
+
+					             Collection:
+					             [
+					               ThatConstructors.Have.AttributeTests.TestClass(string value),
 					               ThatConstructors.Have.AttributeTests.TestClass()
 					             ]
 					             """);
@@ -141,9 +147,15 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatConstructors.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-					             but it contained not matching constructors
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               ThatConstructors.Have.AttributeTests.TestClass(string value),
+					               ThatConstructors.Have.AttributeTests.TestClass(int value)
+					             ]
+
+					             Collection:
 					             [
 					               ThatConstructors.Have.AttributeTests.TestClass(string value),
 					               ThatConstructors.Have.AttributeTests.TestClass(int value)
@@ -203,10 +215,16 @@ public sealed partial class ThatConstructors
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatConstructors.Have.AttributeTests.MarkerAttribute,
-						             but it contained not matching constructors
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               ThatConstructors.Have.AttributeTests.TestClass()
+						             ]
+
+						             Collection:
+						             [
+						               ThatConstructors.Have.AttributeTests.TestClass(string value),
 						               ThatConstructors.Have.AttributeTests.TestClass()
 						             ]
 						             """);
@@ -229,9 +247,15 @@ public sealed partial class ThatConstructors
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatConstructors.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-						             but it contained not matching constructors
+						             but none of 2 did
 
 						             Not matching items:
+						             [
+						               ThatConstructors.Have.AttributeTests.TestClass(string value),
+						               ThatConstructors.Have.AttributeTests.TestClass(int value)
+						             ]
+
+						             Collection:
 						             [
 						               ThatConstructors.Have.AttributeTests.TestClass(string value),
 						               ThatConstructors.Have.AttributeTests.TestClass(int value)
@@ -350,9 +374,14 @@ public sealed partial class ThatConstructors
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatConstructors.Have.OrHave.AttributeTests.MarkerAttribute or ThatConstructors.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching constructors
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               ThatConstructors.Have.OrHave.AttributeTests.TestClass()
+						             ]
+
+						             Collection:
 						             [
 						               ThatConstructors.Have.OrHave.AttributeTests.TestClass()
 						             ]
@@ -449,7 +478,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             not all have ThatConstructors.Have.NegatedTests.MarkerAttribute,
-					             but it only contained matching constructors
+					             but all 2 did
 
 					             Collection:
 					             [

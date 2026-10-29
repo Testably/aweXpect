@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatMethods
 {
-	public sealed class Return
+	public sealed partial class Return
 	{
 		public sealed class EnumerableTests
 		{
@@ -58,10 +58,16 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all return string,
-					             but it contained not matching methods
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               int ThatMethods.TestClass.GetInt()
+					             ]
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
 					               int ThatMethods.TestClass.GetInt()
 					             ]
 					             """);
@@ -117,13 +123,25 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
-					             but it contained not matching methods
+					             but only 1 of 5 did
 
 					             Not matching items:
 					             [
-					               *
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -172,13 +190,25 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return string,
-					             but it contained not matching methods
+					             but only 1 of 5 did
 
 					             Not matching items:
 					             [
-					               *
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -245,13 +275,25 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return bool or Task,
-					             but it contained not matching methods
+					             but only 1 of 5 did
 
 					             Not matching items:
 					             [
-					               *
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
+					             ]
+					             """);
 			}
 		}
 
@@ -291,13 +333,25 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name.StartsWith("Get") in type ThatMethods.TestClass
 					             all return bool or exactly Task,
-					             but it contained not matching methods
+					             but only 1 of 5 did
 
 					             Not matching items:
 					             [
-					               *
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
-					             """).AsWildcard();
+
+					             Collection:
+					             [
+					               string ThatMethods.TestClass.GetString(),
+					               int ThatMethods.TestClass.GetInt(),
+					               bool ThatMethods.TestClass.GetBool(),
+					               ThatMethods.DummyBase ThatMethods.TestClass.GetDummyBase(),
+					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
+					             ]
+					             """);
 			}
 		}
 
@@ -351,7 +405,7 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
-						             but it only contained matching methods
+						             but all 1 did
 
 						             Collection:
 						             [
@@ -376,7 +430,7 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
-						             but it only contained matching methods
+						             but all 1 did
 
 						             Collection:
 						             [
@@ -418,7 +472,7 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return string,
-						             but it only contained matching methods
+						             but all 1 did
 
 						             Collection:
 						             [
@@ -443,7 +497,7 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 						             not all return ThatMethods.DummyBase,
-						             but it only contained matching methods
+						             but all 1 did
 
 						             Collection:
 						             [
@@ -500,7 +554,7 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name is nameof(TestClass.GetString) or nameof(TestClass.GetInt) in type ThatMethods.TestClass
 						             not all return string or int,
-						             but it only contained matching methods
+						             but all 2 did
 
 						             Collection:
 						             [

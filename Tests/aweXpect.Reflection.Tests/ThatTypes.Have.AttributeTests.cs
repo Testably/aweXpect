@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -78,9 +78,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute,
-					             but it contained not matching types
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatTypes.Have.AttributeTests.FooChildClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
@@ -130,9 +135,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 2,
-					             but it contained not matching types
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatTypes.Have.AttributeTests.FooChildClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
@@ -168,9 +178,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
-					             but it contained not matching types
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatTypes.Have.AttributeTests.FooClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.Have.AttributeTests.FooClass2
 					             ]
@@ -192,9 +207,14 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
-					             but it contained not matching types
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               ThatTypes.Have.AttributeTests.FooChildClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
@@ -287,9 +307,14 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute,
-						             but it contained not matching types
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               ThatTypes.Have.BazClass
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.Have.BazClass
 						             ]
@@ -323,9 +348,14 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have direct ThatTypes.Have.FooAttribute or direct ThatTypes.Have.BarAttribute,
-						             but it contained not matching types
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               ThatTypes.Have.FooChildClass
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.Have.FooChildClass
 						             ]
@@ -360,9 +390,14 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute matching foo => foo.Value == 5 or ThatTypes.Have.BarAttribute matching bar => bar.Name == "test",
-						             but it contained not matching types
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               ThatTypes.Have.FooClass2
+						             ]
+
+						             Collection:
 						             [
 						               ThatTypes.Have.FooClass2
 						             ]
@@ -387,7 +422,7 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
-					             but it only contained matching types
+					             but all 1 did
 
 					             Collection:
 					             [

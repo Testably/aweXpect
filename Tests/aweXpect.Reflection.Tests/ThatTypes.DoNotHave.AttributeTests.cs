@@ -5,7 +5,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatTypes
 {
-	public sealed class DoNotHave
+	public sealed partial class DoNotHave
 	{
 		public sealed class AttributeTests
 		{
@@ -22,10 +22,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooClass2
 					             ]
@@ -58,10 +63,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
 					             ]
@@ -86,7 +96,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -98,7 +108,7 @@ public sealed partial class ThatTypes
 				await That(ActNegated).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             not all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             at least one has ThatTypes.DoNotHave.AttributeTests.FooAttribute,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -174,10 +184,15 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute,
+					             but 1 of 1 did
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+
+					             Collection:
 					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooClass2
 					             ]
@@ -214,8 +229,8 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subjects
-					             not all have no ThatTypes.DoNotHave.NegatedTests.FooAttribute,
-					             but it only contained matching types
+					             at least one has ThatTypes.DoNotHave.NegatedTests.FooAttribute,
+					             but none of 1 did
 
 					             Collection:
 					             [

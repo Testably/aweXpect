@@ -58,7 +58,7 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type Delegate,
+					             none are of exact type Delegate,
 					             but for the item at index 1, it was <null>
 
 					             Collection:
@@ -85,10 +85,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type EventHandler,
-					             but it contained events of exact type EventHandler
+					             none are of exact type EventHandler,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
 					             [
 					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
 					             ]
@@ -112,10 +117,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type EventHandler,
-					             but it contained events of exact type EventHandler
+					             none are of exact type EventHandler,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
 					             [
 					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
 					             ]
@@ -141,8 +151,8 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             also contain an event of exact type Delegate,
-					             but it only contained events not of exact type Delegate
+					             at least one is of exact type Delegate,
+					             but none of 1 were
 
 					             Collection:
 					             [
@@ -203,10 +213,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type EventHandler,
-					             but it contained events of exact type EventHandler
+					             none are of exact type EventHandler,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
 					             [
 					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
 					             ]
@@ -230,10 +245,15 @@ public sealed partial class ThatEvents
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             are all not of exact type EventHandler,
-					             but it contained events of exact type EventHandler
+					             none are of exact type EventHandler,
+					             but 1 of 1 were
 
-					             Not matching items:
+					             Matching items:
+					             [
+					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
+					             ]
+
+					             Collection:
 					             [
 					               event EventHandler ThatEvents.AreNotOfExactType.TestClass.EventHandlerEvent
 					             ]

@@ -39,6 +39,26 @@ public sealed partial class ThatMethod
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenMethodHasAttribute_ShouldFail()
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod))!;
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatMethod.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in void ThatMethod.DoesNotHave.AttributeTests.TestClass.TestMethod()
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Method)]
 			private class FooAttribute : Attribute
 			{

@@ -39,6 +39,26 @@ public sealed partial class ThatConstructor
 					             """);
 			}
 
+			[Test]
+			public async Task WithType_WhenConstructorHasAttribute_ShouldFail()
+			{
+				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
+
+				Type attributeType = typeof(FooAttribute);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave(attributeType);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatConstructor.DoesNotHave.AttributeTests.FooAttribute,
+					             but it did in ThatConstructor.DoesNotHave.AttributeTests.TestClass(string value)
+					             """);
+			}
+
 			[AttributeUsage(AttributeTargets.Constructor)]
 			private class FooAttribute : Attribute
 			{

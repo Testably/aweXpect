@@ -154,6 +154,21 @@ public sealed partial class ThatProperty
 					.Because("an attribute with Inherited = false is not inherited from the overridden base property");
 			}
 
+			[Test]
+			public async Task WithType_WhenPropertyHasAttribute_ShouldSucceed()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty("TestProperty")!;
+
+				Type attributeType = typeof(MarkerAttribute);
+
+				async Task Act()
+				{
+					await That(subject).Has(attributeType);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
 			[AttributeUsage(AttributeTargets.Property)]
 			private class MarkerAttribute : Attribute
 			{

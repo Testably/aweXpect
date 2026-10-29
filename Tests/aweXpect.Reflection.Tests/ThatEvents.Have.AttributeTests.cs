@@ -8,7 +8,7 @@ namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatEvents
 {
-	public sealed class Have
+	public sealed partial class Have
 	{
 		public sealed class AttributeTests
 		{
@@ -61,9 +61,14 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all have direct ThatEvents.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching events
+					             but none of 1 did
 
 					             Not matching items:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.DerivedClass.InheritedEvent
+					             ]
+
+					             Collection:
 					             [
 					               event Action ThatEvents.Have.AttributeTests.DerivedClass.InheritedEvent
 					             ]
@@ -159,10 +164,16 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatEvents.Have.AttributeTests.MarkerAttribute,
-					             but it contained not matching events
+					             but only 1 of 2 did
 
 					             Not matching items:
 					             [
+					               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
+					             ]
+
+					             Collection:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
 					               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
 					             ]
 					             """);
@@ -185,9 +196,15 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all have ThatEvents.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-					             but it contained not matching events
+					             but none of 2 did
 
 					             Not matching items:
+					             [
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
+					             ]
+
+					             Collection:
 					             [
 					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
 					               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
@@ -247,10 +264,16 @@ public sealed partial class ThatEvents
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatEvents.Have.AttributeTests.MarkerAttribute,
-						             but it contained not matching events
+						             but only 1 of 2 did
 
 						             Not matching items:
 						             [
+						               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
+						             ]
+
+						             Collection:
+						             [
+						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
 						               event Action ThatEvents.Have.AttributeTests.TestClass.NoAttributeEvent
 						             ]
 						             """);
@@ -273,9 +296,15 @@ public sealed partial class ThatEvents
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatEvents.Have.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue",
-						             but it contained not matching events
+						             but none of 2 did
 
 						             Not matching items:
+						             [
+						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
+						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
+						             ]
+
+						             Collection:
 						             [
 						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent1,
 						               event Action ThatEvents.Have.AttributeTests.TestClass.TestEvent2
@@ -400,9 +429,14 @@ public sealed partial class ThatEvents
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatEvents.Have.OrHave.AttributeTests.MarkerAttribute or ThatEvents.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching events
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.NoAttributeEvent
+						             ]
+
+						             Collection:
 						             [
 						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.NoAttributeEvent
 						             ]
@@ -443,9 +477,14 @@ public sealed partial class ThatEvents
 						.WithMessage("""
 						             Expected that subject
 						             all have ThatEvents.Have.OrHave.AttributeTests.MarkerAttribute matching attr => attr.Value == "WrongValue" or ThatEvents.Have.OrHave.AttributeTests.BarAttribute matching attr => attr.Name == "wrong",
-						             but it contained not matching events
+						             but none of 1 did
 
 						             Not matching items:
+						             [
+						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.TestEvent1
+						             ]
+
+						             Collection:
 						             [
 						               event Action ThatEvents.Have.OrHave.AttributeTests.TestClass.TestEvent1
 						             ]
@@ -534,7 +573,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatEvents.Have.NegatedTests.MarkerAttribute or ThatEvents.Have.NegatedTests.MarkerAttribute matching x => x.Value == "foo",
-					             but it only contained matching events
+					             but all 1 did
 
 					             Collection:
 					             [

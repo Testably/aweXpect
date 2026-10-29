@@ -60,6 +60,7 @@ Shared by all types, members, and assemblies.
 |                                    | Filter                      | Expect (single)            | Expect (many)               | Negated                                                                   |
 |------------------------------------|-----------------------------|----------------------------|-----------------------------|---------------------------------------------------------------------------|
 | has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
+| has attribute of a given type      |                             | `.Has(attributeType)`      | `.Have(attributeType)`      | `DoesNotHave(attributeType)`, `DoNotHave(attributeType)`                  |
 | has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` |                                                                           |
 | any of several attributes          | `.With<T1>().OrWith<T2>()`  | `.Has<T1>().OrHas<T2>()`   | `.Have<T1>().OrHave<T2>()`  |                                                                           |
 
@@ -113,11 +114,12 @@ The name/namespace *equality* filters and expectations (`WithName`, `WithNamespa
 `Has`/`Have` counterparts) accept the
 [string matching options](#string-matching-options) (`AsPrefix`, `AsSuffix`, `AsWildcard`,
 `AsRegex`, `IgnoringCase`, …). Collection expectations also accept a selector to derive the expected name per
-item:
+item, also after a quantifier:
 
 ```csharp
 await Expect.That(types).HaveName("Service").AsSuffix();
 await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
+await Expect.That(methods).AtLeast(1).HaveName(m => "Get" + m.ReturnType.Name);
 ```
 
 The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all

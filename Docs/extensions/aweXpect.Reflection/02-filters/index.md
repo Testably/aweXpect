@@ -129,6 +129,28 @@ await Expect.That(types).None().Implement<IDisposable>();
 await Expect.That(types).AtMost(1).ContainMethods(methods => methods.With<ObsoleteAttribute>());
 ```
 
+The parameter and return type expectations of methods and constructors take quantifiers as well: `HaveParameter`,
+`HaveParameterExactly` and their `ref` / `out` / `in` / `params` / optional variants, `HaveParameterCount`,
+`HaveNoParameters`, `Return`, `ReturnExactly`, `ReturnVoid` and `AreGeneric` on methods. Their options, like
+`AtIndex(…)` or `OrReturn<T>()`, apply to each item, and their negations, like `DoNotHaveParameter<bool>()`, read
+`none have parameter of type bool`:
+
+```csharp
+await Expect.That(methods).AtLeast(2).HaveParameter<CancellationToken>().AtIndexFromEnd(0);
+await Expect.That(methods).None().Return<Task>().OrReturn<ValueTask>();
+await Expect.That(constructors).AtMost(1).HaveNoParameters();
+```
+
+The attribute expectations `Have<TAttribute>()` on types, members and assemblies and the type expectations
+`AreOfType<T>()` and `AreOfExactType<T>()` on properties, fields and events take quantifiers as well and keep
+`OrHave…`, `OrOfType…` and `Directly()`. Their negations `DoNotHave<TAttribute>()`, `AreNotOfType<T>()` and
+`AreNotOfExactType<T>()` mean that no item matches (`none have ObsoleteAttribute`):
+
+```csharp
+await Expect.That(methods).AtLeast(1).Have<FactAttribute>().OrHave<TheoryAttribute>();
+await Expect.That(properties).None().AreOfType<DateTime>();
+```
+
 On a struct collection, such as an `ImmutableArray<Type>`, pass the type as an argument after a quantifier, e.g.
 `AtLeast(2).InheritFrom(typeof(MediaItem))`, as C# cannot infer the collection type next to an explicit type
 argument.
