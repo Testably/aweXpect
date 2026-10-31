@@ -1638,6 +1638,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -1913,7 +1919,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -2192,7 +2199,8 @@ window.BENCHMARK_DATA = {
           7840.656914265951,
           7792.895946248373,
           7746.295250447592,
-          10732.186321803501
+          10732.186321803501,
+          10410.803489685059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2428,6 +2436,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2763,7 +2772,8 @@ window.BENCHMARK_DATA = {
           249284.22063337054,
           242683.853515625,
           253226.38051060267,
-          372416.033984375
+          372416.033984375,
+          381564.838936942
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3047,7 +3057,8 @@ window.BENCHMARK_DATA = {
           590288,
           590288,
           590288,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3334,7 +3345,8 @@ window.BENCHMARK_DATA = {
           14533.45376180013,
           13916.594227091471,
           14059.997276306152,
-          18887.456553867883
+          18887.456553867883,
+          19785.01894124349
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3346,6 +3358,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5228,6 +5241,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -5496,7 +5515,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -5768,7 +5788,8 @@ window.BENCHMARK_DATA = {
           170.70007988611857,
           158.15176687921797,
           172.25003693898518,
-          270.4156284650167
+          270.4156284650167,
+          240.78325091997783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5964,6 +5985,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6325,7 +6347,8 @@ window.BENCHMARK_DATA = {
           440.33804856027876,
           401.516685295105,
           423.801543542317,
-          483.27674531936646
+          483.27674531936646,
+          517.3059544563293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6337,6 +6360,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6882,7 +6906,8 @@ window.BENCHMARK_DATA = {
           280.00440058341394,
           281.27173843383787,
           290.286599222819,
-          383.1257058143616
+          383.1257058143616,
+          380.8267867748554
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6894,6 +6919,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13389,6 +13415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -14427,7 +14459,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -15469,7 +15502,8 @@ window.BENCHMARK_DATA = {
           83.48156039913495,
           81.84397058827537,
           82.5737807410104,
-          99.23698325157166
+          99.23698325157166,
+          106.45216444333394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16468,6 +16502,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17566,7 +17601,8 @@ window.BENCHMARK_DATA = {
           217.3536319221769,
           207.20191332499186,
           215.83065485954285,
-          240.18909924825033
+          240.18909924825033,
+          247.6604880264827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17759,6 +17795,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -18944,7 +18981,8 @@ window.BENCHMARK_DATA = {
           180.16543951401343,
           178.77733268737794,
           177.32208976378809,
-          236.2086696074559
+          236.2086696074559,
+          255.03805193534265
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -18956,6 +18994,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -20924,6 +20963,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -21199,7 +21244,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -21478,7 +21524,8 @@ window.BENCHMARK_DATA = {
           159.9805916786194,
           155.87991331418354,
           162.42622857093812,
-          211.6271742661794
+          211.6271742661794,
+          220.8061601775033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21683,6 +21730,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22049,7 +22097,8 @@ window.BENCHMARK_DATA = {
           428.84946782248363,
           416.6807599408286,
           425.45404083388195,
-          514.1823888778687
+          514.1823888778687,
+          529.7611708323161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22061,6 +22110,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -22620,7 +22670,8 @@ window.BENCHMARK_DATA = {
           243.46161444981894,
           253.7593638896942,
           265.5035317103068,
-          331.01019940009485
+          331.01019940009485,
+          331.5262221923241
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22632,6 +22683,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29134,6 +29186,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -30172,7 +30230,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -31214,7 +31273,8 @@ window.BENCHMARK_DATA = {
           533.8204708735149,
           549.2862714358738,
           535.3281868298849,
-          694.3761323782114
+          694.3761323782114,
+          706.8870257059733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32201,6 +32261,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -33311,7 +33372,8 @@ window.BENCHMARK_DATA = {
           1142.8698770082915,
           1058.6767941792807,
           1120.7412223815918,
-          1301.5262464795794
+          1301.5262464795794,
+          1373.6643508911134
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33504,6 +33566,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -34689,7 +34752,8 @@ window.BENCHMARK_DATA = {
           504.5119174957275,
           485.9873319038978,
           489.10880692799884,
-          648.6662508010864
+          648.6662508010864,
+          670.8616441999163
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34701,6 +34765,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -41247,6 +41312,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -42285,7 +42356,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -43327,7 +43399,8 @@ window.BENCHMARK_DATA = {
           523.9964491526285,
           518.3466808954875,
           542.3782475153605,
-          701.6853748730251
+          701.6853748730251,
+          705.0602317810059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44314,6 +44387,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -45424,7 +45498,8 @@ window.BENCHMARK_DATA = {
           16125.190391031902,
           15614.891436767579,
           17127.252251180013,
-          27866.81199645996
+          27866.81199645996,
+          27667.617517089842
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46471,6 +46546,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -46802,7 +46878,8 @@ window.BENCHMARK_DATA = {
           602.2088720457895,
           583.8349296706064,
           599.9787534077963,
-          759.5328931808472
+          759.5328931808472,
+          822.6555899937947
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46814,6 +46891,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -49130,6 +49208,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -49463,7 +49547,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -49800,7 +49885,8 @@ window.BENCHMARK_DATA = {
           484.4098543167114,
           471.3690437952677,
           477.8968284924825,
-          601.7255716323853
+          601.7255716323853,
+          632.4685512542725
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50094,6 +50180,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -50487,7 +50574,8 @@ window.BENCHMARK_DATA = {
           53737.66074625651,
           52714.85584716797,
           53165.47087809245,
-          83532.0140625
+          83532.0140625,
+          86580.15513509115
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50829,6 +50917,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -52829,6 +52918,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -53162,7 +53257,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -53499,7 +53595,8 @@ window.BENCHMARK_DATA = {
           107.36692995684487,
           100.78839023113251,
           103.06335873263222,
-          130.00583749158042
+          130.00583749158042,
+          148.01988948186238
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53793,6 +53890,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -54186,7 +54284,8 @@ window.BENCHMARK_DATA = {
           14231.312007904053,
           14245.668907674153,
           14858.006460571289,
-          31920.036385091145
+          31920.036385091145,
+          32597.551835123697
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54528,6 +54627,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -54859,7 +54959,8 @@ window.BENCHMARK_DATA = {
           180.5015841263991,
           178.74025662740073,
           186.07277193436255,
-          235.37037101813726
+          235.37037101813726,
+          238.73880250637347
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -54871,6 +54972,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -56839,6 +56941,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -57114,7 +57222,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -57393,7 +57502,8 @@ window.BENCHMARK_DATA = {
           224.64086581979478,
           219.73756845792136,
           227.1471475283305,
-          306.2753792126974
+          306.2753792126974,
+          300.60956042607626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57598,6 +57708,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -57964,7 +58075,8 @@ window.BENCHMARK_DATA = {
           335.60468965310315,
           318.4660445531209,
           354.0890117963155,
-          377.20753996188824
+          377.20753996188824,
+          417.0065587248121
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57976,6 +58088,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -58535,7 +58648,8 @@ window.BENCHMARK_DATA = {
           322.6976748613211,
           328.7434064791753,
           330.5575217564901,
-          400.5150330543518
+          400.5150330543518,
+          410.8941648165385
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58547,6 +58661,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -60471,6 +60586,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -60746,7 +60867,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -61025,7 +61147,8 @@ window.BENCHMARK_DATA = {
           544.8435170491537,
           540.3731121063232,
           561.8741045679365,
-          758.6192269643147
+          758.6192269643147,
+          696.5921274820963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61261,6 +61384,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -61596,7 +61720,8 @@ window.BENCHMARK_DATA = {
           1615.866192626953,
           1517.6502502441406,
           1550.7657341275897,
-          1947.4805119832356
+          1947.4805119832356,
+          1964.7425623575846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61608,6 +61733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -62167,7 +62293,8 @@ window.BENCHMARK_DATA = {
           699.1768730603732,
           700.7047193527221,
           739.1681212743123,
-          948.346277986254
+          948.346277986254,
+          933.9227524484907
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62179,6 +62306,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -64103,6 +64231,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -64378,7 +64512,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -64657,7 +64792,8 @@ window.BENCHMARK_DATA = {
           8485.680783589682,
           8480.446803792318,
           8502.96763937814,
-          12171.918411254883
+          12171.918411254883,
+          11829.19159749349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64896,6 +65032,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -65228,7 +65365,8 @@ window.BENCHMARK_DATA = {
           26716.285962785994,
           26215.09547860282,
           26117.865958077567,
-          39517.44435471755
+          39517.44435471755,
+          39386.569697788786
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65512,6 +65650,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18393,
+          18394,
           18394
         ],
         "borderColor": "#FF671B",
@@ -65799,7 +65938,8 @@ window.BENCHMARK_DATA = {
           7855.93178994315,
           7841.0861238752095,
           7888.161483764648,
-          10724.669611249652
+          10724.669611249652,
+          10472.65894317627
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -65811,6 +65951,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -67735,6 +67876,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -68010,7 +68157,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -68289,7 +68437,8 @@ window.BENCHMARK_DATA = {
           7948.5414764404295,
           7908.408531697592,
           8042.3528523763025,
-          11416.409238688151
+          11416.409238688151,
+          11563.506427219936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -68528,6 +68677,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -68860,7 +69010,8 @@ window.BENCHMARK_DATA = {
           38078.94241536458,
           37283.093882242836,
           38322.63596285306,
-          58716.52845865885
+          58716.52845865885,
+          59397.8152747521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -69138,6 +69289,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -69431,7 +69583,8 @@ window.BENCHMARK_DATA = {
           15243.434232439313,
           15242.587746756417,
           15419.353343418667,
-          21108.66571044922
+          21108.66571044922,
+          20868.050223214286
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -69443,6 +69596,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
