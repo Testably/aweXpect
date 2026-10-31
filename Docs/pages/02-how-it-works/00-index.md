@@ -2,7 +2,7 @@
 description: The concepts that all expectations share, and how an expectation is built, evaluated and awaited.
 ---
 
-# Concepts
+# How it works
 
 Describes the concepts that all expectations share: how they are built, evaluated, negated, combined, configured and
 limited in time, and how to change their defaults. How aweXpect fits into your test project, e.g. its test frameworks
