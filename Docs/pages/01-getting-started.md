@@ -95,6 +95,6 @@ The expectations are grouped by the type of the subject:
 
 ## Next steps
 
-- [Concepts](./02-how-it-works/00-index.md) explains how expectations are evaluated, negated and combined, how they treat `null`, the options they share and how to configure their defaults.
+- [How it works](./02-how-it-works/00-index.md) explains how expectations are evaluated, negated and combined, how they treat `null`, the options they share and how to configure their defaults.
 - [Setup and integration](./03-setup/00-index.md) covers the test frameworks, the target frameworks and Native AOT.
 - [Extending aweXpect](./11-extending/00-index.md) shows how to add expectations for your own types.

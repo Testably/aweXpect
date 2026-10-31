@@ -22,14 +22,14 @@ in XML docs and `Docs/agents`, not in the user docs.
 | Internal mechanics, rare target framework quirks, precise corner cases                   | `<details>` at the end of the section |
 | Misuse of arguments (`null`, empty or negative values that throw)                        | remove                                |
 | A restriction the compiler or an analyzer already enforces                               | remove                                |
-| The general option rules (any order, a repeated option replaces the earlier one, `false` behaves as not set, conflicting options throw) | only on Concepts > Options |
+| The general option rules (any order, a repeated option replaces the earlier one, `false` behaves as not set, conflicting options throw) | only on How it works > Options |
 
 - One `<details>` block per section with a descriptive `<summary>`, blank lines after the summary and before
   `</details>`, never nested and never in the middle of a paragraph.
 - Don't hide the content of a page that exists only for that content: a page of its own shows it.
 - Put a fact where readers look for it, e.g. how `NaN` compares in the `NaN` section, not under the ordering.
 - State a fact once and link to it: the supported test frameworks are on Setup > Test frameworks, Native AOT is on
-  its own page, the option rules are on Concepts > Options.
+  its own page, the option rules are on How it works > Options.
 
 ## Reference pages
 
