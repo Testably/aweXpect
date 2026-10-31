@@ -1,10 +1,12 @@
+---
+description: aweXpect.Snapshots extends aweXpect with snapshot tests that compare strings and objects with reviewed snapshots.
+---
+
 import PackageInstall from '@site/src/components/PackageInstall';
 
 # aweXpect.Snapshots
 
-[aweXpect.Snapshots](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Snapshots) compares strings and objects with reviewed
-snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex
-result without writing out the expected value.
+[aweXpect.Snapshots](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Snapshots) extends [aweXpect](/aweXpect) with snapshot tests: it compares strings and objects with reviewed snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex result without writing out the expected value.
 
 ## Installation
 
@@ -23,41 +25,43 @@ The packages bring `Expect.That` with them, but not the expectations for strings
 the namespace `aweXpect`; `OrphanedSnapshots`, `SnapshotAcceptance`, `SnapshotRule` and the
 [customization](#customization) need `using aweXpect.Snapshots;`.
 
+The examples write `That(...)` instead of `Expect.That(...)`, which needs `using static aweXpect.Expect;` (see [Getting started](/aweXpect/getting-started#install-the-package)).
+
 ## At a glance
 
 ```csharp
 // compare a string with the snapshot that is stored next to the test
-await Expect.That(description).MatchesSnapshot();
+await That(description).MatchesSnapshot();
 
 // compare an object, written completely and indented by the aweXpect formatter
-await Expect.That(album).MatchesSnapshot();
+await That(album).MatchesSnapshot();
 
 // compare an exception member-wise, without members that vary per build or machine, like the stack trace
-await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+await That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
 
 // replace values that change from run to run before comparing
-await Expect.That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
+await That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
 
 // replace every Guid and ISO 8601 date with a numbered placeholder ({Guid_1}, {Date_1}, …)
-await Expect.That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
+await That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
 
 // leave out, mask or convert members of an object, selected by their name, type or declaring type
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().WithName("PlayCount").Ignore()
     .For.Members().WithName("Id").Mask()
     .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(date => date.Year);
 
 // store a JSON string as AlbumTests.Describes.awexpect-snapshot.json for syntax highlighting
-await Expect.That(json).MatchesSnapshot().WithExtension("json");
+await That(json).MatchesSnapshot().WithExtension("json");
 
 // keep a snapshot per target framework and operating system
 // (AlbumTests.Describes@net8.0@windows.awexpect-snapshot.txt)
-await Expect.That(exception.Message).MatchesSnapshot()
+await That(exception.Message).MatchesSnapshot()
     .UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 
 // verify the public API of an assembly, written as C# declarations
 // (package aweXpect.Snapshots.PublicApi)
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
     .UniqueFor.TargetFramework();
 ```
 
@@ -99,17 +103,17 @@ Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 ## Customization
 
 Set a value under `Customize.aweXpect.Snapshots()` for the current
-[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+[async flow](/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
 `Customize.aweXpect.Global.Snapshots()` for
-[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[all tests](/aweXpect/how-it-works/configuration#global-defaults).
 
 | Value                                                                            | Default                                                  | Summary                                                      |
 |----------------------------------------------------------------------------------|----------------------------------------------------------|--------------------------------------------------------------|
 | [`Acceptance`](./02-accepting-snapshots.md)                                      | `null`, left to the variable `AWEXPECT_ACCEPT_SNAPSHOTS` | which missing or changed snapshots are accepted              |
 | [`Rules`](./05-masking-values.md#for-all-snapshots)                              | none                                                     | the rules to mask or ignore values in every snapshot         |
-| [`Store`](./advanced/01-storing-snapshots.md)                                    | a file next to the test file                             | where the snapshots are kept                                 |
-| [`Comparers`](./advanced/02-comparers.md)                                        | none                                                     | decide whether a value matches its snapshot, e.g. for images |
-| [`Reporters`](./advanced/03-reporters.md)                                        | none                                                     | are told about every missing, different or matching snapshot |
+| [`Store`](./08-advanced/01-storing-snapshots.md)                                    | a file next to the test file                             | where the snapshots are kept                                 |
+| [`Comparers`](./08-advanced/02-comparers.md)                                        | none                                                     | decide whether a value matches its snapshot, e.g. for images |
+| [`Reporters`](./08-advanced/03-reporters.md)                                        | none                                                     | are told about every missing, different or matching snapshot |
 | [`NamedAfterTestArguments`](./04-naming-snapshots.md#naming-after-the-test-case) | `false`                                                  | names each snapshot after the arguments of the test case     |
 | [`AttachPendingFiles`](./02-accepting-snapshots.md#on-a-build-server)            | `false`                                                  | attaches the pending file of a mismatch to the test result   |
 
@@ -128,11 +132,11 @@ Set a value under `Customize.aweXpect.Snapshots()` for the current
   reports the snapshots that no test uses any more on a build server, and deletes them while accepting all changes
 - [Public API](./07-public-api.md): `MatchesPublicApiSnapshot` from aweXpect.Snapshots.PublicApi
 - Advanced:
-  - [Storing snapshots elsewhere](./advanced/01-storing-snapshots.md): a `SnapshotStore` instead of files next to the
+  - [Storing snapshots elsewhere](./08-advanced/01-storing-snapshots.md): a `SnapshotStore` instead of files next to the
     tests, e.g. a shared folder or a database
-  - [Comparers](./advanced/02-comparers.md): decide whether a value matches its snapshot instead of the built-in
+  - [Comparers](./08-advanced/02-comparers.md): decide whether a value matches its snapshot instead of the built-in
     comparison, e.g. an image comparer that tolerates small differences of single pixels
-  - [Reporters](./advanced/03-reporters.md): are told about every missing, different or matching snapshot, e.g. to
+  - [Reporters](./08-advanced/03-reporters.md): are told about every missing, different or matching snapshot, e.g. to
     open a diff tool
-  - [Deterministic builds](./advanced/04-deterministic-builds.md): how the snapshots are found when the build replaces
+  - [Deterministic builds](./08-advanced/04-deterministic-builds.md): how the snapshots are found when the build replaces
     the path of the repository with `/_/`

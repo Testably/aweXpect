@@ -1,3 +1,7 @@
+---
+description: Verify the method, request URI, headers and content of an HttpRequestMessage and the status code, headers, content and problem details of an HttpResponseMessage.
+---
+
 # HTTP requests and responses
 
 Describes the possible expectations for `HttpRequestMessage` and `HttpResponseMessage`.
@@ -32,8 +36,8 @@ You can verify that the `HttpRequestMessage` has the expected method, or that it
 ```csharp
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 
-await Expect.That(request).HasMethod(HttpMethod.Get);
-await Expect.That(request).DoesNotHaveMethod(HttpMethod.Delete);
+await That(request).HasMethod(HttpMethod.Get);
+await That(request).DoesNotHaveMethod(HttpMethod.Delete);
 ```
 
 ### Request URI
@@ -43,27 +47,27 @@ You can verify that the `HttpRequestMessage` has the expected request URI, or th
 ```csharp
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 
-await Expect.That(request).HasRequestUri("https://music.example.com/tracks/1");
-await Expect.That(request).HasRequestUri(new Uri("https://music.example.com/tracks/1"));
-await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/admin");
+await That(request).HasRequestUri("https://music.example.com/tracks/1");
+await That(request).HasRequestUri(new Uri("https://music.example.com/tracks/1"));
+await That(request).DoesNotHaveRequestUri("https://music.example.com/admin");
 ```
 
 Scheme and host are compared ignoring case; path, query and fragment are case-sensitive, unless you add
 `.IgnoringCase()`:
 
 ```csharp
-await Expect.That(request).HasRequestUri("https://music.example.com/Tracks/1").IgnoringCase();
-await Expect.That(request).DoesNotHaveRequestUri("https://music.example.com/Admin").IgnoringCase();
+await That(request).HasRequestUri("https://music.example.com/Tracks/1").IgnoringCase();
+await That(request).DoesNotHaveRequestUri("https://music.example.com/Admin").IgnoringCase();
 ```
 
 The expected request URI is compared as a URI, so it supports no match types. To verify parts of the request URI,
 e.g. with a wildcard or a prefix, add expectations on the request URI with the [URI expectations](./02-uri.md):
 
 ```csharp
-await Expect.That(request).HasRequestUri(uri => uri
+await That(request).HasRequestUri(uri => uri
     .HasHost().EqualTo("music.example.com").And
     .HasPath().StartingWith("/tracks/"));
-await Expect.That(request).HasRequestUri(uri => uri.HasPath("/tracks/*").AsWildcard());
+await That(request).HasRequestUri(uri => uri.HasPath("/tracks/*").AsWildcard());
 ```
 
 To negate the nested expectations, use `DoesNotComplyWith(it => it.HasRequestUri(uri => ...))`.
@@ -77,18 +81,18 @@ it:
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 request.Headers.Add("Accept", "application/json");
 
-await Expect.That(request).HasHeader("Accept");
-await Expect.That(request).HasHeader("Accept").WithValue("application/json");
-await Expect.That(request).HasHeader("Accept").WithValue("application/*").AsWildcard();
-await Expect.That(request).DoesNotHaveHeader("Authorization");
+await That(request).HasHeader("Accept");
+await That(request).HasHeader("Accept").WithValue("application/json");
+await That(request).HasHeader("Accept").WithValue("application/*").AsWildcard();
+await That(request).DoesNotHaveHeader("Authorization");
 ```
 
 The headers of the content are included, so you can also verify headers like `Content-Type`, `Content-Length` or
 `Content-Disposition`. Their value is the raw header value, e.g. `application/json; charset=utf-8`, so use
 [`HasContentType`](#request-content-type) to verify the media type.
 
-`WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
+`WithValue` supports the same [string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings, e.g.
 `.WithValue("application").AsPrefix().IgnoringCase()`.
 
 When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
@@ -97,12 +101,12 @@ When the header has multiple values, `WithValues` verifies that it has exactly t
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 request.Headers.Add("Accept", ["application/json", "text/plain"]);
 
-await Expect.That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
+await That(request).HasHeader("Accept").WithValues("application/json", "text/plain");
 ```
 
-`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
-[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
+`WithValues` supports the same [string options](/aweXpect/values/string#string-options),
+[match types](/aweXpect/values/string#match-types) and
+[collection options](/aweXpect/collections/equality#equality) as comparing string collections,
 e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
 
 You can also add expectations on the header value or on all of its values:
@@ -111,7 +115,7 @@ You can also add expectations on the header value or on all of its values:
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 request.Headers.Add("Accept-Encoding", ["gzip", "deflate"]);
 
-await Expect.That(request).HasHeader("Accept-Encoding")
+await That(request).HasHeader("Accept-Encoding")
     .WhoseValues(values => values.Contains("gzip"));
 ```
 
@@ -121,7 +125,7 @@ The failure message shows the difference and the request:
 HttpRequestMessage request = new(HttpMethod.Get, "https://music.example.com/tracks/1");
 request.Headers.Add("Cache-Control", "no-cache");
 
-await Expect.That(request).HasHeader("Cache-Control").WithValue("max-age=0");
+await That(request).HasHeader("Cache-Control").WithValue("max-age=0");
 ```
 
 ```text title="Failure message"
@@ -148,13 +152,13 @@ HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tra
     Content = new StringContent("{\"title\": \"Let It Be\"}", Encoding.UTF8, "application/json"),
 };
 
-await Expect.That(request).HasContentType("application/json");
-await Expect.That(request).HasContentType("application/*").AsWildcard();
-await Expect.That(request).DoesNotHaveContentType("text/html");
+await That(request).HasContentType("application/json");
+await That(request).HasContentType("application/*").AsWildcard();
+await That(request).DoesNotHaveContentType("text/html");
 ```
 
-The media type supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. As
+The media type supports the same [string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings. As
 [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110#section-8.3.1) defines the media type as case-insensitive, it is
 compared ignoring case by default, also with a match type. Add `.IgnoringCase(false)` to compare it case-sensitively,
 which a `.Using(comparer)` or a match type of your own that cannot ignore the casing needs as well.
@@ -170,13 +174,13 @@ HttpRequestMessage request = new(HttpMethod.Post, "https://music.example.com/tra
     Content = new StringContent("{\"title\": \"Let It Be\"}"),
 };
 
-await Expect.That(request).HasContent("*Let It Be*").AsWildcard();
-await Expect.That(request).HasContent(content => content.Contains("Let It Be"));
-await Expect.That(request).DoesNotHaveContent("");
+await That(request).HasContent("*Let It Be*").AsWildcard();
+await That(request).HasContent(content => content.Contains("Let It Be"));
+await That(request).DoesNotHaveContent("");
 ```
 
-The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. A request without
+The content supports the same [string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings. A request without
 content has an empty content, like a response, as HTTP does not distinguish a missing body from an empty one. To
 negate the nested expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`.
 
@@ -189,11 +193,11 @@ You can verify the status code of the `HttpResponseMessage`, either the exact va
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasStatusCode(HttpStatusCode.OK);
-await Expect.That(response).DoesNotHaveStatusCode(HttpStatusCode.NotFound);
-await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
-await Expect.That(response).HasStatusCode().NotEqualTo(HttpStatusCode.NotFound);
-await Expect.That(response).HasStatusCode().Success();
+await That(response).HasStatusCode(HttpStatusCode.OK);
+await That(response).DoesNotHaveStatusCode(HttpStatusCode.NotFound);
+await That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
+await That(response).HasStatusCode().NotEqualTo(HttpStatusCode.NotFound);
+await That(response).HasStatusCode().Success();
 ```
 
 The categories are `Success()` (2xx), `Redirection()` (3xx), `ClientError()` (4xx), `ServerError()` (5xx) and
@@ -203,7 +207,7 @@ The categories are `Success()` (2xx), `Redirection()` (3xx), `ClientError()` (4x
 StringContent track = new("""{"title": "Let It Be"}""");
 HttpResponseMessage response = await httpClient.PostAsync("https://music.example.com/tracks", track);
 
-await Expect.That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError();
+await That(response).HasStatusCode().ClientError().Or.HasStatusCode().ServerError();
 ```
 
 A failing expectation against a test server
@@ -211,7 +215,7 @@ A failing expectation against a test server
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
 
-await Expect.That(response).HasStatusCode(HttpStatusCode.NotFound);
+await That(response).HasStatusCode(HttpStatusCode.NotFound);
 ```
 
 fails with the request and the response:
@@ -244,30 +248,30 @@ have it:
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasHeader("Cache-Control");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("*max-age=0*").AsWildcard();
-await Expect.That(response).DoesNotHaveHeader("Set-Cookie");
+await That(response).HasHeader("Cache-Control");
+await That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await That(response).HasHeader("Cache-Control").WithValue("*max-age=0*").AsWildcard();
+await That(response).DoesNotHaveHeader("Set-Cookie");
 ```
 
 The headers of the content are included, so you can also verify headers like `Content-Type`, `Content-Length` or
 `Content-Disposition`. Their value is the raw header value, e.g. `application/json; charset=utf-8`, so use
 [`HasContentType`](#response-content-type) to verify the media type.
 
-`WithValue` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings.
+`WithValue` supports the same [string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings.
 
 When the header has multiple values, `WithValues` verifies that it has exactly these values in the same order:
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
+await That(response).HasHeader("Vary").WithValues("Accept", "Accept-Encoding");
 ```
 
-`WithValues` supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options),
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) and
-[collection options](https://docs.testably.org/aweXpect/collections/equality#equality) as comparing string collections,
+`WithValues` supports the same [string options](/aweXpect/values/string#string-options),
+[match types](/aweXpect/values/string#match-types) and
+[collection options](/aweXpect/collections/equality#equality) as comparing string collections,
 e.g. `.WithValues("text/plain", "application/json").InAnyOrder().IgnoringCase()`.
 
 You can also add expectations on the header value or on all of its values:
@@ -275,9 +279,9 @@ You can also add expectations on the header value or on all of its values:
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasHeader("ETag")
+await That(response).HasHeader("ETag")
     .WhoseValue(value => value.IsNotEmpty());
-await Expect.That(response).HasHeader("Vary")
+await That(response).HasHeader("Vary")
     .WhoseValues(values => values.Contains("Accept-Encoding"));
 ```
 
@@ -290,9 +294,9 @@ You can verify the media type in the `Content-Type` header of the `HttpResponseM
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
 
-await Expect.That(response).HasContentType("application/json");
-await Expect.That(response).HasContentType("application/*").AsWildcard();
-await Expect.That(response).DoesNotHaveContentType("text/html");
+await That(response).HasContentType("application/json");
+await That(response).HasContentType("application/*").AsWildcard();
+await That(response).DoesNotHaveContentType("text/html");
 ```
 
 As for a request, the media type is compared ignoring case by default, also with a match type; add
@@ -304,7 +308,7 @@ For example, expecting plain text from an endpoint that returns JSON
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("/tracks/1");
 
-await Expect.That(response).HasContentType("text/plain");
+await That(response).HasContentType("text/plain");
 ```
 
 fails with the difference, the request and the response:
@@ -340,20 +344,20 @@ You can verify that the `HttpResponseMessage` has the expected string content, o
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
-await Expect.That(response).HasContent(content => content.Contains("The Beatles"));
-await Expect.That(response).DoesNotHaveContent("*error*").AsWildcard().IgnoringCase();
+await That(response).HasContent("*Let It Be*").AsWildcard();
+await That(response).HasContent(content => content.Contains("The Beatles"));
+await That(response).DoesNotHaveContent("*error*").AsWildcard().IgnoringCase();
 ```
 
-The content supports the same [string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. To negate the nested
+The content supports the same [string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings. To negate the nested
 expectations, use `DoesNotComplyWith(it => it.HasContent(content => ...))`. With
 [aweXpect.Json](/aweXpect/extensions/aweXpect.Json), the nested expectations can also verify JSON content:
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasContent(content => content
+await That(response).HasContent(content => content
     .IsValidJsonMatching(new { title = "Let It Be", artist = "The Beatles" }));
 ```
 
@@ -366,7 +370,7 @@ optionally with the expected type, title, status, detail and instance:
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
 
-await Expect.That(response)
+await That(response)
     .HasProblemDetailsContent("https://httpstatuses.com/404")
     .WithTitle("Track not found")
     .WithStatus(404)
@@ -377,14 +381,14 @@ A content without a `type` member has the type `"about:blank"`, as defined in
 [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#section-3.1.1).
 
 The type, title, detail and instance support the same
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings. The options apply to
+[string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings. The options apply to
 the value specified right before them:
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/42");
 
-await Expect.That(response)
+await That(response)
     .HasProblemDetailsContent("*/404").AsWildcard()
     .WithTitle("track not found").IgnoringCase()
     .WithInstance("/tracks/").AsPrefix();
@@ -396,7 +400,7 @@ type:
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).DoesNotHaveContentType("application/problem+json");
+await That(response).DoesNotHaveContentType("application/problem+json");
 ```
 
 [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457#section-3) identifies problem details by this media type, whereas
@@ -417,7 +421,7 @@ You can add expectations on the `HttpRequestMessage` that led to the `HttpRespon
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
-await Expect.That(response).HasRequestMessage(request => request
+await That(response).HasRequestMessage(request => request
     .HasMethod(HttpMethod.Get).And
     .HasRequestUri("https://music.example.com/tracks/1"));
 ```

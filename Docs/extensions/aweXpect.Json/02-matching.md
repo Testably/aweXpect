@@ -1,3 +1,7 @@
+---
+description: Match a JsonElement or JsonNode with an expected value and relax the comparison with the JSON options.
+---
+
 # Matching JSON
 
 Describes the possible expectations for matching a `JsonElement` or a
@@ -17,8 +21,8 @@ You can verify that a `JsonElement` matches an expected object. `Matches` ignore
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
-await Expect.That(track).Matches(new { title = "Let It Be" });
-await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = "The Beatles" });
+await That(track).Matches(new { title = "Let It Be" });
+await That(track).MatchesExactly(new { title = "Let It Be", artist = "The Beatles" });
 ```
 
 `Matches` accepts the same values as `MatchesExactly` with the option `IgnoringAdditionalProperties()`.
@@ -37,8 +41,8 @@ You can verify that a `JsonElement` matches an expected array:
 ```csharp
 JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
-await Expect.That(titles).Matches(["Let It Be", "Yesterday", "Hey Jude"]);
-await Expect.That(titles).MatchesExactly(["Let It Be", "Yesterday", "Hey Jude"]);
+await That(titles).Matches(["Let It Be", "Yesterday", "Hey Jude"]);
+await That(titles).MatchesExactly(["Let It Be", "Yesterday", "Hey Jude"]);
 ```
 
 Unlike additional properties, additional array elements are not ignored by `Matches`.
@@ -58,9 +62,9 @@ JSON options:
 You can also verify that a `JsonElement` matches a primitive value:
 
 ```csharp
-await Expect.That(JsonDocument.Parse("4.05").RootElement).Matches(4.05);
-await Expect.That(JsonDocument.Parse("true").RootElement).Matches(true);
-await Expect.That(JsonDocument.Parse("null").RootElement).Matches(null);
+await That(JsonDocument.Parse("4.05").RootElement).Matches(4.05);
+await That(JsonDocument.Parse("true").RootElement).Matches(true);
+await That(JsonDocument.Parse("null").RootElement).Matches(null);
 ```
 
 An expected `string` is [JSON text](#expected-json), so `Matches("42")` expects the number `42`. To match a JSON
@@ -69,8 +73,8 @@ string, write it with quotes or as an `It.Is<string>()` expectation:
 ```csharp
 JsonElement title = JsonDocument.Parse("\"Let It Be\"").RootElement;
 
-await Expect.That(title).Matches("\"Let It Be\"");
-await Expect.That(title).Matches(It.Is<string>().That.IsEqualTo("Let It Be"));
+await That(title).Matches("\"Let It Be\"");
+await That(title).Matches(It.Is<string>().That.IsEqualTo("Let It Be"));
 ```
 
 A string inside an expected object or array, e.g. `new { title = "Let It Be" }`, and a string typed as `object`, e.g.
@@ -95,7 +99,7 @@ An expected `string` is parsed as JSON text:
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 
-await Expect.That(track).Matches("""{"title": "Let It Be"}""");
+await That(track).Matches("""{"title": "Let It Be"}""");
 ```
 
 `MatchesExactly("""{"title": "Let It Be"}""")` would fail because of the additional `artist` property:
@@ -117,7 +121,7 @@ The expected value can also be a `JsonElement`, a `JsonDocument` or a `JsonNode`
 The options are available wherever `JsonOptions` are accepted, e.g. `Matches`, `MatchesExactly`,
 `IsEqualTo(expected).AsJson(o => …)`, `IsValidJsonMatching` and
 [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json).
-They work like the [options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
+They work like the [options of aweXpect](/aweXpect/how-it-works/options):
 
 | Option                                                                    | Configures                                             |
 |---------------------------------------------------------------------------|--------------------------------------------------------|
@@ -138,9 +142,9 @@ property with the value `null` counts as absent, in both directions:
 ```csharp
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "album": null}""").RootElement;
 
-await Expect.That(track).MatchesExactly(new { title = "Let It Be" },
+await That(track).MatchesExactly(new { title = "Let It Be" },
     o => o.TreatingNullAsAbsent());
-await Expect.That(track).MatchesExactly(new { title = "Let It Be", artist = (string?)null },
+await That(track).MatchesExactly(new { title = "Let It Be", artist = (string?)null },
     o => o.TreatingNullAsAbsent());
 ```
 
@@ -162,7 +166,7 @@ ignored:
 ```csharp
 JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
-await Expect.That(titles).Matches(["Let It Be", "Yesterday"],
+await That(titles).Matches(["Let It Be", "Yesterday"],
     o => o.IgnoringAdditionalArrayElements());
 ```
 
@@ -174,7 +178,7 @@ nested ones, can be in any order:
 ```csharp
 JsonElement titles = JsonDocument.Parse("""["Let It Be", "Yesterday", "Hey Jude"]""").RootElement;
 
-await Expect.That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Yesterday"],
+await That(titles).MatchesExactly(["Hey Jude", "Let It Be", "Yesterday"],
     o => o.IgnoringArrayOrder());
 ```
 
@@ -217,7 +221,7 @@ unexpected:
 JsonElement track = JsonDocument.Parse(
     """{"id": 42, "title": "Let It Be", "meta": {"createdAt": "2026-10-16", "etag": "abc"}}""").RootElement;
 
-await Expect.That(track).MatchesExactly(
+await That(track).MatchesExactly(
     new { id = 1, title = "Let It Be", meta = new { createdAt = "2026-01-01" } },
     o => o.IgnoringMember("id").IgnoringMember("createdAt").IgnoringMembers(path => path.EndsWith(".etag")));
 ```
@@ -264,9 +268,9 @@ by at most the percentage of the expected number. The option can be combined wit
 JsonElement album = JsonDocument.Parse(
     """{"durationMinutes": 47.050000000000004, "rating": 4.6005}""").RootElement;
 
-await Expect.That(album).MatchesExactly(new { durationMinutes = 47.05, rating = 4.6m },
+await That(album).MatchesExactly(new { durationMinutes = 47.05, rating = 4.6m },
     o => o.ComparingNumbersWithin(0.001));
-await Expect.That(album).MatchesExactly(new { rating = 4.6m },
+await That(album).MatchesExactly(new { rating = 4.6m },
     o => o.ComparingNumbersWithin(1).Percent().IgnoringAdditionalProperties());
 ```
 
@@ -287,7 +291,7 @@ JSON options:
 <details>
 <summary>Zero and very large numbers</summary>
 
-Like the [tolerance in aweXpect](https://docs.testably.org/aweXpect/values/number#tolerance), a relative tolerance
+Like the [tolerance in aweXpect](/aweXpect/values/number#tolerance), a relative tolerance
 only matches an equal number when the expected number is `0`. The numbers are compared as `double`, so numbers outside
 its range are compared by their text.
 
@@ -305,7 +309,7 @@ e.g. with a naming policy:
 JsonElement track = JsonDocument.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""").RootElement;
 JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-await Expect.That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The Beatles" },
+await That(track).MatchesExactly(new { Title = "Let It Be", Artist = "The Beatles" },
     o => o.WithSerializerOptions(camelCase));
 ```
 

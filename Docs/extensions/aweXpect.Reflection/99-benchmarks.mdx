@@ -1,5 +1,6 @@
 ---
 title: Benchmarks
+description: Benchmarks comparing the happy-path overhead of aweXpect.Reflection with the equivalent FluentAssertions calls.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +10,7 @@ import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare the happy-path overhead of aweXpect.Reflection (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
 
-:::info[Methodology]
+:::note[Methodology]
 
 - **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Reflection.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
 - **Job**: `MediumRun` with the in-process toolchain.
@@ -30,7 +31,7 @@ Verifies that a type is decorated with an attribute.
 <BenchmarkResult package="aweXpect.Reflection" name="TypeHasAttribute" />
 
 ```csharp title="aweXpect"
-await Expect.That(_entityType).Has<EntityAttribute>();
+await That(_entityType).Has<EntityAttribute>();
 ```
 
 ```csharp title="FluentAssertions"
@@ -48,7 +49,7 @@ Verifies that a type is not static.
 <BenchmarkResult package="aweXpect.Reflection" name="TypeIsNotStatic" />
 
 ```csharp title="aweXpect"
-await Expect.That(_type).IsNotStatic();
+await That(_type).IsNotStatic();
 ```
 
 ```csharp title="FluentAssertions"
@@ -67,7 +68,7 @@ FluentAssertions reads the nullability of the declared properties with a `Nullab
 <BenchmarkResult package="aweXpect.Reflection" name="TypeNullability" />
 
 ```csharp title="aweXpect"
-await Expect.That(_trackType).OnlyHasNonNullableMembers();
+await That(_trackType).OnlyHasNonNullableMembers();
 ```
 
 ```csharp title="FluentAssertions"
@@ -87,7 +88,7 @@ Verifies the convention that all types in a namespace of an assembly are sealed,
 <BenchmarkResult package="aweXpect.Reflection" name="TypesAreSealed" />
 
 ```csharp title="aweXpect"
-await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
+await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
     .AreSealed();
 ```
 
@@ -106,7 +107,7 @@ Verifies the convention that all methods returning a `Task` in a namespace of an
 <BenchmarkResult package="aweXpect.Reflection" name="MethodsAreAsync" />
 
 ```csharp title="aweXpect"
-await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace)
+await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace)
         .Methods().WhichReturn<Task>())
     .AreAsync();
 ```
@@ -127,7 +128,7 @@ FluentAssertions collects the types of the fields, properties, method return val
 <BenchmarkResult package="aweXpect.Reflection" name="TypesDoNotDependOn" />
 
 ```csharp title="aweXpect"
-await Expect.That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
+await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
     .DoNotDependOn("System.Net");
 ```
 

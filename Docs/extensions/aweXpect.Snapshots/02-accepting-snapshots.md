@@ -1,3 +1,7 @@
+---
+description: Review and accept pending snapshots, accept many snapshots at once with AWEXPECT_ACCEPT_SNAPSHOTS and handle snapshots on a build server.
+---
+
 # Accepting snapshots
 
 A missing or different snapshot writes the actual value to `<TestFile>.<Method>.awexpect-snapshot.pending.txt` next
@@ -55,9 +59,9 @@ set), so that a variable that was forgotten in a pipeline cannot change the snap
 instead, which also applies on a build server:
 
 ```csharp
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.All);  // missing or changed
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.New);  // only missing
-await Expect.That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.None); // never accepts
+await That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.All);  // missing or changed
+await That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.New);  // only missing
+await That(description).MatchesSnapshot().Accepting(SnapshotAcceptance.None); // never accepts
 
 Customize.aweXpect.Snapshots().Acceptance.Set(SnapshotAcceptance.New);               // for this async flow
 ```
@@ -67,7 +71,7 @@ environment variable, so `Accepting(SnapshotAcceptance.None)` keeps a snapshot f
 is set. The setting defaults to `null`, which leaves it to the environment variable.
 
 To review a mismatch after a run on a build server, attach its pending file to the result of the test, when the
-[test framework supports attachments](https://docs.testably.org/aweXpect/setup/test-frameworks#the-running-test).
+[test framework supports attachments](/aweXpect/setup/test-frameworks#the-running-test).
 MSTest 4 needs the [opt-in](04-naming-snapshots.md#naming-after-the-test-case) `AweXpectExperimentalMSTest` for it:
 
 ```csharp

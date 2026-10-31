@@ -1,3 +1,7 @@
+---
+description: Wait for a condition with repeated checks, and call asynchronous code from code that has to answer synchronously.
+---
+
 # Repeated checks and synchronous boundaries
 
 The basics of asynchronous constraints, the `CancellationToken` and an undecided outcome, are described in
@@ -20,10 +24,7 @@ using aweXpect.Results;
 
 ## Repeated checks
 
-An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with
-`.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same holder of `RepeatedCheckOptions` to
-the result and to the constraint, and make the check with `CheckRepeatedly` of its value, which honours the options. For
-a player that starts playing asynchronously:
+An expectation that returns a `RepeatedCheckResult<TType, TThat>` lets the caller wait for a condition with `.Within(timeout)` and `.CheckEvery(interval)`, like `Satisfies` does. Pass the same holder of `RepeatedCheckOptions` to the result and to the constraint, and make the check with `CheckRepeatedly` of its value, which honors the options. For a player that starts playing asynchronously:
 
 ```csharp
 public class Player
@@ -90,7 +91,7 @@ private sealed class IsPlayingConstraint(
 Player player = new();
 _ = Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(_ => player.Play("Let It Be"));
 
-await Expect.That(player).IsPlaying()
+await That(player).IsPlaying()
     .Within(TimeSpan.FromSeconds(5)).CheckEvery(TimeSpan.FromMilliseconds(100));
 ```
 

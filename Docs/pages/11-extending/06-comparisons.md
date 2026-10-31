@@ -1,3 +1,7 @@
+---
+description: Use the equality, custom match types and property comparisons of aweXpect, so that callers choose the comparison with the built-in options.
+---
+
 # Comparisons
 
 An expectation that compares the subject with an expected value can use the comparisons of aweXpect, so that the
@@ -85,7 +89,7 @@ private sealed class ByTitleMatchType<TElement>() : ObjectMatchType<TElement>("B
 ```csharp
 Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 
-await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
+await That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
 ```
 
 - `ForEvaluation` returns the matcher for one evaluation. A matcher without state can be shared, as above.
@@ -100,8 +104,7 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   parameter of the expectation.
 - For strings, derive from `StringMatchType` instead and set it with `SetMatchType(matchType, nameof(AsTitle))` on the
   `StringEqualityOptions`, which takes the name of your option, as a string match type carries none.
-- Declare the settings that a string match type honours in `SupportedSettings`: Core rejects every other one, e.g.
-  "IgnoringCase cannot be combined with AsTitle.". The whitespace options are supported unless you leave them out.
+- Declare the settings that a string match type honors in `SupportedSettings`: Core rejects every other one, e.g. "IgnoringCase cannot be combined with AsTitle.". The whitespace options are supported unless you leave them out.
 
 <details>
 <summary>Matchers, results, phrases and string match types in detail</summary>
@@ -214,7 +217,7 @@ public class DurationResult(IThat<Track?> subject)
 ```
 
 An expectation that returns this result, e.g. `HasDuration()`, then reads
-`Expect.That(track).HasDuration().Between(TimeSpan.FromMinutes(2)).And(TimeSpan.FromMinutes(4))`.
+`That(track).HasDuration().Between(TimeSpan.FromMinutes(2)).And(TimeSpan.FromMinutes(4))`.
 
 In the constraint, `comparison.Evaluate(actual)` returns the `Outcome`, and `comparison.AppendExpectation(stringBuilder)` writes the
 comparison, e.g. "between" and both values.
@@ -268,7 +271,7 @@ public class TitleResult(IThat<Track?> subject)
 ```
 
 An expectation that returns this result, e.g. `HasTitle()`, then reads
-`Expect.That(track).HasTitle().StartingWith("let").IgnoringCase()`.
+`That(track).HasTitle().StartingWith("let").IgnoringCase()`.
 
 In the constraint, call `comparison.ValidateExpected()` before you look at the subject, so that an unusable expected
 value, e.g. an invalid regex pattern, throws whichever value the subject has. Then

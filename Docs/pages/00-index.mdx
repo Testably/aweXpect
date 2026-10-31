@@ -1,23 +1,18 @@
 ---
-title: aweXpect
-sidebar_position: -1
+description: aweXpect is a fluent, async-first assertion library for .NET whose failure messages explain in plain English what was expected and what happened.
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import BenchmarkResult from '@site/src/components/BenchmarkResult';
 
-:::info[aweXpect v4 pre-release]
-This documentation describes aweXpect v4, which is available as a pre-release. Install it with
-`dotnet add package aweXpect --prerelease`. If you are upgrading from v3, read
-[From aweXpect 3.x](10-migration/04-from-awexpect-3.md).
-:::
+# aweXpect
 
 `aweXpect` is a fluent assertion library for .NET. It turns test verifications into readable sentences and produces
 failure messages that explain in plain English what was expected and what actually happened.
 
 ```csharp
-await Expect.That(message).IsEqualTo("It's a compliment");
+await That(message).IsEqualTo("It's a compliment");
 ```
 
 ```text title="Failure message"
@@ -30,6 +25,10 @@ but it was "It's a complement", which differs at index 12:
            ↑ (expected)
 ```
 
+:::info[aweXpect v4 pre-release]
+This documentation describes aweXpect v4, which is available as a pre-release; [Getting started](./01-getting-started.md#install-the-package) shows how to install it. If you are upgrading from v3, read [From aweXpect 3.x](./10-migration/04-from-awexpect-3.md).
+:::
+
 ## Why aweXpect?
 
 <Tabs groupId="aweXpectFeatures">
@@ -41,19 +40,19 @@ parallel `…Async()` API to remember.
 
 ```csharp
 // Plain value
-await Expect.That(result).IsEqualTo(42);
+await That(result).IsEqualTo(42);
 
 // Task<T>
-await Expect.That(_artists.GetAsync(id))
+await That(_artists.GetAsync(id))
     .Satisfies(a => a.IsActive);
 
 // IAsyncEnumerable<T> - the cancellation token flows through the stream
-await Expect.That(_radio.StreamAsync())
+await That(_radio.StreamAsync())
     .Contains(s => s.IsLive)
     .WithCancellation(cancellationToken);
 
 // Delegate that throws
-await Expect.That(() => _player.SetVolumeAsync(-1))
+await That(() => _player.SetVolumeAsync(-1))
     .ThrowsExactly<ArgumentOutOfRangeException>();
 ```
 
@@ -65,7 +64,7 @@ thread-static assertion scope.
 <TabItem value="extensible" label="Extensible">
 
 The [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package is intentionally kept stable so extensions
-don't fight over versions. Ready-made [extension packages](./07-extensions/index.md) cover JSON
+don't fight over versions. Ready-made [extension packages](./07-extensions/00-index.md) cover JSON
 ([aweXpect.Json](/aweXpect/extensions/aweXpect.Json)), HTTP ([aweXpect.Web](/aweXpect/extensions/aweXpect.Web)),
 architecture tests ([aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection)), file and time systems
 ([aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)) and mocks
@@ -83,15 +82,15 @@ public static partial class ThatTrack
 }
 
 // usage
-await Expect.That(track).IsRadioFriendly();
+await That(track).IsRadioFriendly();
 ```
 
-The full walkthrough is at [Extending aweXpect](./11-extending/index.md).
+The full walkthrough is at [Extending aweXpect](./11-extending/00-index.md).
 
 </TabItem>
 <TabItem value="performant" label="Performant">
 
-The happy path (passing assertions, the common case in a healthy test suite) is the path that has been optimised.
+The happy path (passing assertions, the common case in a healthy test suite) is the path that has been optimized.
 
 **Comparing strings, ignoring case**
 <BenchmarkResult name="String" />
@@ -106,38 +105,31 @@ See the [benchmarks](./12-benchmarks.mdx) for the full set.
 [Test]        // NUnit / TUnit
 [TestMethod]  // MSTest
 public async Task IsActive()
-    => await Expect.That(artist.IsActive).IsTrue();
+    => await That(artist.IsActive).IsTrue();
 ```
 
 xUnit, NUnit, MSTest and TUnit are detected automatically, see the
-[supported versions](./08-setup/01-test-frameworks.md): a failure usually throws the assertion exception of the test
-framework, see [failed expectations](./08-setup/01-test-frameworks.md#failed-expectations) for the exact types. `Fail`
-and `Skip` [fail or skip a test](./08-setup/01-test-frameworks.md#failing-a-test) without an expectation.
+[supported versions](./03-setup/01-test-frameworks.md): a failure usually throws the assertion exception of the test
+framework, see [failed expectations](./03-setup/01-test-frameworks.md#failed-expectations) for the exact types. `Fail`
+and `Skip` [fail or skip a test](./03-setup/01-test-frameworks.md#failing-a-test) without an expectation.
 
 </TabItem>
 <TabItem value="aot" label="Native AOT">
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible on .NET 8 and later, see
-[Native AOT and trimming](./08-setup/03-native-aot.md).
+[Native AOT and trimming](./03-setup/03-native-aot.md).
 
 </TabItem>
 </Tabs>
 
-## Migrating from another assertion library?
-
-The [aweXpect.Migration](https://github.com/Testably/aweXpect.Migration) analyzer ships code-fix providers that rewrite
-most FluentAssertions and `xunit.Assert` call sites for you. See the [migration guide](/aweXpect/migration) for the full
-walkthrough.
-
 ## Where to go next
 
-- **[Getting Started](./02-getting-started.md)**: install the package and write your first expectation.
-- **[Find the expectation you need](./02-getting-started.md#find-the-expectation-you-need)**: the page that lists the
+- **[Getting started](./01-getting-started.md)**: install the package and write your first test.
+- **[Find the expectation you need](./01-getting-started.md#find-the-expectation-you-need)**: the page that lists the
   expectations for your subject, from values and collections to delegates, events and the extension packages.
-- **[Migration](/aweXpect/migration)**: automated code fixes for moving from FluentAssertions or `xunit.Assert`, and
-  upgrading from aweXpect 2 or 3.
-- **[Concepts](./03-how-it-works/index.md)**: awaiting, negation, combining, `null`, options, time and
+- **[Migration](/aweXpect/migration)**: the [aweXpect.Migration](https://github.com/Testably/aweXpect.Migration) analyzer ships code fixes that rewrite most FluentAssertions and `xunit.Assert` call sites for you; the guide also covers upgrading from aweXpect 2 or 3.
+- **[Concepts](./02-how-it-works/00-index.md)**: awaiting, negation, combining, `null`, options, time and
   cancellation, and the configuration of the defaults.
-- **[Setup and integration](./08-setup/index.md)**: test frameworks, target frameworks and Native AOT.
-- **[Extending aweXpect](./11-extending/index.md)**: add expectations for your own types using
+- **[Setup and integration](./03-setup/00-index.md)**: test frameworks, target frameworks and Native AOT.
+- **[Extending aweXpect](./11-extending/00-index.md)**: add expectations for your own types using
   `aweXpect.Core`.

@@ -1,3 +1,7 @@
+---
+description: Verify that the items of a collection are sorted in ascending or descending order.
+---
+
 # Sort order
 
 Describes how to verify that the items of a collection are sorted.
@@ -15,16 +19,16 @@ You can verify that a collection is (or is not) sorted in ascending or descendin
 IEnumerable<int> trackNumbers = [1, 2, 3];
 IEnumerable<int> shuffledTrackNumbers = [1, 3, 2];
 
-await Expect.That(trackNumbers).IsInAscendingOrder();
-await Expect.That(shuffledTrackNumbers).IsNotInAscendingOrder();
-await Expect.That(["Let It Be", "Help!", "Abbey Road"]).IsInDescendingOrder();
-await Expect.That(["Help!", "Abbey Road", "Let It Be"]).IsNotInDescendingOrder();
+await That(trackNumbers).IsInAscendingOrder();
+await That(shuffledTrackNumbers).IsNotInAscendingOrder();
+await That(["Let It Be", "Help!", "Abbey Road"]).IsInDescendingOrder();
+await That(["Help!", "Abbey Road", "Let It Be"]).IsNotInDescendingOrder();
 ```
 
 You can also specify a custom comparer:
 
 ```csharp
-await Expect.That(["abbey road", "Help!", "let it be"]).IsInAscendingOrder()
+await That(["abbey road", "Help!", "let it be"]).IsInAscendingOrder()
   .Using(StringComparer.OrdinalIgnoreCase);
 ```
 
@@ -33,7 +37,7 @@ For objects, you can also verify the sort order on a member:
 ```csharp
 Album[] albums = //...
 
-await Expect.That(albums).IsInAscendingOrder(x => x.Title);
+await That(albums).IsInAscendingOrder(x => x.Title);
 ```
 
 Strings are compared ordinally by default, also in an untyped collection. A `SortedSet<T>` or `ImmutableSortedSet<T>`,

@@ -1,3 +1,7 @@
+---
+description: Verify that a `bool` or `bool?` is true, false or null, or that it implies another value.
+---
+
 # Boolean
 
 Describes the possible expectations for `bool` and `bool?` values.
@@ -17,17 +21,17 @@ You can verify that the `bool` is equal to another one or not:
 ```csharp
 bool isPlayed = false;
 
-await Expect.That(isPlayed).IsEqualTo(false);
-await Expect.That(isPlayed).IsNotEqualTo(true);
+await That(isPlayed).IsEqualTo(false);
+await That(isPlayed).IsNotEqualTo(true);
 ```
 
-## True / False
+## True / false
 
 You can verify that the `bool` is `true` or `false`:
 
 ```csharp
-await Expect.That(false).IsFalse();
-await Expect.That(true).IsTrue();
+await That(false).IsFalse();
+await That(true).IsTrue();
 ```
 
 Awaiting a `bool` without any expectation is a shorthand for `IsTrue()`:
@@ -35,7 +39,7 @@ Awaiting a `bool` without any expectation is a shorthand for `IsTrue()`:
 ```csharp
 bool isInLibrary = true;
 
-await Expect.That(isInLibrary);
+await That(isInLibrary);
 ```
 
 The negations and the `null` checks are only available for a `bool?`:
@@ -43,11 +47,11 @@ The negations and the `null` checks are only available for a `bool?`:
 ```csharp
 bool? isPlayed = null;
 
-await Expect.That(isPlayed).IsNotFalse()
+await That(isPlayed).IsNotFalse()
   .Because("it could be true or null");
-await Expect.That(isPlayed).IsNotTrue()
+await That(isPlayed).IsNotTrue()
   .Because("it could be false or null");
-await Expect.That(isPlayed).IsNull();
+await That(isPlayed).IsNull();
 ```
 
 :::note
@@ -62,6 +66,6 @@ You can verify that `a` [implies](https://mathworld.wolfram.com/Implies.html) `b
 bool isPlayed = false;
 bool isInLibrary = true;
 
-await Expect.That(isPlayed).Implies(isInLibrary);
-await Expect.That(isInLibrary).DoesNotImply(isPlayed);
+await That(isPlayed).Implies(isInLibrary);
+await That(isInLibrary).DoesNotImply(isPlayed);
 ```

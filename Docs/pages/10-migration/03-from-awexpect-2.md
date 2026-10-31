@@ -1,6 +1,5 @@
 ---
-title: What's new in v3
-sidebar_position: 3
+description: What changed in aweXpect v3 and how to upgrade from aweXpect 2.x.
 sidebar_label: From aweXpect 2.x
 ---
 
@@ -13,8 +12,7 @@ list of changes, pull request by pull request, is in the [GitHub releases](https
 To upgrade:
 
 1. Update the packages and fix the compile errors. Most of them are [renames](#renamed-expectations).
-2. Run your tests. Some expectations are stricter now and fail where they used to pass; the
-   [behaviour changes](#behaviour-changes) explain why and how to adapt.
+2. Run your tests. Some expectations are stricter now and fail where they used to pass; the [behavior changes](#behavior-changes) explain why and how to adapt.
 3. If you wrote your own expectations, also read [Extensions](#extensions).
 
 Failure messages were reviewed as a whole, so tests that assert on the exact text of a failure message may need an
@@ -52,9 +50,9 @@ The rule behind the renames: a continuation on a **value** compares (`EqualTo`, 
 continuation on an **occurrence count** counts (`Exactly`, `AtLeast`, `AtMost`, `Never`, …).
 
 `HasMessage().Containing(x)` is a literal substring match; use `HasMessage("*x*").AsWildcard()` for a wildcard. With a
-language version below C# 14, check the values of a dictionary as `Expect.That(dictionary.Values).All().AreUnique()`.
+language version below C# 14, check the values of a dictionary as `That(dictionary.Values).All().AreUnique()`.
 
-## Behaviour changes
+## Behavior changes
 
 ### `null` subjects
 
@@ -62,10 +60,10 @@ An expectation that **inspects** the subject fails for a `null` subject, in its 
 nothing to inspect. An expectation that **compares** the subject against a value you supply treats `null` as an
 ordinary value, so `IsEqualTo(null)` succeeds for a `null` subject. As a result, negated expectations such as
 `IsNotEmpty()`, `DoesNotContain(…)` or `IsNot<T>()` now fail for a `null` subject where they used to pass. See
-[Null subjects](../03-how-it-works/04-null-subjects.md).
+[Null subjects](../02-how-it-works/04-null-subjects.md).
 
 In return, awaiting an expectation that a `null` subject cannot satisfy hands out the subject as not nullable, e.g.
-`int value = await Expect.That(nullableInt).IsGreaterThan(0);`, and the analyzer suppresses nullability warnings
+`int value = await That(nullableInt).IsGreaterThan(0);`, and the analyzer suppresses nullability warnings
 after it, so you may be able to remove `!` operators.
 
 ### Invalid arguments throw
@@ -96,25 +94,22 @@ Where you relied on line anchors, use `AsRegex(RegexOptions.Multiline)` or the i
 
 ### `Task` and `ValueTask` subjects
 
-A non-generic `Task` or `ValueTask` used to become the subject itself, so `Expect.That(DoAsync()).IsNotNull()` passed
+A non-generic `Task` or `ValueTask` used to become the subject itself, so `That(DoAsync()).IsNotNull()` passed
 without observing a failed operation. Now it is awaited like a delegate, with `DoesNotThrow()`, `Throws<TException>()`
 and the execution time expectations. Expectations on the task object itself are reported by the analyzer; name the
-type explicitly with `Expect.That<Task>(subject)` where you really mean the object. See
-[Tasks](../06-behaviour/02-tasks.md).
+type explicitly with `That<Task>(subject)` where you really mean the object. See
+[Tasks](../06-behavior/02-tasks.md).
 
 ### Execution time is a timeout
 
-The upper bound of `Throws().Within(…)`, `ExecutesIn().AtMost(…)`, `ExecutesIn().Between(…)` and
-`ExecutesIn(…).Within(…)` is applied as a timeout: a delegate that never returns fails the expectation instead of
-hanging the test run, and its `CancellationToken` is cancelled. See
-[Execution time](../06-behaviour/01-delegates.md#execution-time).
+The upper bound of `Throws().Within(…)`, `ExecutesIn().AtMost(…)`, `ExecutesIn().Between(…)` and `ExecutesIn(…).Within(…)` is applied as a timeout: a delegate that never returns fails the expectation instead of hanging the test run, and its `CancellationToken` is canceled. See [Execution time](../06-behavior/01-delegates.md#execution-time).
 
 ### Events
 
 `Within(…)` on an expectation that limits the number of events, such as `DidNotTrigger(…)` or `Triggered(…).Never()`,
 was ignored; it now waits out the full time to catch a late event. A count after `DidNotTriggerPropertyChanged()` is
 negated, so `DidNotTriggerPropertyChanged().AtLeast(2.Times())` expects fewer than two events. See
-[Events](../06-behaviour/03-events.md#triggering).
+[Events](../06-behavior/03-events.md#triggering).
 
 ### `DateTime` kinds
 
@@ -151,14 +146,14 @@ A value set with `Customize.aweXpect` stays in the async flow that set it, so it
 parallel. It is also no longer visible to the caller of an `async` helper method that set it. Set defaults for all
 tests on `Customize.aweXpect.Global`. Each value is set on its own: the group-wide `Get()` and `Update(…)` are gone, so
 replace e.g. `Settings().Update(s => s with { DefaultCheckInterval = … })` with
-`Settings().DefaultCheckInterval.Set(…)`. See [Configuration](../03-how-it-works/07-configuration.md).
+`Settings().DefaultCheckInterval.Set(…)`. See [Configuration](../02-how-it-works/07-configuration.md).
 
 ## Trimming and Native AOT
 
 `aweXpect` and `aweXpect.Core` are trimmable and AOT compatible for `net8.0` and later. Test projects need no changes:
 a source generator registers the members and events that equivalency, failure messages and event recording need.
 In a project with `PublishTrimmed` or `PublishAot`, a type without a registration fails with an error that tells you
-to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../08-setup/03-native-aot.md).
+to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../03-setup/03-native-aot.md).
 
 ## New expectations
 
@@ -177,7 +172,7 @@ to add `[assembly: GenerateMetadata(typeof(MyType))]`. See [Native AOT](../08-se
   returned, and it now covers `Expect.ThatAll` and `Expect.ThatAny`.
 - New rules flag an exception expectation that should use `With…` after `Throws` (`aweXpect0003`), an expectation
   for a value that is applied to a delegate (`aweXpect0004`, an error: write
-  `Expect.That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`), and an expectation inside an `async`
+  `That(() => sut.Count()).DoesNotThrow().WhoseResult.IsEqualTo(1)`), and an expectation inside an `async`
   lambda that is converted to a void-returning delegate (`aweXpect0005`).
 
 See [Analyzers](../08-analyzers.md).

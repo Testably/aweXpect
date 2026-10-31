@@ -1,7 +1,6 @@
 # Documentation
 
-Rules for the user docs in `Docs/pages` and `Docs/extensions`. Design goal 8 in [design goals](design-goals.md)
-(Docusaurus features, music theme) and the editing rules in `AGENTS.md` (CRLF, no em-dashes) apply as well.
+Rules for the user docs in `Docs/pages` and `Docs/extensions` that are specific to this repository. The [docs style guide](https://github.com/Testably/Testably.Site/blob/main/Docs/style-guide.md) of the docs site comes first (language, front matter, links, installation, code examples, callouts, page templates, READMEs); design goal 8 in [design goals](design-goals.md) (music theme) and the editing rules in `AGENTS.md` (CRLF, no em dashes) apply as well.
 
 ## Audience
 
@@ -41,14 +40,13 @@ in XML docs and `Docs/agents`, not in the user docs.
   negation; for a quantifier write e.g. "use `None()`".
 - Where expectations overlap, e.g. `Contains(predicate)`, `Any().Satisfy(…)` and `HasItem(…)`, say which one to use
   and why.
-- An extension package index has: intro, Installation (`dotnet add package`, the needed `using`, and that `aweXpect`
-  is referenced as well), At a glance, a failure message, the overview tables, a Documentation page list and, when the
-  package has settings, a Customization table. Its settings page is called "Customization".
+- An extension package index follows the extension page template of the style guide: the pitch linking aweXpect (`/aweXpect`), Installation (`<PackageInstall package="..." prerelease />`, the needed `using`, and that `aweXpect` is referenced as well), At a glance with a failure message, Overview with the tables, then a Documentation page list and, when the package has settings, a Customization table. Its settings page is called "Customization".
 
 ## Samples
 
 - Music domain (albums, tracks, artists, playlists), TUnit for test code (`[Test]`, `[Arguments(…)]`), except where
   a test framework is the subject of the sample.
+- Examples write `await That(...)`: the docs assume `using static aweXpect.Expect;`, which "Getting started" explains, and `Scaffold/Scaffold.cs` declares it for the compiled blocks.
 - Occurrence counts as plain numbers: `AtLeast(2)`, `Between(1).And(4)`; `2.Times()` is optional.
 - Durations may use `aweXpect.Chronology` (`2.Seconds()`) with the comment `// from the aweXpect.Chronology package`.
 - `csharp` blocks in `Docs/pages` are compiled (see [testing](testing.md#documentation-tests)); mark a block that
@@ -61,14 +59,14 @@ in XML docs and `Docs/agents`, not in the user docs.
 ## Links and URLs
 
 - The URL of a page is its path without the numeric prefixes, e.g. `04-values/02-number.md` is
-  `/aweXpect/values/number`. A sub-folder with a `_category_.json` is a sidebar group.
+  `/aweXpect/values/number`, and a folder's `00-index.md` is served at the folder URL. A sub-folder with a `_category_.json` is a sidebar group; the file sets only the `label`, as the `NN-` prefix orders the folder and categories stay collapsed by default.
 - Never move the Analyzers page or rename its headings: the help links of the analyzers and generators point to
   `https://docs.testably.org/aweXpect/analyzers#<rule>` and to anchors like `#expectation-generator`.
 - Prefer moves that keep the URL. When a page moves or a heading changes, update every link to it: relative links,
   site links (`/aweXpect/…`), absolute links (`https://docs.testably.org/aweXpect/…`) in `Docs`, `README.md` and
   `Source`. Add a redirect for the old URL to `docusaurus.config.ts` in `Testably/Testably.Site`, deployed together
   with the move, as its build fails on a redirect to a missing page.
-- `Docs/extensions` links core pages with absolute URLs, as its pages are also published on NuGet.
+- `Docs/pages` and `Docs/extensions` link each other with site-absolute paths (`/aweXpect/...`), as their folders are arranged differently on the site; full `https://docs.testably.org/...` URLs are only for the READMEs.
 - The site compiles the pages as MDX: no custom heading ids (`{#id}`) and no other unescaped `{` or `<` in prose. To
   keep an anchor, keep the heading text.
 

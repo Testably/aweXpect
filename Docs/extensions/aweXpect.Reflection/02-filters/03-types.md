@@ -1,7 +1,11 @@
+---
+description: Filter and verify types by kind, modifiers, relations and contained members, and how inherited members, attributes and relations count.
+---
+
 # Types and inheritance
 
 Describes the filters and expectations for types and how inherited members, attributes and relations are
-considered. [Filters and expectations](./index.md#how-to-read-the-tables) explains how to read the tables.
+considered. [Filters and expectations](./00-index.md#how-to-read-the-tables) explains how to read the tables.
 
 ## Types
 
@@ -72,7 +76,7 @@ immutability. Failure messages list the offending mutable members for actionable
 `.Directly()` is appended; the failure message lists the non-compliant members per type:
 
 ```csharp
-await Expect.That(In.AssemblyContaining<AddTrackRequest>()
+await That(In.AssemblyContaining<AddTrackRequest>()
         .Types().WithName("Request").AsSuffix())
     .OnlyHaveNullableMembers();
 ```
@@ -97,7 +101,7 @@ In.AllLoadedAssemblies().Types()
 ```
 
 By default a type matches when it contains **at least one** matching member. Append a quantifier (the same
-quantifiers as in [aweXpect](https://docs.testably.org/aweXpect/collections/items#quantifiers)) to require a
+quantifiers as in [aweXpect](/aweXpect/collections/items#quantifiers)) to require a
 specific count:
 
 ```csharp
@@ -127,15 +131,15 @@ _at least one_ matching member):
 
 ```csharp
 // A single type contains at least one [Fact] or [Theory] method
-await Expect.That(typeof(PlaylistServiceTests))
+await That(typeof(PlaylistServiceTests))
     .ContainsMethods(methods => methods.With<FactAttribute>().OrWith<TheoryAttribute>());
 
 // …with exactly one parameterless constructor
-await Expect.That(typeof(PlaylistService))
+await That(typeof(PlaylistService))
     .ContainsConstructors(constructors => constructors.WithNoParameters()).Exactly(1);
 
 // Every type in a collection contains a matching property
-await Expect.That(types)
+await That(types)
     .ContainProperties(properties => properties.With<RequiredAttribute>()).AtLeast(1);
 ```
 
@@ -187,16 +191,16 @@ otherwise have `ToString`, `Equals`, `GetHashCode`, …; `.IncludingObjectMember
 | Constructors, and the attributes of assemblies, constructors and fields                       | no inheritance                                                                |                                                                                                                 |
 
 ```csharp
-await Expect.That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
-await Expect.That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
-await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition).Directly();
-await Expect.That(typeof(Album)).Has<SerializableAttribute>().Directly();
-await Expect.That(typeof(Album)).ContainsMethods(methods => methods.WithName("Play")).Directly();
+await That(typeof(AlbumController)).InheritsFrom<ControllerBase>().Directly();
+await That(typeof(AlbumRepository)).Implements<IRepository>().Directly();
+await That(typeof(TrackDuration)).HasOperator(Operator.Addition).Directly();
+await That(typeof(Album)).Has<SerializableAttribute>().Directly();
+await That(typeof(Album)).ContainsMethods(methods => methods.WithName("Play")).Directly();
 
 // The declared methods of the album types, also the inherited ones, and also those of System.Object
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods()).AreNotObsolete();
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingInherited()).AreNotObsolete();
-await Expect.That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
+await That(In.AssemblyContaining<Album>().Types().Methods()).AreNotObsolete();
+await That(In.AssemblyContaining<Album>().Types().Methods().IncludingInherited()).AreNotObsolete();
+await That(In.AssemblyContaining<Album>().Types().Methods().IncludingObjectMembers()).AreNotObsolete();
 ```
 
 The options apply to the whole result, e.g. to all attributes of `.With<T1>().OrWith<T2>().Directly()`. On a member

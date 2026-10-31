@@ -1,3 +1,7 @@
+---
+description: Verify that two objects are structurally equivalent and configure which members are compared and how.
+---
+
 # Equivalency
 
 Describes how to verify that two objects are *equivalent* (that is, structurally equal) rather than referentially or
@@ -14,7 +18,7 @@ Equivalency instead compares the public state of two objects field by field and 
 nested objects and collections. Two objects are equivalent when every included member compares as equivalent.
 
 When you publish with trimming or Native AOT, see
-[Native AOT and trimming](../08-setup/03-native-aot.md#equivalency).
+[Native AOT and trimming](../03-setup/03-native-aot.md#equivalency).
 
 ## On objects
 
@@ -24,9 +28,9 @@ You can verify that any object is equivalent to an expected object with `IsEquiv
 ```csharp
 using aweXpect.Equivalency; // for the options, e.g. `IgnoringMember`
 
-await Expect.That(album).IsEquivalentTo(expected);
-await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCount"));
-await Expect.That(album).IsNotEquivalentTo(unexpected);
+await That(album).IsEquivalentTo(expected);
+await That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCount"));
+await That(album).IsNotEquivalentTo(unexpected);
 ```
 
 ## On collection items
@@ -38,8 +42,8 @@ expected value with `AreEquivalentTo`, using the same equivalency comparison:
 IEnumerable<Track> tracks = //...
 Track expected = //...
 
-await Expect.That(tracks).All().AreEquivalentTo(expected);
-await Expect.That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
+await That(tracks).All().AreEquivalentTo(expected);
+await That(tracks).AtLeast(2).AreEquivalentTo(expected, o => o.IgnoringMember("Title"));
 ```
 
 The equivalency options go into `AreEquivalentTo` itself. To compare the items with a custom comparer, use `AreEqualTo(expected).Using(comparer)`.
@@ -50,18 +54,18 @@ For expectations that accept a custom equality comparer (`IsEqualTo`, `Contains`
 `All().AreEqualTo(...)`, …), append `.Equivalent()` to switch the comparison from `Equals` to structural equivalency:
 
 ```csharp
-await Expect.That(album).IsEqualTo(expected).Equivalent();
+await That(album).IsEqualTo(expected).Equivalent();
 
 IEnumerable<Track> tracks = //...
 Track expectedTrack = //...
-await Expect.That(tracks).Contains(expectedTrack).Equivalent();
-await Expect.That(tracks).StartsWith(expectedTrack).Equivalent();
-await Expect.That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.IgnoringCollectionOrder());
+await That(tracks).Contains(expectedTrack).Equivalent();
+await That(tracks).StartsWith(expectedTrack).Equivalent();
+await That(tracks).All().AreEqualTo(expectedTrack).Equivalent(o => o.IgnoringCollectionOrder());
 ```
 
 Like `IsEquivalentTo`, a failure lists the equivalency options that were used.
 
-## Default behaviour
+## Default behavior
 
 Equivalency takes the **public fields and properties of the expected object** and compares each one with the member
 of the same name on the actual object, recursing into nested objects. How a value is compared depends on its type:
@@ -125,10 +129,10 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 
 ```csharp
 // class Playlist : List<Track> { public string Name { get; set; } }
-await Expect.That(playlist).IsEquivalentTo(expectedPlaylist);
+await That(playlist).IsEquivalentTo(expectedPlaylist);
 
 // compares the tracks only
-await Expect.That(playlist).IsEquivalentTo(expectedPlaylist, o => o.IgnoringMember("Name"));
+await That(playlist).IsEquivalentTo(expectedPlaylist, o => o.IgnoringMember("Name"));
 ```
 
 <details>
@@ -160,7 +164,7 @@ decides which keys are the same, as it does for [`IsEqualTo`](../05-collections/
 
 An expected item that the comparer of the actual set finds in it is matched, whatever its members are, and only the
 remaining items are matched by the equivalency comparison. This also holds for an `ImmutableHashSet<T>`, an
-`ImmutableSortedSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../08-setup/02-target-frameworks.md). A
+`ImmutableSortedSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../03-setup/02-target-frameworks.md). A
 sorted set considers two items the same when its comparer orders neither before the other. The comparer of an expected
 set is not used.
 
@@ -197,7 +201,7 @@ All equivalency overloads accept an `options` callback that receives an `Equival
 `EquivalencyOptions<TExpected>`) record. The fluent methods are chainable:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IncludingFields()
   .IgnoringMember("PlayCount")
   .IgnoringCollectionOrder());
@@ -218,7 +222,7 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
 ### Ignoring members by name
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCount"));
+await That(album).IsEquivalentTo(expected, o => o.IgnoringMember("PlayCount"));
 ```
 
 The match is case-insensitive. For nested members, the path is dot-separated (e.g. `"Artist.Name"`); for collection
@@ -235,16 +239,16 @@ parameters receive the member path and type:
 
 ```csharp
 // by member path and type
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IgnoringMembers((memberPath, memberType)
     => memberPath.EndsWith("PlayCount") && memberType == typeof(int)));
 
 // by member path only
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IgnoringMembers(memberPath => memberPath == "Artist.Name"));
 
 // by type only
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IgnoringMembers((_, memberType) => memberType == typeof(DateTime)));
 ```
 
@@ -253,7 +257,7 @@ They take the same member path and type, and are never applied to collection ite
 property:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IgnoringProperties((memberPath, _) => memberPath.EndsWith("PlayCount")));
 ```
 
@@ -272,7 +276,7 @@ You can change which fields and properties participate in the comparison. Both m
 enum with the values `None`, `Public` and `Internal`:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .IncludingFields(IncludeMembers.None)                         // exclude all fields
   .IncludingProperties(IncludeMembers.Public | IncludeMembers.Internal));
 ```
@@ -290,7 +294,7 @@ When comparing collections, order matters by default. To disable that:
 int[] subject  = [1, 2, 3];
 int[] expected = [3, 2, 1];
 
-await Expect.That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrder());
+await That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrder());
 ```
 
 Pass `false` to re-enable ordered comparison if it was disabled globally.
@@ -306,7 +310,7 @@ When the actual and the expected objects have different types whose members don'
 tracks and the entries of a chart, let a predicate decide whether a pair is equivalent:
 
 ```csharp
-await Expect.That(tracks).IsEquivalentTo(chart, o => o
+await That(tracks).IsEquivalentTo(chart, o => o
   .Comparing<Track, ChartEntry>((track, entry) => track.Title == entry.Song)
   .IgnoringCollectionOrder());
 ```
@@ -343,7 +347,7 @@ When the members of both types correspond but are named differently, map them, s
 by member and a failure names the exact difference:
 
 ```csharp
-await Expect.That(tracks).IsEquivalentTo(chart, o => o
+await That(tracks).IsEquivalentTo(chart, o => o
   .Mapping<Track, ChartEntry>(track => track.Title, entry => entry.Song)
   .Mapping<Track, ChartEntry>(track => track.PlayCount, entry => entry.Plays));
 ```
@@ -353,7 +357,7 @@ The mapping applies wherever an actual `TActual` meets an expected `TExpected`. 
 types, a mapping matches the expected member by name, like `IgnoringMember`, at any depth:
 
 ```csharp
-await Expect.That(tracks).IsEquivalentTo(chart, o => o
+await That(tracks).IsEquivalentTo(chart, o => o
   .Mapping("Title", "Song")
   .Mapping("PlayCount", "Plays"));
 ```
@@ -363,7 +367,7 @@ Either member can be nested, so a mapping also flattens an object, e.g. the arti
 ```csharp
 // class ReleaseDto { public string ArtistName { get; set; } }
 // class Release { public Artist Artist { get; set; } }
-await Expect.That(releaseDto).IsEquivalentTo(release, o => o
+await That(releaseDto).IsEquivalentTo(release, o => o
   .Mapping<ReleaseDto, Release>(dto => dto.ArtistName, release => release.Artist.Name));
 ```
 
@@ -391,7 +395,7 @@ You can apply options to a specific member type only. Type-specific options over
 of that type or of a derived type. When several registrations match, the most derived one wins:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .For<Artist>(x => x.IgnoringMember("BornOn"))
   .For<List<Track>>(x => x.IgnoringCollectionOrder()));
 ```
@@ -419,19 +423,19 @@ options that apply to a type with `GetOptionsFor(type)`.
 ### Comparing by value or by members
 
 Each type is compared either by value (`Equals` decides alone) or by its members (`Equals` is ignored). The default
-depends on the type (see [Default behaviour](#default-behaviour)). One side compared by value is enough. Comparing by
+depends on the type (see [Default behavior](#default-behavior)). One side compared by value is enough. Comparing by
 value is how you ask for the equality a type defines for itself, e.g. a value object that compares only its `Id`. To
 override for a specific type:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o
+await That(album).IsEquivalentTo(expected, o => o
   .For<TrackId>(x => x with { ComparisonType = EquivalencyComparisonType.ByValue }));
 ```
 
 To change the global rule, replace the `DefaultComparisonTypeSelector`:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o with
+await That(album).IsEquivalentTo(expected, o => o with
 {
   DefaultComparisonTypeSelector = type => type == typeof(TrackId)
     ? EquivalencyComparisonType.ByValue
@@ -469,7 +473,7 @@ Equivalency options:
 Use `LimitingRecursionDepth` to raise or lower the limit:
 
 ```csharp
-await Expect.That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
+await That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
 ```
 
 It is equivalent to setting `MaxRecursionDepth` directly. A limit other than the default is listed in the failure
@@ -486,7 +490,7 @@ detection and never reaches the limit.
 
 ### Customizing the global defaults
 
-You can change the default `EquivalencyOptions` via the [configuration](../03-how-it-works/07-configuration.md).
+You can change the default `EquivalencyOptions` via the [configuration](../02-how-it-works/07-configuration.md).
 Every equivalency expectation starts from them: they are used as they are when no callback is provided, and a callback
 receives them as its starting point:
 
@@ -500,7 +504,7 @@ using IDisposable scope = Customize.aweXpect.Equivalency().DefaultEquivalencyOpt
 ```
 
 To change the default for all async flows, e.g. in an assembly-level setup, set it on
-[`Customize.aweXpect.Global`](../03-how-it-works/07-configuration.md#global-defaults):
+[`Customize.aweXpect.Global`](../02-how-it-works/07-configuration.md#global-defaults):
 
 ```csharp
 using aweXpect.Customization;
@@ -528,7 +532,7 @@ Track midnight = new()
   PlayCount = 42,
 };
 
-await Expect.That(midnight).IsEquivalentTo(new
+await That(midnight).IsEquivalentTo(new
 {
   Title = It.Is<string>().That.IsNotEmpty(),
   PlayCount = It.Is<int>().That.IsGreaterThan(2),

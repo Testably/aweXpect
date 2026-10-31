@@ -1,8 +1,12 @@
+---
+description: The filters and expectations that all types and members share, for access modifiers, attributes, the obsolete marker, names and namespaces.
+---
+
 # Common filters
 
 Describes the filters and expectations that all types and members share: access modifiers, attributes, the
 obsolete marker, names and namespaces, and the string matching options for names.
-[Filters and expectations](./index.md#how-to-read-the-tables) explains how to read the tables.
+[Filters and expectations](./00-index.md#how-to-read-the-tables) explains how to read the tables.
 
 ## Access modifiers
 
@@ -24,8 +28,8 @@ events and constructors.
 In.AllLoadedAssemblies().Public.Methods()        // shorthand modifier
 In.AllLoadedAssemblies().Methods().WhichArePublic()
 
-await Expect.That(method).IsPublic();
-await Expect.That(methods).ArePublic();
+await That(method).IsPublic();
+await That(methods).ArePublic();
 ```
 
 To pass the modifier as a value, e.g. in a parameterized test, use the *as a value* row, on types and on every
@@ -38,7 +42,7 @@ member kind. Combined flags are met by any of them, e.g. `AccessModifiers.Public
 [Arguments(AccessModifiers.Public | AccessModifiers.Internal)]
 public async Task TypesAreNotNested(AccessModifiers modifier)
 {
-    await Expect.That(In.AssemblyContaining<PlaylistService>().Types().WhichAre(modifier))
+    await That(In.AssemblyContaining<PlaylistService>().Types().WhichAre(modifier))
         .AreNotNested();
 }
 
@@ -47,10 +51,10 @@ public async Task TypesAreNotNested(AccessModifiers modifier)
 [Arguments(typeof(TrackCache), AccessModifiers.Internal)]
 public async Task TypeHasTheExpectedAccessModifier(Type type, AccessModifiers modifier)
 {
-    await Expect.That(type).Is(modifier);
+    await That(type).Is(modifier);
 }
 
-await Expect.That(methods).AreNot(AccessModifiers.Private | AccessModifiers.PrivateProtected);
+await That(methods).AreNot(AccessModifiers.Private | AccessModifiers.PrivateProtected);
 ```
 
 ## Attributes
@@ -70,8 +74,8 @@ considered as well; append `.Directly()` to only consider the attributes declare
 must have none of them).
 
 ```csharp
-await Expect.That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
-await Expect.That(methods).Have<FactAttribute>();
+await That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
+await That(methods).Have<FactAttribute>();
 ```
 
 ### Obsolete
@@ -85,7 +89,7 @@ Shared by all types and members: a self-documenting shorthand for the `ObsoleteA
 
 ```csharp
 // Verify that nothing public is marked [Obsolete]
-await Expect.That(In.AssemblyContaining<PlaylistService>().Types().WhichArePublic())
+await That(In.AssemblyContaining<PlaylistService>().Types().WhichArePublic())
     .AreNotObsolete();
 ```
 
@@ -106,7 +110,7 @@ counterparts:
 
 ```csharp
 // Verify that no type in the production assembly is named with a "Test" suffix
-await Expect.That(In.AssemblyContaining<PlaylistService>().Types())
+await That(In.AssemblyContaining<PlaylistService>().Types())
     .DoNotHaveName("Test").AsSuffix();
 ```
 
@@ -117,9 +121,9 @@ The name/namespace *equality* filters and expectations (`WithName`, `WithNamespa
 item, also after a quantifier:
 
 ```csharp
-await Expect.That(types).HaveName("Service").AsSuffix();
-await Expect.That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
-await Expect.That(methods).AtLeast(1).HaveName(m => "Get" + m.ReturnType.Name);
+await That(types).HaveName("Service").AsSuffix();
+await That(methods).HaveName(m => "On" + m.GetParameters()[0].ParameterType.Name);
+await That(methods).AtLeast(1).HaveName(m => "Get" + m.ReturnType.Name);
 ```
 
 The `WhichAreWithinNamespace`/`IsWithinNamespace`/`AreWithinNamespace` variants match a namespace and all
@@ -131,9 +135,9 @@ string matching options, `IsNotWithinNamespace` also excludes all sub-namespaces
 
 Every filter and expectation that compares a name, a namespace, a target framework or a dependency, including
 the parameter and generic argument names, uses the string matching options of the core aweXpect library (see the
-[string options](https://docs.testably.org/aweXpect/values/string#string-options), the
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) and the
-[general option rules](https://docs.testably.org/aweXpect/how-it-works/options)):
+[string options](/aweXpect/values/string#string-options), the
+[match types](/aweXpect/values/string#match-types) and the
+[general option rules](/aweXpect/how-it-works/options)):
 
 | Option                                                           | Effect                                            |
 |------------------------------------------------------------------|---------------------------------------------------|
@@ -148,10 +152,10 @@ the parameter and generic argument names, uses the string matching options of th
 | `.Using(comparer)`                                               | compare with a custom `IEqualityComparer<string>` |
 
 ```csharp
-await Expect.That(types).HaveName("Service").AsSuffix();
-await Expect.That(types).HaveName("*Test*").AsWildcard();
-await Expect.That(types).HaveName(@"^Test\w+$").AsRegex();
-await Expect.That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
+await That(types).HaveName("Service").AsSuffix();
+await That(types).HaveName("*Test*").AsWildcard();
+await That(types).HaveName(@"^Test\w+$").AsRegex();
+await That(methods).HaveName("Get*Async").AsWildcard().IgnoringCase();
 
 Filtered.Types services = In.AssemblyContaining<PlaylistService>().Types()
     .WithName("service").IgnoringCase().AsSuffix()

@@ -1,7 +1,11 @@
+---
+description: Make an extension work under trimming and Native AOT by marking generic parameters and registering the metadata of its own types.
+---
+
 # Native AOT for extensions
 
 Under trimming or Native AOT, aweXpect compares and records only the types that have a registration (see
-[Native AOT and trimming](../08-setup/03-native-aot.md)). An extension takes part in this in two ways:
+[Native AOT and trimming](../03-setup/03-native-aot.md)). An extension takes part in this in two ways:
 
 - It marks a generic parameter whose argument reaches an equivalency comparison or an event recording with
   `[RequiresMemberMetadata]` or `[RequiresEventMetadata]`, see [generic parameters](#generic-parameters).
@@ -88,7 +92,7 @@ project is compiled, and only if that project gets the analyzers of `aweXpect.Co
 and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` declaration). A project gets them by
 referencing `aweXpect.Core`, `aweXpect` or one of the extension packages of aweXpect, which all pass them on. Your
 extension passes them on when it references `aweXpect.Core` as shown in
-[referencing aweXpect.Core](./index.md#referencing-awexpectcore).
+[referencing aweXpect.Core](./00-index.md#referencing-awexpectcore).
 
 <details>
 <summary>Several packages that pass the analyzers on</summary>

@@ -1,3 +1,7 @@
+---
+description: Compare strings, objects, exceptions, binary data and files with a snapshot, and how the snapshot files are named, encoded and compared.
+---
+
 # Matching snapshots
 
 Describes the possible expectations for comparing strings, objects, exceptions, binary data and files with a snapshot.
@@ -22,7 +26,7 @@ public class AlbumTests
     {
         string description = Describe(new Album("Abbey Road"));
 
-        await Expect.That(description).MatchesSnapshot();
+        await That(description).MatchesSnapshot();
     }
 }
 ```
@@ -72,7 +76,7 @@ A string that is JSON, HTML, XML or code can be stored with a matching file exte
 highlight it:
 
 ```csharp
-await Expect.That(json).MatchesSnapshot().WithExtension("json");
+await That(json).MatchesSnapshot().WithExtension("json");
 ```
 
 The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.awexpect-snapshot.json` and
@@ -96,7 +100,7 @@ Any other value is written by the aweXpect formatter, completely and indented, s
 shows up as a changed line:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot();
+await That(album).MatchesSnapshot();
 ```
 
 ```text title="AlbumTests.Loads.awexpect-snapshot.txt"
@@ -158,7 +162,7 @@ public void Play(Album album, int playCount)
 ```
 
 ```csharp
-await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+await That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
 ```
 
 ```text title="PlayerTests.Rejects.awexpect-snapshot.txt"
@@ -185,7 +189,7 @@ ArgumentOutOfRangeException {
   [`.UniqueFor`](04-naming-snapshots.md#snapshots-per-environment):
 
   ```csharp
-  await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
+  await That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>()
       .Which.MatchesSnapshot()
       .For.Members().WithName("Message").Ignore()
       .For.Members().WithName("ActualValue").Mask();
@@ -210,8 +214,8 @@ Binary data, e.g. the cover art an album service renders, is compared byte by by
 tell which kind of file it is, so it needs the extension:
 
 ```csharp
-await Expect.That(coverArt).MatchesSnapshot().WithExtension("png");
-await Expect.That(linerNotesStream).MatchesSnapshot().WithExtension("pdf");
+await That(coverArt).MatchesSnapshot().WithExtension("png");
+await That(linerNotesStream).MatchesSnapshot().WithExtension("pdf");
 ```
 
 The snapshot is `AlbumTests.Cover.awexpect-snapshot.png` and a mismatch is written to
@@ -221,7 +225,7 @@ position to the end; it does not need to be seekable and is neither reset nor di
 A `FileInfo` is stored with the extension of the file, here `pdf`:
 
 ```csharp
-await Expect.That(new FileInfo("liner-notes.pdf")).MatchesSnapshot();
+await That(new FileInfo("liner-notes.pdf")).MatchesSnapshot();
 ```
 
 `.WithExtension(…)` sets another one, e.g. for a file without an extension like `LICENSE`, which fails otherwise. A file
@@ -244,7 +248,7 @@ Pending snapshot:
   any other snapshot.
 - A `byte[]` is compared as binary data, not written by the formatter like other collections. As for a string, the
   static type decides, so a `byte[]` in an `object` subject is still written by the formatter.
-- A [comparer](advanced/02-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
+- A [comparer](08-advanced/02-comparers.md) can compare it instead, e.g. tolerating small differences of single pixels.
 - Version control must not change the line breaks in a binary snapshot, so mark its extension as binary in
   `.gitattributes`, e.g. `*.png binary`, unless Git already detects it as binary.
 
@@ -253,7 +257,7 @@ Pending snapshot:
 
 A type derived from `Stream`, e.g. a `MemoryStream`, needs C# 13 or later to choose the overload for streams; before,
 `MatchesSnapshot()` throws an `InvalidOperationException` that asks to declare the subject as a `Stream`, e.g.
-`Expect.That<Stream>(stream)`.
+`That<Stream>(stream)`.
 
 </details>
 
@@ -264,7 +268,7 @@ is removed again when the snapshot is read, so that an editor which adds a final
 snapshot.
 
 The newline style of a text snapshot is ignored when comparing, because version control can change it when the snapshot
-is checked out. A [comparer](advanced/02-comparers.md) can compare it in another way.
+is checked out. A [comparer](08-advanced/02-comparers.md) can compare it in another way.
 
 <details>
 <summary>Files that cannot be read or written, and negation</summary>

@@ -1,3 +1,7 @@
+---
+description: Run code before the first expectation, support another test framework, read the running test and register values from the test project.
+---
+
 # Test frameworks and initialization
 
 An extension can run code before its first expectation, support a test framework of its own and read the running test.
@@ -39,13 +43,13 @@ namespace MusicStore
 ```
 
 `ModuleInitializerAttribute` is missing in `netstandard2.0` and `net48`: declare it in your own package there, see
-[polyfills for older targets](./index.md#polyfills-for-older-targets).
+[polyfills for older targets](./00-index.md#polyfills-for-older-targets).
 
 ## Test framework adapter
 
 aweXpect reports a failed, skipped or inconclusive expectation by throwing the exception of the test framework. For
 MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project and
-registers it ([test frameworks](../08-setup/01-test-frameworks.md) lists the exceptions it throws). To support
+registers it ([test frameworks](../03-setup/01-test-frameworks.md) lists the exceptions it throws). To support
 another test framework, implement `ITestFrameworkAdapter` and register it with
 `TestFrameworkRegistry.Register` from a module initializer in the test project itself, as the generated adapters are.
 A module initializer only runs when its assembly is first used, and the tests never use an assembly that only contains
@@ -112,7 +116,7 @@ namespace MyTests
   wins, independent of the order in which the module initializers run.
 - Without any registration, aweXpect throws its own `FailException`, `SkipException` or `InconclusiveException`.
   Only below .NET 8, e.g. on .NET Framework, it first scans the loaded assemblies for a type that implements
-  `ITestFrameworkAdapter`, see [settings](../03-how-it-works/07-configuration.md#settings).
+  `ITestFrameworkAdapter`, see [settings](../02-how-it-works/07-configuration.md#settings).
 - The generated registration is a module initializer, which needs C# 9 or later. On .NET 8 or later, a test project
   with an older `<LangVersion>` has to register the generated adapter itself, which the warning
   [aweXpect2002](../08-analyzers.md#test-framework-adapter) points out.
@@ -142,12 +146,12 @@ internal static class TrackCaseNames
 
 It returns `false` when the test framework does not expose the running test, or when no test is running, e.g. in a
 setup of the whole assembly. Handle that case, as not every test framework exposes the running test; the
-[test frameworks](../08-setup/01-test-frameworks.md#the-running-test) page lists what each of them supports.
+[test frameworks](../03-setup/01-test-frameworks.md#the-running-test) page lists what each of them supports.
 
 `TestFrameworkRegistry.TryGetCancellationToken` returns the token with which the test framework cancels the running
 test. Expectations only observe it when `Settings().TestCancellation` is set to
 `TestCancellation.FromCancellationToken(…)` with it, see
-[time and cancellation](../03-how-it-works/06-time-and-cancellation.md#cancellationtoken).
+[time and cancellation](../02-how-it-works/06-time-and-cancellation.md#cancellationtoken).
 `TestFrameworkRegistry.TryAddAttachment(filePath, description)` attaches a file to the result of the running test, as
 `aweXpect.Snapshots` does with a recorded mismatch when `AttachPendingFiles` is set:
 

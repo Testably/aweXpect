@@ -1,9 +1,13 @@
+---
+description: Filter and verify properties, fields and events by type, nullability, modifiers and accessors.
+---
+
 # Properties, fields and events
 
 Describes the filters and expectations for properties, fields and events.
-[Filters and expectations](./index.md#how-to-read-the-tables) explains how to read the tables.
+[Filters and expectations](./00-index.md#how-to-read-the-tables) explains how to read the tables.
 
-## Properties & Fields
+## Properties & fields
 
 In addition to [access modifiers](./01-common-filters.md#access-modifiers),
 [attributes](./01-common-filters.md#attributes) and
@@ -67,7 +71,7 @@ type.
 
 ```csharp
 // All properties and fields of the request types must be nullable
-await Expect.That(In.AssemblyContaining<AddTrackRequest>()
+await That(In.AssemblyContaining<AddTrackRequest>()
         .Types().WithName("Request").AsSuffix()
         .Properties())
     .AreNullable();
@@ -113,7 +117,7 @@ properties and fields.
 
 ```csharp
 // Every event must use the generic EventHandler<T> pattern
-await Expect.That(In.AllLoadedAssemblies().Public.Events())
+await That(In.AllLoadedAssemblies().Public.Events())
     .AreOfType(typeof(EventHandler<>));
 
 In.AllLoadedAssemblies().Public.Events()

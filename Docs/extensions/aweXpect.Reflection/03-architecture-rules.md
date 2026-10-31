@@ -1,3 +1,7 @@
+---
+description: Restrict the dependencies between types and namespaces, detect dependency cycles and define layers as reusable type selections.
+---
+
 # Architecture rules
 
 An architecture rule restricts which other types a type may reference: its *dependencies*.
@@ -21,11 +25,11 @@ The dependency filters and expectations follow the familiar filter/expect pairin
 
 ```csharp
 // The API layer must not reference the data layer
-await Expect.That(Types.InNamespace("MusicStore.Api"))
+await That(Types.InNamespace("MusicStore.Api"))
     .DoNotDependOn("MusicStore.Data");
 
 // The API layer may only reference the application and domain layers
-await Expect.That(Types.InNamespace("MusicStore.Api"))
+await That(Types.InNamespace("MusicStore.Api"))
     .DependOnlyOn("MusicStore.Application", "MusicStore.Domain");
 
 // Filter for the types that depend on a namespace
@@ -56,11 +60,11 @@ default (so `MusicStore.Data` matches `MusicStore.Data.Sql` but not `MusicStore.
 
 ```csharp
 // Widen the set with .OrOn(…)
-await Expect.That(Types.InNamespace("MusicStore.Api"))
+await That(Types.InNamespace("MusicStore.Api"))
     .DependOnlyOn("MusicStore.Application").OrOn("MusicStore.Domain");
 
 // Opt out of sub-namespace matching for the whole expression
-await Expect.That(types).DoNotDependOn("MusicStore.Data").ExcludingSubNamespaces();
+await That(types).DoNotDependOn("MusicStore.Data").ExcludingSubNamespaces();
 ```
 
 For `DependsOnlyOn` a type's own namespace is always allowed, and by default so are its sub-namespaces. Use
@@ -68,7 +72,7 @@ For `DependsOnlyOn` a type's own namespace is always allowed, and by default so 
 references into a type's own sub-namespaces:
 
 ```csharp
-await Expect.That(Types.InNamespace("MusicStore.Domain"))
+await That(Types.InNamespace("MusicStore.Domain"))
     .DependOnlyOn("MusicStore.Domain").ExcludingSubNamespaces().ExcludingOwnSubNamespaces();
 ```
 
@@ -82,7 +86,7 @@ chainable refinements):
 In.AllLoadedAssemblies().Types().WhichHaveDependenciesOutside("MusicStore.Application", "MusicStore.Domain")
 
 // Verify that a known legacy type still has its external dependency
-await Expect.That(typeof(LegacyImportService))
+await That(typeof(LegacyImportService))
     .HasDependenciesOutside("MusicStore.Application", "MusicStore.Domain");
 ```
 
@@ -92,15 +96,15 @@ same forms and verify that every type, or none of them, depends on the specific 
 `WhichDoNotDependOn` filters accept the same forms, including `.OrOn<T>()` / `.OrOn(Type)`:
 
 ```csharp
-await Expect.That(typeof(Album)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
+await That(typeof(Album)).DoesNotDependOn<DbContext>().OrOn<SqlConnection>();
 
 // No controller may reference the DbContext directly
-await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
+await That(Types.InNamespace("MusicStore.Api.Controllers"))
     .DoNotDependOn<DbContext>();
 
 // The same with a type only known at runtime
 Type dbContextType = typeof(DbContext);
-await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
+await That(Types.InNamespace("MusicStore.Api.Controllers"))
     .DoNotDependOn(dbContextType);
 
 // Filter for the types that reference the DbContext
@@ -115,9 +119,9 @@ quantifiers and keep their options, like `.OrOn(…)` or `.ExcludingSubNamespace
 type depends on the target (`none depend on namespace "MusicStore.Data"`), the same as `None().DependOn(…)`:
 
 ```csharp
-await Expect.That(Types.InNamespace("MusicStore.Api.Controllers"))
+await That(Types.InNamespace("MusicStore.Api.Controllers"))
     .AtMost(1).DependOn<DbContext>();
-await Expect.That(Types.InNamespace("MusicStore.Domain"))
+await That(Types.InNamespace("MusicStore.Domain"))
     .AtLeast(2).DependOnlyOn("MusicStore.Domain").ExcludingOwnSubNamespaces();
 ```
 
@@ -159,7 +163,7 @@ The "slices should be free of cycles" architecture rule: verify that the namespa
 
 ```csharp
 // No dependency cycles among the namespaces under MusicStore
-await Expect.That(Types.InNamespace("MusicStore"))
+await That(Types.InNamespace("MusicStore"))
     .HaveNoDependencyCycles();
 ```
 
@@ -174,7 +178,7 @@ treat every namespace on its own, so that such a parent/child reference can form
 
 ```csharp
 // Treat every namespace as its own node (MusicStore.Catalog ↔ MusicStore.Catalog.Domain can now form a cycle)
-await Expect.That(Types.InNamespace("MusicStore"))
+await That(Types.InNamespace("MusicStore"))
     .HaveNoDependencyCycles().ExcludingSubNamespaces();
 ```
 
@@ -184,7 +188,7 @@ following the root), so that, for example, `MusicStore.Catalog`, `MusicStore.Cat
 
 ```csharp
 // Group MusicStore.Catalog.* / MusicStore.Billing.* / … into one slice each before looking for cycles
-await Expect.That(Types.InNamespace("MusicStore"))
+await That(Types.InNamespace("MusicStore"))
     .HaveNoDependencyCycles("MusicStore");
 ```
 
@@ -237,25 +241,25 @@ unchanged, including the `.ExcludingOwnSubNamespaces()` opt-out.
 
 ```csharp
 // Outgoing rule with a selection as target:
-await Expect.That(domainTypes).DoNotDependOn(infrastructureTypes);
+await That(domainTypes).DoNotDependOn(infrastructureTypes);
 
 // Incoming rules are written explicitly from the other side:
-await Expect.That(infrastructureTypes).DoNotDependOn(domainTypes);
+await That(infrastructureTypes).DoNotDependOn(domainTypes);
 
 // Allowed set as union of selections (own namespace + framework stay allowed):
-await Expect.That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes);
+await That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes);
 ```
 
 Combine several rules into a single verification with aweXpect's `Expect.ThatAll(…)` (see
-[combining expectations](https://docs.testably.org/aweXpect/how-it-works/combining)): every rule is
+[combining expectations](/aweXpect/how-it-works/combining)): every rule is
 evaluated and all failures are reported together. Any expectation works on a selection, not just the
 dependency ones, so naming conventions or sealing rules live in the same check:
 
 ```csharp
 await Expect.ThatAll(
-    Expect.That(domainTypes).DoNotDependOn(infrastructureTypes),
-    Expect.That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes),
-    Expect.That(domainTypes).AreSealed());
+    That(domainTypes).DoNotDependOn(infrastructureTypes),
+    That(repositoryTypes).DependOnlyOn(domainTypes).OrOn(infrastructureTypes),
+    That(domainTypes).AreSealed());
 ```
 
 A failing rule reports all violations, numbered per expectation. Here `PlaylistService` references the
@@ -289,11 +293,11 @@ but
 ]
 ```
 
-Exemptions to a rule use the [`Except` filter](./02-filters/index.md#custom-predicates) on the subject selection:
+Exemptions to a rule use the [`Except` filter](./02-filters/00-index.md#custom-predicates) on the subject selection:
 
 ```csharp
-await Expect.That(domainTypes.Except<LegacyImportService>()).DoNotDependOn(infrastructureTypes);
-await Expect.That(domainTypes.Except(type => type.Name.StartsWith("Generated"))).AreSealed();
+await That(domainTypes.Except<LegacyImportService>()).DoNotDependOn(infrastructureTypes);
+await That(domainTypes.Except(type => type.Name.StartsWith("Generated"))).AreSealed();
 ```
 
 A layer spanning several namespaces is built by widening a dependency *target* with additional selections

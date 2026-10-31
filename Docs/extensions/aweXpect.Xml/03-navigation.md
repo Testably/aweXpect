@@ -1,3 +1,7 @@
+---
+description: Verify the attributes, child elements and values of an XElement or XDocument.
+---
+
 # Attributes and child elements
 
 Describes the possible expectations for the attributes, child elements and values of an `XElement` or an
@@ -19,7 +23,7 @@ attribute, and add expectations on its value with all string expectations of awe
 ```csharp
 XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles" />""");
 
-await Expect.That(track)
+await That(track)
     .HasAttribute("title").And
     .HasAttribute("artist", artist => artist.StartsWith("The")).And
     .DoesNotHaveAttribute("explicit");
@@ -42,7 +46,7 @@ property, `EqualTo`, `StartingWith`, `EndingWith` and `Containing(…)` (each al
 e.g. `IgnoringCase()` or `AsWildcard()`:
 
 ```csharp
-await Expect.That(track)
+await That(track)
     .HasAttribute("title").EqualTo("let it be").IgnoringCase().And
     .HasAttribute("artist").StartingWith("The");
 ```
@@ -82,25 +86,22 @@ You can verify that an element has a child element, and add expectations on it:
 ```csharp
 XElement album = XElement.Parse("""<album><artist><origin city="Liverpool" /></artist></album>""");
 
-await Expect.That(album).HasElement("artist", artist => artist
+await That(album).HasElement("artist", artist => artist
     .HasElement("origin", origin => origin
         .HasAttribute("city", city => city.IsEqualTo("Liverpool"))));
-await Expect.That(album).DoesNotHaveElement("bonusTrack");
+await That(album).DoesNotHaveElement("bonusTrack");
 ```
 
-Only the direct child elements are looked up, and the expectations are verified on the first child element with the
-name, like by [`XElement.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element).
-A failed lookup within the expectations on a child element shows this child element, labelled with it, e.g.
-`Actual (element "artist"):`, instead of the whole subject. To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
+Only the direct child elements are looked up, and the expectations are verified on the first child element with the name, like by [`XElement.Element(name)`](https://learn.microsoft.com/en-us/dotnet/api/system.xml.linq.xcontainer.element). A failed lookup within the expectations on a child element shows this child element, labeled with it, e.g. `Actual (element "artist"):`, instead of the whole subject. To verify a whole subtree, combine it with [`Matches`](./02-matching.md):
 
 ```csharp
-await Expect.That(album).HasElement("artist", artist => artist.Matches("""<artist><origin /></artist>"""));
+await That(album).HasElement("artist", artist => artist.Matches("""<artist><origin /></artist>"""));
 ```
 
 To verify all child elements with a name, select them with
-[`Whose`](https://docs.testably.org/aweXpect/how-it-works/combining#on-members-of-the-subject) and use the
-[collection expectations](https://docs.testably.org/aweXpect/collections/items) of aweXpect, e.g. the
-[quantifiers](https://docs.testably.org/aweXpect/collections/items#quantifiers) with `ComplyWith(…)`:
+[`Whose`](/aweXpect/how-it-works/combining#on-members-of-the-subject) and use the
+[collection expectations](/aweXpect/collections/items) of aweXpect, e.g. the
+[quantifiers](/aweXpect/collections/items#quantifiers) with `ComplyWith(…)`:
 
 ```csharp
 XElement album = XElement.Parse(
@@ -112,8 +113,8 @@ XElement album = XElement.Parse(
     </album>
     """);
 
-await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks.HasCount(2));
-await Expect.That(album).Whose(a => a.Elements("track"), tracks => tracks
+await That(album).Whose(a => a.Elements("track"), tracks => tracks.HasCount(2));
+await That(album).Whose(a => a.Elements("track"), tracks => tracks
     .All().ComplyWith(track => track.HasAttribute("title")));
 ```
 
@@ -141,7 +142,7 @@ You can add expectations on the value of an element with all string expectations
 ```csharp
 XElement track = XElement.Parse("""<track><title>Let It Be</title></track>""");
 
-await Expect.That(track).HasElement("title", title => title.HasValue(value => value.StartsWith("Let")));
+await That(track).HasElement("title", title => title.HasValue(value => value.StartsWith("Let")));
 ```
 
 If the title was "Yesterday" instead, the expectation would fail with:
@@ -159,7 +160,7 @@ but value of the element was "Yesterday", which differs at index 0:
 Like for attributes, the value can also be compared directly on the result of `HasValue()`:
 
 ```csharp
-await Expect.That(track).HasElement("title", title => title.HasValue().Containing("e").AtLeast(3));
+await That(track).HasElement("title", title => title.HasValue().Containing("e").AtLeast(3));
 ```
 
 With the title "Let It Be", the expectation would fail with:
@@ -185,9 +186,9 @@ All these expectations are also available for an
 ```csharp
 XDocument document = XDocument.Parse("""<album id="42"><artist /></album>""");
 
-await Expect.That(document).HasAttribute("id");
-await Expect.That(document).HasElement("artist", artist => artist.Matches("<artist />"));
-await Expect.That(document).DoesNotHaveElement("bonusTrack");
+await That(document).HasAttribute("id");
+await That(document).HasElement("artist", artist => artist.Matches("<artist />"));
+await That(document).DoesNotHaveElement("bonusTrack");
 ```
 
 `HasElement` looks up a child element of the root element, so `HasElement("album")` fails for this document, unlike
@@ -218,7 +219,7 @@ namespace:
 XNamespace music = "urn:music";
 XElement album = XElement.Parse("""<album xmlns="urn:music"><track title="Come Together" /></album>""");
 
-await Expect.That(album).HasElement(music + "track", track => track.HasAttribute("title"));
+await That(album).HasElement(music + "track", track => track.HasAttribute("title"));
 ```
 
 A name in a namespace is shown as `{urn:music}track` in the failure message.

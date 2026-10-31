@@ -1,3 +1,7 @@
+---
+description: "Generate an expectation, its negation and its collection variants from a static method that checks a condition."
+---
+
 # Generated expectations
 
 An expectation that only checks a condition on its subject doesn't need a constraint class of its own: mark a
@@ -29,8 +33,8 @@ public static partial class ThatTrack
 ```csharp no-compile
 Track track = new("Love Me Do", new TimeSpan(0, 2, 22));
 
-await Expect.That(track).IsLongerThan(TimeSpan.FromMinutes(2));
-await Expect.That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
+await That(track).IsLongerThan(TimeSpan.FromMinutes(2));
+await That(track).IsNotLongerThan(TimeSpan.FromMinutes(3));
 ```
 
 ## The method
@@ -195,9 +199,9 @@ private static bool IsLongerThan(Track track, TimeSpan minimum)
 ```
 
 ```csharp no-compile
-await Expect.That(tracks).All().AreLongerThan(TimeSpan.FromMinutes(2));
-await Expect.That(tracks).AtLeast(2).AreLongerThan(TimeSpan.FromMinutes(2));
-await Expect.That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
+await That(tracks).All().AreLongerThan(TimeSpan.FromMinutes(2));
+await That(tracks).AtLeast(2).AreLongerThan(TimeSpan.FromMinutes(2));
+await That(tracks).None().AreLongerThan(TimeSpan.FromMinutes(5));
 ```
 
 - The method follows the rules above, and its first parameter is the item.
@@ -243,8 +247,8 @@ private static bool IsLongerThan(Track track, TimeSpan minimum)
 ```
 
 ```csharp no-compile
-await Expect.That(tracks).AreLongerThan(TimeSpan.FromMinutes(2));
-await Expect.That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
+await That(tracks).AreLongerThan(TimeSpan.FromMinutes(2));
+await That(tracks).AreNotLongerThan(TimeSpan.FromMinutes(5));
 ```
 
 - The quantifier is the subject of the text, e.g. "all are longer than …" and "none are longer than …", whose
@@ -279,8 +283,8 @@ private static ValueTask<bool> HasTitle(Track track, [NegatedParameterName("unex
 ```
 
 ```csharp no-compile
-await Expect.That(tracks).HaveTitle("Intro").AsPrefix().IgnoringCase();
-await Expect.That(tracks).AtLeast(2).HaveTitle("*live*").AsWildcard();
+await That(tracks).HaveTitle("Intro").AsPrefix().IgnoringCase();
+await That(tracks).AtLeast(2).HaveTitle("*live*").AsWildcard();
 ```
 
 The options are not a parameter of the expectation: every generated form returns a `StringEqualityTypeResult` with

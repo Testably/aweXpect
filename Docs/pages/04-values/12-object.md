@@ -1,3 +1,7 @@
+---
+description: Verify any object for equality, reference equality, type, null, a predicate, a nested expectation or garbage collection.
+---
+
 # Object
 
 Describes the possible expectations for any object.
@@ -14,7 +18,7 @@ Describes the possible expectations for any object.
 | [`IsNull`](#null)                                                       | `IsNotNull`         | `null`                                                |
 | [`Satisfies`](#condition)                                               | `DoesNotSatisfy`    | satisfies a predicate                                 |
 | [`CompliesWith`](#nested-expectation)                                   | `DoesNotComplyWith` | meets a nested expectation                            |
-| [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
+| [`Whose`](../02-how-it-works/03-combining.md#on-members-of-the-subject) |                     | a member meets a nested expectation                   |
 | [`IsCollected`](#garbage-collection)                                    | `IsNotCollected`    | the target of a `WeakReference` is garbage collected  |
 
 ## Equality
@@ -25,8 +29,8 @@ You can verify that the `object` is equal to another one or not:
 record Album(string Title);
 Album album = new("Abbey Road");
 
-await Expect.That(album).IsEqualTo(new Album("Abbey Road"));
-await Expect.That(album).IsNotEqualTo(new Album("Revolver"));
+await That(album).IsEqualTo(new Album("Abbey Road"));
+await That(album).IsNotEqualTo(new Album("Revolver"));
 ```
 
 This uses the `object.Equals(object?, object?)` method.
@@ -37,7 +41,7 @@ This uses the `object.Equals(object?, object?)` method.
 A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
 [equivalency](./13-equivalency.md). For `Half`, `Int128` and `UInt128` this only applies
-[on .NET 8 or later](../08-setup/02-target-frameworks.md).
+[on .NET 8 or later](../03-setup/02-target-frameworks.md).
 
 </details>
 
@@ -49,8 +53,8 @@ You can verify that the `object` has the same reference as another one:
 record Album(string Title);
 Album album = new("Abbey Road");
 
-await Expect.That(album).IsSameAs(album);
-await Expect.That(album).IsNotSameAs(new Album("Abbey Road"));
+await That(album).IsSameAs(album);
+await That(album).IsNotSameAs(new Album("Abbey Road"));
 ```
 
 This uses the `object.ReferenceEquals(object?, object?)` method.
@@ -69,7 +73,7 @@ class AlbumComparer : IEqualityComparer<object>
 }
 Album album = new("Abbey Road");
 
-await Expect.That(album).IsEqualTo(new Album("Abbey Road")).Using(new AlbumComparer());
+await That(album).IsEqualTo(new Album("Abbey Road")).Using(new AlbumComparer());
 ```
 
 ### `IEquatable<T>`
@@ -84,8 +88,8 @@ class TrackId(long value) : IEquatable<long>
 }
 TrackId trackId = new(42);
 
-await Expect.That(trackId).IsEquatableTo(42L);
-await Expect.That(trackId).IsNotEquatableTo(7L);
+await That(trackId).IsEquatableTo(42L);
+await That(trackId).IsNotEquatableTo(7L);
 ```
 
 ## Equivalency
@@ -96,8 +100,8 @@ You can verify that the `object` is structurally equivalent to another one. See 
 ```csharp
 Album album = new("Abbey Road");
 
-await Expect.That(album).IsEquivalentTo(new Album("Abbey Road"));
-await Expect.That(album).IsNotEquivalentTo(new Album("Revolver"));
+await That(album).IsEquivalentTo(new Album("Abbey Road"));
+await That(album).IsNotEquivalentTo(new Album("Revolver"));
 ```
 
 Use `IsEqualTo` when the type defines what equal means, e.g. a record or a type that overrides `Equals`. Use
@@ -113,8 +117,8 @@ You can verify that the `object` is one of many alternatives:
 record Album(string Title);
 Album album = new("Abbey Road");
 
-await Expect.That(album).IsOneOf([new Album("Abbey Road"), new Album("Revolver")]);
-await Expect.That(album).IsNotOneOf([new Album("Revolver"), new Album("Help!")]);
+await That(album).IsOneOf([new Album("Abbey Road"), new Album("Revolver")]);
+await That(album).IsNotOneOf([new Album("Revolver"), new Album("Help!")]);
 ```
 
 ## Type check
@@ -124,10 +128,10 @@ You can verify that the `object` is of a given type or a derived type, or that i
 ```csharp
 object album = new Album("Abbey Road");
 
-await Expect.That(album).Is<Album>();
-await Expect.That(album).Is(typeof(Album));
-await Expect.That(album).IsNot<Track>();
-await Expect.That(album).IsNot(typeof(Track));
+await That(album).Is<Album>();
+await That(album).Is(typeof(Album));
+await That(album).IsNot<Track>();
+await That(album).IsNot(typeof(Track));
 ```
 
 `IsExactly` and `IsNotExactly` do not accept a derived type:
@@ -135,10 +139,10 @@ await Expect.That(album).IsNot(typeof(Track));
 ```csharp
 object album = new Album("Abbey Road");
 
-await Expect.That(album).IsExactly<Album>();
-await Expect.That(album).IsExactly(typeof(Album));
-await Expect.That(album).IsNotExactly<Track>();
-await Expect.That(album).IsNotExactly(typeof(Track));
+await That(album).IsExactly<Album>();
+await That(album).IsExactly(typeof(Album));
+await That(album).IsNotExactly<Track>();
+await That(album).IsNotExactly(typeof(Track));
 ```
 
 ## Null
@@ -148,8 +152,8 @@ You can verify that the `object` is `null` or not:
 ```csharp
 object? album = null;
 
-await Expect.That(album).IsNull();
-await Expect.That(new Album("Abbey Road")).IsNotNull();
+await That(album).IsNull();
+await That(new Album("Abbey Road")).IsNotNull();
 ```
 
 ## Condition
@@ -159,12 +163,12 @@ You can verify that any object satisfies a given predicate:
 ```csharp
 Track track = new() { Title = "Let It Be", PlayCount = 3 };
 
-await Expect.That(track).Satisfies(x => x.PlayCount > 0);
-await Expect.That(track).DoesNotSatisfy(x => x.IsPlayed);
+await That(track).Satisfies(x => x.PlayCount > 0);
+await That(track).DoesNotSatisfy(x => x.IsPlayed);
 ```
 
 When the object changes in the background, `Within(…)` waits until it satisfies the predicate, see
-[waiting for a condition](../03-how-it-works/06-time-and-cancellation.md#a-condition).
+[waiting for a condition](../02-how-it-works/06-time-and-cancellation.md#a-condition).
 
 ## Nested expectation
 
@@ -173,19 +177,19 @@ You can verify that any object complies with an expectation:
 ```csharp
 List<Track> tracks = new();
 
-await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
-await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
+await That(tracks).CompliesWith(x => x.IsEmpty());
+await That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
 
 `DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
-[wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
+[wait for the object](../02-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.
 
 Which one to use:
 
 - `Satisfies` for a quick check with a predicate; a failure only shows the predicate and the object.
 - `CompliesWith` to reuse other expectations, e.g. `IsEmpty()` or a string option; a failure explains what the nested
   expectation found.
-- [`Whose`](../03-how-it-works/03-combining.md#on-members-of-the-subject) to verify a member of the object; a failure
+- [`Whose`](../02-how-it-works/03-combining.md#on-members-of-the-subject) to verify a member of the object; a failure
   names the member and its value.
 
 ## Garbage collection
@@ -199,8 +203,8 @@ WeakReference released = CreateReleasedReference();
 Album album = new("Let It Be");
 WeakReference<Album> cached = new(album);
 
-await Expect.That(released).IsCollected();
-await Expect.That(cached).IsNotCollected()
+await That(released).IsCollected();
+await That(cached).IsNotCollected()
   .Because("the album is still in use");
 GC.KeepAlive(album);
 
@@ -214,7 +218,7 @@ A strong reference that the test itself still holds keeps the target alive, e.g.
 object in `new WeakReference(new Album(…))`, which a Debug build keeps until the end of the method, even when it is no
 longer used. The example above therefore creates the released album in a separate method. For an object the test
 creates itself, use
-[`IsCollectedAfter`](../06-behaviour/01-delegates.md#memory-leaks) instead, which creates the object where no
+[`IsCollectedAfter`](../06-behavior/01-delegates.md#memory-leaks) instead, which creates the object where no
 reference to it remains.
 :::
 

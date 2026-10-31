@@ -99,7 +99,7 @@ table of `00-index.md`, and the overview table of the package README.
   reports each difference by its JSON path; `ExpectationJsonConverter` serializes
   expected values and the `It.Is...` expectations inside them, anything but JSON values by reflection behind
   `ReflectionFallback.IsSupported`; `Customize.aweXpect.Json()` with the default document and serializer options.
-- On `netstandard2.0` the `System.Text.Json` package is used, on `net8.0`/`net10.0` the framework, so behaviour can
+- On `netstandard2.0` the `System.Text.Json` package is used, on `net8.0`/`net10.0` the framework, so behavior can
   differ between target frameworks.
 
 ### aweXpect.Web
@@ -201,7 +201,7 @@ User code picks a source, navigates to a member kind, filters and expects:
 3. Awaiting the result evaluates the node tree, formats a failure message with the value formatters and reports it
    through the detected test framework adapter.
 
-The user docs describe the public side: `Docs/pages/03-how-it-works` for users, `Docs/pages/11-extending` for
+The user docs describe the public side: `Docs/pages/02-how-it-works` for users, `Docs/pages/11-extending` for
 extension authors, including generated expectations and Native AOT.
 
 ## Build settings worth knowing

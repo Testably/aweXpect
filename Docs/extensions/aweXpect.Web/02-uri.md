@@ -1,3 +1,7 @@
+---
+description: Verify the kind, port, scheme, host, path, fragment, base URI and query parameters of a Uri.
+---
+
 # URIs
 
 Describes the possible expectations for `Uri`.
@@ -24,10 +28,10 @@ You can verify what kind of URI the `Uri` is, or that it is not:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).IsAbsolute();
-await Expect.That(uri).IsNotFile();
-await Expect.That(uri).IsNotLoopback();
-await Expect.That(uri).IsNotUnc();
+await That(uri).IsAbsolute();
+await That(uri).IsNotFile();
+await That(uri).IsNotLoopback();
+await That(uri).IsNotUnc();
 ```
 
 For example, a relative URI is not absolute, so
@@ -35,7 +39,7 @@ For example, a relative URI is not absolute, so
 ```csharp
 Uri uri = new("/tracks/1", UriKind.Relative);
 
-await Expect.That(uri).IsAbsolute();
+await That(uri).IsAbsolute();
 ```
 
 fails with:
@@ -51,8 +55,8 @@ but it was /tracks/1
 You can verify that the `Uri` uses the default port of its scheme, or that it does not:
 
 ```csharp
-await Expect.That(new Uri("https://music.example.com/tracks/1")).HasDefaultPort();
-await Expect.That(new Uri("https://music.example.com:8443/tracks/1")).DoesNotHaveDefaultPort();
+await That(new Uri("https://music.example.com/tracks/1")).HasDefaultPort();
+await That(new Uri("https://music.example.com:8443/tracks/1")).DoesNotHaveDefaultPort();
 ```
 
 ## Port
@@ -62,9 +66,9 @@ You can verify the port of the `Uri`. Without an explicit port, it is the defaul
 ```csharp
 Uri uri = new("https://localhost:5001/health");
 
-await Expect.That(uri).HasPort().EqualTo(5001);
-await Expect.That(uri).HasPort().Between(5000).And(5999);
-await Expect.That(new Uri("http://localhost:4000/health")).HasPort(4000);
+await That(uri).HasPort().EqualTo(5001);
+await That(uri).HasPort().Between(5000).And(5999);
+await That(new Uri("http://localhost:4000/health")).HasPort(4000);
 ```
 
 ## Scheme
@@ -74,8 +78,8 @@ You can verify the scheme of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasScheme("https");
-await Expect.That(uri).HasScheme().NotEqualTo("http");
+await That(uri).HasScheme("https");
+await That(uri).HasScheme().NotEqualTo("http");
 ```
 
 The scheme is compared as `Uri.Scheme` returns it, which is always lower case.
@@ -87,9 +91,9 @@ You can verify the host of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasHost("music.example.com");
-await Expect.That(uri).HasHost("*.example.com").AsWildcard();
-await Expect.That(uri).HasHost().EndingWith(".example.com");
+await That(uri).HasHost("music.example.com");
+await That(uri).HasHost("*.example.com").AsWildcard();
+await That(uri).HasHost().EndingWith(".example.com");
 ```
 
 The host is compared as `Uri.Host` returns it, which is lower case for registered names.
@@ -101,20 +105,20 @@ You can verify the URL-decoded path of the `Uri`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1");
 
-await Expect.That(uri).HasPath("/tracks/1");
-await Expect.That(uri).HasPath().StartingWith("/tracks/");
-await Expect.That(new Uri("https://music.example.com/my%20song")).HasPath("/my song");
+await That(uri).HasPath("/tracks/1");
+await That(uri).HasPath().StartingWith("/tracks/");
+await That(new Uri("https://music.example.com/my%20song")).HasPath("/my song");
 ```
 
 An encoded slash (`%2F`) stays encoded, as it is part of a segment and does not separate two segments:
 
 ```csharp
-await Expect.That(new Uri("https://music.example.com/artists/AC%2FDC")).HasPath("/artists/AC%2FDC");
+await That(new Uri("https://music.example.com/artists/AC%2FDC")).HasPath("/artists/AC%2FDC");
 ```
 
 `HasScheme`, `HasHost`, `HasPath` and `HasFragment` with an expected value support the same
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings, e.g.
+[string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings, e.g.
 `IgnoringCase()` or `AsWildcard()`. Without an expected value, they offer further comparisons on the property.
 
 `Containing` on the scheme, host, path or fragment counts the occurrences like `Contains` on a string, so it also
@@ -123,8 +127,8 @@ accepts a quantifier and a match type:
 ```csharp
 Uri uri = new("https://music.example.com/albums/1/tracks/2");
 
-await Expect.That(uri).HasPath().Containing("/").Exactly(4);
-await Expect.That(uri).HasPath().Containing("tr?cks").AsWildcard().Once();
+await That(uri).HasPath().Containing("/").Exactly(4);
+await That(uri).HasPath().Containing("tr?cks").AsWildcard().Once();
 ```
 
 ## Fragment
@@ -134,8 +138,8 @@ You can verify the URL-decoded fragment of the `Uri`, without the leading `#`:
 ```csharp
 Uri uri = new("https://music.example.com/tracks/1#lyrics");
 
-await Expect.That(uri).HasFragment("lyrics");
-await Expect.That(uri).HasFragment().NotEqualTo("credits");
+await That(uri).HasFragment("lyrics");
+await That(uri).HasFragment().NotEqualTo("credits");
 ```
 
 ## Base URI
@@ -145,11 +149,11 @@ You can verify that the `Uri` is a base URI of another absolute URI, or that it 
 ```csharp
 Uri uri = new("https://music.example.com/api/");
 
-await Expect.That(uri).IsBaseOf("https://music.example.com/api/tracks/1");
-await Expect.That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks/1"));
+await That(uri).IsBaseOf("https://music.example.com/api/tracks/1");
+await That(uri).IsNotBaseOf(new Uri("https://other.example.com/api/tracks/1"));
 ```
 
-:::note
+:::warning
 Like `Uri.IsBaseOf`, only the part of the `Uri` up to its last `/` is considered, so `https://music.example.com/api`
 is also a base URI of `https://music.example.com/tracks/1`.
 :::
@@ -161,27 +165,27 @@ You can verify that the `Uri` has a query parameter, optionally with the expecte
 ```csharp
 Uri uri = new("https://music.example.com/tracks?page=2&genre=Jazz");
 
-await Expect.That(uri).HasQueryParameter("page");
-await Expect.That(uri).HasQueryParameter("page").WithValue("2");
-await Expect.That(uri).HasQueryParameter("genre").WithValue("jazz").IgnoringCase();
-await Expect.That(uri).HasQueryParameter("genre").WithValue("J*").AsWildcard();
-await Expect.That(uri).DoesNotHaveQueryParameter("token");
+await That(uri).HasQueryParameter("page");
+await That(uri).HasQueryParameter("page").WithValue("2");
+await That(uri).HasQueryParameter("genre").WithValue("jazz").IgnoringCase();
+await That(uri).HasQueryParameter("genre").WithValue("J*").AsWildcard();
+await That(uri).DoesNotHaveQueryParameter("token");
 ```
 
 Names and values are URL-decoded, and names are compared case-sensitively. `WithValue` supports the same
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) and
-[match types](https://docs.testably.org/aweXpect/values/string#match-types) as comparing strings and requires the query
+[string options](/aweXpect/values/string#string-options) and
+[match types](/aweXpect/values/string#match-types) as comparing strings and requires the query
 parameter to occur exactly once. A query parameter that occurs several times can be verified with `WithValues`, which
 compares the values in the order in which they appear in the URI, unless `InAnyOrder()` is specified. It supports the
-same options as comparing [string collections](https://docs.testably.org/aweXpect/collections/equality#equality).
+same options as comparing [string collections](/aweXpect/collections/equality#equality).
 
 You can also add expectations on the value or on all values of the query parameter:
 
 ```csharp
 Uri uri = new("https://music.example.com/tracks?tag=live&tag=remastered");
 
-await Expect.That(uri).HasQueryParameter("tag").WithValues("live", "remastered");
-await Expect.That(uri).HasQueryParameter("tag")
+await That(uri).HasQueryParameter("tag").WithValues("live", "remastered");
+await That(uri).HasQueryParameter("tag")
     .WhoseValues(values => values.Contains("live"));
 ```
 

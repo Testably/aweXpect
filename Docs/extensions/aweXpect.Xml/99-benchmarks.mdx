@@ -1,5 +1,6 @@
 ---
 title: Benchmarks
+description: Benchmarks of passing aweXpect.Xml expectations compared with the equivalent FluentAssertions calls.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +10,7 @@ import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare the happy-path overhead of aweXpect.Xml (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
 
-:::info[Methodology]
+:::note[Methodology]
 
 - **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Xml.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
 - **Job**: `MediumRun` with the in-process toolchain.
@@ -31,7 +32,7 @@ FluentAssertions parses both strings into an `XDocument`.
 <BenchmarkResult package="aweXpect.Xml" name="XmlString" />
 
 ```csharp title="aweXpect"
-await Expect.That(_xmlSubject).IsEqualTo(_xmlExpectation).AsXml();
+await That(_xmlSubject).IsEqualTo(_xmlExpectation).AsXml();
 ```
 
 ```csharp title="FluentAssertions"
@@ -50,7 +51,7 @@ FluentAssertions parses the expected XML into an `XElement`.
 <BenchmarkResult package="aweXpect.Xml" name="ElementMatches" />
 
 ```csharp title="aweXpect"
-await Expect.That(_xmlElement).MatchesExactly(_xmlExpectation);
+await That(_xmlElement).MatchesExactly(_xmlExpectation);
 ```
 
 ```csharp title="FluentAssertions"
@@ -69,7 +70,7 @@ FluentAssertions has no XML equivalency that ignores the element order, so it on
 <BenchmarkResult package="aweXpect.Xml" name="ElementOrder" />
 
 ```csharp title="aweXpect"
-await Expect.That(_order).MatchesExactly(_reversedOrder, o => o.IgnoringElementOrder());
+await That(_order).MatchesExactly(_reversedOrder, o => o.IgnoringElementOrder());
 ```
 
 ```csharp title="FluentAssertions"
@@ -88,7 +89,7 @@ Verifies that an `XElement` has an attribute with the expected value.
 <BenchmarkResult package="aweXpect.Xml" name="Attribute" />
 
 ```csharp title="aweXpect"
-await Expect.That(_xmlElement).HasAttribute("title", it => it.IsEqualTo("Let It Be"));
+await That(_xmlElement).HasAttribute("title", it => it.IsEqualTo("Let It Be"));
 ```
 
 ```csharp title="FluentAssertions"

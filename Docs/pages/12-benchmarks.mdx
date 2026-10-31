@@ -1,5 +1,6 @@
 ---
 title: Benchmarks
+description: Benchmarks that compare the overhead of passing aweXpect expectations with the equivalent FluentAssertions and TUnit assertions.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +10,7 @@ import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare aweXpect's happy-path overhead (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) and [TUnit](https://tunit.dev/) calls.
 
-:::info[Methodology]
+:::note[Methodology]
 
 - **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
 - **Job**: `MediumRun` with the in-process toolchain.
@@ -29,7 +30,7 @@ Verifies that two `string` values are equal, ignoring case.
 <BenchmarkResult name="String" />
 
 ```csharp title="aweXpect"
-await Expect.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
+await That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -51,7 +52,7 @@ Verifies that an `int` subject is greater than a minimum.
 <BenchmarkResult name="Int_GreaterThan" />
 
 ```csharp title="aweXpect"
-await Expect.That(_intSubject).IsGreaterThan(_intMinimum);
+await That(_intSubject).IsGreaterThan(_intMinimum);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -73,7 +74,7 @@ Verifies that two albums are structurally equivalent, including their artist and
 <BenchmarkResult name="Equivalency" />
 
 ```csharp title="aweXpect"
-await Expect.That(_albumSubject).IsEquivalentTo(_albumExpectation);
+await That(_albumSubject).IsEquivalentTo(_albumExpectation);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -95,7 +96,7 @@ Verifies that an `int[]` has at least the expected number of items (1,000 items 
 <BenchmarkResult name="ItemsCount_AtLeast" />
 
 ```csharp title="aweXpect"
-await Expect.That(_enumerableSubject).HasCount().GreaterThanOrEqualTo(_enumerableCount);
+await That(_enumerableSubject).HasCount().GreaterThanOrEqualTo(_enumerableCount);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -117,7 +118,7 @@ Verifies that a `List<string>` of 17 track titles contains the expected title.
 <BenchmarkResult name="Contains" />
 
 ```csharp title="aweXpect"
-await Expect.That(_containsSubject).Contains(_containsExpected);
+await That(_containsSubject).Contains(_containsExpected);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -144,9 +145,9 @@ Verifies that two three-element `string` arrays contain the same values regardle
 <BenchmarkResult name="StringArrayInAnyOrder" />
 
 ```csharp title="aweXpect"
-await Expect.That(_stringArraySubject).IsEqualTo(_stringArrayExpectation);
+await That(_stringArraySubject).IsEqualTo(_stringArrayExpectation);
 // In any order
-await Expect.That(_stringArrayAnyOrderSubject)
+await That(_stringArrayAnyOrderSubject)
     .IsEqualTo(_stringArrayAnyOrderExpectation).InAnyOrder();
 ```
 
@@ -178,7 +179,7 @@ FluentAssertions' `Match` takes an expression tree and compiles it on every call
 <BenchmarkResult name="Satisfies" />
 
 ```csharp title="aweXpect"
-await Expect.That(_satisfiesSubject).Satisfies(x => x > 0);
+await That(_satisfiesSubject).Satisfies(x => x > 0);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -206,9 +207,9 @@ Verifies the same for an asynchronous delegate.
 <BenchmarkResult name="ThrowsAsync" />
 
 ```csharp title="aweXpect"
-await Expect.That(_throwsSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+await That(_throwsSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
 // Asynchronous
-await Expect.That(_throwsAsyncSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
+await That(_throwsAsyncSubject).Throws<InvalidOperationException>().WithMessage(_throwsMessage);
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -237,9 +238,9 @@ Verifies three properties of an album at once, so that all failures would be rep
 
 ```csharp title="aweXpect"
 await Expect.ThatAll(
-    Expect.That(_multipleSubject.Title).IsEqualTo("Abbey Road"),
-    Expect.That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles"),
-    Expect.That(_multipleSubject.Genre).IsEqualTo(Genre.Rock));
+    That(_multipleSubject.Title).IsEqualTo("Abbey Road"),
+    That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles"),
+    That(_multipleSubject.Genre).IsEqualTo(Genre.Rock));
 ```
 
 ```csharp no-compile title="FluentAssertions"
@@ -278,7 +279,7 @@ using aweXpect.Recording;
 Player player = new();
 IEventRecording<Player> recording = player.Record().Events();
 player.Play();
-await Expect.That(recording).Triggered(nameof(Player.Started));
+await That(recording).Triggered(nameof(Player.Started));
 ```
 
 ```csharp no-compile title="FluentAssertions"

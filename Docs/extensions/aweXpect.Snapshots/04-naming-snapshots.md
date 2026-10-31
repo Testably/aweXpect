@@ -1,3 +1,7 @@
+---
+description: Name snapshots per test case, per argument or per environment, and nest them under their test file in the IDE.
+---
+
 # Naming snapshots
 
 The cases of a parameterized test share the name of the test method, so give each case its own snapshot with
@@ -11,7 +15,7 @@ public async Task Describes(string title)
 {
     string description = Describe(new Album(title));
 
-    await Expect.That(description).MatchesSnapshot().Named(title);
+    await That(description).MatchesSnapshot().Named(title);
 }
 ```
 
@@ -75,7 +79,7 @@ public async Task Describes(string title, int year)
 {
     string description = Describe(new Album(title, year));
 
-    await Expect.That(description).MatchesSnapshot().NamedAfter(title, year);
+    await That(description).MatchesSnapshot().NamedAfter(title, year);
 }
 ```
 
@@ -118,7 +122,7 @@ public async Task Describes(string title, int year)
 {
     string description = Describe(new Album(title, year));
 
-    await Expect.That(description).MatchesSnapshot();
+    await That(description).MatchesSnapshot();
 }
 ```
 
@@ -151,7 +155,7 @@ name holds the exception like a snapshot would.
 </details>
 
 The running test is only known when the test framework exposes it, see
-[the running test](https://docs.testably.org/aweXpect/setup/test-frameworks#the-running-test) for the
+[the running test](/aweXpect/setup/test-frameworks#the-running-test) for the
 supported test frameworks.
 
 MSTest 4 marks `TestContext.Current` as experimental, so it is only used when the test project opts in, which also
@@ -171,7 +175,7 @@ Some output legitimately differs between environments, e.g. an exception message
 path on Windows and Linux. Keep a snapshot for each of them with `.UniqueFor`, and combine several by repeating it:
 
 ```csharp
-await Expect.That(exception.Message).MatchesSnapshot()
+await That(exception.Message).MatchesSnapshot()
     .UniqueFor.TargetFramework()
     .UniqueFor.OperatingSystem();
 ```
@@ -189,7 +193,7 @@ The environment is appended to the file names after an `@`, e.g.
 The values always keep this order, whatever the order of the calls. A missing snapshot of the environment fails like
 any other missing snapshot; it does not fall back to the snapshot that every environment shares.
 
-A [custom store](advanced/01-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
+A [custom store](08-advanced/01-storing-snapshots.md) receives the environment as `SnapshotId.Variant`, e.g. `net8.0@windows`.
 
 <details>
 <summary>How the environment is determined</summary>

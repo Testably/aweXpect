@@ -1,3 +1,7 @@
+---
+description: Verify that a `char` equals an expected character or belongs to a category such as letter, digit or whitespace.
+---
+
 # Char
 
 Describes the possible expectations for `char` values.
@@ -17,7 +21,7 @@ Describes the possible expectations for `char` values.
 | [`IsAControlCharacter`](#categories) | `IsNotAControlCharacter` | a control character                     |
 | [`IsWhiteSpace`](#categories)        | `IsNotWhiteSpace`        | whitespace                              |
 
-:::note[.NET 8 or later]
+:::info[.NET 8 or later]
 On .NET 8 or later `char` is an `INumber<char>`, so the ordering expectations, `IsBetween`, `IsPositive` and
 `IsNegative` of the [number expectations](./02-number.md) also accept a `char`. Below .NET 8 they are not available
 for `char`.
@@ -30,9 +34,9 @@ You can verify that the `char` is equal to another one or not:
 ```csharp
 char initial = 'a';
 
-await Expect.That(initial).IsEqualTo('a');
-await Expect.That(initial).IsNotEqualTo('b');
-await Expect.That(initial).IsEqualTo('A').IgnoringCase();
+await That(initial).IsEqualTo('a');
+await That(initial).IsNotEqualTo('b');
+await That(initial).IsEqualTo('A').IgnoringCase();
 ```
 
 ## One of
@@ -42,9 +46,9 @@ You can verify that the `char` is one of many alternatives:
 ```csharp
 char initial = 'a';
 
-await Expect.That(initial).IsOneOf('a', 'b', 'c');
-await Expect.That(initial).IsNotOneOf('x', 'y', 'z');
-await Expect.That(initial).IsOneOf('A', 'B', 'C').IgnoringCase();
+await That(initial).IsOneOf('a', 'b', 'c');
+await That(initial).IsNotOneOf('x', 'y', 'z');
+await That(initial).IsOneOf('A', 'B', 'C').IgnoringCase();
 ```
 
 ## Categories
@@ -52,13 +56,13 @@ await Expect.That(initial).IsOneOf('A', 'B', 'C').IgnoringCase();
 You can verify the category of the `char`, or that it does not belong to it:
 
 ```csharp
-await Expect.That('a').IsAnAsciiLetter();
-await Expect.That('乐').IsALetter();
-await Expect.That('3').IsADigit();
-await Expect.That('½').IsANumber().And.IsNotADigit();
-await Expect.That('A').IsUpperCased();
-await Expect.That('\t').IsWhiteSpace().And.IsAControlCharacter();
-await Expect.That(' ').IsNotAControlCharacter();
+await That('a').IsAnAsciiLetter();
+await That('乐').IsALetter();
+await That('3').IsADigit();
+await That('½').IsANumber().And.IsNotADigit();
+await That('A').IsUpperCased();
+await That('\t').IsWhiteSpace().And.IsAControlCharacter();
+await That(' ').IsNotAControlCharacter();
 ```
 
 Each expectation follows the corresponding method of `char`:

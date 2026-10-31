@@ -1,3 +1,7 @@
+---
+description: Compare strings as JSON by their structure and verify that a string is valid JSON.
+---
+
 # JSON strings
 
 Describes the possible expectations for strings that contain JSON.
@@ -23,7 +27,7 @@ string expected = """
                   }
                   """;
 
-await Expect.That(track).IsEqualTo(expected).AsJson();
+await That(track).IsEqualTo(expected).AsJson();
 ```
 
 If the track had a duration of 241 seconds instead, the expectation would fail with:
@@ -49,7 +53,7 @@ Expected:
 ```
 
 As JSON is compared by its structure, `AsJson()` cannot be combined with the
-[string options](https://docs.testably.org/aweXpect/values/string#string-options) `IgnoringCase()` or
+[string options](/aweXpect/values/string#string-options) `IgnoringCase()` or
 `Using(comparer)`. Instead, `AsJson(o => …)` accepts the [JSON options](./02-matching.md#options) to relax the
 comparison.
 
@@ -66,7 +70,7 @@ You can verify that a string is valid JSON:
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson();
+await That(track).IsValidJson();
 ```
 
 If the closing brace was missing, the expectation would fail with:
@@ -87,7 +91,7 @@ compare:
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson(
+await That(track).IsValidJson(
     o => o.WithDocumentOptions(d => d with { CommentHandling = JsonCommentHandling.Disallow }));
 ```
 
@@ -96,7 +100,7 @@ You can also verify that a string is not valid JSON:
 ```csharp
 string track = "Let It Be";
 
-await Expect.That(track).IsNotValidJson();
+await That(track).IsNotValidJson();
 ```
 
 The `JsonDocumentOptions` are available here as well, e.g. to reject a trailing comma, which is allowed by default:
@@ -104,7 +108,7 @@ The `JsonDocumentOptions` are available here as well, e.g. to reject a trailing 
 ```csharp
 string track = """{"title": "Let It Be",}""";
 
-await Expect.That(track).IsNotValidJson(
+await That(track).IsNotValidJson(
     o => o.WithDocumentOptions(d => d with { AllowTrailingCommas = false }));
 ```
 
@@ -123,8 +127,8 @@ optionally followed by the document options:
 ```csharp
 string track = """{"title": "Let It Be"}""";
 
-await Expect.That(track).IsValidJson(j => j.Matches(new { title = "Let It Be" }));
-await Expect.That(track).IsValidJson(j => j.IsObject(),
+await That(track).IsValidJson(j => j.Matches(new { title = "Let It Be" }));
+await That(track).IsValidJson(j => j.IsObject(),
     o => o.WithDocumentOptions(d => d with { AllowTrailingCommas = true }));
 ```
 
@@ -133,9 +137,9 @@ Or you can verify that the string is valid JSON and [matches](./02-matching.md) 
 ```csharp
 string track = """{"title": "Let It Be", "artist": "The Beatles"}""";
 
-await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" });
-await Expect.That(track).IsValidJsonMatchingExactly(new { title = "Let It Be", artist = "The Beatles" });
-await Expect.That(track).IsValidJsonMatching("""{"title": "Let It Be"}""");
+await That(track).IsValidJsonMatching(new { title = "Let It Be" });
+await That(track).IsValidJsonMatchingExactly(new { title = "Let It Be", artist = "The Beatles" });
+await That(track).IsValidJsonMatching("""{"title": "Let It Be"}""");
 ```
 
 An expected `string` is [JSON text](./02-matching.md#expected-json), like in `Matches`.

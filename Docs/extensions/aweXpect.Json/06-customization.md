@@ -1,9 +1,13 @@
+---
+description: Change the default JsonDocumentOptions and JsonSerializerOptions that aweXpect.Json uses to parse, format and serialize JSON.
+---
+
 # Customization
 
 Set a value under `Customize.aweXpect.Json()` for the current
-[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+[async flow](/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
 `Customize.aweXpect.Global.Json()` for
-[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[all tests](/aweXpect/how-it-works/configuration#global-defaults).
 
 | Value                          | Default                      | Summary                                                                                                                                                                         |
 |--------------------------------|------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -31,6 +35,6 @@ To use other `JsonDocumentOptions` for a single expectation, pass them with `Wit
 ```csharp
 string track = """{"title": "Let It Be", /* 1970 */ "artist": "The Beatles"}""";
 
-await Expect.That(track).IsValidJsonMatching(new { title = "Let It Be" },
+await That(track).IsValidJsonMatching(new { title = "Let It Be" },
     o => o.WithDocumentOptions(d => d with { CommentHandling = JsonCommentHandling.Skip }));
 ```

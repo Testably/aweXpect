@@ -1,5 +1,5 @@
-// The usings of a test project with implicit usings and the `using aweXpect;` from "Getting started". Every other
-// namespace has to be shown on the page, as a reader could not guess it.
+// The usings of a test project with implicit usings and the `using aweXpect;` and `using static aweXpect.Expect;` from
+// "Getting started". Every other namespace has to be shown on the page, as a reader could not guess it.
 global using System;
 global using System.Collections.Generic;
 global using System.IO;
@@ -9,6 +9,7 @@ global using System.Threading;
 global using System.Threading.Tasks;
 global using aweXpect;
 global using Scaffold;
+global using static aweXpect.Expect;
 
 namespace Scaffold;
 

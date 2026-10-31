@@ -1,3 +1,7 @@
+---
+description: Write expectations on collections and their items that read the subject only once and use the quantifiers of aweXpect.
+---
+
 # Collections
 
 An expectation on a collection reads the subject only once, also together with other expectations, and can verify its
@@ -68,7 +72,7 @@ private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGram
 }
 ```
 
-`await Expect.That(tracks).IsNotEmpty().And.HasRadioFriendlyTracks(3)` then enumerates `tracks` only once.
+`await That(tracks).IsNotEmpty().And.HasRadioFriendlyTracks(3)` then enumerates `tracks` only once.
 
 For an `IAsyncEnumerable<T>`, implement `IAsyncContextConstraint<T>` and call `UseMaterializedAsyncEnumerable` with its
 `CancellationToken`.
@@ -134,7 +138,7 @@ private sealed class AreRadioFriendlyConstraint(
 ```csharp
 Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
 
-await Expect.That(tracks).All().AreRadioFriendly();
+await That(tracks).All().AreRadioFriendly();
 ```
 
 - `StartEvaluation` forgets the items of an earlier evaluation, as the constraint is evaluated again, e.g. by
@@ -165,9 +169,7 @@ context.
 - Overload resolution prefers an expectation on `IEnumerableItems<string?>` over one on `IEnumerableItems<TItem>`.
 - Call `CompleteEarly()` instead of `Complete()` as soon as `IsDetermined`, to stop reading the items once they
   decide the outcome.
-- When the items are verified by nested expectations, record the result of each item with `Record(item, itemResult)`,
-  so that the contexts of the item that explains the failure are shown as well, labelled with its index, e.g.
-  `Actual (item [2]):`.
+- When the items are verified by nested expectations, record the result of each item with `Record(item, itemResult)`, so that the contexts of the item that explains the failure are shown as well, labeled with its index, e.g. `Actual (item [2]):`.
 - An item result with `Outcome.FailureBothWays` is neither matching nor not matching, e.g. because the nested
   expectations threw. Like the built-in `ComplyWith`, `Record(item, itemResult)` stops at such an item and fails with
   its result and the contexts of the item, also when negated. An item result with `Outcome.Undecided`, e.g. after a
@@ -255,7 +257,7 @@ private sealed class AreTracksThatConstraint
 ```csharp
 Track[] playlist = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
 
-await Expect.That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
+await That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
 ```
 
 - `PrepareExpectation` writes the text of the nested expectations without evaluating them, so that it is complete
@@ -367,7 +369,7 @@ private sealed class HasTitlesConstraint(
 }
 ```
 
-`await Expect.That(tracks).HasTitles("Intro", "Outro").InAnyOrder()` then fails with e.g.
+`await That(tracks).HasTitles("Intro", "Outro").InAnyOrder()` then fails with e.g.
 `but it contained item "Bonus" at index 1 that was not expected`.
 
 Validate every expected item with `ValidateExpected(item, nameof(expected))` of the options before you look at the

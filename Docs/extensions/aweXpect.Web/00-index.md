@@ -1,9 +1,12 @@
+---
+description: Verify HttpRequestMessage, HttpResponseMessage, Uri and IPAddress values with aweXpect.
+---
+
 import PackageInstall from '@site/src/components/PackageInstall';
 
 # aweXpect.Web
 
-[aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) contains expectations for `HttpRequestMessage`,
-`HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
+[aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) extends [aweXpect](/aweXpect) with expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
 
 ## Installation
 
@@ -13,20 +16,22 @@ The package brings `Expect.That` with it, but not the expectations for strings, 
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`, so
 `using aweXpect;` is all you need; only the [customization](./04-customization.md) lives in `aweXpect.Web`.
 
+The examples write `That(...)` instead of `Expect.That(...)`, which needs `using static aweXpect.Expect;` (see [Getting started](/aweXpect/getting-started#install-the-package)).
+
 ## At a glance
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 // verify the status code, either the exact value or its category
-await Expect.That(response).HasStatusCode().Success();
+await That(response).HasStatusCode().Success();
 
 // verify the media type and the headers of the response
-await Expect.That(response).HasContentType("application/json");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await That(response).HasContentType("application/json");
+await That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
 
 // verify the content of the response
-await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
+await That(response).HasContent("*Let It Be*").AsWildcard();
 ```
 
 A failing expectation on a request or response includes the formatted HTTP request and response. If the test server
@@ -105,9 +110,9 @@ Expectations for [`IPAddress`](./03-ip-address.md):
 ## Customization
 
 Set a value under `Customize.aweXpect.Web()` for the current
-[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+[async flow](/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
 `Customize.aweXpect.Global.Web()` for
-[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[all tests](/aweXpect/how-it-works/configuration#global-defaults).
 
 | Value                                                           | Default                                                                    | Summary                                                          |
 |-----------------------------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------------|

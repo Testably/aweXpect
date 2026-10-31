@@ -1,3 +1,7 @@
+---
+description: Write the expectation and result texts of a constraint so that its failure message reads like those of the built-in expectations.
+---
+
 # Message conventions
 
 A failure message of aweXpect reads like one English sentence. The built-in expectations follow the conventions on
@@ -30,7 +34,7 @@ but <result>
 Your constraint only writes its expectation text in `AppendNormalExpectation` and `AppendNegatedExpectation`, and its
 result text in `AppendNormalResult` and `AppendNegatedResult` (`AppendExpectation` and `AppendResult` when it derives
 from `ConstraintResult` directly); the rest is added around them. For the `IsRadioFriendly` expectation from
-[your first expectation](./index.md#the-constraint), `await Expect.That(track).IsRadioFriendly()` fails for
+[your first expectation](./00-index.md#the-constraint), `await That(track).IsRadioFriendly()` fails for
 "Hey Jude" with:
 
 ```text title="Failure message"
@@ -81,7 +85,7 @@ public static AndOrResult<Track, IThat<Track?>> HasTitleMatching(
 
 For `HasTitleMatching(title => title.StartsWith("Let"))`, the expectation text can then read
 `has a title matching title => title.StartsWith("Let")`. On `netstandard2.0` and `net48`, declare the attribute in your
-own package, see [polyfills for older targets](./index.md#polyfills-for-older-targets).
+own package, see [polyfills for older targets](./00-index.md#polyfills-for-older-targets).
 
 ## Result text
 
@@ -134,7 +138,7 @@ Name the expectation methods like the built-in ones, so that the whole chain rea
 
 `With…` continues the sentence of the previous expectation, "throws a `CustomException` with message …", while `Has…`
 starts a new sentence about the subject. Offer both when your subject can appear in both positions, like the
-[exception expectations](../06-behaviour/01-delegates.md#exception-details) do.
+[exception expectations](../06-behavior/01-delegates.md#exception-details) do.
 
 ## Grammar
 
@@ -248,10 +252,8 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
 <details>
 <summary>Labels, order and duplicates of contexts</summary>
 
-- A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are
-  shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
-- The contexts of `AddSubjectContexts` precede those of the expectations and are labelled with the member or item when
-  added for one.
+- A context of a member is labeled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
+- The contexts of `AddSubjectContexts` precede those of the expectations and are labeled with the member or item when added for one.
 
 </details>
 

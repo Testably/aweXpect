@@ -74,6 +74,18 @@ Correctness is a must. The other goals are strong defaults and win in this order
 - `Docs/pages/10-migration/04-from-awexpect-3.md` is the changelog of the upcoming v4: touch it only for important
   changes. The full list of changes is in the GitHub releases.
 
+## Documentation
+
+Pages under `Docs/pages` are published on docs.testably.org and follow the [docs style guide](https://github.com/Testably/Testably.Site/blob/main/Docs/style-guide.md). The key rules:
+
+- US English, sentence case for headings and labels, no em dashes, one line per paragraph.
+- A `description` in the front matter of every page; the H1 is the title; order with unique `NN-` prefixes.
+- Relative file links within the repository, site-absolute `/Library/...` links across libraries.
+- Install instructions only through `<PackageInstall package="..." />`, never hand-written commands or NuGet badges.
+- Examples check results with `await That(...)`; complete examples use TUnit `[Test]`.
+
+The same rules apply to the extension docs in `Docs/extensions/<Package>`. The repository-specific rules are in [documentation](Docs/agents/documentation.md).
+
 ## Git Workflow
 
 - Work on a branch; PRs target `main` and are squash-merged.

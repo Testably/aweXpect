@@ -1,3 +1,7 @@
+---
+description: Write the constraints and results of an expectation, and handle negation, null subjects, code of the caller and side effects.
+---
+
 # Constraints and results
 
 A constraint decides whether the subject meets the expectation, and its result writes the failure message. This page
@@ -129,7 +133,7 @@ inherited `It` property. You set the `Actual` property in the `IsMetBy` method a
 override `AppendNegatedResult` when it differs, e.g. "it was" for a negated "it was not". `WithEqualToValue<T>`
 additionally takes a flag indicating if the expected value is `null`.
 
-The `IsRadioFriendlyConstraint` of [your first expectation](./index.md#the-constraint) derives from
+The `IsRadioFriendlyConstraint` of [your first expectation](./00-index.md#the-constraint) derives from
 `ConstraintResult.WithNotNullValue<Track>`, as it inspects the subject.
 
 The helper classes let `.And` combine the result texts like the built-in expectations, e.g. "it was 2 and was not
@@ -214,7 +218,7 @@ can share one implementation.
 ## `null` subjects
 
 Which of the three helper classes to pick is decided by how your expectation treats a `null` subject, and that follows
-the rule that all built-in expectations follow (see [`null` subjects](../03-how-it-works/04-null-subjects.md)):
+the rule that all built-in expectations follow (see [`null` subjects](../02-how-it-works/04-null-subjects.md)):
 
 > A `null` subject fails an expectation **and its negation**, unless the expectation is *about* `null`: equality and
 > identity comparisons, where `null` is a legitimate value on either side, or an explicit `null` or tri-state check.
@@ -249,7 +253,7 @@ public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track
 Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("Hey Jude", new TimeSpan(0, 7, 11))];
 Track? track = tracks.FirstOrDefault(t => t.Title == "Love Me Do");
 
-await Expect.That(track).IsRadioFriendly();
+await That(track).IsRadioFriendly();
 string title = track.Title;   // no CS8602
 ```
 
@@ -260,7 +264,7 @@ string title = track.Title;   // no CS8602
 <details>
 <summary>Expectations combined with And</summary>
 
-An expectation of your package before `.And`, as in `Expect.That(track).IsRadioFriendly().And.IsNotNull()`, keeps
+An expectation of your package before `.And`, as in `That(track).IsRadioFriendly().And.IsNotNull()`, keeps
 the subject for the suppressor only when it returns an aweXpect result for the same `IThat<TSubject>`, such as
 `AndOrResult<Track, IThat<Track?>>`. An expectation that returns an `IThat<…>` itself could continue with a different
 subject, so the suppressor ignores the expectations after it.
@@ -310,8 +314,8 @@ public static AndOrWhoseResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<
 ```csharp
 Track track = new("Love Me Do", new TimeSpan(0, 2, 22));
 
-Track verifiedTrack = await Expect.That(track).IsRadioFriendly();
-await Expect.That(track).IsRadioFriendly().Whose(t => t.Title, title => title.StartsWith("Love"));
+Track verifiedTrack = await That(track).IsRadioFriendly();
+await That(track).IsRadioFriendly().Whose(t => t.Title, title => title.StartsWith("Love"));
 ```
 
 Both ask the `TryGetStoredValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows
