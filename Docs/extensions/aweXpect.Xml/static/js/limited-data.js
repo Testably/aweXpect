@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
-        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
-      },
-      {
         "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
-      "031fdf5a",
       "67f30838",
       "2e0f7001",
       "fa3e0676",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          892.7094680241177,
           558.5206277211507,
           914.548518385206,
           821.276523844401,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           504.7907067812406,
           917.3057902654012,
           861.8566033681234,
-          667.2320489149827
+          667.2320489149827,
+          907.5946220670428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -421,7 +421,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           992,
-          992,
+          1000,
           1000,
           1000,
           1000,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          687.0703350067139,
           574.5839573996408,
           752.0956639562335,
           677.9159244390635,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           377.20840311050415,
           670.1001125063215,
           714.4398557799203,
-          572.7906340916951
+          572.7906340916951,
+          766.6624048233032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
-        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
-      },
-      {
         "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
-      "031fdf5a",
       "67f30838",
       "2e0f7001",
       "fa3e0676",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4105.226925986154,
           3322.3321614583333,
           4719.634000651042,
           4364.461219787598,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2558.492292022705,
           4631.441408793132,
           4711.3687700907385,
-          3689.9089693341934
+          3689.9089693341934,
+          4835.7995681762695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24172,
           24172,
           24179,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24178,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          4752.00021307809,
           3923.565017191569,
           5541.623286655971,
           4863.353251902262,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2975.5239603678388,
           5488.802982036884,
           5387.971369607108,
-          4330.015371704101
+          4330.015371704101,
+          5634.666832478842
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
-        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
-      },
-      {
         "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
-      "031fdf5a",
       "67f30838",
       "2e0f7001",
       "fa3e0676",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2350.903139659337,
           1950.4946624210902,
           2629.016909154256,
           2367.8149983542307,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1431.9391370920034,
           2700.985052255484,
           2688.6929582449106,
-          2058.9700945536297
+          2058.9700945536297,
+          2758.926366551717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3239.4659388405935,
           2665.141414097377,
           3840.422245319073,
           3378.5948941548663,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1941.0246748606364,
           3614.8289435250417,
           3545.803071158273,
-          3137.841963704427
+          3137.841963704427,
+          3815.3494384765627
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
-        "message": "fix: let WithExtension accept the nullable public API snapshot result (#2110)"
-      },
-      {
         "sha": "67f3083889edf9f648841e1a1483eb9bdf9350b7",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:10:26 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
-      "031fdf5a",
       "67f30838",
       "2e0f7001",
       "fa3e0676",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13121.56071879069,
           10673.236022949219,
           14267.907149251301,
           13138.657448323567,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           8019.793644714356,
           14053.747954305012,
           13927.98225402832,
-          10995.32057647705
+          10995.32057647705,
+          14545.04730122884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          339471.9620535714,
           212926.37643229167,
           371167.7600097656,
           313904.3671123798,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           177179.9223069411,
           352748.73580729164,
           354714.6819986979,
-          268227.60616629466
+          268227.60616629466,
+          369927.8440755208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544178,
           544335,
           544335,
@@ -2412,6 +2411,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
