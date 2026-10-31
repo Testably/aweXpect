@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
-      {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          665.8043145452227,
           489.17134523391724,
           361.46874226842607,
           471.9661470193129,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           552.614621775491,
           770.7110981941223,
           384.180914915525,
-          725.7445904413859
+          725.7445904413859,
+          560.7393560409546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -463,7 +463,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          924.3699908574422,
           705.753936735789,
           565.8328073501586,
           673.0239182880947,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           717.0983342023997,
           904.8095755577087,
           501.9766009648641,
-          897.1942377090454
+          897.1942377090454,
+          714.7967620213826
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
-      {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          104.73018941708973,
           81.86474782625834,
           55.606783477465314,
           75.52585469086965,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           83.97100240843636,
           104.56257317066192,
           53.590232861042026,
-          109.51574362913767
+          109.51574362913767,
+          77.78046677793775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          208.81318254470824,
           181.1204728603363,
           130.05307965278627,
           164.1125558955329,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           171.0443529287974,
           219.4349618434906,
           115.39437232017517,
-          218.39089543024699
+          218.39089543024699,
+          181.86828998156957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
-      {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1765.0012737001691,
           1453.3621735890706,
           1017.8286776224772,
           1317.1193975721087,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1471.1995496016282,
           1979.6595008850097,
           892.7863743464152,
-          1832.5698679606119
+          1832.5698679606119,
+          1434.892518043518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1502.0768995920816,
           1148.5390441258749,
           892.7940050271841,
           1094.368562189738,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1123.946912574768,
           1465.9015368052892,
           815.8806222506931,
-          1499.2612303415933
+          1499.2612303415933,
+          1125.9191636403402
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1953,
           1864,
           1953,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
       {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2652.938941683088,
           2166.4732570648193,
           1467.018680826823,
           1972.9525594075521,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2208.6736496516637,
           2812.92995100755,
           1325.1516489982605,
-          2765.8167552948
+          2765.8167552948,
+          2130.497166188558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3889.462844848633,
           3021.682448523385,
           2300.1148891448975,
           2887.1890877314977,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3031.7917643955775,
           3766.969778060913,
           2075.3448956807456,
-          3803.814111836751
+          3803.814111836751,
+          2896.033583958944
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3980,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
       {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          390.14111406462536,
           281.0942595163981,
           209.41956946055095,
           270.1991069657462,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           292.3046090262277,
           402.91261996541704,
           175.2198028564453,
-          371.5550953865051
+          371.5550953865051,
+          293.29018182754515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2314.8307098388673,
           1778.823710123698,
           1349.8916042872838,
           1694.614646911621,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1780.2406706492106,
           2266.2388960031362,
           1189.1704606374105,
-          2196.424045054118
+          2196.424045054118,
+          1734.5289728800456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
-        "message": "chore: create the options holder of an expectation only when an option is set (#2078)"
-      },
-      {
         "sha": "031fdf5a95f0ddf531175e2c6bcc42dc64381ae8",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:09:28 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
         "message": "docs: apply the docs style guide (#2156)"
+      },
+      {
+        "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
+        "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
       }
     ],
     "labels": [
-      "fc7e1e8a",
       "031fdf5a",
       "67f30838",
       "2e0f7001",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e6330bec",
       "30129fc0",
       "25a97e74",
-      "6c756140"
+      "6c756140",
+      "99f75dcf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2880.7348442077637,
           2257.7525494893393,
           1633.9910162517003,
           2108.3679370880127,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2306.111449940999,
           2999.0701011657716,
           1519.2746583302817,
-          2792.1555371602376
+          2792.1555371602376,
+          2324.3229949951174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3474,7 +3474,6 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
           3248,
           3248,
           3248,
@@ -3504,6 +3503,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279200.60117885045,
           239771.20134626116,
           179446.46763102213,
           239539.34803989955,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           244669.46079799108,
           277636.3323505108,
           175747.20673828124,
-          276216.8623422476
+          276216.8623422476,
+          236968.19789341517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17576,
           17576,
           17577,
@@ -3634,6 +3633,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
