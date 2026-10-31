@@ -135,9 +135,86 @@ jobs:
                     path: |
                         ./Artifacts/*
 
+    mutation-tests-extensions:
+        name: "Mutation tests (${{ matrix.target }}${{ matrix.slice && format(', {0}', matrix.slice) || '' }})"
+        needs: [ changes ]
+        if: needs.changes.outputs.changed == 'true'
+        runs-on: ubuntu-latest
+        timeout-minutes: 120
+        # One job per extension package; only `aweXpect.Reflection` is large enough to need slices.
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    -   target: MutationTestsJson
+                    -   target: MutationTestsSnapshots
+                    -   target: MutationTestsWeb
+                    -   target: MutationTestsXml
+                    -   target: MutationTestsReflection
+                        slice: types-plural
+                    -   target: MutationTestsReflection
+                        slice: types
+                    -   target: MutationTestsReflection
+                        slice: methods
+                    -   target: MutationTestsReflection
+                        slice: properties-fields
+                    -   target: MutationTestsReflection
+                        slice: constructors-events
+                    -   target: MutationTestsReflection
+                        slice: assemblies-members
+                    -   target: MutationTestsReflection
+                        slice: filters
+                    -   target: MutationTestsReflection
+                        slice: helpers
+                    -   target: MutationTestsReflection
+                        slice: rest
+        env:
+            STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+            DOTNET_NOLOGO: true
+            # A mutant that allocates without bound otherwise exhausts the runner and takes the whole VM with it,
+            # which surfaces as an unattributable "the runner has received a shutdown signal". It reaches only the
+            # test host, through `RuntimeHostConfigurationOption` in the test projects, because the environment
+            # variable that would do the same overrides it everywhere - including in the compiler, which needs far
+            # more memory than the test host ever does.
+            MutationTestHeapHardLimit: "0x20000000"
+        steps:
+            -   uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+                with:
+                    fetch-depth: 0
+            -   name: Setup .NET SDKs
+                uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+                with:
+                    dotnet-version: |
+                        10.0.3xx
+            -   name: Run mutation tests
+                # The sampler writes into the live job log, because a runner that runs out of memory is torn down
+                # before `if: always()` steps run, so anything it left in an artifact is lost. It has to be reaped
+                # before the step ends, because a surviving background process holds the step's stdout open, and
+                # it cannot be reaped from an `EXIT` trap, because the trap replaces the exit code of the build.
+                run: |
+                    while sleep 60; do
+                        echo "resources: $(free -m | awk 'NR==2{print "mem_used="$3"M mem_available="$7"M"}') disk_available=$(df -m --output=avail / | tail -1)M"
+                    done &
+                    sampler=$!
+                    status=0
+                    ./build.sh ${{ matrix.target }} || status=$?
+                    pkill -P "$sampler" 2>/dev/null || true
+                    kill "$sampler" 2>/dev/null || true
+                    wait "$sampler" 2>/dev/null || true
+                    exit "$status"
+                env:
+                    MutationSlice: ${{ matrix.slice }}
+            -   name: Upload artifacts
+                if: always()
+                uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+                with:
+                    name: ${{ matrix.target }}${{ matrix.slice && format('-{0}', matrix.slice) || '' }}
+                    path: |
+                        ./Artifacts/*
+
     mutation-tests-dashboard:
         name: "Mutation tests Dashboard"
-        needs: [ mutation-tests-core, mutation-tests-main ]
+        needs: [ mutation-tests-core, mutation-tests-main, mutation-tests-extensions ]
         runs-on: ubuntu-latest
         env:
             STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}

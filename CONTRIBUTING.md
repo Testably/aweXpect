@@ -16,9 +16,10 @@ using [SonarCloud](https://sonarcloud.io/project/overview?id=Testably_aweXpect) 
 - solve all issues reported by SonarCloud
 - have a code coverage of > 90%
 
-Additionally the quality of the unit tests is checked with mutation tests
-using [Stryker.NET](https://stryker-mutator.io/docs/stryker-net/introduction/). They are currently disabled, because
-Stryker cannot yet capture the coverage of the TUnit tests in time
+Additionally a nightly run on `main` checks the quality of the unit tests of `aweXpect.Core` and the extension
+packages with mutation tests
+using [Stryker.NET](https://stryker-mutator.io/docs/stryker-net/introduction/). The mutation tests of `aweXpect` are
+disabled for now, because Stryker cannot capture the coverage of its tests within the time limit
 ([stryker-net#3871](https://github.com/stryker-mutator/stryker-net/issues/3871)).
 
 ## Building and testing
