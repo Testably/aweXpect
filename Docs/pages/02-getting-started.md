@@ -4,8 +4,10 @@
 
 1. Install the [`aweXpect`](https://www.nuget.org/packages/aweXpect) nuget package
    ```ps
-   dotnet add package aweXpect
+   dotnet add package aweXpect --prerelease
    ```
+   This documentation describes aweXpect v4, which is available as a pre-release. Without `--prerelease` you get
+   v3, which lacks some of the APIs described here.
 
 2. Add the following `using` statement:
    ```csharp
