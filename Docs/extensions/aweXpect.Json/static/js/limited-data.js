@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1983.9704545338948,
           2022.9429598490397,
           1963.6753173241248,
           2112.75540133885,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1965.3611021775466,
           2065.1286013921103,
           2075.2444002787274,
-          2192.5396087646486
+          2192.5396087646486,
+          2083.9056602478026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14241.545103890556,
           15613.3274470738,
           15217.806331927959,
           15508.080959065755,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           13869.768995012555,
           15624.445813860211,
           15578.620874023438,
-          15361.47041015625
+          15361.47041015625,
+          15764.885281880697
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1577.676675062913,
           1653.2868336268834,
           1596.8817813055855,
           1696.0209422111511,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1588.0475811277117,
           1676.116421332726,
           1605.3971277872722,
-          1631.7784342447917
+          1631.7784342447917,
+          1707.173110961914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13074.250087483724,
           14412.894830557016,
           13953.242579142252,
           14645.20614013672,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           12741.850531944861,
           14219.177317692684,
           14069.216036283053,
-          14008.377420043946
+          14008.377420043946,
+          14403.775404793876
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5024.688140282264,
           5444.528891499837,
           5226.138007572719,
           5360.921210734049,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5123.700912984213,
           5469.225974449744,
           5474.045233590262,
-          5019.190342494419
+          5019.190342494419,
+          5623.2919355119975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1639,7 +1639,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1651,6 +1650,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          38961.839634486605,
           46583.15764508928,
           46247.996154785156,
           47120.45616861979,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           39006.80830265926,
           46820.06188964844,
           47098.74820382254,
-          43525.04666341146
+          43525.04666341146,
+          47930.872837611605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61926,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61932
+          61932,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
       {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9523.185396321614,
           9480.182297842843,
           9088.596923828125,
           9589.728755696615,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9489.323607381184,
           9311.976847330729,
           9205.418298993793,
-          10077.288165501186
+          10077.288165501186,
+          9655.667563883464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          276010.1675455729,
           294855.1893717448,
           290788.59059495194,
           293067.6157389323,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           279649.4171424279,
           298635.45564152644,
           300463.3307407924,
-          287994.44088309153
+          287994.44088309153,
+          311765.0872721354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521572
+          521572,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
       {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2827.68478339059,
           2830.8420031229657,
           2892.4465185312124,
           2843.3834890638077,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2846.9970087687175,
           2914.5704844156903,
           2878.6052372272197,
-          3099.7382496425084
+          3099.7382496425084,
+          2882.8309797559464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2869,7 +2869,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1995.1520678202312,
           1911.3879028956096,
           1894.4147076924642,
           1928.6286186218263,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1969.9922046661377,
           1919.1779856363933,
           1950.376399721418,
-          2124.151010785784
+          2124.151010785784,
+          2130.864472707113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2841.9240038945127,
           2771.6740882873537,
           2872.603721110026,
           2889.3223187764484,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2869.184987386068,
           2959.4431279500327,
           2792.110598930946,
-          2716.3262397221156
+          2716.3262397221156,
+          3013.471478780111
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3463,7 +3463,6 @@ window.BENCHMARK_DATA = {
           2840,
           2840,
           2840,
-          2840,
           2856,
           2856,
           2856,
@@ -3475,6 +3474,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1919.8194819132486,
           1735.6793715613228,
           1731.1378271920341,
           1838.7891740065354,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1850.0745999654134,
           1787.9063801084246,
           1719.2250508626303,
-          2014.2098871866863
+          2014.2098871866863,
+          1901.7032971700032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2293.9124477093037,
           2239.381045750209,
           2170.276918851412,
           2225.2538003285727,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2290.8442298344203,
           2283.2379695347377,
           2311.231927054269,
-          2280.1987141200475
+          2280.1987141200475,
+          2414.2555643717446
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4071,7 +4071,6 @@ window.BENCHMARK_DATA = {
           3016,
           3016,
           3016,
-          3016,
           3024,
           3024,
           3024,
@@ -4083,6 +4082,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1246.264877764384,
           1093.746534211295,
           1064.2389193943568,
           1133.4918371836345,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1201.547229221889,
           1124.9440499623618,
           1082.108006032308,
-          1359.7954375403267
+          1359.7954375403267,
+          1202.6823314939227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "de6df36f17ab03e0f9c6dfe3398a1668430e49f0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 00:15:59 2026 \u002B0100",
-        "message": "feat!: hand out non-null Xml nodes and add attribute and value results (#2105)"
-      },
-      {
         "sha": "fc7e1e8a45717c5e26c4ce9182b86436a02d0a8f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:08:21 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
-      "de6df36f",
       "fc7e1e8a",
       "031fdf5a",
       "67f30838",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3109.3818367004396,
           3010.7014503479004,
           2991.141622815813,
           3165.0599388709434,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           3062.8265383584157,
           3053.254064687093,
           2894.853836646447,
-          3296.162812096732
+          3296.162812096732,
+          3080.8155820210773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1399.5015284674507,
           1239.6238641005295,
           1219.6681006113688,
           1269.1632236753192,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1370.9829958597818,
           1265.5357028961182,
           1245.5891876220703,
-          1583.997863896688
+          1583.997863896688,
+          1263.7036014556884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5056,6 +5056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -5090,7 +5096,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -5128,7 +5135,8 @@ window.BENCHMARK_DATA = {
           161759.52080426898,
           166692.91274414063,
           164512.80232121394,
-          171224.83426607572
+          171224.83426607572,
+          162718.71686197916
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5140,6 +5148,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -5217,7 +5226,8 @@ window.BENCHMARK_DATA = {
           194766.89252580915,
           188146.6296061198,
           188360.22609165736,
-          206078.99529622396
+          206078.99529622396,
+          200905.61513671876
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5260,7 +5270,8 @@ window.BENCHMARK_DATA = {
           266951,
           266951,
           266950,
-          266873
+          266873,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5466,6 +5477,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
         "message": "ci: rebuild the documentation site after a release (#2155)"
+      },
+      {
+        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
+        "message": "docs: apply the docs style guide (#2156)"
       }
     ],
     "labels": [
@@ -5500,7 +5517,8 @@ window.BENCHMARK_DATA = {
       "29daaf7a",
       "e6330bec",
       "30129fc0",
-      "25a97e74"
+      "25a97e74",
+      "6c756140"
     ],
     "datasets": [
       {
@@ -5538,7 +5556,8 @@ window.BENCHMARK_DATA = {
           2669.203987121582,
           2750.1893700190953,
           2764.563191005162,
-          2616.5126658848353
+          2616.5126658848353,
+          2888.46662575858
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5550,6 +5569,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5627,7 +5647,8 @@ window.BENCHMARK_DATA = {
           1893.4705891927083,
           1798.9216139475504,
           1771.29085299174,
-          1987.9964866638184
+          1987.9964866638184,
+          1909.1040850321451
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5639,6 +5660,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
