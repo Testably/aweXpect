@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1528.3591998418171,
           1992.8010104252742,
           1983.9704545338948,
           2022.9429598490397,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1152.4224525179181,
           2186.251889292399,
           1965.3611021775466,
-          2065.1286013921103
+          2065.1286013921103,
+          2075.2444002787274
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10286.743300301689,
           15688.73051234654,
           14241.545103890556,
           15613.3274470738,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           7335.904273986816,
           15194.73014831543,
           13869.768995012555,
-          15624.445813860211
+          15624.445813860211,
+          15578.620874023438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1252.8774864196778,
           1633.6317869822185,
           1577.676675062913,
           1653.2868336268834,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           954.5432532383845,
           1648.8195359547933,
           1588.0475811277117,
-          1676.116421332726
+          1676.116421332726,
+          1605.3971277872722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9624.006561279297,
           14510.116868239184,
           13074.250087483724,
           14412.894830557016,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           6944.914305466872,
           13833.392389569965,
           12741.850531944861,
-          14219.177317692684
+          14219.177317692684,
+          14069.216036283053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3992.430689493815,
           5377.160658700125,
           5024.688140282264,
           5444.528891499837,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3088.5849325997488,
           4978.306167093912,
           5123.700912984213,
-          5469.225974449744
+          5469.225974449744,
+          5474.045233590262
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1641,7 +1641,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1653,6 +1652,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28921.10770089286,
           47925.998046875,
           38961.839634486605,
           46583.15764508928,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           20919.30188598633,
           41750.92290039062,
           39006.80830265926,
-          46820.06188964844
+          46820.06188964844,
+          47098.74820382254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61925,
           61932,
           61926,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
       {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7259.411357879639,
           9356.479189359225,
           9523.185396321614,
           9480.182297842843,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5166.895132954915,
           9946.363139561245,
           9489.323607381184,
-          9311.976847330729
+          9311.976847330729,
+          9205.418298993793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          204646.28187779017,
           293824.86369441106,
           276010.1675455729,
           294855.1893717448,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           147910.14674595423,
           287984.1837064303,
           279649.4171424279,
-          298635.45564152644
+          298635.45564152644,
+          300463.3307407924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521573,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
       {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2233.6704504830495,
           2826.7530822753906,
           2827.68478339059,
           2830.8420031229657,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1651.5740208258997,
           3087.6765439351398,
           2846.9970087687175,
-          2914.5704844156903
+          2914.5704844156903,
+          2878.6052372272197
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2871,7 +2871,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1487.1400520324707,
           1913.2993995666504,
           1995.1520678202312,
           1911.3879028956096,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1144.456624031067,
           2155.7280690329417,
           1969.9922046661377,
-          1919.1779856363933
+          1919.1779856363933,
+          1950.376399721418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2115.2720480698804,
           2886.1521092928374,
           2841.9240038945127,
           2771.6740882873537,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1616.6605103356499,
           2829.053866795131,
           2869.184987386068,
-          2959.4431279500327
+          2959.4431279500327,
+          2792.110598930946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2776,
           2840,
           2840,
           2840,
@@ -3477,6 +3476,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1362.6760102785552,
           1732.6620335212122,
           1919.8194819132486,
           1735.6793715613228,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           968.6470109394619,
           2101.6939544677734,
           1850.0745999654134,
-          1787.9063801084246
+          1787.9063801084246,
+          1719.2250508626303
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1706.7921857100266,
           2272.108928135463,
           2293.9124477093037,
           2239.381045750209,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1352.591047414144,
           2293.3132771809896,
           2290.8442298344203,
-          2283.2379695347377
+          2283.2379695347377,
+          2311.231927054269
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          2888,
           3016,
           3016,
           3016,
@@ -4085,6 +4084,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          919.9076296732976,
           1111.2774925231934,
           1246.264877764384,
           1093.746534211295,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           622.9381247838338,
           1381.900648389544,
           1201.547229221889,
-          1124.9440499623618
+          1124.9440499623618,
+          1082.108006032308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
-        "message": "feat!: rename ComparedWith to Using in the snapshot results (#2103)"
-      },
-      {
         "sha": "55068d5fe7d976abc5eea2df84c1a742dea032db",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 23:35:44 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
-      "a2f72904",
       "55068d5f",
       "de6df36f",
       "fc7e1e8a",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2176.349072519938,
           3023.707836151123,
           3109.3818367004396,
           3010.7014503479004,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1729.2543125152588,
           3292.103024037679,
           3062.8265383584157,
-          3053.254064687093
+          3053.254064687093,
+          2894.853836646447
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4676,7 +4676,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3744,
+          3872,
           3872,
           3872,
           3872,
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1063.2200600941976,
           1256.6118648529052,
           1399.5015284674507,
           1239.6238641005295,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           677.9939951896667,
           1579.2869097391765,
           1370.9829958597818,
-          1265.5357028961182
+          1265.5357028961182,
+          1245.5891876220703
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5044,6 +5044,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
@@ -5076,7 +5082,8 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
@@ -5112,7 +5119,8 @@ window.BENCHMARK_DATA = {
           97795.47071940104,
           177456.91052246094,
           161759.52080426898,
-          166692.91274414063
+          166692.91274414063,
+          164512.80232121394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5124,6 +5132,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -5197,7 +5206,8 @@ window.BENCHMARK_DATA = {
           110347.48643141527,
           205809.21839192708,
           194766.89252580915,
-          188146.6296061198
+          188146.6296061198,
+          188360.22609165736
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5238,7 +5248,8 @@ window.BENCHMARK_DATA = {
           266936,
           266873,
           266951,
-          266951
+          266951,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5432,6 +5443,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
         "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
+      },
+      {
+        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
+        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
       }
     ],
     "labels": [
@@ -5464,7 +5481,8 @@ window.BENCHMARK_DATA = {
       "fea53298",
       "583e9cec",
       "29daaf7a",
-      "e6330bec"
+      "e6330bec",
+      "30129fc0"
     ],
     "datasets": [
       {
@@ -5500,7 +5518,8 @@ window.BENCHMARK_DATA = {
           1504.279591623942,
           2651.0144203730993,
           2669.203987121582,
-          2750.1893700190953
+          2750.1893700190953,
+          2764.563191005162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5512,6 +5531,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5585,7 +5605,8 @@ window.BENCHMARK_DATA = {
           1052.1091128985088,
           2112.108432451884,
           1893.4705891927083,
-          1798.9216139475504
+          1798.9216139475504,
+          1771.29085299174
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5597,6 +5618,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
