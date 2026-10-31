@@ -1,11 +1,13 @@
-# Extending aweXpect
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Core?label=aweXpect.Core)](https://www.nuget.org/packages/aweXpect.Core)
+# Extending aweXpect
 
 This library will never be able to cope with all ideas and use cases. Therefore, it is possible to use the
 [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core/) package and write your own extensions.
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
+
+<PackageInstall package="aweXpect.Core" prerelease />
 
 <details>
 <summary>Namespaces used on this page</summary>

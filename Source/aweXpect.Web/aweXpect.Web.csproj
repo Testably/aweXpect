@@ -4,8 +4,7 @@
 		<RootNamespace>aweXpect</RootNamespace>
 		<Description>Web and network extensions for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Web</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Web/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Web/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Web/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

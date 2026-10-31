@@ -4,8 +4,7 @@
 		<Description>Opens a diff tool with DiffEngine for snapshots of aweXpect.Snapshots that are missing or different.</Description>
 		<IsBetaPackage>true</IsBetaPackage>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Snapshots/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Source/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

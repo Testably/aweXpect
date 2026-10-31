@@ -3,8 +3,7 @@
 	<PropertyGroup>
 		<Description>Expectations for reflection types for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Reflection</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Reflection/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Reflection/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Reflection/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

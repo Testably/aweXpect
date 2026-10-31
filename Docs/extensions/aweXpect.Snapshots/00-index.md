@@ -1,6 +1,6 @@
-# aweXpect.Snapshots
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Snapshots)](https://www.nuget.org/packages/aweXpect.Snapshots)
+# aweXpect.Snapshots
 
 [aweXpect.Snapshots](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Snapshots) compares strings and objects with reviewed
 snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex
@@ -8,9 +8,7 @@ result without writing out the expected value.
 
 ## Installation
 
-```ps
-dotnet add package aweXpect.Snapshots
-```
+<PackageInstall package="aweXpect.Snapshots" prerelease />
 
 - [aweXpect.Snapshots](https://www.nuget.org/packages/aweXpect.Snapshots): `MatchesSnapshot` for strings, objects,
   binary data and files. The other two packages bring it with them.
@@ -116,9 +114,6 @@ Set a value under `Customize.aweXpect.Snapshots()` for the current
 | [`AttachPendingFiles`](./02-accepting-snapshots.md#on-a-build-server)            | `false`                                                  | attaches the pending file of a mismatch to the test result   |
 
 ## Documentation
-
-The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/):
 
 - [Matching snapshots](./01-matching-snapshots.md): strings, objects, exceptions, binary data and files, the file
   extension, encoding and line breaks

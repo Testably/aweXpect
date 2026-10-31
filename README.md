@@ -26,7 +26,7 @@ but it was "It's a complement", which differs at index 12:
 
 1. Install the [`aweXpect`](https://www.nuget.org/packages/aweXpect) nuget package
    ```ps
-   dotnet add package aweXpect
+   dotnet add package aweXpect --prerelease
    ```
 
 2. Add the following `using` statement:

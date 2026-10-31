@@ -5,8 +5,7 @@
 		<IsBetaPackage>true</IsBetaPackage>
 		<Description>Snapshot testing for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Snapshots/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>
