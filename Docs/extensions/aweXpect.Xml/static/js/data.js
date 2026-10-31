@@ -1284,6 +1284,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
         "message": "docs: separate the extension READMEs from their docs pages (#2154)"
+      },
+      {
+        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
+        "message": "ci: rebuild the documentation site after a release (#2155)"
       }
     ],
     "labels": [
@@ -1500,7 +1506,8 @@ window.BENCHMARK_DATA = {
       "583e9cec",
       "29daaf7a",
       "e6330bec",
-      "30129fc0"
+      "30129fc0",
+      "25a97e74"
     ],
     "datasets": [
       {
@@ -1720,7 +1727,8 @@ window.BENCHMARK_DATA = {
           830.9188254038493,
           900.8471083641052,
           935.9384553773062,
-          504.7907067812406
+          504.7907067812406,
+          917.3057902654012
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1901,6 +1909,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2173,7 +2182,8 @@ window.BENCHMARK_DATA = {
           719.5373249689738,
           740.2398335138956,
           681.5681353886922,
-          377.20840311050415
+          377.20840311050415,
+          670.1001125063215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2185,6 +2195,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3696,6 +3707,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
         "message": "docs: separate the extension READMEs from their docs pages (#2154)"
+      },
+      {
+        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
+        "message": "ci: rebuild the documentation site after a release (#2155)"
       }
     ],
     "labels": [
@@ -3912,7 +3929,8 @@ window.BENCHMARK_DATA = {
       "583e9cec",
       "29daaf7a",
       "e6330bec",
-      "30129fc0"
+      "30129fc0",
+      "25a97e74"
     ],
     "datasets": [
       {
@@ -4132,7 +4150,8 @@ window.BENCHMARK_DATA = {
           4560.58284556071,
           4521.660182659442,
           4567.019970233624,
-          2558.492292022705
+          2558.492292022705,
+          4631.441408793132
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4354,6 +4373,7 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24179,
+          24178,
           24178,
           24178,
           24178,
@@ -4585,7 +4605,8 @@ window.BENCHMARK_DATA = {
           5099.575971603394,
           5380.110708109538,
           5299.160296303885,
-          2975.5239603678388
+          2975.5239603678388,
+          5488.802982036884
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4597,6 +4618,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6048,6 +6070,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
         "message": "docs: separate the extension READMEs from their docs pages (#2154)"
+      },
+      {
+        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
+        "message": "ci: rebuild the documentation site after a release (#2155)"
       }
     ],
     "labels": [
@@ -6254,7 +6282,8 @@ window.BENCHMARK_DATA = {
       "583e9cec",
       "29daaf7a",
       "e6330bec",
-      "30129fc0"
+      "30129fc0",
+      "25a97e74"
     ],
     "datasets": [
       {
@@ -6464,7 +6493,8 @@ window.BENCHMARK_DATA = {
           2492.831734720866,
           2530.611680984497,
           2569.3442655710073,
-          1431.9391370920034
+          1431.9391370920034,
+          2700.985052255484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6645,6 +6675,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -6897,7 +6928,8 @@ window.BENCHMARK_DATA = {
           3467.4514647892543,
           3538.5433036804197,
           3580.203138078962,
-          1941.0246748606364
+          1941.0246748606364,
+          3614.8289435250417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6909,6 +6941,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -8350,6 +8383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
         "message": "docs: separate the extension READMEs from their docs pages (#2154)"
+      },
+      {
+        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
+        "message": "ci: rebuild the documentation site after a release (#2155)"
       }
     ],
     "labels": [
@@ -8556,7 +8595,8 @@ window.BENCHMARK_DATA = {
       "583e9cec",
       "29daaf7a",
       "e6330bec",
-      "30129fc0"
+      "30129fc0",
+      "25a97e74"
     ],
     "datasets": [
       {
@@ -8766,7 +8806,8 @@ window.BENCHMARK_DATA = {
           13016.928004338191,
           13554.100848388673,
           13921.01833167443,
-          8019.793644714356
+          8019.793644714356,
+          14053.747954305012
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8947,6 +8988,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -9199,7 +9241,8 @@ window.BENCHMARK_DATA = {
           321547.09500558034,
           365074.6291341146,
           369604.55701622594,
-          177179.9223069411
+          177179.9223069411,
+          352748.73580729164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9411,6 +9454,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
