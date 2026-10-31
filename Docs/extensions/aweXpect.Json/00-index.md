@@ -1,15 +1,13 @@
-# aweXpect.Json
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)
+# aweXpect.Json
 
 [aweXpect.Json](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Json) contains expectations for JSON strings, `JsonElement`,
 `JsonNode` and the JSON serialization of objects with `System.Text.Json`.
 
 ## Installation
 
-```ps
-dotnet add package aweXpect.Json
-```
+<PackageInstall package="aweXpect.Json" prerelease />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsJson()`.
@@ -107,9 +105,6 @@ Set a value under `Customize.aweXpect.Json()` for the current
 | [`DefaultJsonSerializerOptions`](./06-customization.md) | `AllowTrailingCommas = true` | the options to format and serialize JSON values |
 
 ## Documentation
-
-The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/):
 
 - [JSON strings](./01-strings.md): comparing strings as JSON and validating them
 - [Matching JSON](./02-matching.md): `Matches` and `MatchesExactly`, and the options to relax the comparison

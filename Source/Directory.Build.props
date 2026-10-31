@@ -70,8 +70,8 @@
 
 	<!--
 	    aweXpect and aweXpect.Core share the README of the repository; an extension package sets
-	    `PackageReadmeSourceFile` to the index page of its docs, or the README that `Compile` writes from it, in its
-	    project file. The items are evaluated after all properties, so they see the value of the project file.
+	    `PackageReadmeSourceFile` to its own in its project file. The items are evaluated after all properties, so they
+	    see the value of the project file.
 	-->
 	<PropertyGroup>
 		<PackageReadmeSourceFile>$(RepositoryRoot)README.md</PackageReadmeSourceFile>

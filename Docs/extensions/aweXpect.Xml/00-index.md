@@ -1,14 +1,12 @@
-# aweXpect.Xml
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Xml)](https://www.nuget.org/packages/aweXpect.Xml)
+# aweXpect.Xml
 
 [aweXpect.Xml](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Xml) contains expectations for XML strings and `System.Xml.Linq`.
 
 ## Installation
 
-```ps
-dotnet add package aweXpect.Xml
-```
+<PackageInstall package="aweXpect.Xml" prerelease />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsXml()`.
@@ -69,9 +67,6 @@ The comparisons can be relaxed with the options `IgnoringAdditionalNodes()`, `Ig
 `IgnoringMember(path)` or `IgnoringMembers(path => …)`, see [Matching XML](./02-matching.md#options).
 
 ## Documentation
-
-The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Xml/):
 
 - [XML strings](./01-strings.md): comparing and validating strings as XML
 - [Matching XML](./02-matching.md): `Matches` and `MatchesExactly`, and the options to relax the comparison

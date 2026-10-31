@@ -1,14 +1,12 @@
-# aweXpect.Reflection
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Reflection)](https://www.nuget.org/packages/aweXpect.Reflection)
+# aweXpect.Reflection
 
 [aweXpect.Reflection](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Reflection) contains expectations for reflection types.
 
 ## Installation
 
-```ps
-dotnet add package aweXpect.Reflection
-```
+<PackageInstall package="aweXpect.Reflection" prerelease />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`; the
@@ -102,7 +100,7 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 - [Properties, fields and events](./02-filters/05-properties-fields-and-events.md): member types, nullability and
   accessors, e.g. `WhichAreOfType<T>` / `IsOfType<T>` or `WhichAreRequired` / `IsRequired`
 
-The [overview](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#overview) lists all topics,
+The [overview](./02-filters/index.md#overview) lists all topics,
 including combined filters, custom predicates (`Which` / `Satisfies`, `Except`) and quantifiers.
 
 Each filter and expectation has its negation where it makes sense, e.g. `WithoutName` / `DoesNotHaveName`,
@@ -110,13 +108,11 @@ Each filter and expectation has its negation where it makes sense, e.g. `Without
 `DoesNotReturn<T>`, `WithoutParameter<T>` / `DoesNotHaveParameter<T>` or `WhichDoNotTarget` / `DoesNotTarget`.
 On a collection, a negated expectation (`DoNotReturn<T>`, `AreNotOfType<T>`, …) verifies that *none* of the items
 match. The tables in
-[Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#how-to-read-the-tables) list every negation in
-a **Negated** column.
+[Filters and expectations](./02-filters/index.md#how-to-read-the-tables) list every negation in a **Negated** column.
 
 The name filters and expectations accept the
 [string matching options](./02-filters/01-common-filters.md#string-matching-options) like `AsPrefix()`,
-`AsSuffix()` or `AsWildcard()`. [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters)
-documents the complete vocabulary.
+`AsSuffix()` or `AsWildcard()`. [Filters and expectations](./02-filters/index.md) documents the complete vocabulary.
 
 ## Architecture rules
 
@@ -182,13 +178,10 @@ Set a value under `Customize.aweXpect.Reflection()` for the current
 
 ## Documentation
 
-The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/):
-
 - [Selecting types and members](./01-sources.md): the `In` and `Types` sources and navigating
   between assemblies, types and members
-- [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters): the complete reference for
-  all subject kinds, string matching options and quantifiers
+- [Filters and expectations](./02-filters/index.md): the complete reference for all subject kinds, string matching
+  options and quantifiers
 - [Architecture rules](./03-architecture-rules.md): type dependencies, dependency cycles and
   layers as type selections
 - [Customization](./04-customization.md): assembly exclusions, compiler-generated members and

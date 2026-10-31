@@ -35,8 +35,8 @@ stable than `aweXpect`. The clock of an evaluation is a `System.TimeProvider` (`
 references from `Microsoft.Bcl.TimeProvider` on `netstandard2.0`.
 
 The extension packages are built from `Source/` as well and reference `aweXpect.Core` as a project. Each sets its own
-description, project URL and README (`PackageReadmeSourceFile`, the index page of its docs) in its project file; the
-logo is the one of aweXpect.
+description, project URL and README (`PackageReadmeSourceFile`, `Source/<Package>/README.md`) in its project file;
+the logo is the one of aweXpect.
 
 Like `aweXpect`, every extension package references `aweXpect.Core` (or `aweXpect.Snapshots`) with
 `PrivateAssets="contentfiles;build"`, so that the analyzers of `aweXpect.Core`, and with them the type metadata
@@ -81,8 +81,8 @@ and its types, options and formatting in `aweXpect.<Package>` (or a sub-namespac
 subject, one file `That<Subject>.<Expectation>.cs` per expectation that also holds its negation and its constraint
 classes. `Helpers/ThrowHelper` validates arguments with `Tracing.WriteException` from
 `aweXpect.Core`; `Helpers/Polyfills` (or `Polyfills/`) holds what `netstandard2.0` lacks. A new expectation touches the
-source file, its tests, an AOT check, the API snapshots, and in `Docs/extensions/<Package>` its page and the overview
-table of `00-index.md`.
+source file, its tests, an AOT check, the API snapshots, in `Docs/extensions/<Package>` its page and the overview
+table of `00-index.md`, and the overview table of the package README.
 
 ### aweXpect.Json
 
@@ -118,7 +118,7 @@ table of `00-index.md`.
   which also stops further processing, while the property results and `HasQueryParameter`, whose `WhoseValue` maps
   to a member, put `FailIfRelative()` in front.
 - `Tests/aweXpect.Web.Samples` is a minimal API application used by `aweXpect.Web.Samples.Tests` and the example
-  on the index page of the docs.
+  on the index page of the docs and in the package README.
 
 ### aweXpect.Xml
 

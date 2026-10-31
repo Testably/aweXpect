@@ -7,7 +7,8 @@ Rules for the user docs in `Docs/pages` and `Docs/extensions`. Design goal 8 in 
 
 - `Docs/pages` (except `11-extending`) and `Docs/extensions/<Package>`: people who write tests.
 - `Docs/pages/11-extending`: authors of extension packages.
-- `Docs/extensions/<Package>/00-index.md` is also the NuGet README of the package.
+- `Source/<Package>/README.md` is the NuGet README of an extension package and repeats its
+  `Docs/extensions/<Package>/00-index.md` in plain Markdown, with absolute links to the docs; keep both in sync.
 
 Write for the task of the reader: what a feature does, how to use it and what the failure looks like. Internals belong
 in XML docs and `Docs/agents`, not in the user docs.

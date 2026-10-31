@@ -93,7 +93,8 @@ The slow tests of `aweXpect.Docs.Tests`:
   `Checks.cs` state the result that must hold under the JIT and published with Native AOT, including the failure when
   the reflection fallback is switched off. A new or changed expectation gets a check there.
 - `aweXpect.Web.Samples.Tests` runs against `Tests/aweXpect.Web.Samples` with a `WebApplicationFactory` and pins the
-  failure message shown in `Docs/extensions/aweXpect.Web/00-index.md`; change both together.
+  failure message shown in `Docs/extensions/aweXpect.Web/00-index.md` and `Source/aweXpect.Web/README.md`; change
+  them together.
 - `System.Xml` messages are localized on .NET Framework. Tests that assert one use `[UseEnglishMessages]` from
   `Tests/aweXpect.Xml.Tests/Helpers`.
 - In `aweXpect.Reflection.Tests`, fixture attributes are named `MarkerAttribute`, as a nested `TestAttribute` would

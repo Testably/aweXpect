@@ -4,8 +4,7 @@
 		<Description>Public API snapshots for aweXpect.</Description>
 		<IsBetaPackage>true</IsBetaPackage>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Snapshots/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(RepositoryRoot)Source/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
 		<!-- Roslyn, which reads the assembly, can neither be trimmed nor published with Native AOT. -->
 		<IsTrimmable>false</IsTrimmable>
 		<IsAotCompatible>false</IsAotCompatible>

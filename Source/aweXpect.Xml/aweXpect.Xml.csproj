@@ -5,8 +5,7 @@
 		<IsBetaPackage>true</IsBetaPackage>
 		<Description>Expectations for XML for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Xml</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Docs/extensions/aweXpect.Xml/00-index.md</PackageReadmeSourceFile>
-		<PackageReadmeSourceFile Condition="Exists('$(RepositoryRoot)Artifacts/aweXpect.Xml/README.md')">$(RepositoryRoot)Artifacts/aweXpect.Xml/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

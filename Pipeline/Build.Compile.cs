@@ -109,7 +109,6 @@ partial class Build
 			}
 
 			UpdateReadme(MainVersion.FileVersion, false);
-			UpdateExtensionReadmes();
 
 			DotNetBuild(s => s
 				.SetProjectFile(Solution)
@@ -173,30 +172,6 @@ partial class Build
 
 		File.WriteAllText(ArtifactsDirectory / "README.md", sb.ToString());
 	}
-
-	/// <summary>
-	///     Writes the README of each extension package from the index page of its docs, as nuget.org cannot follow the
-	///     relative links between the docs pages.
-	/// </summary>
-	private void UpdateExtensionReadmes()
-	{
-		foreach (AbsolutePath docsDirectory in (RootDirectory / "Docs" / "extensions").GetDirectories())
-		{
-			string package = docsDirectory.Name;
-			string readme = RelativeDocsLink.Replace(File.ReadAllText(docsDirectory / "00-index.md"),
-				match => $"](https://docs.testably.org/aweXpect/extensions/{package}/{GetDocsSlug(match.Groups["path"].Value)}/{match.Groups["anchor"].Value})");
-			(ArtifactsDirectory / package).CreateDirectory();
-			File.WriteAllText(ArtifactsDirectory / package / "README.md", readme);
-		}
-	}
-
-	private static readonly Regex RelativeDocsLink = new(@"\]\(\./(?<path>[^)#\s]+)\.mdx?(?<anchor>#[^)\s]*)?\)");
-
-	/// <summary>
-	///     The URL path of a docs page, which Docusaurus derives from its file path without the number prefixes.
-	/// </summary>
-	private static string GetDocsSlug(string path)
-		=> string.Join('/', path.Split('/').Select(segment => Regex.Replace(segment, @"^\d+-", "")));
 
 	private static void ClearNugetPackages(string binPath)
 	{

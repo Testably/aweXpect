@@ -1,15 +1,13 @@
-# aweXpect.Web
+import PackageInstall from '@site/src/components/PackageInstall';
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)
+# aweXpect.Web
 
 [aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) contains expectations for `HttpRequestMessage`,
 `HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
 
 ## Installation
 
-```ps
-dotnet add package aweXpect.Web
-```
+<PackageInstall package="aweXpect.Web" prerelease />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`, so
@@ -116,9 +114,6 @@ Set a value under `Customize.aweXpect.Web()` for the current
 | [`ContentProcessors`](./04-customization.md#content-processors) | `JsonContentProcessor`, `StringContentProcessor`, `BinaryContentProcessor` | format the content of requests and responses in failure messages |
 
 ## Documentation
-
-The full documentation is available at
-[docs.testably.org](https://docs.testably.org/aweXpect/extensions/aweXpect.Web/):
 
 - [HTTP requests and responses](./01-http-messages.md): method, request URI, headers, content type and content of an
   `HttpRequestMessage`, and status code, headers, content type, content, problem details and the request message of
