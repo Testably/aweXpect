@@ -1,3 +1,7 @@
+---
+description: Compare strings as XML by their content and verify that a string is a well-formed XML document.
+---
+
 # XML strings
 
 Describes the possible expectations for strings that contain XML.
@@ -21,7 +25,7 @@ string expected = """
                   </album>
                   """;
 
-await Expect.That(album).IsEqualTo(expected).AsXml();
+await That(album).IsEqualTo(expected).AsXml();
 ```
 
 If the duration was `259.0` instead, the expectation would fail with:
@@ -81,15 +85,15 @@ match type like `AsWildcard()`, and it is not available on `Contains` or `DoesNo
 exception:
 
 ```csharp
-await Expect.That(albums).All().AreEqualTo("""<album id="42" />""").AsXml();
-await Expect.That(albums).Contains("""<album id="42" />""").AsXml();
-await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
+await That(albums).All().AreEqualTo("""<album id="42" />""").AsXml();
+await That(albums).Contains("""<album id="42" />""").AsXml();
+await That(Act).Throws<InvalidOperationException>().WithMessage("""<error code="42" />""").AsXml();
 ```
 
 The options are available there as well, e.g. to find an item that contains the expected XML:
 
 ```csharp
-await Expect.That(albums).Contains("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await That(albums).Contains("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 <details>
@@ -109,7 +113,7 @@ You can verify that a string is a well-formed XML document:
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXml();
+await That(track).IsValidXml();
 ```
 
 If the closing tag was missing, i.e. `<track title="Let It Be" artist="The Beatles">`, the expectation would fail
@@ -142,7 +146,7 @@ You can add further expectations on the root
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXml(root => root.Matches("""<track title="Let It Be" />"""));
+await That(track).IsValidXml(root => root.Matches("""<track title="Let It Be" />"""));
 ```
 
 The expectations are only verified when the string is valid XML.
@@ -152,8 +156,8 @@ Or you can verify that the string is valid XML and [matches](./02-matching.md) a
 ```csharp
 string track = """<track title="Let It Be" artist="The Beatles" />""";
 
-await Expect.That(track).IsValidXmlMatching("""<track title="Let It Be" />""");
-await Expect.That(track).IsValidXmlMatchingExactly("""<track artist="The Beatles" title="Let It Be" />""");
+await That(track).IsValidXmlMatching("""<track title="Let It Be" />""");
+await That(track).IsValidXmlMatchingExactly("""<track artist="The Beatles" title="Let It Be" />""");
 ```
 
 `IsValidXmlMatching("""<track title="Yesterday" />""")` would fail with:
@@ -172,7 +176,7 @@ You can also verify that a string is not valid XML:
 ```csharp
 string track = "Let It Be";
 
-await Expect.That(track).IsNotValidXml();
+await That(track).IsNotValidXml();
 ```
 
 If the string is valid XML, e.g. `<track title="Let It Be" />`, the expectation fails with:

@@ -1,3 +1,7 @@
+---
+description: Let the caller continue with expectations on a member or a new subject, and evaluate expectations inside expected values.
+---
+
 # Nested expectations
 
 An expectation can let the caller continue with expectations on a member of the subject or on a new subject, and an
@@ -35,7 +39,7 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
         subject);
 ```
 
-`await Expect.That(track).HasTitle(title => title.StartsWith("Let"))` then reads "has title that starts with …".
+`await That(track).HasTitle(title => title.StartsWith("Let"))` then reads "has title that starts with …".
 
 - The second argument of `ForMember` writes the text in front of the nested expectations.
 - The name of the member replaces `it` in their result texts ("title was …"), unless you pass `replaceIt: false`.
@@ -83,8 +87,8 @@ replaces `it` in their result texts. Unlike `ForMember`, the expectations are ad
 `ValueTask<T>`.
 
 Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>` parameter and in a property like
-`Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks. Unlike `Expect.That<T>(T)`,
-which returns an `IThatSubject<T>`, `Expect.That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
+`Which`, so that the caller can narrow it with `Is<TType>()` and the other type checks. Unlike `That<T>(T)`,
+which returns an `IThatSubject<T>`, `That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
 because a type check cannot narrow a `bool`, so write expectations on booleans for `IThat<bool>`.
 
 ## Members that need the evaluation
@@ -187,7 +191,7 @@ private sealed class MatchesTrackConstraint(string it, ExpectationGrammars gramm
 ```csharp
 Track track = new("Let It Be", new TimeSpan(0, 4, 3));
 
-await Expect.That(track).MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
+await That(track).MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
 ```
 
 When your constraint evaluates such an expectation itself, e.g. because it compares a format of its own, get its

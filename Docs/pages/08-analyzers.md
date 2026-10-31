@@ -1,3 +1,7 @@
+---
+description: The analyzers, suppressors and source generator diagnostics that ship with aweXpect, and how to fix what they report.
+---
+
 # Analyzers
 
 The `aweXpect` package includes analyzers that report common mistakes while you write the test. Errors stop the
@@ -32,8 +36,8 @@ An expectation is neither awaited nor verified, so it is never evaluated and nev
 ```csharp
 bool value = false;
 
-Expect.That(value).IsTrue();          // reported: never evaluated
-await Expect.That(value).IsTrue();    // fixed: awaited, so it fails
+That(value).IsTrue();          // reported: never evaluated
+await That(value).IsTrue();    // fixed: awaited, so it fails
 ```
 
 The code fix awaits the expectation and makes the enclosing method, local function or lambda `async` where needed. It
@@ -54,7 +58,7 @@ is not offered where that would not compile or would change a signature that oth
 </details>
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
-[When you cannot await](./03-how-it-works/index.md#when-you-cannot-await).
+[When you cannot await](./02-how-it-works/00-index.md#when-you-cannot-await).
 
 ## aweXpect0002
 
@@ -65,8 +69,8 @@ For a `ref struct` that cannot be used in an `async` method, verify the expectat
 ```csharp
 int subject = 1;
 
-bool isEqual = Expect.That(subject).Equals(2);   // reported: verifies nothing
-await Expect.That(subject).IsEqualTo(2);         // fixed
+bool isEqual = That(subject).Equals(2);   // reported: verifies nothing
+await That(subject).IsEqualTo(2);         // fixed
 ```
 
 ## aweXpect0003
@@ -79,12 +83,12 @@ code fixes are available: switch to the `With…` twin, or insert `.Which`.
 ```csharp
 void Act() => throw new InvalidOperationException("Yesterday");
 
-await Expect.That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
-await Expect.That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");   // fixed
+await That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
+await That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");   // fixed
 ```
 
 The `Has…` vocabulary belongs after `.Which`. See
-[Delegates](./06-behaviour/01-delegates.md#exception-details).
+[Delegates](./06-behavior/01-delegates.md#exception-details).
 
 ## aweXpect0004
 
@@ -96,11 +100,11 @@ A code fix is available for a delegate that returns a value.
 ```csharp
 int Act() => 3;
 
-await Expect.That(Act).IsEqualTo(3);                              // reported: checks the delegate
-await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
+await That(Act).IsEqualTo(3);                              // reported: checks the delegate
+await That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
 ```
 
-See [Delegates](./06-behaviour/01-delegates.md#no-exception).
+See [Delegates](./06-behavior/01-delegates.md#no-exception).
 
 ## aweXpect0005
 
@@ -112,10 +116,10 @@ and is not observed by the test.
 ```csharp
 List<int> values = [1, 2, 3];
 
-values.ForEach(async x => await Expect.That(x).IsGreaterThan(0));   // reported: async void lambda
+values.ForEach(async x => await That(x).IsGreaterThan(0));   // reported: async void lambda
 foreach (int x in values)
 {
-    await Expect.That(x).IsGreaterThan(0);                            // fixed: awaited by the test
+    await That(x).IsGreaterThan(0);                            // fixed: awaited by the test
 }
 ```
 
@@ -130,8 +134,8 @@ A collection without a defined order, such as a set or a dictionary, is compared
 ```csharp
 HashSet<int> values = [1, 2, 3];
 
-await Expect.That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
-await Expect.That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
+await That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
+await That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
 ```
 
 `IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
@@ -149,14 +153,14 @@ never awaited. A code fix is available.
 ```csharp
 async ValueTask Act() => await Task.Yield();
 
-await Expect.That(() => Act()).DoesNotThrow();            // reported on targets before .NET 8
-await Expect.That(() => Act().AsTask()).DoesNotThrow();   // fixed
+await That(() => Act()).DoesNotThrow();            // reported on targets before .NET 8
+await That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
 
 On any target, the rule also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
-`Expect.That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
-as in `Expect.That<Task>(() => ActAsync())`: remove the type argument, so that the task is awaited. See
-[Delegates](./06-behaviour/01-delegates.md).
+`That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
+as in `That<Task>(() => ActAsync())`: remove the type argument, so that the task is awaited. See
+[Delegates](./06-behavior/01-delegates.md).
 
 <details>
 <summary>Why targets before .NET 8 are affected</summary>
@@ -175,14 +179,14 @@ so the value can be the `default`.
 ```csharp
 object subject = "Yesterday";
 
-int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported: 0 for a string subject
-await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
+int count = await That(subject).Is<string>().Or.Is<int>();   // reported: 0 for a string subject
+await That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
 ```
 
 The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative
 was met. Do not use it, or check it first and suppress the warning there. The rule is not reported when the value has
 the type of the subject, or a base type or an interface of it, because then every alternative returns the subject. See
-[Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
+[Combining expectations](./02-how-it-works/03-combining.md#using-the-result).
 
 ## aweXpect0009
 
@@ -220,7 +224,7 @@ with `[GuaranteesNotNull]`, see
 ```csharp
 string? title = new Track().Title;
 
-await Expect.That(title).IsNotNull();
+await That(title).IsNotNull();
 int length = title.Length;   // no CS8602
 ```
 
@@ -231,7 +235,7 @@ The subject has to be a local variable or a parameter that is neither a `ref` no
 constructor, which any member can write to, and the expectation has to be awaited or verified in a preceding statement
 in the same method, local function or lambda, without a branch, a label or a write to the subject in that statement or
 in between. Assigning the result of an expectation to its own subject, as in
-`subject = await Expect.That(subject).IsNotNull();`, does not count as a write, because the result is the subject. A
+`subject = await That(subject).IsNotNull();`, does not count as a write, because the result is the subject. A
 `ref` alias of the subject prevents the suppression, as it can change the subject unnoticed. Only the warnings are
 suppressed; the null state of the compiler is unchanged.
 
@@ -241,7 +245,7 @@ suppressed; the null state of the compiler is unchanged.
 
 The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
-[Native AOT and trimming](./08-setup/03-native-aot.md#equivalency).
+[Native AOT and trimming](./03-setup/03-native-aot.md#equivalency).
 
 ## Test framework adapter
 

@@ -1,3 +1,7 @@
+---
+description: Find and delete the snapshots that no test uses any more with OrphanedSnapshots.CheckAsync() after the test run.
+---
+
 # Orphaned snapshots
 
 A snapshot stays on disk when its test, or a case of it, is renamed or deleted. To find such snapshots, call

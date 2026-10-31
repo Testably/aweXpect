@@ -1,3 +1,7 @@
+---
+description: Verify that an object survives a round trip through System.Text.Json and that it is serialized as the expected JSON.
+---
+
 # Serialization
 
 Describes the possible expectations for the JSON serialization of objects with `System.Text.Json`.
@@ -16,11 +20,11 @@ public record Track(string Title, string Artist);
 
 Track track = new("Let It Be", "The Beatles");
 
-await Expect.That(track).IsJsonSerializable();
+await That(track).IsJsonSerializable();
 ```
 
 This verifies that the object can be serialized to JSON and deserialized again, and that the result is
-[equivalent](https://docs.testably.org/aweXpect/values/equivalency) to the original object. For example, a property
+[equivalent](/aweXpect/values/equivalency) to the original object. For example, a property
 with a private setter loses its value:
 
 ```csharp
@@ -34,7 +38,7 @@ public class PlayCounter
 PlayCounter counter = new() { Title = "Let It Be" };
 counter.Play();
 
-await Expect.That(counter).IsJsonSerializable();
+await That(counter).IsJsonSerializable();
 ```
 
 ```text title="Failure message"
@@ -54,10 +58,10 @@ e.g. a misspelled `IgnoringMember("PlayCont")`, gets a hint with the closest mem
 
 You can specify both the
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions) and the
-[equivalency options](https://docs.testably.org/aweXpect/values/equivalency#configuration):
+[equivalency options](/aweXpect/values/equivalency#configuration):
 
 ```csharp
-await Expect.That(track).IsJsonSerializable(
+await That(track).IsJsonSerializable(
     new JsonSerializerOptions { IncludeFields = true },
     e => e.IgnoringMember(nameof(Track.Artist)));
 ```
@@ -90,8 +94,8 @@ JsonSerializerOptions serializerOptions = new(JsonSerializerDefaults.Web)
     Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
 };
 
-await Expect.That(track).IsJsonSerializedAs("""{"title": "Let It Be", "genre": "rock"}""", serializerOptions);
-await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be", genre = "rock" }, serializerOptions);
+await That(track).IsJsonSerializedAs("""{"title": "Let It Be", "genre": "rock"}""", serializerOptions);
+await That(track).IsJsonSerializedAs(new { title = "Let It Be", genre = "rock" }, serializerOptions);
 ```
 
 With `new JsonSerializerOptions(JsonSerializerDefaults.Web)` instead, the first expectation would fail with:
@@ -130,7 +134,7 @@ actually serialized. To serialize the expected object with other options, pass t
 ```csharp
 JsonSerializerOptions camelCase = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-await Expect.That(track).IsJsonSerializedAs(new { Title = "Let It Be", Genre = 2, Album = (string?)null },
+await That(track).IsJsonSerializedAs(new { Title = "Let It Be", Genre = 2, Album = (string?)null },
     camelCase, o => o.WithSerializerOptions(camelCase));
 ```
 
@@ -139,20 +143,20 @@ The serialized JSON is compared exactly, like in `MatchesExactly`, so additional
 `IgnoringArrayOrder()`, `TreatingNullAsAbsent()` or `IgnoringMember(name)`:
 
 ```csharp
-await Expect.That(track).IsJsonSerializedAs(new { title = "Let It Be" }, serializerOptions,
+await That(track).IsJsonSerializedAs(new { title = "Let It Be" }, serializerOptions,
     o => o.IgnoringAdditionalProperties());
 ```
 
 :::note[Trimming and Native AOT]
 Unless a `JsonTypeInfo<T>` is passed, the subject is serialized by reflection, which is switched off when publishing
-with trimming or [Native AOT](https://docs.testably.org/aweXpect/setup/native-aot). In such an application, pass
+with trimming or [Native AOT](/aweXpect/setup/native-aot). In such an application, pass
 the source-generated `JsonTypeInfo<T>` of the subject together with the expected value as a JSON string:
 
 ```csharp
 [JsonSerializable(typeof(Track))]
 internal partial class TrackContext : JsonSerializerContext;
 
-await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
+await That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2}""",
     TrackContext.Default.Track, o => o.TreatingNullAsAbsent());
 ```
 :::
@@ -162,7 +166,7 @@ await Expect.That(track).IsJsonSerializedAs("""{"Title": "Let It Be", "Genre": 2
 
 `IsJsonSerializable` takes the `JsonTypeInfo<T>` as well, and then serializes and deserializes the subject as `T`. It
 also compares the deserialized object with the subject by
-[equivalency](https://docs.testably.org/aweXpect/setup/native-aot#equivalency), which needs the members of the
+[equivalency](/aweXpect/setup/native-aot#equivalency), which needs the members of the
 subject type registered. The source generator of aweXpect registers them at the call site, but it cannot see the
 properties that the `System.Text.Json` source generator adds to the context. Pass the type info from a variable of type
 `JsonTypeInfo<T>` instead, or name the type in `[assembly: GenerateMetadata(typeof(Track))]`:
@@ -170,7 +174,7 @@ properties that the `System.Text.Json` source generator adds to the context. Pas
 ```csharp
 JsonTypeInfo<Track> typeInfo = TrackContext.Default.Track;
 
-await Expect.That(track).IsJsonSerializable(typeInfo);
+await That(track).IsJsonSerializable(typeInfo);
 ```
 
 Expected values in any expectation, e.g. in `Matches` or `IsValidJsonMatching`, are serialized by reflection as
@@ -182,7 +186,7 @@ need no serialization at all. A named type works when it is registered in a sour
 context, whose options are passed with [`WithSerializerOptions(…)`](./02-matching.md#serializer-options):
 
 ```csharp
-await Expect.That(element).Matches(new Track("Let It Be", Genre.Rock),
+await That(element).Matches(new Track("Let It Be", Genre.Rock),
     o => o.WithSerializerOptions(TrackContext.Default.Options));
 ```
 

@@ -1,8 +1,12 @@
+---
+description: Filter and verify assemblies by name, target framework, version, strong name, attributes and dependencies.
+---
+
 # Assemblies
 
 Assemblies are usually used as a [source](../01-sources.md#sources-the-in-helper), but you can also filter
 and verify them directly.
-[Filters and expectations](./index.md#how-to-read-the-tables) explains how to read the tables.
+[Filters and expectations](./00-index.md#how-to-read-the-tables) explains how to read the tables.
 
 |                     | Filter                       | Expect (single)          | Expect (many)            | Negated                                                                   |
 |---------------------|------------------------------|--------------------------|--------------------------|---------------------------------------------------------------------------|
@@ -19,12 +23,12 @@ and verify them directly.
 Assembly subject = Assembly.GetEntryAssembly();
 Assembly[] subjects = AppDomain.CurrentDomain.GetAssemblies();
 
-await Expect.That(subject).HasName("MusicStore").AsPrefix();
-await Expect.That(subject).DependsOn("System.Core");
-await Expect.That(subject).DoesNotDependOn("UnwantedDependency");
-await Expect.That(subject).DependsOnlyOn("MusicStore.Domain");
-await Expect.That(subjects).Have<AssemblyTitleAttribute>();
-await Expect.That(subject).Targets("net8.0");
+await That(subject).HasName("MusicStore").AsPrefix();
+await That(subject).DependsOn("System.Core");
+await That(subject).DoesNotDependOn("UnwantedDependency");
+await That(subject).DependsOnlyOn("MusicStore.Domain");
+await That(subjects).Have<AssemblyTitleAttribute>();
+await That(subject).Targets("net8.0");
 ```
 
 The target framework is matched against the short moniker form (e.g. `net8.0`, `netstandard2.0`, `net48`),
@@ -44,21 +48,21 @@ comparisons chain (all must hold).
 ```csharp
 // Predicate form
 In.AllLoadedAssemblies().WithVersion(version => version.Major >= 2)
-await Expect.That(subject).HasVersion(version => version.Major >= 2);
+await That(subject).HasVersion(version => version.Major >= 2);
 
 // Component form
 In.AllLoadedAssemblies().WithVersion().WithMajor.GreaterThanOrEqualTo(2).WithMinor.EqualTo(0)
 In.AllLoadedAssemblies().WithVersion().WithMajor.Between(2).And(4).WithMinor.NotLessThan(1)
-await Expect.That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
-await Expect.That(subjects).HaveVersion().WithMajor.EqualTo(1);
-await Expect.That(subject).HasVersion().WithMajor.Between(2).And(4).WithMinor.NotEqualTo(0);
+await That(subject).HasVersion().WithMajor.GreaterThanOrEqualTo(2);
+await That(subjects).HaveVersion().WithMajor.EqualTo(1);
+await That(subject).HasVersion().WithMajor.Between(2).And(4).WithMinor.NotEqualTo(0);
 ```
 
 On a collection of assemblies, `HaveVersion` and `DependOnlyOn` also follow aweXpect's quantifiers:
 
 ```csharp
-await Expect.That(subjects).AtLeast(2).HaveVersion().WithMajor.EqualTo(1);
-await Expect.That(subjects).AtLeast(2).DependOnlyOn("MusicStore.Domain");
+await That(subjects).AtLeast(2).HaveVersion().WithMajor.EqualTo(1);
+await That(subjects).AtLeast(2).DependOnlyOn("MusicStore.Domain");
 ```
 
 <details>

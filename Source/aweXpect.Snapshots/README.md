@@ -2,9 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Snapshots)](https://www.nuget.org/packages/aweXpect.Snapshots)
 
-[aweXpect.Snapshots](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Snapshots) compares strings and objects with reviewed
-snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex
-result without writing out the expected value.
+[aweXpect.Snapshots](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Snapshots) extends [aweXpect](https://docs.testably.org/aweXpect) with snapshot tests: it compares strings and objects with reviewed snapshots, which are stored next to the tests or in a store of your own, e.g. to verify generated text or a complex result without writing out the expected value.
 
 ## Installation
 
@@ -26,41 +24,43 @@ The packages bring `Expect.That` with them, but not the expectations for strings
 the namespace `aweXpect`; `OrphanedSnapshots`, `SnapshotAcceptance`, `SnapshotRule` and the
 [customization](#customization) need `using aweXpect.Snapshots;`.
 
+The examples write `That(...)` instead of `Expect.That(...)`, which needs `using static aweXpect.Expect;` (see [Getting started](https://docs.testably.org/aweXpect/getting-started#install-the-package)).
+
 ## At a glance
 
 ```csharp
 // compare a string with the snapshot that is stored next to the test
-await Expect.That(description).MatchesSnapshot();
+await That(description).MatchesSnapshot();
 
 // compare an object, written completely and indented by the aweXpect formatter
-await Expect.That(album).MatchesSnapshot();
+await That(album).MatchesSnapshot();
 
 // compare an exception member-wise, without members that vary per build or machine, like the stack trace
-await Expect.That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
+await That(() => player.Play(album, -1)).Throws<ArgumentOutOfRangeException>().Which.MatchesSnapshot();
 
 // replace values that change from run to run before comparing
-await Expect.That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
+await That(playlist).MatchesSnapshot().For.Text(@"plays=\d+").AsRegex().Mask("plays=<count>");
 
 // replace every Guid and ISO 8601 date with a numbered placeholder ({Guid_1}, {Date_1}, …)
-await Expect.That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
+await That(playlist).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
 
 // leave out, mask or convert members of an object, selected by their name, type or declaring type
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().WithName("PlayCount").Ignore()
     .For.Members().WithName("Id").Mask()
     .For.Members().DeclaredIn<Album>().WithName("Released").OfType<DateTime>().Convert(date => date.Year);
 
 // store a JSON string as AlbumTests.Describes.awexpect-snapshot.json for syntax highlighting
-await Expect.That(json).MatchesSnapshot().WithExtension("json");
+await That(json).MatchesSnapshot().WithExtension("json");
 
 // keep a snapshot per target framework and operating system
 // (AlbumTests.Describes@net8.0@windows.awexpect-snapshot.txt)
-await Expect.That(exception.Message).MatchesSnapshot()
+await That(exception.Message).MatchesSnapshot()
     .UniqueFor.TargetFramework().UniqueFor.OperatingSystem();
 
 // verify the public API of an assembly, written as C# declarations
 // (package aweXpect.Snapshots.PublicApi)
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
     .UniqueFor.TargetFramework();
 ```
 

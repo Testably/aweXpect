@@ -2,8 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Json)](https://www.nuget.org/packages/aweXpect.Json)
 
-[aweXpect.Json](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Json) contains expectations for JSON strings, `JsonElement`,
-`JsonNode` and the JSON serialization of objects with `System.Text.Json`.
+[aweXpect.Json](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Json) extends [aweXpect](https://docs.testably.org/aweXpect) with expectations for JSON strings, `JsonElement`, `JsonNode` and the JSON serialization of objects with `System.Text.Json`.
 
 ## Installation
 
@@ -16,6 +15,8 @@ The package brings `Expect.That` with it, but not the expectations for strings, 
 The expectations live in the namespace `aweXpect`, so `using aweXpect;` is all you need; only the
 [customization](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/customization) lives in `aweXpect.Json`.
 
+The examples write `That(...)` instead of `Expect.That(...)`, which needs `using static aweXpect.Expect;` (see [Getting started](https://docs.testably.org/aweXpect/getting-started#install-the-package)).
+
 ## At a glance
 
 ```csharp
@@ -23,20 +24,20 @@ string json = """{"title": "Let It Be", "artist": "The Beatles", "durationSecond
 
 // compare JSON strings by their structure instead of their formatting
 string expected = """{ "artist": "The Beatles", "title": "Let It Be", "durationSeconds": 243 }""";
-await Expect.That(json).IsEqualTo(expected).AsJson();
+await That(json).IsEqualTo(expected).AsJson();
 
 // verify that a string is valid JSON that matches an expected value
-await Expect.That(json).IsValidJsonMatching(new { title = "Let It Be" });
+await That(json).IsValidJsonMatching(new { title = "Let It Be" });
 
 // verify single values of a JsonElement or JsonNode
 JsonElement track = JsonDocument.Parse(json).RootElement;
-await Expect.That(track)
+await That(track)
     .HasProperty("title", t => t.IsString("Let It Be")).And
     .HasProperty("durationSeconds", d => d.IsNumber<int>()).And
     .DoesNotHaveProperty("password");
 
 // verify the JSON contract of a type, e.g. `record Track(string Title, string Artist)`
-await Expect.That(new Track("Let It Be", "The Beatles")).IsJsonSerializedAs(
+await That(new Track("Let It Be", "The Beatles")).IsJsonSerializedAs(
     """{"Title": "Let It Be", "Artist": "The Beatles"}""");
 ```
 

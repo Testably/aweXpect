@@ -1,3 +1,7 @@
+---
+description: Verify the address family, loopback, subnet membership and equality of an IPAddress.
+---
+
 # IP addresses
 
 Describes the possible expectations for `IPAddress`.
@@ -17,9 +21,9 @@ You can verify what kind of address the `IPAddress` is, or that it is not:
 ```csharp
 IPAddress address = IPAddress.Parse("10.0.0.1");
 
-await Expect.That(address).IsIPv4();
-await Expect.That(address).IsNotIPv6();
-await Expect.That(address).IsNotLoopback();
+await That(address).IsIPv4();
+await That(address).IsNotIPv6();
+await That(address).IsNotLoopback();
 ```
 
 The address family decides between IPv4 and IPv6. An IPv4-mapped address like `::ffff:10.0.0.1` is an IPv6 address, so
@@ -27,7 +31,7 @@ The address family decides between IPv4 and IPv6. An IPv4-mapped address like `:
 ```csharp
 IPAddress address = IPAddress.Parse("::ffff:10.0.0.1");
 
-await Expect.That(address).IsIPv4();
+await That(address).IsIPv4();
 ```
 
 fails with:
@@ -49,11 +53,11 @@ You can verify that the `IPAddress` is in a subnet given in CIDR notation, or th
 ```csharp
 IPAddress address = IPAddress.Parse("192.168.0.1");
 
-await Expect.That(address).IsInSubnet("192.168.0.0/16");
-await Expect.That(address).IsNotInSubnet("10.0.0.0/8");
+await That(address).IsInSubnet("192.168.0.0/16");
+await That(address).IsNotInSubnet("10.0.0.0/8");
 ```
 
-For example, `await Expect.That(address).IsInSubnet("10.0.0.0/8");` fails with:
+For example, `await That(address).IsInSubnet("10.0.0.0/8");` fails with:
 
 ```text title="Failure message"
 Expected that address
@@ -65,8 +69,8 @@ An IPv4 address is in an IPv6 subnet if its IPv4-mapped address is, and an IPv4-
 its IPv4 address is:
 
 ```csharp
-await Expect.That(IPAddress.Parse("::ffff:10.0.0.1")).IsInSubnet("10.0.0.0/8");
-await Expect.That(IPAddress.Parse("10.0.0.1")).IsInSubnet("::ffff:0:0/96");
+await That(IPAddress.Parse("::ffff:10.0.0.1")).IsInSubnet("10.0.0.0/8");
+await That(IPAddress.Parse("10.0.0.1")).IsInSubnet("::ffff:0:0/96");
 ```
 
 ## Equality
@@ -76,8 +80,8 @@ You can verify that the `IPAddress` is equal to an expected address, or that it 
 ```csharp
 IPAddress address = IPAddress.Parse("10.0.0.1");
 
-await Expect.That(address).IsEqualTo(IPAddress.Parse("10.0.0.1"));
-await Expect.That(address).IsNotEqualTo(IPAddress.Parse("10.0.0.2"));
+await That(address).IsEqualTo(IPAddress.Parse("10.0.0.1"));
+await That(address).IsNotEqualTo(IPAddress.Parse("10.0.0.2"));
 ```
 
 The comparison uses `IPAddress.Equals`, so an IPv4-mapped address like `::ffff:10.0.0.1` is not equal to `10.0.0.1`.
@@ -86,7 +90,7 @@ With `IgnoringIPv4MappedToIPv6()`, IPv4-mapped addresses on either side are mapp
 ```csharp
 IPAddress address = IPAddress.Parse("10.0.0.1");
 
-await Expect.That(address).IsEqualTo(IPAddress.Parse("::ffff:10.0.0.1")).IgnoringIPv4MappedToIPv6();
+await That(address).IsEqualTo(IPAddress.Parse("::ffff:10.0.0.1")).IgnoringIPv4MappedToIPv6();
 ```
 
 Different addresses are still not equal, so
@@ -94,7 +98,7 @@ Different addresses are still not equal, so
 ```csharp
 IPAddress address = IPAddress.Parse("::ffff:10.0.0.2");
 
-await Expect.That(address).IsEqualTo(IPAddress.Parse("10.0.0.1")).IgnoringIPv4MappedToIPv6();
+await That(address).IsEqualTo(IPAddress.Parse("10.0.0.1")).IgnoringIPv4MappedToIPv6();
 ```
 
 fails with:

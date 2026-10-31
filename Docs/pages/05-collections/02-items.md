@@ -1,3 +1,7 @@
+---
+description: Verify the number of items, how many items meet an expectation, a single item or the item at an index.
+---
+
 import PropertyComparisons from '../_property-comparisons.md';
 
 # Items
@@ -21,9 +25,9 @@ You can verify the number of items in a collection:
 ```csharp
 IEnumerable<string> songs = ["Come Together", "Something", "Let It Be"];
 
-await Expect.That(songs).HasCount(3);
-await Expect.That(songs).HasCount().GreaterThan(2);
-await Expect.That(songs).HasCount().NotBetween(5).And(10);
+await That(songs).HasCount(3);
+await That(songs).HasCount().GreaterThan(2);
+await That(songs).HasCount().NotBetween(5).And(10);
 ```
 
 <PropertyComparisons example="HasCount(3)" />
@@ -31,8 +35,8 @@ await Expect.That(songs).HasCount().NotBetween(5).And(10);
 You can also verify that the collection is empty or not:
 
 ```csharp
-await Expect.That(Array.Empty<Track>()).IsEmpty();
-await Expect.That(new[] { "Let It Be" }).IsNotEmpty();
+await That(Array.Empty<Track>()).IsEmpty();
+await That(new[] { "Let It Be" }).IsNotEmpty();
 ```
 
 ## Quantifiers
@@ -64,7 +68,7 @@ and what the items must meet:
 | [`AreUnique`](#unique)              | occurs exactly once (`AreNotUnique`: more than once)                  |
 
 An empty collection satisfies `All()`, like it does `Enumerable.All`, so
-`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds.
+`That(new int[0]).All().Satisfy(x => false)` succeeds.
 
 ### Nested expectation
 
@@ -73,13 +77,13 @@ You can verify that items in a collection comply with an expectation on the indi
 ```csharp
 IEnumerable<int> playCounts = [1, 2, 3];
 
-await Expect.That(playCounts).All().ComplyWith(item => item.IsLessThan(4));
-await Expect.That(playCounts).Any().ComplyWith(item => item.IsEqualTo(2));
-await Expect.That(playCounts).AtLeast(2).ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
-await Expect.That(playCounts).AtMost(1).ComplyWith(item => item.IsNegative());
-await Expect.That(playCounts).Between(2).And(3).ComplyWith(item => item.IsPositive());
-await Expect.That(playCounts).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
-await Expect.That(playCounts).None().ComplyWith(item => item.IsNegative());
+await That(playCounts).All().ComplyWith(item => item.IsLessThan(4));
+await That(playCounts).Any().ComplyWith(item => item.IsEqualTo(2));
+await That(playCounts).AtLeast(2).ComplyWith(item => item.IsGreaterThanOrEqualTo(2));
+await That(playCounts).AtMost(1).ComplyWith(item => item.IsNegative());
+await That(playCounts).Between(2).And(3).ComplyWith(item => item.IsPositive());
+await That(playCounts).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
+await That(playCounts).None().ComplyWith(item => item.IsNegative());
 ```
 
 <details>
@@ -100,13 +104,13 @@ You can verify that items in a collection satisfy a condition:
 ```csharp
 Track[] tracks = [new() { Title = "Let It Be", PlayCount = 3 }, new() { Title = "Get Back", PlayCount = 0 }];
 
-await Expect.That(tracks).Any().Satisfy(track => track.PlayCount > 0);
-await Expect.That(tracks).None().Satisfy(track => track.Title == null);
+await That(tracks).Any().Satisfy(track => track.PlayCount > 0);
+await That(tracks).None().Satisfy(track => track.Title == null);
 ```
 
 [`Contains(predicate)`](./01-equality.md#predicate) verifies the same as `Any().Satisfy(…)`, and
 [`HasItem`](#item-at-index) verifies the item at an index, see
-[choosing an expectation](./index.md#choosing-an-expectation).
+[choosing an expectation](./00-index.md#choosing-an-expectation).
 
 ### Equality
 
@@ -115,7 +119,7 @@ You can verify that the items in the collection are equal to the `expected` valu
 ```csharp
 IEnumerable<string> playlist = ["Let It Be", "Let It Be", "Let It Be"];
 
-await Expect.That(playlist).All().AreEqualTo("Let It Be");
+await That(playlist).All().AreEqualTo("Let It Be");
 ```
 
 The items are [compared](./01-equality.md#comparing-items) like in the other collection expectations, so you can
@@ -125,10 +129,10 @@ specify a custom comparer, equivalency, a tolerance or a string option:
 IEnumerable<Album> albums = //...
 Album expected = //...
 
-await Expect.That(albums).All().AreEqualTo(expected).Equivalent();
-await Expect.That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
-await Expect.That(albums).AtLeast(2).AreEquivalentTo(expected);
-await Expect.That(["let it be", "LET IT BE"]).All().AreEqualTo("Let It Be").IgnoringCase();
+await That(albums).All().AreEqualTo(expected).Equivalent();
+await That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
+await That(albums).AtLeast(2).AreEquivalentTo(expected);
+await That(["let it be", "LET IT BE"]).All().AreEqualTo("Let It Be").IgnoringCase();
 ```
 
 ### Type
@@ -138,9 +142,9 @@ You can verify that the items are of a given type, or exactly of that type:
 ```csharp
 IEnumerable<INotification> notifications = //...
 
-await Expect.That(notifications).All().Are<INotification>();
-await Expect.That(notifications).AtLeast(1).AreExactly<TrackAddedNotification>();
-await Expect.That(notifications).None().Are(typeof(TrackRemovedNotification));
+await That(notifications).All().Are<INotification>();
+await That(notifications).AtLeast(1).AreExactly<TrackAddedNotification>();
+await That(notifications).None().Are(typeof(TrackRemovedNotification));
 ```
 
 ### Unique
@@ -148,10 +152,10 @@ await Expect.That(notifications).None().Are(typeof(TrackRemovedNotification));
 You can verify how many items in a collection occur exactly once:
 
 ```csharp
-await Expect.That(["Help!", "Yesterday", "Let It Be"]).All().AreUnique();
-await Expect.That(["Help!", "Yesterday", "Let It Be", "Help!"]).AtLeast(1).AreNotUnique();
-await Expect.That(["Help!", "Yesterday", "Help!", "Yesterday"]).None().AreUnique();
-await Expect.That(["Help!", "Yesterday", "Let It Be", "Get Back", "Michelle", "Michelle"]).AtLeast(4).AreUnique();
+await That(["Help!", "Yesterday", "Let It Be"]).All().AreUnique();
+await That(["Help!", "Yesterday", "Let It Be", "Help!"]).AtLeast(1).AreNotUnique();
+await That(["Help!", "Yesterday", "Help!", "Yesterday"]).None().AreUnique();
+await That(["Help!", "Yesterday", "Let It Be", "Get Back", "Michelle", "Michelle"]).AtLeast(4).AreUnique();
 ```
 
 For objects, you can also verify the uniqueness of a member, and you can use a
@@ -160,9 +164,9 @@ For objects, you can also verify the uniqueness of a member, and you can use a
 ```csharp
 Album[] albums = //...
 
-await Expect.That(albums).All().AreUnique(x => x.Title);
-await Expect.That(albums).All().AreUnique().Using(new AlbumComparer());
-await Expect.That(["Help!", "Revolver"]).All().AreUnique().IgnoringCase();
+await That(albums).All().AreUnique(x => x.Title);
+await That(albums).All().AreUnique().Using(new AlbumComparer());
+await That(["Help!", "Revolver"]).All().AreUnique().IgnoringCase();
 ```
 
 For dictionaries, verify the [values](./04-dictionaries.md#as-collections) instead, as the keys are unique by design.
@@ -174,8 +178,8 @@ You can verify that the collection contains a single item, and continue with exp
 ```csharp
 IEnumerable<int> playCounts = [42];
 
-await Expect.That(playCounts).HasSingle();
-await Expect.That(playCounts).HasSingle().Which.IsGreaterThan(41);
+await That(playCounts).HasSingle();
+await That(playCounts).HasSingle().Which.IsGreaterThan(41);
 ```
 
 You can also apply filters for the items:
@@ -183,17 +187,17 @@ You can also apply filters for the items:
 ```csharp
 IEnumerable<int> playCounts = [1, 2, 3];
 
-await Expect.That(playCounts).HasSingle().Matching(it => it > 2);
+await That(playCounts).HasSingle().Matching(it => it > 2);
 
 // Or with generic type:
 IEnumerable<Artist> artists = //...
 
-await Expect.That(artists).HasSingle().Matching<Band>();
-await Expect.That(artists).HasSingle().Matching<Band>(band => band.Members.Count == 4);
+await That(artists).HasSingle().Matching<Band>();
+await That(artists).HasSingle().Matching<Band>(band => band.Members.Count == 4);
 
 // Similar to the expectations above, but verify the type exactly:
-await Expect.That(artists).HasSingle().MatchingExactly<Band>();
-await Expect.That(artists).HasSingle().MatchingExactly<Band>(band => band.Members.Count == 4);
+await That(artists).HasSingle().MatchingExactly<Band>();
+await That(artists).HasSingle().MatchingExactly<Band>(band => band.Members.Count == 4);
 ```
 
 The awaited result is the single item:
@@ -201,7 +205,7 @@ The awaited result is the single item:
 ```csharp
 IEnumerable<string> songs = ["Let It Be"];
 
-string song = await Expect.That(songs).HasSingle();
+string song = await That(songs).HasSingle();
 ```
 
 ## Item at index
@@ -211,9 +215,9 @@ You can verify that the collection contains an item that satisfies the expectati
 ```csharp
 IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
 
-await Expect.That(songs).HasItem("Dig a Pony").AtIndex(1); // at the zero-based index 1
-await Expect.That(songs).HasItem("Across the Universe").AtIndexFromEnd(1); // zero-based index 1 from the end
-await Expect.That(songs).HasItem(it => it.StartsWith("I Me")); // at any index
+await That(songs).HasItem("Dig a Pony").AtIndex(1); // at the zero-based index 1
+await That(songs).HasItem("Across the Universe").AtIndexFromEnd(1); // zero-based index 1 from the end
+await That(songs).HasItem(it => it.StartsWith("I Me")); // at any index
 ```
 
 You can also check that the item matches a specific type:
@@ -222,13 +226,13 @@ You can also check that the item matches a specific type:
 IEnumerable<INotification> values = //...
 
 // Verify that the item at index 1 is of type `TrackAddedNotification`
-await Expect.That(values).HasItem().Matching<TrackAddedNotification>().AtIndex(1);
+await That(values).HasItem().Matching<TrackAddedNotification>().AtIndex(1);
 // Verify that an item of type `TrackRemovedNotification` for the track with ID 3 exists
-await Expect.That(values).HasItem().Matching<TrackRemovedNotification>(x => x.TrackId == 3);
+await That(values).HasItem().Matching<TrackRemovedNotification>(x => x.TrackId == 3);
 
 // Similar to the expectations above, but verify the type exactly:
-await Expect.That(values).HasItem().MatchingExactly<TrackAddedNotification>().AtIndex(1);
-await Expect.That(values).HasItem().MatchingExactly<TrackRemovedNotification>(x => x.TrackId == 3);
+await That(values).HasItem().MatchingExactly<TrackAddedNotification>().AtIndex(1);
+await That(values).HasItem().MatchingExactly<TrackRemovedNotification>(x => x.TrackId == 3);
 ```
 
 You can also use expectations on the individual items:
@@ -236,12 +240,12 @@ You can also use expectations on the individual items:
 ```csharp
 IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
 
-await Expect.That(songs).HasItemThat(it => it.IsEqualTo("Dig a Pony")).AtIndex(1);
-await Expect.That(songs).HasItemThat(it => it.StartsWith("Across").And.EndsWith("Universe")); // at any index
+await That(songs).HasItemThat(it => it.IsEqualTo("Dig a Pony")).AtIndex(1);
+await That(songs).HasItemThat(it => it.StartsWith("Across").And.EndsWith("Universe")); // at any index
 ```
 
 At any index, `HasItem(predicate)` and `HasItemThat` verify the same as `Any().Satisfy(…)` and
-`Any().ComplyWith(…)`, see [choosing an expectation](./index.md#choosing-an-expectation).
+`Any().ComplyWith(…)`, see [choosing an expectation](./00-index.md#choosing-an-expectation).
 
 Each of these expectations has a negated counterpart. It is satisfied when the index holds a different item, and also
 when the collection is too short to have an item at that index:
@@ -249,8 +253,8 @@ when the collection is too short to have an item at that index:
 ```csharp
 IEnumerable<string> songs = ["Two of Us", "Dig a Pony"];
 
-await Expect.That(songs).DoesNotHaveItem("I Me Mine").AtIndex(1);
-await Expect.That(songs).DoesNotHaveItem("Two of Us").AtIndex(4); // no item at index 4
-await Expect.That(songs).DoesNotHaveItem().Matching(it => it.StartsWith("I Me")).AtIndex(1);
-await Expect.That(songs).DoesNotHaveItemThat(it => it.StartsWith("I Me")).AtIndex(1);
+await That(songs).DoesNotHaveItem("I Me Mine").AtIndex(1);
+await That(songs).DoesNotHaveItem("Two of Us").AtIndex(4); // no item at index 4
+await That(songs).DoesNotHaveItem().Matching(it => it.StartsWith("I Me")).AtIndex(1);
+await That(songs).DoesNotHaveItemThat(it => it.StartsWith("I Me")).AtIndex(1);
 ```

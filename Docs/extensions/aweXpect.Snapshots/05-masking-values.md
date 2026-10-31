@@ -1,3 +1,7 @@
+---
+description: Mask, convert or leave out members, lines and text that change from run to run, per expectation or for all snapshots.
+---
+
 # Masking and ignoring values
 
 Values that change from run to run, such as ids or timestamps, and values that are irrelevant for the test can be
@@ -5,7 +9,7 @@ masked, converted or left out before the subject is compared, so that the snapsh
 `.For`, selects what it applies to, narrows it down with filters, and ends with exactly one action:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Guids().Mask()                           // numbered: {Guid_1}
     .For.Members().WithName("Id").Ignore();       // left out with its name
 ```
@@ -44,7 +48,7 @@ too, and also the items of tuples, collections and dictionaries:
   `GetValue()`.
 
 ```csharp
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Duration)).Ignore()
     .For.Members().WithName("Url").AsSuffix().IgnoringCase().Ignore()
     .For.Members().DeclaredIn<Track>().WithName(nameof(Track.Id)).Mask()
@@ -63,7 +67,7 @@ For members and values, the template can also depend on the value, which the fun
 to link ids that belong together:
 
 ```csharp
-await Expect.That(label).MatchesSnapshot()
+await That(label).MatchesSnapshot()
     .For.Members().OfType<int>().WithName("Id").AsSuffix()
     .Mask(value => "{" + (value.Name == "Id"
         ? value.DeclaringType.Name
@@ -105,7 +109,7 @@ Values of related types, such as numeric ids of `int` and `long`, are selected t
 `OrOfExactType<T>()` directly after `OfType<T>()` or `OfExactType<T>()`:
 
 ```csharp
-await Expect.That(label).MatchesSnapshot()
+await That(label).MatchesSnapshot()
     .For.Members().OfType<int>().OrOfType<long>().WithName("Id").AsSuffix().Mask("<id>");
 ```
 
@@ -139,7 +143,7 @@ Label {
 Members that are often empty, e.g. the bonus tracks of an album, can be left out while they are empty:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot().For.Members().WhichAreEmptyCollections().Ignore();
+await That(album).MatchesSnapshot().For.Members().WhichAreEmptyCollections().Ignore();
 ```
 
 ```text title="Snapshot"
@@ -172,7 +176,7 @@ A volatile value often has a meaningful and stable part, e.g. the year of a rele
 track. `Convert(…)` replaces the value with the result of the converter:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
         .Convert(released => released.Year)
     .For.Values().OfType<TimeSpan>().Convert(duration => Math.Round(duration.TotalMinutes));
@@ -212,7 +216,7 @@ Lines that are only noise, such as durations, timestamps or banners, can be left
 as a whole:
 
 ```csharp
-await Expect.That(log).MatchesSnapshot()
+await That(log).MatchesSnapshot()
     .For.Lines().Containing("elapsed").IgnoringCase().Ignore()
     .For.Lines().Containing("Track ?: *Live*").AsWildcard().Ignore()
     .For.Lines().Containing(@"^\d{2}:\d{2} ").AsRegex().Ignore()
@@ -247,7 +251,7 @@ A pattern uses the regex timeout of aweXpect; a pattern that times out fails the
 replaces it:
 
 ```csharp
-await Expect.That(json).MatchesSnapshot()
+await That(json).MatchesSnapshot()
     .For.Text(album.Id.ToString()).Mask("<album-id>")
     .For.Text("abbey road").IgnoringCase().Mask("<title>")
     .For.Text("Track ?:*").AsWildcard().Mask("<track>")
@@ -270,7 +274,7 @@ await Expect.That(json).MatchesSnapshot()
 The text rules are applied in the order in which they are written, so put a specific rule before a general one:
 
 ```csharp
-await Expect.That(playlist).MatchesSnapshot()
+await That(playlist).MatchesSnapshot()
     .For.Text(DateTime.Today.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)).Mask("<today>")
     .For.Text(@"\d{4}-\d{2}-\d{2}").AsRegex().Mask("<date>");
 ```
@@ -295,7 +299,7 @@ default); a pattern that times out fails the expectation.
 that it stands out from the surrounding text. The same value keeps the same number:
 
 ```csharp
-await Expect.That(log).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
+await That(log).MatchesSnapshot().For.Guids().Mask().For.Dates().Mask();
 ```
 
 ```text title="Snapshot"
@@ -322,7 +326,7 @@ number of the value. Every value masked with the same template shares one counte
 keeps the same number, so relations stay visible in the snapshot:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().WithName("ArtistId").Mask("{Artist_{0}}");   // ArtistId = {Artist_1}
 ```
 
@@ -351,7 +355,7 @@ Cache: C:\Users\paul\AppData\Local\Temp\abbey.tmp      Cache: {TempPath}\abbey.t
 | Placeholder          | Path                                                                                     |
 |----------------------|------------------------------------------------------------------------------------------|
 | `{ProjectDirectory}` | the directory of the test project that contains the test file                            |
-| `{SourceRoot}`       | the source root, see [deterministic builds](advanced/04-deterministic-builds.md)                  |
+| `{SourceRoot}`       | the source root, see [deterministic builds](08-advanced/04-deterministic-builds.md)                  |
 | `{OutputDirectory}`  | `AppContext.BaseDirectory`                                                               |
 | `{TempPath}`         | `Path.GetTempPath()`                                                                     |
 | `{UserProfile}`      | `Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)`, on every system      |
@@ -366,7 +370,7 @@ The name of the machine and of the user are only masked when asked for, as whole
 the paths, also by a rule for all snapshots, so a path in the user profile becomes `{UserProfile}`:
 
 ```csharp
-await Expect.That(log).MatchesSnapshot().For.MachineName().Mask().For.UserName().Mask();
+await That(log).MatchesSnapshot().For.MachineName().Mask().For.UserName().Mask();
 ```
 
 <details>
@@ -413,7 +417,7 @@ using (Customize.aweXpect.Snapshots().Rules.Set([
            SnapshotRule.For.Text(library.Owner).Mask("<owner>"),
        ]))
 {
-    await Expect.That(playlist).MatchesSnapshot();
+    await That(playlist).MatchesSnapshot();
 }
 ```
 
@@ -489,7 +493,7 @@ The actions that each selection offers:
 A combination of the rules described above:
 
 ```csharp
-await Expect.That(album).MatchesSnapshot()
+await That(album).MatchesSnapshot()
     .For.Members().WithName("PlayCount").Ignore()                       // left out with its name
     .For.Members().WithName("Id").Mask()                                // numbered: Id = {Id_1}
     .For.Members().WithPath("Artist.StreamToken").Mask("{token}")       // fixed text
@@ -497,7 +501,7 @@ await Expect.That(album).MatchesSnapshot()
     .For.Members().DeclaredIn<Album>().WithName(nameof(Album.Released)).OfType<DateTime>()
         .Convert(released => released.Year);                            // Released = 1969
 
-await Expect.That(log).MatchesSnapshot()
+await That(log).MatchesSnapshot()
     .For.Lines().Containing("elapsed").IgnoringCase().Ignore()
     .For.Text(album.Id.ToString()).Mask("<album-id>")
     .For.Guids().Mask()

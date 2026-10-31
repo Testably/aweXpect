@@ -1,9 +1,13 @@
+---
+description: Change how aweXpect.Web formats the content of requests and responses in failure messages.
+---
+
 # Customization
 
 Set a value under `Customize.aweXpect.Web()` for the current
-[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+[async flow](/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
 `Customize.aweXpect.Global.Web()` for
-[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[all tests](/aweXpect/how-it-works/configuration#global-defaults).
 
 | Value                                      | Default                                                                    | Summary                                                          |
 |--------------------------------------------|----------------------------------------------------------------------------|------------------------------------------------------------------|

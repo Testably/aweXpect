@@ -1,6 +1,5 @@
 ---
-title: What's new in v4
-sidebar_position: 4
+description: What changed in aweXpect v4 and how to upgrade from aweXpect 3.x.
 sidebar_label: From aweXpect 3.x
 ---
 
@@ -15,8 +14,7 @@ To upgrade:
 
 1. Update all aweXpect packages to the same 4.x version and fix the compile errors. Most of them are
    [renames](#renamed-expectations) or changes in an [extension package](#extension-packages).
-2. Run your tests. Some failure messages changed and a few expectations are stricter now; the
-   [behaviour changes](#behaviour-changes) explain them.
+2. Run your tests. Some failure messages changed and a few expectations are stricter now; the [behavior changes](#behavior-changes) explain them.
 3. If you wrote your own expectations, also read [Extensions](#extensions).
 
 Most changes only affect code that names a result type or passes an argument by name; chained expectations keep
@@ -55,7 +53,7 @@ None of the renames has an `[Obsolete]` forwarder; each is a compile error that 
 Parameters that name a looked-up item are called `name` (`HasHeader(name)`, `DoesNotHaveHeader(name)`), and compared
 values are called `expected` or `unexpected`. This only affects arguments passed by name.
 
-## Behaviour changes
+## Behavior changes
 
 ### Failure messages
 
@@ -120,7 +118,7 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTimeProvider` of
 `Microsoft.Extensions.TimeProvider.Testing`. On .NET Framework, `TimeProvider` comes from the
 `Microsoft.Bcl.TimeProvider` package, a new dependency of `aweXpect.Core` for `netstandard2.0`. See
-[on a virtual clock](../03-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock).
+[on a virtual clock](../02-how-it-works/06-time-and-cancellation.md#on-a-virtual-clock).
 
 ## New expectations
 

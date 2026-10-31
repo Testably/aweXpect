@@ -20,7 +20,7 @@
 
 - `Source/aweXpect`: `aweXpect.Tests`, `aweXpect.Internal.Tests`, and `aweXpect.Docs.Tests` (slow tests) when a public
   expectation is added or renamed.
-- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behaviour shows there, and the tests of
+- `Source/aweXpect.Core`: `aweXpect.Core.Tests`, plus `aweXpect.Tests` if the behavior shows there, and the tests of
   the extension packages if they use what changed.
 - `Source/aweXpect.<Extension>`: the test projects `Tests/aweXpect.<Extension>.*Tests`.
 - `[GuaranteesNotNull]` markings: `aweXpect.Analyzers.Tests` (`IsNotNullSuppressorTests` asserts which expectations
@@ -99,7 +99,7 @@ The slow tests of `aweXpect.Docs.Tests`:
   `Tests/aweXpect.Xml.Tests/Helpers`.
 - In `aweXpect.Reflection.Tests`, fixture attributes are named `MarkerAttribute`, as a nested `TestAttribute` would
   shadow TUnit's `[Test]`. Sample types live in `TestHelpers/Types`, dependency layers for the architecture rules in
-  `TestHelpers/Dependencies`. Filter tests are usually named `Should<Behaviour>`.
+  `TestHelpers/Dependencies`. Filter tests are usually named `Should<Behavior>`.
 - Snapshot tests:
   - `aweXpect.Snapshots.Tests` covers the expectations, rules, stores, comparers, reporters and acceptance. Its tests use
     a temporary `SnapshotDirectory` or the `InMemorySnapshotStore` instead of writing next to the project.
@@ -109,7 +109,7 @@ The slow tests of `aweXpect.Docs.Tests`:
     features) and `PublicApi.PackageFixture` (whose package dependency is not in its build output).
   - `aweXpect.Snapshots.Tests`, `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` set the acceptance to
     `None` in a module initializer, so `AWEXPECT_ACCEPT_SNAPSHOTS` has no effect there; rename the pending files by
-    hand. `.PublicApi.Tests` honours it.
+    hand. `.PublicApi.Tests` honors it.
   - Snapshots unique per target framework (`@net48`, `@net8.0`, `@net10.0`) need a run on each.
   - The test projects import `aweXpect.Snapshots.targets`, as a project reference does not; so does
     `Tests/Aot/aweXpect.Snapshots.Aot`, which is built deterministically (`ContinuousIntegrationBuild`) to cover

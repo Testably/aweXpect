@@ -1,8 +1,12 @@
+---
+description: Offer options on your expectations, set the options of aweXpect.Core in your own code and write options types of your own.
+---
+
 # Options
 
 The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
 namespace. They apply to every result that provides the matching options and follow the
-[general rules for options](../03-how-it-works/05-options.md).
+[general rules for options](../02-how-it-works/05-options.md).
 
 <details>
 <summary>Namespaces used on this page</summary>
@@ -76,7 +80,7 @@ private sealed class HasTitleConstraint(
 ```csharp
 Track track = new("Let It Be", new TimeSpan(0, 4, 3));
 
-await Expect.That(track).HasTitle("let it be").IgnoringCase();
+await That(track).HasTitle("let it be").IgnoringCase();
 ```
 
 - `IgnoringCase()` is called after the constraint was added, so the constraint reads `options.Value` only in
@@ -219,7 +223,7 @@ discarded, e.g. `options.AtLeast(2);`, compiles and changes nothing. The analyze
 [aweXpect0009](../08-analyzers.md#awexpect0009) reports it in a project that references `aweXpect`.
 :::
 
-The [general rules for options](../03-how-it-works/05-options.md) apply to the options of `aweXpect.Core` as well as to
+The [general rules for options](../02-how-it-works/05-options.md) apply to the options of `aweXpect.Core` as well as to
 those of your own. For an extension, these details matter as well:
 
 - Options that set the same thing in different ways throw an `InvalidOperationException` at the call, with a message
@@ -358,7 +362,7 @@ The caller then allows a difference of whole days, e.g. for the release date of 
 ```csharp no-compile
 DateOnly releaseDate = new(1969, 9, 26);
 
-await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
+await That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(TimeSpan.FromDays(1));
 ```
 
 In the constraint, compare with `tolerance.Value.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the

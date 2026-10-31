@@ -1,3 +1,7 @@
+---
+description: Use the JSON expectations on a JsonNode and its subtypes JsonObject, JsonArray and JsonValue.
+---
+
 # `JsonNode`
 
 A [`JsonNode`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.nodes.jsonnode) and its subtypes
@@ -9,12 +13,12 @@ same options and failure messages:
 ```csharp
 JsonNode? track = JsonNode.Parse("""{"title": "Let It Be", "artist": "The Beatles"}""");
 
-await Expect.That(track).Matches(new { title = "Let It Be" });
-await Expect.That(track).HasProperty("artist", a => a.IsString("The Beatles"));
+await That(track).Matches(new { title = "Let It Be" });
+await That(track).HasProperty("artist", a => a.IsString("The Beatles"));
 
 JsonArray titles = new("Let It Be", "Yesterday");
 
-await Expect.That(titles).IsArray().WhoseElements.HasCount(2);
+await That(titles).IsArray().WhoseElements.HasCount(2);
 ```
 
 `MatchesExactly(new { title = "Let It Be" })` on the track would fail with:
@@ -30,7 +34,7 @@ The expectations keep the type of the subject for chaining with `.And`. A call t
 on a `JsonValue`, which has `IsNumber<TNumber>` overloads of its own.
 
 :::note
-The node is verified in the state it has when the expectation is awaited, so changes made after `Expect.That(…)` are
+The node is verified in the state it has when the expectation is awaited, so changes made after `That(…)` are
 included.
 :::
 
@@ -50,9 +54,9 @@ object as `KeyValuePair<string, JsonNode?>` items with the name and the node of 
 JsonArray playlist = new(new JsonObject { ["title"] = "Let It Be" });
 JsonNode first = playlist[0]!;
 
-await Expect.That(playlist).HasElementAt(0, e => e.IsSameAs(first));
-await Expect.That(playlist).IsArray().WhoseElements.Contains(first);
-await Expect.That(first).IsObject().WhoseProperties.All().Satisfy(p => p.Value is JsonValue);
+await That(playlist).HasElementAt(0, e => e.IsSameAs(first));
+await That(playlist).IsArray().WhoseElements.Contains(first);
+await That(first).IsObject().WhoseProperties.All().Satisfy(p => p.Value is JsonValue);
 ```
 
 `Matches(null)` succeeds for a `null` node, while `IsObject()` would fail with:

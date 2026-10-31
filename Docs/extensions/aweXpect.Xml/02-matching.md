@@ -1,3 +1,7 @@
+---
+description: Match an XElement or XDocument with an expected XML and relax the comparison with the XML options.
+---
+
 # Matching XML
 
 Describes the possible expectations for matching an `XElement` or an `XDocument` with an expected XML, and the
@@ -16,12 +20,12 @@ expected XML:
 ```csharp
 XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
 
-await Expect.That(track).Matches("""<track title="Let It Be" />""");
-await Expect.That(track).MatchesExactly("""
-                                        <track artist="The Beatles" title="Let It Be">
-                                          <genre>rock</genre>
-                                        </track>
-                                        """);
+await That(track).Matches("""<track title="Let It Be" />""");
+await That(track).MatchesExactly("""
+                                 <track artist="The Beatles" title="Let It Be">
+                                   <genre>rock</genre>
+                                 </track>
+                                 """);
 ```
 
 `Matches` ignores the attributes and child nodes of the subject that are not in the expected XML, while
@@ -49,7 +53,7 @@ compared:
 ```csharp
 XDocument document = XDocument.Parse("""<?xml version="1.0"?><track title="Let It Be" />""");
 
-await Expect.That(document).Matches("""<track title="Let It Be" />""");
+await That(document).Matches("""<track title="Let It Be" />""");
 ```
 
 You can also verify that an element does not match an expected XML:
@@ -57,7 +61,7 @@ You can also verify that an element does not match an expected XML:
 ```csharp
 XElement track = XElement.Parse("""<track title="Let It Be" />""");
 
-await Expect.That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
+await That(track).DoesNotComplyWith(it => it.Matches("""<track title="Yesterday" />"""));
 ```
 
 <details>
@@ -74,7 +78,7 @@ fails, also when the expectation is negated.
 
 The options are available wherever `XmlOptions` are accepted, i.e. `Matches`, `MatchesExactly`, `IsValidXmlMatching`,
 `IsValidXmlMatchingExactly` and [`AsXml(o => …)`](./01-strings.md#string-comparison-as-xml). They work like the
-[options of aweXpect](https://docs.testably.org/aweXpect/how-it-works/options):
+[options of aweXpect](/aweXpect/how-it-works/options):
 
 | Option                                                                    | Configures                                                   |
 |---------------------------------------------------------------------------|--------------------------------------------------------------|
@@ -91,7 +95,7 @@ for `MatchesExactly`, `IsValidXmlMatchingExactly` and [`AsXml()`](./01-strings.m
 ```csharp
 string album = """<album id="42" year="1969"><track title="Come Together" /></album>""";
 
-await Expect.That(album).IsEqualTo("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
+await That(album).IsEqualTo("""<album id="42" />""").AsXml(o => o.IgnoringAdditionalNodes());
 ```
 
 The additional nodes are ignored on every level, and the expected nodes are still compared, so that missing nodes,
@@ -115,7 +119,7 @@ for `Matches`, `MatchesExactly`, `IsValidXmlMatching`, `IsValidXmlMatchingExactl
 ```csharp
 string album = """<album id="42" createdAt="2026-10-17"><track title="Come Together" etag="x1" /></album>""";
 
-await Expect.That(album).IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
+await That(album).IsEqualTo("""<album id="1"><track title="Come Together" /></album>""")
     .AsXml(o => o
         .IgnoringMember("/album/@id")
         .IgnoringMember("@createdAt")
@@ -169,12 +173,12 @@ XElement album = XElement.Parse("""
                                 </album>
                                 """);
 
-await Expect.That(album).MatchesExactly("""
-                                        <album>
-                                          <track title="Come Together" />
-                                          <track title="Something" />
-                                        </album>
-                                        """,
+await That(album).MatchesExactly("""
+                                 <album>
+                                   <track title="Come Together" />
+                                   <track title="Something" />
+                                 </album>
+                                 """,
     o => o.IgnoringElementOrder());
 ```
 

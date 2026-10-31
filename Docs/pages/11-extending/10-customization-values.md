@@ -1,6 +1,10 @@
+---
+description: Add customizable values and groups of values to Customize.aweXpect, and skip the assemblies that the user excluded.
+---
+
 # Customization values
 
-You can add your own [customizations](../03-how-it-works/07-configuration.md) on top of the `AwexpectCustomization`
+You can add your own [customizations](../02-how-it-works/07-configuration.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
 
 <details>
@@ -130,11 +134,11 @@ using (Customize.aweXpect.MusicStore().DefaultGenre.Set("Pop"))
 }
 ```
 
-Both kinds of customizations work with [global defaults](../03-how-it-works/07-configuration.md#global-defaults)
+Both kinds of customizations work with [global defaults](../02-how-it-works/07-configuration.md#global-defaults)
 without any change: `Customize.aweXpect.Global.MaximumPlaylistLength().Set(50)` or
 `Customize.aweXpect.Global.MusicStore().DefaultGenre.Set(…)` stores the value for all async flows, because
 `Global` is an `AwexpectCustomization` as well. Their
-[lifetimes](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
+[lifetimes](../02-how-it-works/07-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
 values, also when they are disposed out of order.
 
 ## Values in a built-in group
@@ -158,7 +162,7 @@ group stores its values in the customization it was taken from, so
 ## Excluded assemblies
 
 If your extension scans assemblies, skip the ones that the user excluded with
-[`ExcludedAssemblyPrefixes`](../03-how-it-works/07-configuration.md#settings). `AssemblyPrefixes.IsExcluded` from
+[`ExcludedAssemblyPrefixes`](../02-how-it-works/07-configuration.md#settings). `AssemblyPrefixes.IsExcluded` from
 `aweXpect.Core.Extending` matches an assembly name with the same rule as aweXpect, at a segment boundary of the name:
 
 ```csharp

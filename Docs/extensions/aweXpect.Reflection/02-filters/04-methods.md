@@ -1,7 +1,11 @@
+---
+description: Filter and verify methods, operators and constructors by modifiers, return types and parameters.
+---
+
 # Methods, operators and constructors
 
 Describes the filters and expectations for methods, operators and constructors.
-[Filters and expectations](./index.md#how-to-read-the-tables) explains how to read the tables.
+[Filters and expectations](./00-index.md#how-to-read-the-tables) explains how to read the tables.
 
 ## Methods
 
@@ -45,7 +49,7 @@ exclude several return types.
 
 ```csharp
 // Async methods never return void
-await Expect.That(In.AssemblyContaining<PlaylistService>().Methods().WhichAreAsync())
+await That(In.AssemblyContaining<PlaylistService>().Methods().WhichAreAsync())
     .DoNotReturnVoid();
 ```
 
@@ -80,7 +84,7 @@ of them, and `DoNotHaveParameter` verifies that for every item of a collection. 
 
 ```csharp
 // Public methods take no bool flag
-await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods())
+await That(In.AssemblyContaining<PlaylistService>().Public.Methods())
     .DoNotHaveParameter<bool>();
 ```
 
@@ -92,7 +96,7 @@ combines with the other options. `WithParamsParameter()` matches `params` arrays
 
 ```csharp
 // Consumers below C# 13 cannot pass single values to a params collection
-await Expect.That(In.AssemblyContaining<PlaylistService>().Public.Methods()
+await That(In.AssemblyContaining<PlaylistService>().Public.Methods()
         .WithParamsParameter().Matching(p => !p.ParameterType.IsArray))
     .IsEmpty();
 ```
@@ -108,8 +112,8 @@ In.AllLoadedAssemblies().Methods()
     .WithParameter<CancellationToken>()
     .With<HttpGetAttribute>().OrWith<HttpPostAttribute>()
 
-await Expect.That(method).HasParameter<int>("count");
-await Expect.That(methods).Return<Task>().OrReturn<ValueTask>();
+await That(method).HasParameter<int>("count");
+await That(methods).Return<Task>().OrReturn<ValueTask>();
 ```
 
 <details>
@@ -136,20 +140,20 @@ variants and `>>>` (`UnsignedRightShift`).
 
 ```csharp
 // Method-level: narrow an operator method to a specific operator
-await Expect.That(methodInfo).IsAnOperator(Operator.Equality);
-await Expect.That(methods).AreOperators(Operator.Equality);
+await That(methodInfo).IsAnOperator(Operator.Equality);
+await That(methods).AreOperators(Operator.Equality);
 
 // Type-level presence (op_* lookup), including the operators of base types
-await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Addition);
-await Expect.That(typeof(TrackDuration)).HasOperator(Operator.Subtraction).Directly();
-await Expect.That(typeof(TrackDuration)).DoesNotHaveOperator(Operator.Modulus);
+await That(typeof(TrackDuration)).HasOperator(Operator.Addition);
+await That(typeof(TrackDuration)).HasOperator(Operator.Subtraction).Directly();
+await That(typeof(TrackDuration)).DoesNotHaveOperator(Operator.Modulus);
 
 // Disambiguate overloads by operand type
-await Expect.That(typeof(TrackDuration)).HasOperator<int>(Operator.Addition);
+await That(typeof(TrackDuration)).HasOperator<int>(Operator.Addition);
 
 // Conversion operators are keyed by their source → target signature
-await Expect.That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
-await Expect.That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
+await That(typeof(TrackDuration)).HasImplicitConversionOperator<TrackDuration, TimeSpan>();
+await That(typeof(TrackDuration)).HasExplicitConversionOperator(typeof(TrackDuration), typeof(int));
 
 // Filter for the types that declare an operator themselves
 In.AssemblyContaining<TrackDuration>().Types().WhichHaveOperator(Operator.Addition).Directly()

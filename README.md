@@ -9,7 +9,7 @@
 Assert unit tests in natural language using awesome expectations.
 
 ```csharp
-await Expect.That(message).IsEqualTo("It's a compliment");
+await That(message).IsEqualTo("It's a compliment");
 ```
 
 ```text
@@ -22,22 +22,22 @@ but it was "It's a complement", which differs at index 12:
            ↑ (expected)
 ```
 
-## Getting started
+## Installation
 
-1. Install the [`aweXpect`](https://www.nuget.org/packages/aweXpect) nuget package
-   ```ps
-   dotnet add package aweXpect --prerelease
-   ```
+aweXpect v4 is available as a pre-release:
 
-2. Add the following `using` statement:
-   ```csharp
-   using aweXpect;
-   ```
-   This brings the static `Expect` class and lots of extension methods into scope.
+```shell
+dotnet add package aweXpect --prerelease
+```
 
+Add the following `using` directives: the first brings the static `Expect` class and lots of extension methods into scope, the second lets you write `That(...)` instead of `Expect.That(...)`, as all examples do:
 
-3. See the [documentation](https://docs.testably.org/aweXpect/getting-started#write-your-first-expectation) or
-   the [migration guide](https://docs.testably.org/aweXpect/migration) for more information.
+```csharp
+using aweXpect;
+using static aweXpect.Expect;
+```
+
+See [Getting started](https://docs.testably.org/aweXpect/getting-started#write-your-first-test) in the documentation for your first test, or the [migration guide](https://docs.testably.org/aweXpect/migration) to move from another assertion library.
 
 ## Features
 

@@ -1,5 +1,6 @@
 ---
 title: Benchmarks
+description: Benchmarks of passing aweXpect.Web expectations compared with the equivalent FluentAssertions calls.
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,7 +10,7 @@ import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare the happy-path overhead of aweXpect.Web (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
 
-:::info[Methodology]
+:::note[Methodology]
 
 - **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Web.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
 - **Job**: `MediumRun` with the in-process toolchain.
@@ -31,7 +32,7 @@ FluentAssertions verifies `IsSuccessStatusCode`.
 <BenchmarkResult package="aweXpect.Web" name="SuccessStatusCode" />
 
 ```csharp title="aweXpect"
-await Expect.That(_response).HasStatusCode().Success();
+await That(_response).HasStatusCode().Success();
 ```
 
 ```csharp title="FluentAssertions"
@@ -50,7 +51,7 @@ FluentAssertions verifies that the header has a single value which is equal to t
 <BenchmarkResult package="aweXpect.Web" name="Header" />
 
 ```csharp title="aweXpect"
-await Expect.That(_response).HasHeader("x-vendor").WithValue("VENDOR");
+await That(_response).HasHeader("x-vendor").WithValue("VENDOR");
 ```
 
 ```csharp title="FluentAssertions"
@@ -69,7 +70,7 @@ FluentAssertions reads the content as a `string`.
 <BenchmarkResult package="aweXpect.Web" name="Content" />
 
 ```csharp title="aweXpect"
-await Expect.That(_response).HasContent("response-bar");
+await That(_response).HasContent("response-bar");
 ```
 
 ```csharp title="FluentAssertions"
@@ -88,7 +89,7 @@ FluentAssertions reads the content as a `string`, parses it into a `JsonNode` an
 <BenchmarkResult package="aweXpect.Web" name="ProblemDetails" />
 
 ```csharp title="aweXpect"
-await Expect.That(_problemResponse)
+await That(_problemResponse)
     .HasProblemDetailsContent("https://httpstatuses.com/404")
     .WithTitle("Track not found")
     .WithStatus(404);
@@ -115,7 +116,7 @@ FluentAssertions compares the `Method` and the `RequestUri` of the `RequestMessa
 <BenchmarkResult package="aweXpect.Web" name="RequestMessage" />
 
 ```csharp title="aweXpect"
-await Expect.That(_response).HasRequestMessage(request => request
+await That(_response).HasRequestMessage(request => request
     .HasMethod(HttpMethod.Get).And
     .HasRequestUri("https://music.example.com/tracks/1"));
 ```
@@ -138,7 +139,7 @@ FluentAssertions parses the query with `HttpUtility.ParseQueryString` and verifi
 <BenchmarkResult package="aweXpect.Web" name="QueryParameter" />
 
 ```csharp title="aweXpect"
-await Expect.That(_uri).HasQueryParameter("page").WithValue("2");
+await That(_uri).HasQueryParameter("page").WithValue("2");
 ```
 
 ```csharp title="FluentAssertions"

@@ -1,3 +1,7 @@
+---
+description: Verify the capabilities, length, position and buffer size of a `Stream`.
+---
+
 import PropertyComparisons from '../_property-comparisons.md';
 
 # Stream
@@ -22,16 +26,16 @@ You can verify what the `Stream` supports, or that it does not support it:
 ```csharp
 using Stream playlist = new MemoryStream();
 
-await Expect.That(playlist).IsReadable();
-await Expect.That(playlist).IsSeekable();
-await Expect.That(playlist).IsWritable();
-await Expect.That(playlist).IsNotReadOnly();
+await That(playlist).IsReadable();
+await That(playlist).IsSeekable();
+await That(playlist).IsWritable();
+await That(playlist).IsNotReadOnly();
 
 using FileStream album = File.Open("album.txt", FileMode.OpenOrCreate, FileAccess.Read);
-await Expect.That(album).IsReadOnly()
+await That(album).IsReadOnly()
   .Because("the file was opened with Read access");
 using FileStream log = File.Open("album.log", FileMode.OpenOrCreate, FileAccess.Write);
-await Expect.That(log).IsWriteOnly()
+await That(log).IsWriteOnly()
   .Because("the file was opened with Write access");
 ```
 
@@ -42,8 +46,8 @@ You can verify the length of the `Stream`:
 ```csharp
 using Stream playlist = new MemoryStream("Help"u8.ToArray());
 
-await Expect.That(playlist).HasLength(4);
-await Expect.That(playlist).HasLength().Between(3).And(5);
+await That(playlist).HasLength(4);
+await That(playlist).HasLength().Between(3).And(5);
 ```
 
 <PropertyComparisons example="HasLength(3)" />
@@ -56,13 +60,13 @@ You can verify the position of the `Stream`:
 using Stream playlist = new MemoryStream("Help"u8.ToArray());
 playlist.Seek(2, SeekOrigin.Current);
 
-await Expect.That(playlist).HasPosition(2);
-await Expect.That(playlist).HasPosition().GreaterThan(1);
+await That(playlist).HasPosition(2);
+await That(playlist).HasPosition().GreaterThan(1);
 ```
 
 ## Buffer size
 
-:::note[.NET 8 or later]
+:::info[.NET 8 or later]
 The buffer size expectations are only available on .NET 8 or later.
 :::
 
@@ -71,6 +75,6 @@ You can verify the buffer size of the `BufferedStream`:
 ```csharp
 using BufferedStream playlist = new(new MemoryStream("Help"u8.ToArray()), 2);
 
-await Expect.That(playlist).HasBufferSize(2);
-await Expect.That(playlist).HasBufferSize().NotEqualTo(3);
+await That(playlist).HasBufferSize(2);
+await That(playlist).HasBufferSize().NotEqualTo(3);
 ```

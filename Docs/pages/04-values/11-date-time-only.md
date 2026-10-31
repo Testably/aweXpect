@@ -1,3 +1,7 @@
+---
+description: Verify `DateOnly` and `TimeOnly` values for equality, ordering, ranges and their properties, with an optional tolerance.
+---
+
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import PropertyComparisons from '../_property-comparisons.md';
@@ -17,7 +21,7 @@ Describes the possible expectations for `DateOnly` and `TimeOnly`.
 | [`IsBetween`](#between)          | `IsNotBetween`     | between two values, both bounds included   |
 | [`HasYear`](#properties), …      | negated comparison | has the expected year, month, day, hour, … |
 
-:::note[.NET 8 or later]
+:::info[.NET 8 or later]
 The `DateOnly` and `TimeOnly` expectations are only available on .NET 8 or later.
 :::
 
@@ -31,8 +35,8 @@ You can verify that the `DateOnly` or `TimeOnly` is equal to another one or not:
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).IsEqualTo(new DateOnly(1969, 9, 26));
-await Expect.That(releaseDate).IsNotEqualTo(new DateOnly(1970, 5, 8));
+await That(releaseDate).IsEqualTo(new DateOnly(1969, 9, 26));
+await That(releaseDate).IsNotEqualTo(new DateOnly(1970, 5, 8));
 ```
 
 </TabItem>
@@ -41,8 +45,8 @@ await Expect.That(releaseDate).IsNotEqualTo(new DateOnly(1970, 5, 8));
 ```csharp
 TimeOnly startTime = new TimeOnly(14, 15, 16);
 
-await Expect.That(startTime).IsEqualTo(new TimeOnly(14, 15, 16));
-await Expect.That(startTime).IsNotEqualTo(new TimeOnly(13, 15, 16));
+await That(startTime).IsEqualTo(new TimeOnly(14, 15, 16));
+await That(startTime).IsNotEqualTo(new TimeOnly(13, 15, 16));
 ```
 
 </TabItem>
@@ -58,8 +62,8 @@ You can verify that the `DateOnly` or `TimeOnly` is one of many alternatives:
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).IsOneOf([new DateOnly(1969, 9, 26), new DateOnly(1970, 5, 8)]);
-await Expect.That(releaseDate).IsNotOneOf([new DateOnly(1965, 8, 6), new DateOnly(1966, 8, 5)]);
+await That(releaseDate).IsOneOf([new DateOnly(1969, 9, 26), new DateOnly(1970, 5, 8)]);
+await That(releaseDate).IsNotOneOf([new DateOnly(1965, 8, 6), new DateOnly(1966, 8, 5)]);
 ```
 
 </TabItem>
@@ -68,8 +72,8 @@ await Expect.That(releaseDate).IsNotOneOf([new DateOnly(1965, 8, 6), new DateOnl
 ```csharp
 TimeOnly startTime = new TimeOnly(14, 15, 16);
 
-await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 15), new TimeOnly(14, 15, 16)]);
-await Expect.That(startTime).IsNotOneOf([new TimeOnly(13, 15, 16), new TimeOnly(13, 14, 15)]);
+await That(startTime).IsOneOf([new TimeOnly(14, 15, 15), new TimeOnly(14, 15, 16)]);
+await That(startTime).IsNotOneOf([new TimeOnly(13, 15, 16), new TimeOnly(13, 14, 15)]);
 ```
 
 </TabItem>
@@ -85,11 +89,11 @@ You can verify that the `DateOnly` or `TimeOnly` is (on or) after or before anot
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).IsAfter(new DateOnly(1968, 11, 22));
-await Expect.That(releaseDate).IsOnOrAfter(new DateOnly(1969, 9, 26));
-await Expect.That(releaseDate).IsBefore(new DateOnly(1970, 5, 8));
-await Expect.That(releaseDate).IsOnOrBefore(new DateOnly(1969, 9, 26));
-await Expect.That(releaseDate).IsNotAfter(new DateOnly(1970, 5, 8));
+await That(releaseDate).IsAfter(new DateOnly(1968, 11, 22));
+await That(releaseDate).IsOnOrAfter(new DateOnly(1969, 9, 26));
+await That(releaseDate).IsBefore(new DateOnly(1970, 5, 8));
+await That(releaseDate).IsOnOrBefore(new DateOnly(1969, 9, 26));
+await That(releaseDate).IsNotAfter(new DateOnly(1970, 5, 8));
 ```
 
 </TabItem>
@@ -98,11 +102,11 @@ await Expect.That(releaseDate).IsNotAfter(new DateOnly(1970, 5, 8));
 ```csharp
 TimeOnly startTime = new TimeOnly(14, 15, 16);
 
-await Expect.That(startTime).IsAfter(new TimeOnly(12, 0));
-await Expect.That(startTime).IsOnOrAfter(new TimeOnly(14, 15, 16));
-await Expect.That(startTime).IsBefore(new TimeOnly(18, 0));
-await Expect.That(startTime).IsOnOrBefore(new TimeOnly(14, 15, 16));
-await Expect.That(startTime).IsNotAfter(new TimeOnly(18, 0));
+await That(startTime).IsAfter(new TimeOnly(12, 0));
+await That(startTime).IsOnOrAfter(new TimeOnly(14, 15, 16));
+await That(startTime).IsBefore(new TimeOnly(18, 0));
+await That(startTime).IsOnOrBefore(new TimeOnly(14, 15, 16));
+await That(startTime).IsNotAfter(new TimeOnly(18, 0));
 ```
 
 </TabItem>
@@ -118,8 +122,8 @@ You can verify that the `DateOnly` or `TimeOnly` is between two values, or that 
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).IsBetween(new DateOnly(1969, 1, 1)).And(new DateOnly(1969, 12, 31));
-await Expect.That(releaseDate).IsNotBetween(new DateOnly(1970, 1, 1)).And(new DateOnly(1970, 12, 31));
+await That(releaseDate).IsBetween(new DateOnly(1969, 1, 1)).And(new DateOnly(1969, 12, 31));
+await That(releaseDate).IsNotBetween(new DateOnly(1970, 1, 1)).And(new DateOnly(1970, 12, 31));
 ```
 
 </TabItem>
@@ -128,8 +132,8 @@ await Expect.That(releaseDate).IsNotBetween(new DateOnly(1970, 1, 1)).And(new Da
 ```csharp
 TimeOnly startTime = new TimeOnly(14, 15, 16);
 
-await Expect.That(startTime).IsBetween(new TimeOnly(14, 0)).And(new TimeOnly(15, 0));
-await Expect.That(startTime).IsNotBetween(new TimeOnly(18, 0)).And(new TimeOnly(20, 0));
+await That(startTime).IsBetween(new TimeOnly(14, 0)).And(new TimeOnly(15, 0));
+await That(startTime).IsNotBetween(new TimeOnly(18, 0)).And(new TimeOnly(20, 0));
 ```
 
 </TabItem>
@@ -149,9 +153,9 @@ accepted range by the tolerance:
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).IsEqualTo(new DateOnly(1969, 9, 25)).Within(TimeSpan.FromDays(1))
+await That(releaseDate).IsEqualTo(new DateOnly(1969, 9, 25)).Within(TimeSpan.FromDays(1))
   .Because("we accept values between 1969-09-24 and 1969-09-26");
-await Expect.That(releaseDate).IsBefore(new DateOnly(1969, 9, 26)).Within(TimeSpan.FromDays(1));
+await That(releaseDate).IsBefore(new DateOnly(1969, 9, 26)).Within(TimeSpan.FromDays(1));
 ```
 
 </TabItem>
@@ -160,9 +164,9 @@ await Expect.That(releaseDate).IsBefore(new DateOnly(1969, 9, 26)).Within(TimeSp
 ```csharp
 TimeOnly startTime = new TimeOnly(14, 15, 16);
 
-await Expect.That(startTime).IsEqualTo(new TimeOnly(14, 15, 17)).Within(TimeSpan.FromSeconds(1))
+await That(startTime).IsEqualTo(new TimeOnly(14, 15, 17)).Within(TimeSpan.FromSeconds(1))
   .Because("we accept values between 14:15:16 and 14:15:18");
-await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan.FromSeconds(1));
+await That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan.FromSeconds(1));
 ```
 
 </TabItem>
@@ -172,7 +176,7 @@ await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan
 <summary>Tolerance for a `DateOnly`</summary>
 
 A `DateOnly` tolerance is a whole number of days. Of the
-[default tolerance](../03-how-it-works/05-options.md#default-tolerance) only the whole days apply, so a default below
+[default tolerance](../02-how-it-works/05-options.md#default-tolerance) only the whole days apply, so a default below
 one day has no effect on a `DateOnly`.
 
 </details>
@@ -190,9 +194,9 @@ A `TimeOnly` has no date, so midnight is not a boundary for equality and ranges,
 ```csharp
 TimeOnly midnight = new TimeOnly(0, 0);
 
-await Expect.That(midnight).IsBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0));
-await Expect.That(midnight).IsEqualTo(new TimeOnly(23, 59)).Within(TimeSpan.FromMinutes(1));
-await Expect.That(midnight).IsNotAfter(new TimeOnly(23, 0));
+await That(midnight).IsBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0));
+await That(midnight).IsEqualTo(new TimeOnly(23, 59)).Within(TimeSpan.FromMinutes(1));
+await That(midnight).IsNotAfter(new TimeOnly(23, 0));
 ```
 
 <details>
@@ -214,10 +218,10 @@ You can verify the properties of the `DateOnly` or `TimeOnly`:
 ```csharp
 DateOnly releaseDate = new DateOnly(1969, 9, 26);
 
-await Expect.That(releaseDate).HasYear(1969);
-await Expect.That(releaseDate).HasMonth().GreaterThan(6);
-await Expect.That(releaseDate).HasDay(26);
-await Expect.That(releaseDate).HasDayOfWeek(DayOfWeek.Friday);
+await That(releaseDate).HasYear(1969);
+await That(releaseDate).HasMonth().GreaterThan(6);
+await That(releaseDate).HasDay(26);
+await That(releaseDate).HasDayOfWeek(DayOfWeek.Friday);
 ```
 
 </TabItem>
@@ -226,10 +230,10 @@ await Expect.That(releaseDate).HasDayOfWeek(DayOfWeek.Friday);
 ```csharp
 TimeOnly startTime = new TimeOnly(15, 16, 17, 189);
 
-await Expect.That(startTime).HasHour(15);
-await Expect.That(startTime).HasMinute(16);
-await Expect.That(startTime).HasSecond().LessThan(30);
-await Expect.That(startTime).HasMillisecond(189);
+await That(startTime).HasHour(15);
+await That(startTime).HasMinute(16);
+await That(startTime).HasSecond().LessThan(30);
+await That(startTime).HasMillisecond(189);
 ```
 
 </TabItem>

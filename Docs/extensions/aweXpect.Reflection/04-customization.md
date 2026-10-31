@@ -1,9 +1,13 @@
+---
+description: Customize the assembly exclusions, the compiler-generated members and the dependency resolver of aweXpect.Reflection.
+---
+
 # Customization
 
 Set a value under `Customize.aweXpect.Reflection()` for the current
-[async flow](https://docs.testably.org/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
+[async flow](/aweXpect/how-it-works/configuration#lifetimes-and-async-flows), or under
 `Customize.aweXpect.Global.Reflection()` for
-[all tests](https://docs.testably.org/aweXpect/how-it-works/configuration#global-defaults).
+[all tests](/aweXpect/how-it-works/configuration#global-defaults).
 
 | Value                                                                      | Default                           | Summary                                                                                      |
 |----------------------------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------------|
@@ -105,8 +109,8 @@ using (Customize.aweXpect.Reflection().DependencyResolver
 }
 
 // Or augment instead of replace: compose on the current default
-var resolver = Customize.aweXpect.Reflection().DependencyResolver;
-var builtin = resolver.Get()!;
+ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver = Customize.aweXpect.Reflection().DependencyResolver;
+Func<Type, IEnumerable<Type>> builtin = resolver.Get()!;
 using (resolver.Set(type => builtin(type).Concat(CecilDependencyResolver.GetUsedTypes(type))))
 {
     // the built-in dependencies plus the ones the Cecil resolver finds

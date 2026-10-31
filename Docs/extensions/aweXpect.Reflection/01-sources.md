@@ -1,3 +1,7 @@
+---
+description: Select the assemblies, types and members a rule applies to with the In and Types sources, and navigate between them.
+---
+
 # Selecting types and members
 
 Every expectation starts from a **selection**: the assemblies, types or members the rule applies to.
@@ -44,10 +48,10 @@ after it to clarify the assembly source:
 
 ```csharp
 // Defaults to all loaded assemblies
-await Expect.That(Types.InNamespace("MusicStore.Domain")).AreSealed();
+await That(Types.InNamespace("MusicStore.Domain")).AreSealed();
 
 // Clarify the assembly source
-await Expect.That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<MusicStore.Startup>())
+await That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<MusicStore.Startup>())
     .AreSealed();
 ```
 

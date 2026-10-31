@@ -2,8 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/aweXpect.Web)](https://www.nuget.org/packages/aweXpect.Web)
 
-[aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) contains expectations for `HttpRequestMessage`,
-`HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
+[aweXpect.Web](https://github.com/Testably/aweXpect/tree/main/Source/aweXpect.Web) extends [aweXpect](https://docs.testably.org/aweXpect) with expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress`, e.g. to verify the responses of an `HttpClient`.
 
 ## Installation
 
@@ -16,20 +15,22 @@ The package brings `Expect.That` with it, but not the expectations for strings, 
 `using aweXpect;` is all you need; only the
 [customization](https://docs.testably.org/aweXpect/extensions/aweXpect.Web/customization) lives in `aweXpect.Web`.
 
+The examples write `That(...)` instead of `Expect.That(...)`, which needs `using static aweXpect.Expect;` (see [Getting started](https://docs.testably.org/aweXpect/getting-started#install-the-package)).
+
 ## At a glance
 
 ```csharp
 HttpResponseMessage response = await httpClient.GetAsync("https://music.example.com/tracks/1");
 
 // verify the status code, either the exact value or its category
-await Expect.That(response).HasStatusCode().Success();
+await That(response).HasStatusCode().Success();
 
 // verify the media type and the headers of the response
-await Expect.That(response).HasContentType("application/json");
-await Expect.That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
+await That(response).HasContentType("application/json");
+await That(response).HasHeader("Cache-Control").WithValue("must-revalidate, max-age=0, private");
 
 // verify the content of the response
-await Expect.That(response).HasContent("*Let It Be*").AsWildcard();
+await That(response).HasContent("*Let It Be*").AsWildcard();
 ```
 
 A failing expectation on a request or response includes the formatted HTTP request and response. If the test server

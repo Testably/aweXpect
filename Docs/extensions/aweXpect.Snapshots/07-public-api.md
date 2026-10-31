@@ -1,3 +1,7 @@
+---
+description: Verify the public API of an assembly against a reviewed snapshot with the aweXpect.Snapshots.PublicApi package.
+---
+
 # Public API
 
 The package [aweXpect.Snapshots.PublicApi](https://www.nuget.org/packages/aweXpect.Snapshots.PublicApi) verifies the
@@ -5,7 +9,7 @@ public API of an assembly against a reviewed snapshot, so that every change of t
 request:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
     .UniqueFor.TargetFramework();
 ```
 
@@ -37,7 +41,7 @@ library. A build that the tests cannot run on, e.g. for `netstandard2.0`, or a r
 without loading it, and named after its target framework:
 
 ```csharp
-await Expect.That(new FileInfo(path)).MatchesPublicApiSnapshot().Named("netstandard2.0");
+await That(new FileInfo(path)).MatchesPublicApiSnapshot().Named("netstandard2.0");
 ```
 
 A build for a newer .NET than the tests run on needs the .NET SDK of that version, which installs its reference
@@ -68,7 +72,7 @@ The types that the assembly forwards to another assembly are written as
 that were compiled against the assembly. They can be ignored:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 ```
 
 ### Attributes
@@ -79,7 +83,7 @@ is written. An attribute that is irrelevant for the public API can be ignored ev
 tests cannot reference it, by its full name like `Type.FullName`:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
     .Ignoring.Attribute<EditorBrowsableAttribute>()
     .Ignoring.Attribute("MusicStore.Internal.MarkerAttribute"));
 ```
@@ -95,7 +99,7 @@ A record is written with the members that the compiler synthesizes for it, e.g. 
 be ignored, which keeps the primary constructor, the positional properties and the hand-written members of the record:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.CompilerGeneratedMembers());
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Ignoring.CompilerGeneratedMembers());
 ```
 
 ### Namespaces and types
@@ -105,7 +109,7 @@ types, and namespaces and types can be ignored. A namespace matches whole segmen
 includes nor ignores `MusicStore.GeneratedTools`, and ignoring wins over a restriction:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o
     .Within.Namespace("MusicStore")
     .Ignoring.Namespace("MusicStore.Generated")
     .Ignoring.Type<LegacyAdapter>());
@@ -122,7 +126,7 @@ line, write the parameters of methods, constructors, operators, delegates and in
 separate lines:
 
 ```csharp
-await Expect.That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Formatting.ParametersOnSeparateLines());
+await That(typeof(Album).Assembly).MatchesPublicApiSnapshot(o => o.Formatting.ParametersOnSeparateLines());
 ```
 
 So instead of
