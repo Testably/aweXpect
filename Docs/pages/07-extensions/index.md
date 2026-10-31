@@ -18,6 +18,10 @@ same version. **Separate** extensions have their own repository and release cycl
 | [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)     | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Testably)](https://www.nuget.org/packages/aweXpect.Testably)     | separate | the file and time systems of [Testably.Abstractions](/Abstractions): `HasFile`, `HasDirectory`, timers, watcher events                                                                                             |
 | [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)   | [![Nuget](https://img.shields.io/nuget/v/aweXpect.Mockolate)](https://www.nuget.org/packages/aweXpect.Mockolate)   | separate | interactions with [Mockolate](/Mockolate) mocks: `Once`, `Never`, `AtLeast`, `Then`, `AllInteractionsAreVerified`                                                                                                  |
 
+[aweXpect.Chronology](/aweXpect/extensions/aweXpect.Chronology) adds no expectations, but readable `TimeSpan` and
+`DateTime` values like `5.Seconds()` or `24.December(2024)`. It does not depend on aweXpect, and many samples in
+this documentation use it.
+
 ## Write your own
 
 If no package covers your types, you can add expectations yourself with the same API these packages use.
