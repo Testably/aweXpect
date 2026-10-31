@@ -1650,6 +1650,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -1927,7 +1933,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -2208,7 +2215,8 @@ window.BENCHMARK_DATA = {
           7746.295250447592,
           10732.186321803501,
           10410.803489685059,
-          5149.036926269531
+          5149.036926269531,
+          11538.968469473031
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2444,6 +2452,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2783,7 +2792,8 @@ window.BENCHMARK_DATA = {
           253226.38051060267,
           372416.033984375,
           381564.838936942,
-          175238.29954427082
+          175238.29954427082,
+          374903.69427083334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3069,7 +3079,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590287,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3358,7 +3369,8 @@ window.BENCHMARK_DATA = {
           14059.997276306152,
           18887.456553867883,
           19785.01894124349,
-          10127.921915690104
+          10127.921915690104,
+          19416.102231852212
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3370,6 +3382,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5266,6 +5279,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -5536,7 +5555,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -5810,7 +5830,8 @@ window.BENCHMARK_DATA = {
           172.25003693898518,
           270.4156284650167,
           240.78325091997783,
-          110.37947631733758
+          110.37947631733758,
+          229.2911872545878
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6006,6 +6027,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6371,7 +6393,8 @@ window.BENCHMARK_DATA = {
           423.801543542317,
           483.27674531936646,
           517.3059544563293,
-          253.95966362953186
+          253.95966362953186,
+          514.787457148234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6383,6 +6406,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -6932,7 +6956,8 @@ window.BENCHMARK_DATA = {
           290.286599222819,
           383.1257058143616,
           380.8267867748554,
-          194.37809727986652
+          194.37809727986652,
+          405.7353890101115
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6944,6 +6969,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13453,6 +13479,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -14493,7 +14525,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -15537,7 +15570,8 @@ window.BENCHMARK_DATA = {
           82.5737807410104,
           99.23698325157166,
           106.45216444333394,
-          54.88761092083795
+          54.88761092083795,
+          104.03254123528798
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16536,6 +16570,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17638,7 +17673,8 @@ window.BENCHMARK_DATA = {
           215.83065485954285,
           240.18909924825033,
           247.6604880264827,
-          141.59912860393524
+          141.59912860393524,
+          253.1370630900065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17831,6 +17867,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19020,7 +19057,8 @@ window.BENCHMARK_DATA = {
           177.32208976378809,
           236.2086696074559,
           255.03805193534265,
-          127.48531299432119
+          127.48531299432119,
+          252.18819567362468
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19032,6 +19070,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21014,6 +21053,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -21291,7 +21336,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -21572,7 +21618,8 @@ window.BENCHMARK_DATA = {
           162.42622857093812,
           211.6271742661794,
           220.8061601775033,
-          109.03416334731239
+          109.03416334731239,
+          213.37237958113352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21777,6 +21824,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22147,7 +22195,8 @@ window.BENCHMARK_DATA = {
           425.45404083388195,
           514.1823888778687,
           529.7611708323161,
-          266.5685008934566
+          266.5685008934566,
+          509.5864671298436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22159,6 +22208,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -22722,7 +22772,8 @@ window.BENCHMARK_DATA = {
           265.5035317103068,
           331.01019940009485,
           331.5262221923241,
-          173.75935696760814
+          173.75935696760814,
+          326.30080391565957
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22734,6 +22785,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29250,6 +29302,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -30290,7 +30348,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -31334,7 +31393,8 @@ window.BENCHMARK_DATA = {
           535.3281868298849,
           694.3761323782114,
           706.8870257059733,
-          352.2626902898153
+          352.2626902898153,
+          692.4550758508535
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32321,6 +32381,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -33435,7 +33496,8 @@ window.BENCHMARK_DATA = {
           1120.7412223815918,
           1301.5262464795794,
           1373.6643508911134,
-          678.9502590497335
+          678.9502590497335,
+          1422.7375358581544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33628,6 +33690,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -34817,7 +34880,8 @@ window.BENCHMARK_DATA = {
           489.10880692799884,
           648.6662508010864,
           670.8616441999163,
-          365.32451541607196
+          365.32451541607196,
+          666.0932256258451
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -34829,6 +34893,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -41389,6 +41454,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -42429,7 +42500,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -43473,7 +43545,8 @@ window.BENCHMARK_DATA = {
           542.3782475153605,
           701.6853748730251,
           705.0602317810059,
-          363.1135852018992
+          363.1135852018992,
+          697.7412642796834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44460,6 +44533,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -45574,7 +45648,8 @@ window.BENCHMARK_DATA = {
           17127.252251180013,
           27866.81199645996,
           27667.617517089842,
-          10028.400858197894
+          10028.400858197894,
+          27821.944145789512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46623,6 +46698,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -46956,7 +47032,8 @@ window.BENCHMARK_DATA = {
           599.9787534077963,
           759.5328931808472,
           822.6555899937947,
-          407.38949005944386
+          407.38949005944386,
+          810.3842091242473
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -46968,6 +47045,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -49298,6 +49376,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -49633,7 +49717,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -49972,7 +50057,8 @@ window.BENCHMARK_DATA = {
           477.8968284924825,
           601.7255716323853,
           632.4685512542725,
-          337.46435488973344
+          337.46435488973344,
+          720.3980135599772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50266,6 +50352,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -50663,7 +50750,8 @@ window.BENCHMARK_DATA = {
           53165.47087809245,
           83532.0140625,
           86580.15513509115,
-          28605.99776349749
+          28605.99776349749,
+          84117.65921223958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51007,7 +51095,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53019,6 +53108,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -53354,7 +53449,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -53693,7 +53789,8 @@ window.BENCHMARK_DATA = {
           103.06335873263222,
           130.00583749158042,
           148.01988948186238,
-          71.39842976729075
+          71.39842976729075,
+          129.19413545926412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53987,6 +54084,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -54384,7 +54482,8 @@ window.BENCHMARK_DATA = {
           14858.006460571289,
           31920.036385091145,
           32597.551835123697,
-          9841.868192545573
+          9841.868192545573,
+          32477.31923014323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54728,7 +54827,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55061,7 +55161,8 @@ window.BENCHMARK_DATA = {
           186.07277193436255,
           235.37037101813726,
           238.73880250637347,
-          121.44600629806519
+          121.44600629806519,
+          240.00553827285768
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55073,6 +55174,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -57055,6 +57157,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -57332,7 +57440,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -57613,7 +57722,8 @@ window.BENCHMARK_DATA = {
           227.1471475283305,
           306.2753792126974,
           300.60956042607626,
-          150.56580436229706
+          150.56580436229706,
+          310.80406299004187
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57818,6 +57928,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -58188,7 +58299,8 @@ window.BENCHMARK_DATA = {
           354.0890117963155,
           377.20753996188824,
           417.0065587248121,
-          201.17154334272658
+          201.17154334272658,
+          383.69004081090293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58200,6 +58312,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -58763,7 +58876,8 @@ window.BENCHMARK_DATA = {
           330.5575217564901,
           400.5150330543518,
           410.8941648165385,
-          199.94135439395905
+          199.94135439395905,
+          414.97469459261214
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58775,6 +58889,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -60713,6 +60828,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -60990,7 +61111,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -61271,7 +61393,8 @@ window.BENCHMARK_DATA = {
           561.8741045679365,
           758.6192269643147,
           696.5921274820963,
-          353.3331972190312
+          353.3331972190312,
+          717.2310730616251
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61507,6 +61630,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -61846,7 +61970,8 @@ window.BENCHMARK_DATA = {
           1550.7657341275897,
           1947.4805119832356,
           1964.7425623575846,
-          1017.0782284055438
+          1017.0782284055438,
+          1906.813554763794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61858,6 +61983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -62421,7 +62547,8 @@ window.BENCHMARK_DATA = {
           739.1681212743123,
           948.346277986254,
           933.9227524484907,
-          449.89040534836903
+          449.89040534836903,
+          946.2594980875651
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62433,6 +62560,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -64371,6 +64499,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -64648,7 +64782,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -64929,7 +65064,8 @@ window.BENCHMARK_DATA = {
           8502.96763937814,
           12171.918411254883,
           11829.19159749349,
-          5785.469200679234
+          5785.469200679234,
+          12014.589167277018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65168,6 +65304,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -65504,7 +65641,8 @@ window.BENCHMARK_DATA = {
           26117.865958077567,
           39517.44435471755,
           39386.569697788786,
-          18488.172399902345
+          18488.172399902345,
+          41935.74954223633
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65790,6 +65928,7 @@ window.BENCHMARK_DATA = {
           18393,
           18394,
           18394,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -66079,7 +66218,8 @@ window.BENCHMARK_DATA = {
           7888.161483764648,
           10724.669611249652,
           10472.65894317627,
-          5630.022691345215
+          5630.022691345215,
+          10586.485794067383
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66091,6 +66231,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -68029,6 +68170,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
         "message": "docs: name the \u0022How it works\u0022 section like its URL (#2157)"
+      },
+      {
+        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
+        "message": "docs: add a troubleshooting page (#2158)"
       }
     ],
     "labels": [
@@ -68306,7 +68453,8 @@ window.BENCHMARK_DATA = {
       "30129fc0",
       "25a97e74",
       "6c756140",
-      "99f75dcf"
+      "99f75dcf",
+      "77e01f4b"
     ],
     "datasets": [
       {
@@ -68587,7 +68735,8 @@ window.BENCHMARK_DATA = {
           8042.3528523763025,
           11416.409238688151,
           11563.506427219936,
-          5412.864496671236
+          5412.864496671236,
+          11467.464492797852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -68826,6 +68975,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -69162,7 +69312,8 @@ window.BENCHMARK_DATA = {
           38322.63596285306,
           58716.52845865885,
           59397.8152747521,
-          25839.313157301684
+          25839.313157301684,
+          59600.00262858073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -69440,6 +69591,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -69737,7 +69889,8 @@ window.BENCHMARK_DATA = {
           15419.353343418667,
           21108.66571044922,
           20868.050223214286,
-          10956.503026326498
+          10956.503026326498,
+          20937.761352539062
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -69749,6 +69902,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
