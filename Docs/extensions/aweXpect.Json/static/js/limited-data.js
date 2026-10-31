@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1167.5245909009661,
           1528.3591998418171,
           1992.8010104252742,
           1983.9704545338948,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2043.672810774583,
           1152.4224525179181,
           2186.251889292399,
-          1965.3611021775466
+          1965.3611021775466,
+          2065.1286013921103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          8173.189092782827,
           10286.743300301689,
           15688.73051234654,
           14241.545103890556,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           15119.037543160575,
           7335.904273986816,
           15194.73014831543,
-          13869.768995012555
+          13869.768995012555,
+          15624.445813860211
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          932.9338413385244,
           1252.8774864196778,
           1633.6317869822185,
           1577.676675062913,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1644.9106869016375,
           954.5432532383845,
           1648.8195359547933,
-          1588.0475811277117
+          1588.0475811277117,
+          1676.116421332726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7573.432151794434,
           9624.006561279297,
           14510.116868239184,
           13074.250087483724,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           13946.196949768066,
           6944.914305466872,
           13833.392389569965,
-          12741.850531944861
+          12741.850531944861,
+          14219.177317692684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2938.944308417184,
           3992.430689493815,
           5377.160658700125,
           5024.688140282264,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5422.205413818359,
           3088.5849325997488,
           4978.306167093912,
-          5123.700912984213
+          5123.700912984213,
+          5469.225974449744
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1642,7 +1642,6 @@ window.BENCHMARK_DATA = {
           3712,
           3712,
           3712,
-          3712,
           3720,
           3720,
           3720,
@@ -1654,6 +1653,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20318.531598772322,
           28921.10770089286,
           47925.998046875,
           38961.839634486605,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           46312.88055419922,
           20919.30188598633,
           41750.92290039062,
-          39006.80830265926
+          39006.80830265926,
+          46820.06188964844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61932,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
       {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5219.561555989583,
           7259.411357879639,
           9356.479189359225,
           9523.185396321614,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9183.485622950962,
           5166.895132954915,
           9946.363139561245,
-          9489.323607381184
+          9489.323607381184,
+          9311.976847330729
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          144057.04025065104,
           204646.28187779017,
           293824.86369441106,
           276010.1675455729,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           289453.7766113281,
           147910.14674595423,
           287984.1837064303,
-          279649.4171424279
+          279649.4171424279,
+          298635.45564152644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521573,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
       {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1624.149617603847,
           2233.6704504830495,
           2826.7530822753906,
           2827.68478339059,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2952.375727081299,
           1651.5740208258997,
           3087.6765439351398,
-          2846.9970087687175
+          2846.9970087687175,
+          2914.5704844156903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2872,7 +2872,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1134.0497041429792,
           1487.1400520324707,
           1913.2993995666504,
           1995.1520678202312,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1884.356369311993,
           1144.456624031067,
           2155.7280690329417,
-          1969.9922046661377
+          1969.9922046661377,
+          1919.1779856363933
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1516.2643054081843,
           2115.2720480698804,
           2886.1521092928374,
           2841.9240038945127,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2877.9298365275067,
           1616.6605103356499,
           2829.053866795131,
-          2869.184987386068
+          2869.184987386068,
+          2959.4431279500327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3461,7 +3461,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           2776,
-          2776,
           2840,
           2840,
           2840,
@@ -3478,6 +3477,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1028.66346244812,
           1362.6760102785552,
           1732.6620335212122,
           1919.8194819132486,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1754.935359954834,
           968.6470109394619,
           2101.6939544677734,
-          1850.0745999654134
+          1850.0745999654134,
+          1787.9063801084246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1260.5935675303142,
           1706.7921857100266,
           2272.108928135463,
           2293.9124477093037,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2304.265438079834,
           1352.591047414144,
           2293.3132771809896,
-          2290.8442298344203
+          2290.8442298344203,
+          2283.2379695347377
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4069,7 +4069,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           2888,
-          2888,
           3016,
           3016,
           3016,
@@ -4086,6 +4085,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          602.1614033835275,
           919.9076296732976,
           1111.2774925231934,
           1246.264877764384,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1087.4415972391764,
           622.9381247838338,
           1381.900648389544,
-          1201.547229221889
+          1201.547229221889,
+          1124.9440499623618
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "acd69449439d332fcb4717597e4d421649697b67",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Oct 26 22:02:10 2026 \u002B0100",
-        "message": "feat!: parse a string expected value as JSON text in the Json matching expectations (#2102)"
-      },
-      {
         "sha": "a2f7290430e0fa5702891a597a3db376229e9e19",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 26 22:05:15 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
-      "acd69449",
       "a2f72904",
       "55068d5f",
       "de6df36f",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1685.7219298226494,
           2176.349072519938,
           3023.707836151123,
           3109.3818367004396,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2975.976099395752,
           1729.2543125152588,
           3292.103024037679,
-          3062.8265383584157
+          3062.8265383584157,
+          3053.254064687093
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4677,7 +4677,7 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           3744,
-          3744,
+          3872,
           3872,
           3872,
           3872,
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          756.3274247096135,
           1063.2200600941976,
           1256.6118648529052,
           1399.5015284674507,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1260.2489218393962,
           677.9939951896667,
           1579.2869097391765,
-          1370.9829958597818
+          1370.9829958597818,
+          1265.5357028961182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5038,6 +5038,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
@@ -5069,7 +5075,8 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
@@ -5104,7 +5111,8 @@ window.BENCHMARK_DATA = {
           165911.04659598213,
           97795.47071940104,
           177456.91052246094,
-          161759.52080426898
+          161759.52080426898,
+          166692.91274414063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5116,6 +5124,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -5187,7 +5196,8 @@ window.BENCHMARK_DATA = {
           189133.78426419772,
           110347.48643141527,
           205809.21839192708,
-          194766.89252580915
+          194766.89252580915,
+          188146.6296061198
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5227,6 +5237,7 @@ window.BENCHMARK_DATA = {
           266951,
           266936,
           266873,
+          266951,
           266951
         ],
         "borderColor": "#FF671B",
@@ -5415,6 +5426,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
         "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
+      },
+      {
+        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
+        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
       }
     ],
     "labels": [
@@ -5446,7 +5463,8 @@ window.BENCHMARK_DATA = {
       "f256c5ca",
       "fea53298",
       "583e9cec",
-      "29daaf7a"
+      "29daaf7a",
+      "e6330bec"
     ],
     "datasets": [
       {
@@ -5481,7 +5499,8 @@ window.BENCHMARK_DATA = {
           2725.4248270307266,
           1504.279591623942,
           2651.0144203730993,
-          2669.203987121582
+          2669.203987121582,
+          2750.1893700190953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5493,6 +5512,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5564,7 +5584,8 @@ window.BENCHMARK_DATA = {
           1779.96280506679,
           1052.1091128985088,
           2112.108432451884,
-          1893.4705891927083
+          1893.4705891927083,
+          1798.9216139475504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5576,6 +5597,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
