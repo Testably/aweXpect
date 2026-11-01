@@ -1320,6 +1320,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -1542,7 +1548,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -1768,7 +1775,8 @@ window.BENCHMARK_DATA = {
           384.180914915525,
           725.7445904413859,
           560.7393560409546,
-          778.6741639545986
+          778.6741639545986,
+          768.4333534921918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1992,6 +2000,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2233,7 +2242,8 @@ window.BENCHMARK_DATA = {
           501.9766009648641,
           897.1942377090454,
           714.7967620213826,
-          893.2202642304557
+          893.2202642304557,
+          922.8794352849325
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2245,6 +2255,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3798,6 +3809,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -4020,7 +4037,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -4246,7 +4264,8 @@ window.BENCHMARK_DATA = {
           53.590232861042026,
           109.51574362913767,
           77.78046677793775,
-          109.15568711076465
+          109.15568711076465,
+          106.37647270239316
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4393,6 +4412,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4711,7 +4731,8 @@ window.BENCHMARK_DATA = {
           115.39437232017517,
           218.39089543024699,
           181.86828998156957,
-          206.3067994594574
+          206.3067994594574,
+          223.69465797742208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4723,6 +4744,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -6276,6 +6298,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -6498,7 +6526,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -6724,7 +6753,8 @@ window.BENCHMARK_DATA = {
           892.7863743464152,
           1832.5698679606119,
           1434.892518043518,
-          1876.4075479507446
+          1876.4075479507446,
+          1963.3264427185059
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6919,6 +6949,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -7189,7 +7220,8 @@ window.BENCHMARK_DATA = {
           815.8806222506931,
           1499.2612303415933,
           1125.9191636403402,
-          1411.9139096577962
+          1411.9139096577962,
+          1473.4784450531006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7415,6 +7447,7 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
+          1953,
           1953,
           1953,
           1953,
@@ -8694,6 +8727,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -8906,7 +8945,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -9122,7 +9162,8 @@ window.BENCHMARK_DATA = {
           1325.1516489982605,
           2765.8167552948,
           2130.497166188558,
-          2778.2774145943777
+          2778.2774145943777,
+          2766.95658047994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9307,6 +9348,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -9567,7 +9609,8 @@ window.BENCHMARK_DATA = {
           2075.3448956807456,
           3803.814111836751,
           2896.033583958944,
-          3791.1025649479457
+          3791.1025649479457,
+          3884.545775277274
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9788,7 +9831,8 @@ window.BENCHMARK_DATA = {
           3980,
           3981,
           3980,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11062,6 +11106,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -11274,7 +11324,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -11490,7 +11541,8 @@ window.BENCHMARK_DATA = {
           175.2198028564453,
           371.5550953865051,
           293.29018182754515,
-          371.64741965702603
+          371.64741965702603,
+          393.74826570919583
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11627,6 +11679,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -11935,7 +11988,8 @@ window.BENCHMARK_DATA = {
           1189.1704606374105,
           2196.424045054118,
           1734.5289728800456,
-          2254.7178391047887
+          2254.7178391047887,
+          2351.851838684082
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11947,6 +12001,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -13430,6 +13485,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
         "message": "docs: add a troubleshooting page (#2158)"
+      },
+      {
+        "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
+        "message": "fix: keep the failure when a result context throws (#2159)"
       }
     ],
     "labels": [
@@ -13642,7 +13703,8 @@ window.BENCHMARK_DATA = {
       "25a97e74",
       "6c756140",
       "99f75dcf",
-      "77e01f4b"
+      "77e01f4b",
+      "68753ad6"
     ],
     "datasets": [
       {
@@ -13858,7 +13920,8 @@ window.BENCHMARK_DATA = {
           1519.2746583302817,
           2792.1555371602376,
           2324.3229949951174,
-          2826.5323273794993
+          2826.5323273794993,
+          3028.263121287028
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14072,6 +14135,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -14303,7 +14367,8 @@ window.BENCHMARK_DATA = {
           175747.20673828124,
           276216.8623422476,
           236968.19789341517,
-          281988.1807617188
+          281988.1807617188,
+          281483.5877779447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14522,6 +14587,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577
