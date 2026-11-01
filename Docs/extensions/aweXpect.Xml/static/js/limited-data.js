@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
-        "message": "feat: report discarded option calls of the extension packages (#2106)"
-      },
-      {
         "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
-      "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          910.2304321016584,
           879.8539744890653,
           649.9406497819083,
           653.6024447168622,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           917.2621431350708,
           708.7523752848307,
           950.122648747762,
-          831.7835444722857
+          831.7835444722857,
+          496.971353494204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          710.2752144495646,
           667.1537717819214,
           568.1711455753872,
           623.7429504394531,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           700.7130733217512,
           545.6979237238567,
           740.2080995014736,
-          659.0514264424642
+          659.0514264424642,
+          361.4854098047529
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
-        "message": "feat: report discarded option calls of the extension packages (#2106)"
-      },
-      {
         "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
-      "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4266.367202758789,
           4171.955720011393,
           3447.65522480011,
           3362.634377034505,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4299.0927658081055,
           3242.395983182467,
           4446.792977905274,
-          4715.589695739746
+          4715.589695739746,
+          2583.7243846013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24179,
           24178,
           24172,
           24172,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5012.110445022583,
           4927.087525939942,
           3860.961341349284,
           3941.885052998861,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5150.179296875,
           3869.7824244181315,
           5569.987691061838,
-          5438.369637122521
+          5438.369637122521,
+          2937.8366455078126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
-        "message": "feat: report discarded option calls of the extension packages (#2106)"
-      },
-      {
         "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
-      "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2551.2896525065103,
           2371.869044670692,
           1954.7066823323569,
           2049.168035888672,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2440.7474212646484,
           1950.7548316955567,
           2873.1982205708823,
-          2536.9480549738955
+          2536.9480549738955,
+          1382.392755126953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12728,
           12654,
           12654,
           12654,
@@ -1684,6 +1683,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654
         ],
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3441.3160074869793,
           3363.453271993001,
           2732.59995396932,
           2755.487914276123,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3491.930657900297,
           2661.4688350132533,
           3930.9599619547525,
-          3488.1278749193466
+          3488.1278749193466,
+          2014.8995383126396
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
-        "message": "feat: report discarded option calls of the extension packages (#2106)"
-      },
-      {
         "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
-      "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
       "057732a7",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13505.70010732015,
           13217.875526428223,
           10438.83113301595,
           10571.946630205426,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13549.065313720703,
           10211.725556437175,
           14037.944535827637,
-          13677.216838582357
+          13677.216838582357,
+          7804.821449279785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25440,
           25367,
           25367,
           25367,
@@ -2292,6 +2291,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367
         ],
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          354125.66834435094,
           348069.9138590495,
           254396.66204427084,
           267660.50169270835,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           360239.97013972356,
           249345.4634765625,
           367345.75895182294,
-          369817.56136067706
+          369817.56136067706,
+          180672.2262311663
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544329,
           544267,
           544335,
@@ -2406,6 +2405,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
