@@ -18,7 +18,7 @@ To upgrade:
 3. If you wrote your own expectations, also read [Extensions](#extensions).
 
 Most changes only affect code that names a result type or passes an argument by name; chained expectations keep
-compiling.
+compiling. Many return types changed, so compile all projects against v4; a binary compiled against v3 is not supported.
 
 ## One version for all packages
 
@@ -72,13 +72,15 @@ need an update. Among others:
 - The status code expectations read like the operators of the other property results, e.g.
   `DoesNotHaveStatusCode(404)` and `HasStatusCode().NotEqualTo(404)` read `does not have status code equal to 404
   NotFound`, and `HasStatusCode().Success()` reads `has status code in the success range (2xx)`.
+- A failing snapshot ends with a `Snapshot options` context that lists the rules, the comparer and the acceptance in effect.
+- The item lists of aweXpect.Reflection and the difference lists of aweXpect.Json and aweXpect.Xml end with `(… and n more)` after `MaximumNumberOfCollectionItems` items, like the collections of aweXpect.
 
 ### Not nullable results
 
 Expectations that a `null` subject can never satisfy return the subject as not nullable when awaited in all
-packages, as they already did in aweXpect. This covers the Xml, Json and Snapshots expectations, the status code
-expectations of aweXpect.Web and the collection expectations of aweXpect.Reflection. You may be able to remove `!`
-operators after `await`.
+packages, as they already did in aweXpect. This covers the Xml, Json and Snapshots expectations except
+`MatchesPublicApiSnapshot`, the status code expectations of aweXpect.Web and the collection expectations of
+aweXpect.Reflection. You may be able to remove `!` operators after `await`.
 
 ### `Containing` on string properties
 
@@ -93,6 +95,7 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
 - `AreEquivalentTo` after a quantifier no longer offers `Using(…)`, which always threw; pass the equivalency options
   to `AreEquivalentTo` itself.
 - The items of a collection of strings keep the nullability of the collection, like other items.
+- The item expectations of `Contains`, `IsEqualTo`, `IsContainedIn` and their negations receive the items as `IThatSubject<TItem>` instead of `IThatSubject<TItem?>`, like `HasItemThat` and `ComplyWith`. An explicitly typed lambda with a nullable parameter on a collection of non-nullable items now warns with CS8622.
 
 ### Options
 
@@ -111,6 +114,7 @@ checks of aweXpect.Web offer the quantifiers and match types of `Contains`, e.g.
   processors of aweXpect.Web, are `IReadOnlyList<T>` instead of arrays.
 - The excluded assembly prefixes moved to `Customize.aweXpect.Settings().ExcludedAssemblyPrefixes`. A prefix ending
   with a dot, such as `MyCompany.`, now matches in Core as well.
+- The assemblies of TUnit are excluded by default, like those of the other test frameworks, so e.g. `DependsOnlyOn` of aweXpect.Reflection no longer reports them.
 
 ### Time provider
 
@@ -130,6 +134,9 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   `.Because(…).WhoseResult` compiles.
 - **Nested subjects** such as `Throws().Which`, `WhoseResult` or `HasSingle().Which` offer `Is<TType>()` and the
   other type checks.
+- **Combinations** from `Expect.ThatAll` and `Expect.ThatAny` offer `Because`, `WithTimeout` and `WithCancellation`, and a timeout is one deadline for the whole combination.
+
+The extension packages gain expectations as well; they are listed in their sections below.
 
 ## Extension packages
 
@@ -156,6 +163,11 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   scalar, e.g. `"42"`, `"true"` or `"null"`, silently changes its meaning. Pass `"\"Let It Be\""` or
   `(object)"Let It Be"` for a JSON string.
 - `JsonOptions` is immutable like `XmlOptions` and configured only through its methods.
+- `IgnoringMember(name)` matches the property name case-sensitively, like the comparison itself, so `IgnoringMember("id")` no longer ignores an `ID` property.
+- `IsValidJson(j => …)`, `IsValidJsonMatching(…)` and `IsValidJsonMatchingExactly(…)` fail both ways when the subject is not valid JSON, so their negation no longer passes for invalid JSON. `IsValidJson()` without expectations keeps its negation, and `IsNotValidJson()` is new.
+- An invalid or `null` expected JSON in `IsJsonSerializedAs(…)` throws when the expectation is written, also when it is never awaited.
+- `IsJsonSerializable()` uses `Customize.aweXpect.Json().DefaultJsonSerializerOptions` when no options are passed and keeps the subject type. `IsJsonSerializable<T>()` on an `object` subject is removed; the type is that of the subject, and an overload takes a `JsonTypeInfo<T>` for trimming and Native AOT.
+- A JSON number is passed to `It.Is<T>()` as the numeric type `T` when it fits, so `It.Is<long>()` or `It.Is<decimal>()` match a number like `5`.
 
 ### aweXpect.Reflection
 
@@ -167,15 +179,16 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   `.IncludingInherited()` adds the inherited ones and `.IncludingObjectMembers()` also those of `System.Object`.
 - `AtIndex(i).FromEnd()` is now `AtIndexFromEnd(i)`, as in aweXpect.
 - The namespace filters are `WhichAreWithinNamespace` and `WhichAreNotWithinNamespace`.
-- The member-type filters of properties, fields and events are `WhichAreOfType`, `WhichAreOfExactType`,
-  `WhichAreNotOfType` and `WhichAreNotOfExactType` (before `OfType`, `OfExactType`, `NotOfType` and
-  `NotOfExactType`); `OrOfType` and `OrOfExactType` keep their names. `WithoutParameters()` is now
-  `WithNoParameters()`, like the expectation `HasNoParameters()`.
+- The member-type filters of properties, fields and events are `WhichAreOfType` and `WhichAreOfExactType` (before
+  `OfType` and `OfExactType`), with the new negations `WhichAreNotOfType` and `WhichAreNotOfExactType`; `OrOfType` and
+  `OrOfExactType` keep their names. `WithoutParameters()` is now `WithNoParameters()`, like the expectation
+  `HasNoParameters()`.
+- The type selectors `Types`, `Classes`, `Enums`, `Interfaces`, `Records`, `RecordStructs` and `Structs` no longer take an `AccessModifiers` argument: `Types(modifier)` is now `Types().WhichAre(modifier)`.
+- `AtIndex(i)` on parameters and generic arguments only matches at index `i`; before, an item at a lower index also satisfied it.
 - `TypeFilters.GenericTypes.GenericTypesWithArgument` and `…WithNamedArgument` are no longer nested in
   `GenericTypes` but declared in `TypeFilters`, like their counterparts in `MethodFilters`.
 - The name filters use the string options of aweXpect, so they chain in any order and offer every option, e.g.
   `WithName("x").IgnoringCase().AsPrefix()`.
-- Parameters can be filtered by a predicate with `Matching(p => …)`.
 - The filter options (`TypeFilterOptions`, `AttributeFilterOptions<TMember>`, `ParameterFilterOptions`,
   `GenericArgumentsFilterOptions` and `GenericArgumentFilterOptions`) are internal, and the results and filters no
   longer offer them through `IOptionsProvider<…>`.
@@ -185,11 +198,12 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   (`AtLeast(2).InheritFrom<Base>().Directly()`), and a `null` item fails them and their negation.
 - The version components (`HasVersion().WithMajor`) offer all comparisons of an `int` property, including
   `Between(…).And(…)`.
-- `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`.
+- `Customize.aweXpect.Reflection()` and its settings need `using aweXpect.Reflection;`, and the settings are properties, e.g. `Customize.aweXpect.Reflection().DependencyResolver.Set(…)` instead of `DependencyResolver().Set(…)`.
 - `AccessModifiers` moved from `aweXpect.Reflection.Collections` to `aweXpect.Reflection`; replace the `using` where
   you name it.
 - `IFilter<TEntity>.Applies` receives the `CancellationToken` of the enumeration; add the parameter to your own
   filters and pass it on to asynchronous work.
+- New: every check has its negation as an expectation and as a filter, e.g. `DoesNotReturn`, `DoesNotHaveParameter` and `WhichDoNotReturn`; collections of types offer `DependOn<T>()` and `DoNotDependOn<T>()`; and parameters are filtered by a predicate with `Matching(p => …)`.
 
 ### aweXpect.Snapshots (from 0.x)
 
@@ -210,12 +224,17 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   one without options. Calls compile unchanged, but have to be compiled again.
 - `PublicApiOptions` is immutable: each option returns new options, so a call whose result is discarded has no
   effect.
+- `.ComparedWith(comparer)` is now `.Using(comparer)`, like the other comparer options.
+- The result is a `StringSnapshotResult` or an `ObjectSnapshotResult` depending on the subject, so the rules offer only what applies, e.g. `.For.Lines()` only on a string snapshot. Code that names `SnapshotResult<TType, TThat>` has to use one of them.
+- `DiffEngineReporter` moved from `aweXpect.Snapshots` to `aweXpect.Snapshots.DiffEngine`.
+- Snapshot ids of one test that differ only in case, e.g. `.Named("Live")` and `.Named("live")`, fail on every operating system, also on Linux, where they passed before.
+- Snapshot files are never compiled, also with `.WithExtension("cs")`, and the IDE nests them under their test file; `<AweXpectSnapshotsNestFiles>false</AweXpectSnapshotsNestFiles>` turns the nesting off.
 
 ### aweXpect.Web
 
 - `HasHeader(…).WithValue(…)` and `HasQueryParameter(…).WithValue(…)` return a `StringEqualityTypeResult` and offer
   the match types, e.g. `WithValue("application/*").AsWildcard()`, like the type, title, detail and instance of
-  `HasProblemDetailsContent`. This only affects code that names the result type.
+  `HasProblemDetailsContent(expected)`. This only affects code that names the result type.
 - `HasStatusCode(…)`, `HasStatusCode().EqualTo(…)` and `HasStatusCode().NotEqualTo(…)` take an `HttpStatusCode`
   instead of an `HttpStatusCode?`. A response always has a status code, so `null` never matched.
 - `HasStatusCode()` returns the enum property result of aweXpect.Core, `PropertyResult.Enum<…, HttpStatusCode>`,
@@ -242,13 +261,30 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
 - `HasHost` and `HasScheme` compare ignoring case by default, also without an expected value, as RFC 3986 defines
   the host and the scheme as case-insensitive. Add `.IgnoringCase(false)` before `.Using(comparer)` or a match type
   of your own that cannot ignore the casing.
+- `HasContentType` and `DoesNotHaveContentType` compare the media type ignoring case by default, as RFC 9110 defines it case-insensitively. Add `.IgnoringCase(false)` to compare it case-sensitively, which `.Using(comparer)` needs as well.
+- `IsLoopback` and `IsNotLoopback` of an `IPAddress` map an IPv4-mapped address to IPv4 first, so `::ffff:127.0.0.2` is a loopback address on every target framework.
+- The built-in content processors `JsonContentProcessor`, `StringContentProcessor` and `BinaryContentProcessor` are sealed. A content processor of your own implements `IContentProcessor` and can delegate to a built-in one.
+- New: requests gain `HasContentType(…)` and `DoesNotHaveContentType(…)`, responses gain `DoesNotHaveStatusCode(…)`, `HasScheme`, `HasHost`, `HasPath` and `HasFragment` on a `Uri` take the expected value directly, and `HasRequestUri(uri => …)` applies the `Uri` expectations to the request URI.
+
+### aweXpect.Xml
+
+- `HasAttribute(name)` and the new `HasValue()` return an `XmlValueResult`, so the value is compared in the same sentence, e.g. `HasAttribute("id").EqualTo("7")` or `HasValue().StartingWith("Let")`. This only affects code that names the result type.
+- The nested expectations of `HasElement`, `HasAttribute` and `HasValue` receive a non-nullable `XElement` or `string`.
+- `IsValidXml(root => …)` and `IsValidXmlMatching(…)` fail both ways when the subject is not valid XML, so their negation no longer passes for invalid XML. `IsValidXml()` without expectations keeps its negation, and `IsNotValidXml()` is new.
+- `IgnoringAdditionalNodes()` in the XML options lets every comparison match a part of the subject, also `IsEqualTo(…).AsXml()`.
+- `XmlOptions` has no public constructor and is configured only through its methods.
 
 ### Namespaces
 
 Results of the extension packages are in `aweXpect.<Package>.Results`, their option types (`JsonOptions`,
 `XmlOptions`, `PublicApiOptions`) in `aweXpect.<Package>.Options` and their other public types in
-`aweXpect.<Package>`. Add the matching `using` where you name such a type. The option methods, e.g.
-`o => o.IgnoringArrayOrder()`, are in `aweXpect` and need no extra `using`.
+`aweXpect.<Package>`, e.g. `aweXpect.Snapshots.DiffEngine` or `aweXpect.Snapshots.PublicApi.Options`. Add the matching
+`using` where you name such a type. The option methods, e.g. `o => o.IgnoringArrayOrder()`, are in `aweXpect` and need
+no extra `using`.
+
+The customization classes are called `JsonCustomizationExtensions`, `WebCustomizationExtensions` and
+`SnapshotsCustomizationExtensions` instead of `…AwexpectCustomizationExtensions`. Calls such as
+`Customize.aweXpect.Json()` compile unchanged.
 
 ## Extensions
 
@@ -278,7 +314,8 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   are `readonly struct`s, and `StringEqualityOptions` is a sealed immutable class. Start from their `Default`, e.g.
   `StringEqualityOptions.Default`, instead of a parameterless constructor, and for a date from `TimeTolerance.Days`.
   A method that sets an option returns a new value, so use the value it returns: a discarded call on a struct, e.g.
-  `options.AtLeast(2);`, compiles and changes nothing. A repeated option replaces the earlier one, and methods that
+  `options.AtLeast(2);`, changes nothing, and the new analyzer warning `aweXpect0009` reports it. Mark immutable
+  options of your own with `[ImmutableOptions]` to get the same warning. A repeated option replaces the earlier one, and methods that
   mirror a user-facing option take its name, e.g. `Within` instead of `SetTolerance`. `Quantifier.Never()` is an
   option method instead of a static factory, e.g. `Quantifier.Default.Never()`.
 - The option methods are also extension methods on the holder in `aweXpect.Options`, which replace the value in the
@@ -303,6 +340,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   parameterName)`, `CountOccurrences(…, parameterName)` and `AreConsideredEqual(actual, expected, parameterName)` on
   the `StringEqualityOptions`, and `ValidateExpected(expected, parameterName)` of a `StringMatchType`.
 - `CollectionMatchOptions.SetEquivalenceRelation` is removed; pass the relation to the constructor.
+  `CollectionMatchOptions.ExpectationItem<TItem>` takes an `Action<IThatSubject<TItem>>`.
   `ExecutesInResult` and `ExecutesInToleranceResult` take the `ExpectationBuilder` as first constructor argument.
 - `ExpectationBuilder.Timeout` only returns the timeouts added with `WithTimeout(…)`. The limits of `ExecutesIn()` and
   of `Within(…)` after `Throws…()` are kept apart, so that a later limit replaces an earlier one, and still apply when
@@ -321,8 +359,14 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 - Nested subjects are `IThatSubject<T>`, and nested expectations take an `Action<IThatSubject<T>>`.
 - Results no longer implement `IOptionsProvider<ExpectationBuilder>`; use `EquivalencyExpectations.TryGetBuilder` for
   `It.Is…` expectations.
-- The result constructors of aweXpect are internal; the results of `aweXpect.Core` stay public as extension points.
-  `ObjectEqualityWithToleranceResult` and `StringCollectionMatchResult` moved to Core.
+- The result constructors of aweXpect and of the extension packages are internal, as are `ProblemDetailsOptions` and
+  the changeable filter interfaces of aweXpect.Reflection; the results of `aweXpect.Core` stay public as extension
+  points. `ObjectEqualityWithToleranceResult` and `StringCollectionMatchResult` moved to Core, and
+  `ToleranceEqualityResult` and `AndOrResult<TThat>` are removed. A result without a value of your own derives from
+  `ExpectationResultWithoutValue<TSelf>`, so that `Because` returns it.
+- `BetweenResult<TResult, TValue>` replaces `BetweenResult<TTarget>`, `BetweenResult<TTarget, TType>` and the nested
+  `BetweenResult` of `AllocatesResult` and `ExecutesInResult`.
+- `PropertyComparison<TProperty>.Satisfying(…)` lets an extension add operators of its own to a property result.
 - The quantified collection constraints moved to `aweXpect.Core.Extending`, and the occurrence count of `Contains`
   is available there as `AddStringOccurrenceConstraint`.
 - `ReflectionFallback` moved from `aweXpect.Core` to `aweXpect.Core.Extending`, and its `NotSupported(what, remedy)`
@@ -337,7 +381,9 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
   `ObjectHasItemWithToleranceResult`, `StringHasItemResult` and `StringBlockHasItemResult` take a `TThat` after the
   collection, and `ContainsKeyResult` and `ContainsKeysResult` have no `TKey`.
 - `[GenerateCollectionExpectation]` also generates the expectation directly on a collection with `CollectionOverload`
-  and `NegatedName`.
+  and `NegatedName`, and a predicate parameter marked with `[ExpectationOptions]` adds the string options.
+- An extension that waits with a timeout of its own cancels with `IEvaluationContext.CancelAfter(…)`, so that the
+  timeout runs on the clock of the evaluation.
 - `ITestFrameworkAdapter` has the new members `TryGetCurrentTest`, `TryGetCancellationToken` and `TryAddAttachment`,
   so an adapter of your own has to implement them; each returns `false` when the test framework does not support it.
   See [the running test](../11-extending/11-initialization.md#the-running-test).
