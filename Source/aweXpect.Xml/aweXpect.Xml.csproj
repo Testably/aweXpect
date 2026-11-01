@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<RootNamespace>aweXpect</RootNamespace>
-		<IsBetaPackage>true</IsBetaPackage>
 		<Description>Expectations for XML for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Xml</PackageProjectUrl>
 		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
