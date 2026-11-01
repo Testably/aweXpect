@@ -222,6 +222,35 @@ public sealed class ResultContextTests
 		[Test]
 		[Arguments(false)]
 		[Arguments(true)]
+		public async Task WhenCallbackThrowsAnException_ShouldShowANoteInsteadOfTheContent(bool isAsync)
+		{
+			async Task Act()
+				=> await That(1).ShowsContexts((contexts, _, _) =>
+				{
+					contexts.Add(new ResultContext.AsyncCallback("Value", isAsync
+						? _ => Task.FromException<string?>(new MyException("the body is malformed"))
+						: _ => throw new MyException("the body is malformed")));
+					contexts.Add(new ResultContext.AsyncCallback("Other", _ => Task.FromResult<string?>("completed")));
+				});
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that 1
+				             shows contexts,
+				             but it did not
+
+				             Value:
+				             the context did throw a MyException: the body is malformed
+
+				             Other:
+				             completed
+				             """)
+				.Because("a context only adds information and must not replace the failure");
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task WhenCallbackThrowsAnOperationCanceledException_ShouldStillReportTheFailure(bool isAsync)
 		{
 			async Task Act()
@@ -303,6 +332,26 @@ public sealed class ResultContextTests
 
 	public sealed class SyncCallbackTests
 	{
+		[Test]
+		public async Task WhenCallbackThrows_ShouldShowANoteInsteadOfTheContent()
+		{
+			async Task Act()
+				=> await That(1).ShowsContexts((contexts, _, _)
+					=> contexts.Add(new ResultContext.SyncCallback("Value",
+						() => throw new MyException("the body\nis malformed"))));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that 1
+				             shows contexts,
+				             but it did not
+
+				             Value:
+				             the context did throw a MyException: the body\nis malformed
+				             """)
+				.Because("a context only adds information and must not replace the failure");
+		}
+
 		[Test]
 		public async Task WhenCodeOfTheCallerThrows_ShouldOmitTheContext()
 		{

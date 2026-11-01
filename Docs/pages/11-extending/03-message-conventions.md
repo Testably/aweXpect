@@ -239,6 +239,10 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   `AppendContexts` on the final `Grammars` and `Outcome` instead of in `IsMetBy` or `NegateInPlace()`.
 - Capture the state in the callback when `AppendContexts` runs (`tracks` above), as the result of an item expectation
   is evaluated again for the next item before the content is created.
+- A context only adds information, so an exception while its content is created does not replace the failure. The
+  context then shows a note instead, e.g. `the context did throw a FormatException: …`. To omit the context instead,
+  call the code of the caller through [`UserCode.Invoke`](./02-constraints-and-results.md#code-of-the-caller), e.g.
+  when the same code already threw while the expectation was evaluated.
 - A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
   its outcome, or `contexts.VisitMember("name", result)` to label them with a member. `contexts.VisitItem(2, result)`
   labels them with the item of a collection, e.g. `Actual (item [2]):`, after the contexts of the collection.
