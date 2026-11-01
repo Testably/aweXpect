@@ -1326,6 +1326,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -1549,7 +1555,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -1776,7 +1783,8 @@ window.BENCHMARK_DATA = {
           725.7445904413859,
           560.7393560409546,
           778.6741639545986,
-          768.4333534921918
+          768.4333534921918,
+          750.1937887191773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2000,6 +2008,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2243,7 +2252,8 @@ window.BENCHMARK_DATA = {
           897.1942377090454,
           714.7967620213826,
           893.2202642304557,
-          922.8794352849325
+          922.8794352849325,
+          926.1448739596775
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2255,6 +2265,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3815,6 +3826,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -4038,7 +4055,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -4265,7 +4283,8 @@ window.BENCHMARK_DATA = {
           109.51574362913767,
           77.78046677793775,
           109.15568711076465,
-          106.37647270239316
+          106.37647270239316,
+          107.44632012844086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4412,6 +4431,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4732,7 +4752,8 @@ window.BENCHMARK_DATA = {
           218.39089543024699,
           181.86828998156957,
           206.3067994594574,
-          223.69465797742208
+          223.69465797742208,
+          211.23951989809672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4744,6 +4765,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -6304,6 +6326,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -6527,7 +6555,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -6754,7 +6783,8 @@ window.BENCHMARK_DATA = {
           1832.5698679606119,
           1434.892518043518,
           1876.4075479507446,
-          1963.3264427185059
+          1963.3264427185059,
+          1930.8018651326497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6949,6 +6979,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -7221,7 +7252,8 @@ window.BENCHMARK_DATA = {
           1499.2612303415933,
           1125.9191636403402,
           1411.9139096577962,
-          1473.4784450531006
+          1473.4784450531006,
+          1478.3664371783916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7447,6 +7479,7 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
+          1953,
           1953,
           1953,
           1953,
@@ -8733,6 +8766,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -8946,7 +8985,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -9163,7 +9203,8 @@ window.BENCHMARK_DATA = {
           2765.8167552948,
           2130.497166188558,
           2778.2774145943777,
-          2766.95658047994
+          2766.95658047994,
+          2827.3336130777993
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9348,6 +9389,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -9610,7 +9652,8 @@ window.BENCHMARK_DATA = {
           3803.814111836751,
           2896.033583958944,
           3791.1025649479457,
-          3884.545775277274
+          3884.545775277274,
+          3894.122015146109
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9832,6 +9875,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -11112,6 +11156,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -11325,7 +11375,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -11542,7 +11593,8 @@ window.BENCHMARK_DATA = {
           371.5550953865051,
           293.29018182754515,
           371.64741965702603,
-          393.74826570919583
+          393.74826570919583,
+          389.73816193853105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11679,6 +11731,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -11989,7 +12042,8 @@ window.BENCHMARK_DATA = {
           2196.424045054118,
           1734.5289728800456,
           2254.7178391047887,
-          2351.851838684082
+          2351.851838684082,
+          2388.0531916300456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12001,6 +12055,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -13491,6 +13546,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
@@ -13704,7 +13765,8 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
@@ -13921,7 +13983,8 @@ window.BENCHMARK_DATA = {
           2792.1555371602376,
           2324.3229949951174,
           2826.5323273794993,
-          3028.263121287028
+          3028.263121287028,
+          2990.0413884480795
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14135,6 +14198,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -14368,7 +14432,8 @@ window.BENCHMARK_DATA = {
           276216.8623422476,
           236968.19789341517,
           281988.1807617188,
-          281483.5877779447
+          281483.5877779447,
+          279352.5719075521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14587,6 +14652,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577,
