@@ -2347,7 +2347,7 @@ namespace aweXpect.Results
         }
         public class String<TType, TThat, TValue> : aweXpect.Results.IStringAffixPropertyResult<aweXpect.Results.StringEqualityResult<TType, TThat>>, aweXpect.Results.IStringEqualityPropertyResult<aweXpect.Results.StringEqualityTypeResult<TType, TThat>>, aweXpect.Results.IStringOccurrencePropertyResult<aweXpect.Results.StringOccurrenceCountResult<TType, TThat>> where TThat : aweXpect.Core.IThat<TValue>
         {
-            public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false) { }
+            public String(TThat subject, System.Func<TValue, string?> mapper, string propertyExpression, System.Action<string?, string>? validation = null, aweXpect.Core.ExpectationGrammars grammars = aweXpect.Core.ExpectationGrammars.None, bool includeValueInContext = false, bool ignoringCase = false) { }
         }
         public class TimeSpan<TType> : aweXpect.Results.PropertyResult.TimeSpan<TType, aweXpect.Core.IThat<TType>, TType>
         {

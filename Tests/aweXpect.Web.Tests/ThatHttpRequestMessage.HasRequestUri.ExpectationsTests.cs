@@ -58,7 +58,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI which has host equal to "music.example.com" and has path starting with "/tracks/",
+					             has a request URI which has host equal to "music.example.com" ignoring case and has path starting with "/tracks/",
 					             but the request URI had path "/albums/42", which differs at index 1:
 					                 ↓ (actual)
 					               "/albums/42"
@@ -84,7 +84,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI which has host equal to "music.example.com",
+					             has a request URI which has host equal to "music.example.com" ignoring case,
 					             but the request URI was <null>
 
 					             HTTP-Request:
@@ -137,7 +137,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI which does not have host equal to "music.example.com",
+					             has a request URI which does not have host equal to "music.example.com" ignoring case,
 					             but it was <null>
 					             """)
 					.Because("a null subject has no request URI, so the negated expectation fails as well");
@@ -154,7 +154,7 @@ public sealed partial class ThatHttpRequestMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request URI which has host equal to "music.example.com",
+					             has a request URI which has host equal to "music.example.com" ignoring case,
 					             but it was <null>
 					             """);
 			}

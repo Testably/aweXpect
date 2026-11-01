@@ -286,6 +286,9 @@ public static class PropertyResult
 	///     <see cref="Exception" /> to <c>Throws&lt;TException&gt;()</c>: the constraint has to accept the value the
 	///     source provides, while the result carries the narrowed type. It also differs for a nullable subject, whose
 	///     value is no longer <see langword="null" /> once the property could be compared.
+	///     <para />
+	///     With <paramref name="ignoringCase" />, the property is compared ignoring case by default, e.g. for a value
+	///     that a standard defines case-insensitively; <c>IgnoringCase(false)</c> compares it case-sensitively.
 	/// </remarks>
 	public class String<TType, TThat, TValue>(
 		TThat subject,
@@ -293,7 +296,8 @@ public static class PropertyResult
 		string propertyExpression,
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
-		bool includeValueInContext = false)
+		bool includeValueInContext = false,
+		bool ignoringCase = false)
 		: IStringEqualityPropertyResult<StringEqualityTypeResult<TType, TThat>>,
 			IStringAffixPropertyResult<StringEqualityResult<TType, TThat>>,
 			IStringOccurrencePropertyResult<StringOccurrenceCountResult<TType, TThat>>
@@ -314,12 +318,12 @@ public static class PropertyResult
 		/// <inheritdoc cref="IStringEqualityPropertyResult{TResult}.Compare(StringPropertyComparison)" />
 		StringEqualityTypeResult<TType, TThat> IStringEqualityPropertyResult<StringEqualityTypeResult<TType, TThat>>.
 			Compare(StringPropertyComparison comparison)
-			=> new(Build(comparison), subject, comparison.Options);
+			=> new(Build(WithDefaults(comparison)), subject, comparison.Options);
 
 		/// <inheritdoc cref="IStringAffixPropertyResult{TResult}.Compare(StringPropertyComparison)" />
 		StringEqualityResult<TType, TThat> IStringAffixPropertyResult<StringEqualityResult<TType, TThat>>.Compare(
 			StringPropertyComparison comparison)
-			=> new(Build(comparison), subject, comparison.Options);
+			=> new(Build(WithDefaults(comparison)), subject, comparison.Options);
 
 		/// <inheritdoc cref="IStringOccurrencePropertyResult{TResult}.Compare(StringPropertyComparison)" />
 		StringOccurrenceCountResult<TType, TThat>
@@ -328,7 +332,7 @@ public static class PropertyResult
 			=> new(subject.Get().ExpectationBuilder
 					.AddConstraint(
 						(IncludeValueInContext: includeValueInContext, Grammars: grammars, Mapper: mapper,
-							PropertyExpression: propertyExpression, Comparison: comparison),
+							PropertyExpression: propertyExpression, Comparison: WithDefaults(comparison)),
 						static (state, it, constraintGrammars) =>
 							new ContainingConstraint<TValue>(
 								state.IncludeValueInContext,
@@ -340,6 +344,16 @@ public static class PropertyResult
 				subject,
 				comparison.Quantifier!,
 				comparison.Options);
+
+		private StringPropertyComparison WithDefaults(StringPropertyComparison comparison)
+		{
+			if (ignoringCase)
+			{
+				comparison.Options.Value = comparison.Options.Value.IgnoringCase();
+			}
+
+			return comparison;
+		}
 
 		private ExpectationBuilder Build(StringPropertyComparison comparison)
 			=> subject.Get().ExpectationBuilder

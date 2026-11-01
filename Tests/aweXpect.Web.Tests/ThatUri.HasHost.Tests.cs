@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host equal to "awexpect.com",
+					             has host equal to "awexpect.com" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -33,7 +33,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host equal to "awexpect.com",
+					             has host equal to "awexpect.com" ignoring case,
 					             but it was relative
 					             """);
 			}
@@ -50,6 +50,18 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task EqualTo_WhenExpectedDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasHost().EqualTo("WWW.aweXpect.COM");
+
+				await That(Act).DoesNotThrow()
+					.Because("RFC 3986 defines the host as case-insensitive");
+			}
+
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedHost_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -60,7 +72,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host equal to "awexpect.com",
+					             has host equal to "awexpect.com" ignoring case,
 					             but it had host "www.awexpect.com", which differs at index 0:
 					                ↓ (actual)
 					               "www.awexpect.com"
@@ -102,7 +114,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "www.awexpect.com",
+					             does not have host equal to "www.awexpect.com" ignoring case,
 					             but it had host "www.awexpect.com"
 					             """);
 			}
@@ -118,7 +130,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host matching "*.example.com",
+					             has host matching "*.example.com" ignoring case,
 					             but it had host "www.awexpect.com", which did not match:
 					               ↓ (actual)
 					               "www.awexpect.com"
@@ -139,6 +151,26 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task Shorthand_IgnoringCaseFalse_WhenExpectedDiffersOnlyInCase_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasHost("WWW.awexpect.com").IgnoringCase(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has host equal to "WWW.awexpect.com",
+					             but it had host "www.awexpect.com", which differs at index 0:
+					                ↓ (actual)
+					               "www.awexpect.com"
+					               "WWW.awexpect.com"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Test]
 			public async Task Shorthand_IgnoringCase_WhenSubjectDiffersOnlyInCase_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com/tracks/1");
@@ -147,6 +179,29 @@ public sealed partial class ThatUri
 					=> await That(subject).HasHost("WWW.aweXpect.COM").IgnoringCase();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_Using_AfterIgnoringCaseFalse_ShouldUseTheComparer()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasHost("WWW.aweXpect.COM").IgnoringCase(false).Using(StringComparer.OrdinalIgnoreCase);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenExpectedDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://Music.Example.com/albums/abbey-road");
+
+				async Task Act()
+					=> await That(subject).HasHost("Music.Example.com");
+
+				await That(Act).DoesNotThrow()
+					.Because("RFC 3986 defines the host as case-insensitive");
 			}
 
 			[Test]
@@ -173,7 +228,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host equal to "awexpect.com",
+					             has host equal to "awexpect.com" ignoring case,
 					             but it had host "www.awexpect.com", which differs at index 0:
 					                ↓ (actual)
 					               "www.awexpect.com"
@@ -216,7 +271,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has host equal to "awexpect.com",
+					             has host equal to "awexpect.com" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -235,7 +290,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "awexpect.com",
+					             does not have host equal to "awexpect.com" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -251,7 +306,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "awexpect.com",
+					             does not have host equal to "awexpect.com" ignoring case,
 					             but it was relative
 					             """)
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
@@ -279,7 +334,23 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "www.awexpect.com",
+					             does not have host equal to "www.awexpect.com" ignoring case,
+					             but it had host "www.awexpect.com"
+					             """);
+			}
+
+			[Test]
+			public async Task Shorthand_WhenExpectedDiffersOnlyInCase_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasHost("WWW.aweXpect.COM"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have host equal to "WWW.aweXpect.COM" ignoring case,
 					             but it had host "www.awexpect.com"
 					             """);
 			}
@@ -306,7 +377,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "www.awexpect.com",
+					             does not have host equal to "www.awexpect.com" ignoring case,
 					             but it had host "www.awexpect.com"
 					             """);
 			}
@@ -322,7 +393,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have host equal to "awexpect.com",
+					             does not have host equal to "awexpect.com" ignoring case,
 					             but it was <null>
 					             """);
 			}
