@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
-        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
-      },
-      {
         "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
-      "fa3e0676",
       "144c7b56",
       "b091e811",
       "84c8c5e0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          821.276523844401,
           894.2884833472116,
           991.1092564900716,
           910.2304321016584,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           667.2320489149827,
           907.5946220670428,
           470.7676128240732,
-          917.2621431350708
+          917.2621431350708,
+          708.7523752848307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          677.9159244390635,
           701.3189781188964,
           727.8085537637983,
           710.2752144495646,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           572.7906340916951,
           766.6624048233032,
           334.2650292836703,
-          700.7130733217512
+          700.7130733217512,
+          545.6979237238567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
-        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
-      },
-      {
         "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
-      "fa3e0676",
       "144c7b56",
       "b091e811",
       "84c8c5e0",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4364.461219787598,
           4540.665985107422,
           4842.084578450521,
           4266.367202758789,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3689.9089693341934,
           4835.7995681762695,
           2288.8197830200197,
-          4299.0927658081055
+          4299.0927658081055,
+          3242.395983182467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24179,
           24178,
           24172,
           24179,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24178,
-          24178
+          24178,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          4863.353251902262,
           5281.758043729342,
           5589.4507507324215,
           5012.110445022583,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4330.015371704101,
           5634.666832478842,
           2627.264873758952,
-          5150.179296875
+          5150.179296875,
+          3869.7824244181315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
-        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
-      },
-      {
         "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
-      "fa3e0676",
       "144c7b56",
       "b091e811",
       "84c8c5e0",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2367.8149983542307,
           2572.0728040059407,
           2783.576471455892,
           2551.2896525065103,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2058.9700945536297,
           2758.926366551717,
           1290.6605106989543,
-          2440.7474212646484
+          2440.7474212646484,
+          1950.7548316955567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12728,
           12654,
           12654,
           12728,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12728,
           12654,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3378.5948941548663,
           3589.527540588379,
           3886.4850867135183,
           3441.3160074869793,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3137.841963704427,
           3815.3494384765627,
           1789.50617351532,
-          3491.930657900297
+          3491.930657900297,
+          2661.4688350132533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
-        "message": "refactor!: accept optional options in PublicApiDeclarations.GenerateFrom (#2114)"
-      },
-      {
         "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
         "author": "dependabot[bot]",
         "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
-      "fa3e0676",
       "144c7b56",
       "b091e811",
       "84c8c5e0",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13138.657448323567,
           13801.574124145507,
           14078.57225748698,
           13505.70010732015,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10995.32057647705,
           14545.04730122884,
           7008.902216847738,
-          13549.065313720703
+          13549.065313720703,
+          10211.725556437175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25440,
           25367,
           25367,
           25440,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25440,
           25367,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          313904.3671123798,
           360950.58902994794,
           363622.49820963544,
           354125.66834435094,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           268227.60616629466,
           369927.8440755208,
           165662.53260091145,
-          360239.97013972356
+          360239.97013972356,
+          249345.4634765625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2409,6 +2408,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
