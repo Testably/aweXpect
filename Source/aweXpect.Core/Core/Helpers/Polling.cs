@@ -67,9 +67,16 @@ internal sealed class Polling : IDisposable
 		_cancellation = cancellation;
 		_registration = cancellation.Token.Register(() =>
 		{
-			// The time has to be recorded before the wait is released, so that the loop always observes it.
-			_canceledAt ??= GetElapsedTime(_startTimestamp);
-			_canceled.TrySetResult(true);
+			// The time has to be recorded before the wait is released, so that the loop always observes it, but a
+			// failing time provider must not keep the wait from being released.
+			try
+			{
+				_canceledAt ??= GetElapsedTime(_startTimestamp);
+			}
+			finally
+			{
+				_canceled.TrySetResult(true);
+			}
 		});
 	}
 
@@ -157,8 +164,8 @@ internal sealed class Polling : IDisposable
 	/// <remarks>
 	///     A wait of zero still yields, so that checking without waiting does not block the thread. The cancellation
 	///     releases the timer of the wait at once, so that a virtual clock which fires its timers inline stops at the
-	///     cancellation. As the callbacks of a token run in reverse order, the wait is canceled before the time of the
-	///     cancellation is recorded, so a canceled wait continues only after the recording.
+	///     cancellation. The cancellation can release the wait before the time of the cancellation is recorded, so a
+	///     canceled wait continues only after the recording.
 	/// </remarks>
 	private async Task<bool> IsCanceledDuring(TimeSpan wait)
 	{

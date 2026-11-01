@@ -83,10 +83,11 @@ internal static class TaskHelpers
 	}
 
 	/// <remarks>
-	///     The outcome of the <paramref name="task" /> wins when it completed by the time of the cancellation, so that a
-	///     task which reacts to the cancellation itself keeps reporting its own exception. This is decided when the
-	///     cancellation arrives, as the continuation that notices it may run later, e.g. after a virtual clock that fires
-	///     its timers inline completed the <paramref name="task" /> on the way.
+	///     The outcome of the <paramref name="task" /> wins when it completed by the time of the cancellation. Whether it
+	///     was still running is decided when the cancellation arrives, as the continuation that notices it may run later,
+	///     e.g. after a virtual clock that fires its timers inline completed the <paramref name="task" /> on the way. A
+	///     task that failed or was canceled by the time the cancellation is noticed reacted to it, so it keeps reporting
+	///     its own exception.
 	/// </remarks>
 	private static async Task WaitOrAbandon(Task task, CancellationToken cancellationToken)
 	{
@@ -96,7 +97,7 @@ internal static class TaskHelpers
 			await Task.WhenAny(task, decision.Task);
 		}
 
-		if (decision.Task is { IsCompleted: true, Result: true, })
+		if (decision.Task is { IsCompleted: true, Result: true, } && !task.IsFaulted && !task.IsCanceled)
 		{
 			throw Abandon(task);
 		}

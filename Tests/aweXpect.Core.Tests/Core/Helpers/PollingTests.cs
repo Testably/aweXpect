@@ -316,19 +316,43 @@ public sealed class PollingTests
 		cancellation.Release();
 	}
 
+	[Test]
+	public async Task WaitForNextCheck_WhenTheTimeProviderFailsAtTheCancellation_ShouldStillReleaseTheWait()
+	{
+		TimerRecordingTimeProvider time = new();
+		using CancellationTokenSource cts = new();
+		EvaluationCancellation cancellation = new(null, cts.Token);
+		using Polling sut = Polling.Start(time, time.GetTimestamp(), 30.Seconds(), 1.Hours(), cancellation);
+		Task<PollStep> step = sut.WaitForNextCheck();
+		time.FailsToMeasure = true;
+
+		void Cancel() => cts.Cancel();
+
+		await That(Cancel).ThrowsExactly<AggregateException>()
+			.WithInner<InvalidOperationException>(inner => inner.HasMessage("the clock failed"));
+		await That(() => step).ThrowsExactly<InvalidOperationException>().WithMessage("the clock failed")
+			.Because("the wait is released, so the failure of the time provider surfaces instead of a hang");
+	}
+
 	private static Polling Start(VirtualTimeProvider time, TimeSpan budget, TimeSpan interval,
 		EvaluationCancellation cancellation)
 		=> Polling.Start(time, time.GetTimestamp(), budget, interval, cancellation);
 
 	/// <summary>
-	///     A time provider whose timers never fire, so that a test sees whether a wait releases its timer.
+	///     A time provider whose timers never fire, so that a test sees whether a wait releases its timer, and that can
+	///     fail to measure the time.
 	/// </summary>
 	private sealed class TimerRecordingTimeProvider : TimeProvider
 	{
+		public bool FailsToMeasure { get; set; }
+
 		public RecordingTimer? LastTimer { get; private set; }
 
 		public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
 			=> LastTimer = new RecordingTimer();
+
+		public override long GetTimestamp()
+			=> FailsToMeasure ? throw new InvalidOperationException("the clock failed") : base.GetTimestamp();
 	}
 
 	private sealed class RecordingTimer : ITimer
