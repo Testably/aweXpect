@@ -1338,6 +1338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -1563,7 +1569,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -1792,7 +1799,8 @@ window.BENCHMARK_DATA = {
           454.22234363555907,
           473.6510327202933,
           369.3130831082662,
-          228.74589053789774
+          228.74589053789774,
+          435.1065190179007
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1972,6 +1980,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2263,7 +2272,8 @@ window.BENCHMARK_DATA = {
           995.5603698730469,
           974.1035179773967,
           810.129448890686,
-          549.5627836227417
+          549.5627836227417,
+          1024.498185602824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2275,6 +2285,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -3849,6 +3860,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -4074,7 +4091,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -4303,7 +4321,8 @@ window.BENCHMARK_DATA = {
           233.47819695472717,
           238.17072636286417,
           182.3486209233602,
-          132.5479962642376
+          132.5479962642376,
+          244.69765538435715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4450,6 +4469,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -4774,7 +4794,8 @@ window.BENCHMARK_DATA = {
           242.95159159387862,
           257.9887052853902,
           211.66320983001165,
-          146.80514289651597
+          146.80514289651597,
+          279.4395910331181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4786,6 +4807,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -6300,6 +6322,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -6515,7 +6543,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -6734,7 +6763,8 @@ window.BENCHMARK_DATA = {
           919.9278140068054,
           998.9280269622802,
           735.0279777233417,
-          544.0216925938925
+          544.0216925938925,
+          915.0510061264038
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6926,6 +6956,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -7185,7 +7216,8 @@ window.BENCHMARK_DATA = {
           981.7609280904134,
           983.0672017506191,
           779.2889129638672,
-          533.6910495758057
+          533.6910495758057,
+          995.6242108662923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7197,6 +7229,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -8701,6 +8734,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -8916,7 +8955,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -9135,7 +9175,8 @@ window.BENCHMARK_DATA = {
           1930.158317820231,
           1879.0770250956218,
           1500.763552393232,
-          1161.6051745096843
+          1161.6051745096843,
+          1639.1612518310546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9274,6 +9315,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -9586,7 +9628,8 @@ window.BENCHMARK_DATA = {
           21112.943025716148,
           21287.79279581706,
           14938.777777608235,
-          10622.285263061523
+          10622.285263061523,
+          15796.528108869281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9810,7 +9853,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11102,6 +11146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -11317,7 +11367,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -11536,7 +11587,8 @@ window.BENCHMARK_DATA = {
           836.2280292510986,
           752.8134021077838,
           573.0018540700277,
-          399.9726088523865
+          399.9726088523865,
+          725.4629685084025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11675,6 +11727,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -11987,7 +12040,8 @@ window.BENCHMARK_DATA = {
           1277.0836035410564,
           1318.5842333475748,
           1067.1857963289533,
-          761.9303963343302
+          761.9303963343302,
+          1333.5948487599692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11999,6 +12053,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -13503,6 +13558,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
@@ -13718,7 +13779,8 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
@@ -13937,7 +13999,8 @@ window.BENCHMARK_DATA = {
           1277.692675145467,
           1229.8665685653687,
           1037.7501219235933,
-          798.6245455375084
+          798.6245455375084,
+          1102.595392363412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14107,6 +14170,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -14388,7 +14452,8 @@ window.BENCHMARK_DATA = {
           771.6296712875367,
           809.2666116714478,
           644.9650718053182,
-          431.4190220514933
+          431.4190220514933,
+          813.2444582621257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14400,6 +14465,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
