@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2052.9348055521646,
           1978.953659937932,
           1545.985998740563,
           2086.706296480619,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2204.2541645595006,
           2024.206935295692,
           2007.0393989562988,
-          2020.7183077675957
+          2020.7183077675957,
+          2327.36997956496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16074.215649414062,
           15861.338118489582,
           10626.395532226563,
           16310.471478271484,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           16077.304119873046,
           16771.71337890625,
           15818.233197021484,
-          16370.485000610352
+          16370.485000610352,
+          15810.854405329777
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1661.7224979400635,
           1612.9322198232014,
           1220.3315822601319,
           1640.281694999108,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1656.7223997751871,
           1678.4094497974102,
           1623.4745596372163,
-          1658.7743970326014
+          1658.7743970326014,
+          1832.9114817210607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14533.679617818196,
           14133.846384320941,
           9766.713427225748,
           14814.978061930338,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           15771.568483988443,
           15379.283129010882,
           14454.769341023763,
-          14719.541786193848
+          14719.541786193848,
+          14528.411424763997
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5559.557773883526,
           5332.824653625488,
           3912.1889897664387,
           5515.317835671561,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5469.4302010169395,
           5669.93204498291,
           5226.442127990723,
-          5421.713756016323
+          5421.713756016323,
+          5954.238044151893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1643,7 +1643,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
-          3720,
+          3704,
           3704,
           3704,
           3704,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          50109.28851787861,
           47757.111108398436,
           29384.983071463448,
           48778.79515293666,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           47121.59504045759,
           47759.17424316406,
           47079.15642438616,
-          47267.583060128345
+          47267.583060128345,
+          44004.17788461538
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61925,
           61926,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
       {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9526.443170166016,
           9889.205686442057,
           7277.61502532959,
           10792.08791242327,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9341.515162541316,
           9704.016166178386,
           9482.42406136649,
-          9520.075758870442
+          9520.075758870442,
+          10976.570321219308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          294541.28285435267,
           294879.5934119591,
           207013.7313313802,
           312405.4239327567,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           306530.69601004466,
           320007.39803059894,
           313777.139718192,
-          312006.29939778644
+          312006.29939778644,
+          312579.469796317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
       {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2862.472141265869,
           2823.4344312032063,
           2176.046981048584,
           2882.0238480201133,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2870.043419177716,
           2894.3543229784286,
           2916.9820330301923,
-          2855.6795956747874
+          2855.6795956747874,
+          3320.156034787496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2862,7 +2862,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2009.1759971618653,
           1957.38902537028,
           1490.4003765106202,
           2037.3317362467449,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1953.168960571289,
           2038.31574567159,
           2010.0631271362304,
-          1973.7972002665201
+          1973.7972002665201,
+          2282.658669535319
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2948.9187984466553,
           2952.5356824239093,
           2138.5787636439004,
           2955.2212050301687,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2847.66625389686,
           3084.115250178746,
           2868.3852348327637,
-          3028.649681345622
+          3028.649681345622,
+          3237.674137369792
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3467,7 +3467,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
-          2856,
+          2904,
           2904,
           2904,
           2904,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1905.7863066355387,
           1892.6188925334386,
           1396.8530830383302,
           1917.620241018442,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1841.4803184781756,
           1964.5396919250488,
           1768.7213598887126,
-          1865.2233419418335
+          1865.2233419418335,
+          2051.811639404297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2422.604739634196,
           2386.703655751546,
           1738.9640347617012,
           2395.674713389079,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2364.571030171712,
           2508.2014996846515,
           2305.6666592915853,
-          2503.446306501116
+          2503.446306501116,
+          2644.4899899800616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4075,7 +4075,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
-          3024,
+          3072,
           3072,
           3072,
           3072,
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1262.329741160075,
           1176.2295599619547,
           913.4344413621085,
           1256.7434519449869,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1135.1566838484543,
           1314.8056484222411,
           1142.8441558565412,
-          1219.2413073221842
+          1219.2413073221842,
+          1389.530007680257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
-        "message": "fix: let the text selection of snapshot rules return a copy for each option (#2108)"
-      },
-      {
         "sha": "84c8c5e0f0d2ec600ea8b72503b6f699b3a78a62",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:02:10 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
-      "b091e811",
       "84c8c5e0",
       "e2339ca9",
       "9ea73f6f",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3125.521175638835,
           3156.4373389652797,
           2305.255239214216,
           3205.1517396654403,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           3002.0922655741374,
           3195.577241352626,
           3068.764882405599,
-          3200.052268218994
+          3200.052268218994,
+          3499.2907973698207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1355.28836034139,
           1290.3362789154053,
           1042.8010267110972,
           1388.064263788859,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1323.2075408935548,
           1493.6733208974204,
           1295.4235555103846,
-          1363.2098733266196
+          1363.2098733266196,
+          1571.4886444091796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5098,6 +5098,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
@@ -5139,7 +5145,8 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
@@ -5184,7 +5191,8 @@ window.BENCHMARK_DATA = {
           163702.58803304037,
           166118.3238994892,
           166316.77014160156,
-          166789.7739461263
+          166789.7739461263,
+          191829.36059570312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5196,6 +5204,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -5287,7 +5296,8 @@ window.BENCHMARK_DATA = {
           197151.55689415566,
           201527.7803955078,
           194609.29819335937,
-          194650.84929547991
+          194650.84929547991,
+          220557.52906901043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5337,7 +5347,8 @@ window.BENCHMARK_DATA = {
           266951,
           266951,
           266951,
-          266951
+          266951,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5585,6 +5596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
         "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
+      },
+      {
+        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
+        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
       }
     ],
     "labels": [
@@ -5626,7 +5643,8 @@ window.BENCHMARK_DATA = {
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
-      "3f6a8fdf"
+      "3f6a8fdf",
+      "9c72fda8"
     ],
     "datasets": [
       {
@@ -5671,7 +5689,8 @@ window.BENCHMARK_DATA = {
           2715.714352471488,
           2907.463332584926,
           2744.1524869478667,
-          2903.3248397827147
+          2903.3248397827147,
+          3080.4039154052734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5683,6 +5702,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5774,7 +5794,8 @@ window.BENCHMARK_DATA = {
           2111.111012385442,
           1987.6399473462786,
           1837.3256714684624,
-          1840.4187636057536
+          1840.4187636057536,
+          2112.898602294922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5786,6 +5807,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
