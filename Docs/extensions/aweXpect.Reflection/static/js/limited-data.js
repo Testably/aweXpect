@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
-      {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          471.9661470193129,
           492.81475518544516,
           484.72664880752563,
           338.12206854139055,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           725.7445904413859,
           560.7393560409546,
           778.6741639545986,
-          768.4333534921918
+          768.4333534921918,
+          750.1937887191773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -460,7 +460,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          673.0239182880947,
           722.1100611368815,
           687.895776612418,
           470.3614543279012,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           897.1942377090454,
           714.7967620213826,
           893.2202642304557,
-          922.8794352849325
+          922.8794352849325,
+          926.1448739596775
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
-      {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          75.52585469086965,
           82.99340411594936,
           78.25070672829946,
           56.3144095659256,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           109.51574362913767,
           77.78046677793775,
           109.15568711076465,
-          106.37647270239316
+          106.37647270239316,
+          107.44632012844086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          164.1125558955329,
           173.7929592927297,
           170.34959718159266,
           130.78059196472168,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           218.39089543024699,
           181.86828998156957,
           206.3067994594574,
-          223.69465797742208
+          223.69465797742208,
+          211.23951989809672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
-      {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1317.1193975721087,
           1381.538098199027,
           1363.3655841827392,
           908.0967491785685,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1832.5698679606119,
           1434.892518043518,
           1876.4075479507446,
-          1963.3264427185059
+          1963.3264427185059,
+          1930.8018651326497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1647,7 +1647,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1094.368562189738,
           1150.8693572998047,
           1129.8047323226929,
           790.750996653239,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1499.2612303415933,
           1125.9191636403402,
           1411.9139096577962,
-          1473.4784450531006
+          1473.4784450531006,
+          1478.3664371783916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1953,
           1953,
           1953,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
       {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1972.9525594075521,
           1954.4825080871583,
           2061.2373196919757,
           1339.6654103597004,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2765.8167552948,
           2130.497166188558,
           2778.2774145943777,
-          2766.95658047994
+          2766.95658047994,
+          2827.3336130777993
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2255,7 +2255,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2887.1890877314977,
           3018.369997660319,
           3062.191277430608,
           2097.339874812535,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3803.814111836751,
           2896.033583958944,
           3791.1025649479457,
-          3884.545775277274
+          3884.545775277274,
+          3894.122015146109
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3981,
           3981,
           3981,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
       {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          270.1991069657462,
           289.5612061182658,
           295.33603828293934,
           182.87367059389751,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           371.5550953865051,
           293.29018182754515,
           371.64741965702603,
-          393.74826570919583
+          393.74826570919583,
+          389.73816193853105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1694.614646911621,
           1820.7837827046712,
           1839.6418684445894,
           1224.9972310384114,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2196.424045054118,
           1734.5289728800456,
           2254.7178391047887,
-          2351.851838684082
+          2351.851838684082,
+          2388.0531916300456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "2e0f7001163c641048381150afa3fd5da9a84b9b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 06:11:33 2026 \u002B0100",
-        "message": "fix: apply the formatters of an expectation to the text of a failed negation (#2112)"
-      },
-      {
         "sha": "fa3e0676c44578eafcf46fd152ec7bdec5e21e66",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:14:39 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
         "message": "fix: keep the failure when a result context throws (#2159)"
+      },
+      {
+        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
+        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
       }
     ],
     "labels": [
-      "2e0f7001",
       "fa3e0676",
       "144c7b56",
       "b091e811",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6c756140",
       "99f75dcf",
       "77e01f4b",
-      "68753ad6"
+      "68753ad6",
+      "7c05d459"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2108.3679370880127,
           2237.2564651489256,
           2220.8905308063213,
           1494.520046488444,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2792.1555371602376,
           2324.3229949951174,
           2826.5323273794993,
-          3028.263121287028
+          3028.263121287028,
+          2990.0413884480795
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3471,7 +3471,6 @@ window.BENCHMARK_DATA = {
           3200,
           3200,
           3200,
-          3200,
           3248,
           3248,
           3248,
@@ -3501,6 +3500,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          239539.34803989955,
           240180.7374093192,
           239549.76911808894,
           160814.23063777044,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           276216.8623422476,
           236968.19789341517,
           281988.1807617188,
-          281483.5877779447
+          281483.5877779447,
+          279352.5719075521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17574,
@@ -3631,6 +3630,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577,
           17577,
           17577,
