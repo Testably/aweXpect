@@ -46,7 +46,6 @@ These changes compile unchanged, but an existing test may now check something di
 `aweXpect.Json`, `aweXpect.Web`, `aweXpect.Xml`, `aweXpect.Reflection` and `aweXpect.Snapshots` (with `aweXpect.Snapshots.DiffEngine` and `aweXpect.Snapshots.PublicApi`) are now released together with `aweXpect` and `aweXpect.Core`, with one version. Use the same version for all of them; a breaking change in any package waits for the next major version.
 
 - The extension packages jump from their own versions to 4.0.0.
-- `aweXpect.Xml` and the `aweXpect.Snapshots` packages are still in beta and are published as `4.x.y-beta.1`.
 - The extension packages are now signed with the key of aweXpect, so their public key token changes. This only matters for `InternalsVisibleTo` entries or binding redirects that name it.
 
 ## Renamed expectations

@@ -48,11 +48,11 @@ projects in this repository that need the generator reference `aweXpect.Core.Gen
 | --- | --- | --- |
 | `aweXpect.Json` | `aweXpect.Json` | Expectations for JSON strings and `System.Text.Json` |
 | `aweXpect.Web` | `aweXpect.Web` | Expectations for `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress` |
-| `aweXpect.Xml` | `aweXpect.Xml` (beta) | Expectations for XML strings and `System.Xml.Linq` |
+| `aweXpect.Xml` | `aweXpect.Xml` | Expectations for XML strings and `System.Xml.Linq` |
 | `aweXpect.Reflection` | `aweXpect.Reflection` | Expectations for reflection types and architecture rules |
-| `aweXpect.Snapshots` | `aweXpect.Snapshots` (beta) | Snapshot testing |
-| `aweXpect.Snapshots.DiffEngine` | `aweXpect.Snapshots.DiffEngine` (beta) | Opens a diff tool with DiffEngine for snapshots that are missing or different |
-| `aweXpect.Snapshots.PublicApi` | `aweXpect.Snapshots.PublicApi` (beta) | Public API snapshots, also used by `aweXpect.Api.Tests` |
+| `aweXpect.Snapshots` | `aweXpect.Snapshots` | Snapshot testing |
+| `aweXpect.Snapshots.DiffEngine` | `aweXpect.Snapshots.DiffEngine` | Opens a diff tool with DiffEngine for snapshots that are missing or different |
+| `aweXpect.Snapshots.PublicApi` | `aweXpect.Snapshots.PublicApi` | Public API snapshots, also used by `aweXpect.Api.Tests` |
 
 ## Source layout
 
@@ -208,8 +208,6 @@ extension authors, including generated expectations and Native AOT.
 
 - Assemblies are strong-name signed with `strongname.snk` (root `Directory.Build.props`), test projects included,
   except `aweXpect.Reflection.Tests`, whose strong-name tests need an unsigned assembly.
-- `Source/Directory.Build.targets` adds the `beta` label to the packages with `IsBetaPackage` (see
-  [workflows](workflows.md#releases)).
 - `Source/Directory.Build.props`: `TreatWarningsAsErrors`, XML documentation, `Nullable` (annotations only on
   `netstandard2.0`), trimming and AOT analyzers for `net8.0+`, package metadata. Local builds get version
   `255.255.255.255`; `Compile` sets the real version from GitVersion.
