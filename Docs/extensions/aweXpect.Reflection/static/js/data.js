@@ -1350,6 +1350,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -1577,7 +1583,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -1808,7 +1815,8 @@ window.BENCHMARK_DATA = {
           750.1937887191773,
           750.2949500450721,
           440.08081589426314,
-          367.9654962833111
+          367.9654962833111,
+          789.3136967250279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2032,6 +2040,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2283,7 +2292,8 @@ window.BENCHMARK_DATA = {
           926.1448739596775,
           940.5592269897461,
           549.0138045719692,
-          488.2764450953557
+          488.2764450953557,
+          766.8016492979867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2295,6 +2305,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3883,6 +3894,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -4110,7 +4127,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -4341,7 +4359,8 @@ window.BENCHMARK_DATA = {
           107.44632012844086,
           102.15994429588318,
           63.46543858846029,
-          54.331290061984745
+          54.331290061984745,
+          100.78213461807796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4488,6 +4507,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4816,7 +4836,8 @@ window.BENCHMARK_DATA = {
           211.23951989809672,
           214.79105628331502,
           136.06614362398784,
-          119.07295257704598
+          119.07295257704598,
+          223.265803082784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4828,6 +4849,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -6416,6 +6438,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -6643,7 +6671,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -6874,7 +6903,8 @@ window.BENCHMARK_DATA = {
           1930.8018651326497,
           1951.7897117614746,
           1001.8455847331455,
-          912.5701546986897
+          912.5701546986897,
+          1401.115849685669
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7069,6 +7099,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -7349,7 +7380,8 @@ window.BENCHMARK_DATA = {
           1478.3664371783916,
           1477.729181425912,
           893.5853110722134,
-          794.5334840502057
+          794.5334840502057,
+          1288.7274579366049
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7585,7 +7617,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1953
+          1953,
+          1952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8889,6 +8922,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -9106,7 +9145,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -9327,7 +9367,8 @@ window.BENCHMARK_DATA = {
           2827.3336130777993,
           2815.7325673421224,
           1457.2568909962972,
-          1409.3922992706298
+          1409.3922992706298,
+          2106.1402339935303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9512,6 +9553,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -9782,7 +9824,8 @@ window.BENCHMARK_DATA = {
           3894.122015146109,
           3887.8210225786484,
           2342.1386190141952,
-          2124.65303700765
+          2124.65303700765,
+          3256.571998009315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10008,7 +10051,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
-          3981
+          3981,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11312,6 +11356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -11529,7 +11579,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -11750,7 +11801,8 @@ window.BENCHMARK_DATA = {
           389.73816193853105,
           374.5209349314372,
           205.00731192032495,
-          181.75381722817053
+          181.75381722817053,
+          340.88693211873374
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11887,6 +11939,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -12205,7 +12258,8 @@ window.BENCHMARK_DATA = {
           2388.0531916300456,
           2290.0378039042157,
           1433.0439879099529,
-          1257.7810283660888
+          1257.7810283660888,
+          1943.3084506988525
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12217,6 +12271,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -13735,6 +13790,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
         "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
+      },
+      {
+        "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
+        "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
       }
     ],
     "labels": [
@@ -13952,7 +14013,8 @@ window.BENCHMARK_DATA = {
       "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
-      "9c72fda8"
+      "9c72fda8",
+      "c2bac0d4"
     ],
     "datasets": [
       {
@@ -14173,7 +14235,8 @@ window.BENCHMARK_DATA = {
           2990.0413884480795,
           3195.6755187988283,
           1610.8632598876952,
-          1398.0628689357213
+          1398.0628689357213,
+          2142.81512260437
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14387,6 +14450,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -14628,7 +14692,8 @@ window.BENCHMARK_DATA = {
           279352.5719075521,
           281659.9239257813,
           180359.81563626803,
-          168473.62384033203
+          168473.62384033203,
+          247157.41311848958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14854,7 +14919,8 @@ window.BENCHMARK_DATA = {
           17577,
           17835,
           17576,
-          17574
+          17574,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
