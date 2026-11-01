@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
-      {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          501.08385056715747,
           243.95742290360587,
           468.22961873274585,
           486.36500345865886,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           454.22234363555907,
           473.6510327202933,
           369.3130831082662,
-          228.74589053789774
+          228.74589053789774,
+          435.1065190179007
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1055.40873840877,
           508.508009161268,
           1082.931537882487,
           929.5945545832316,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           995.5603698730469,
           974.1035179773967,
           810.129448890686,
-          549.5627836227417
+          549.5627836227417,
+          1024.498185602824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
-      {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          268.5558290799459,
           144.42747661045618,
           279.2687221209208,
           250.16857674916585,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           233.47819695472717,
           238.17072636286417,
           182.3486209233602,
-          132.5479962642376
+          132.5479962642376,
+          244.69765538435715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279.078387705485,
           147.87248187405723,
           250.4324870109558,
           248.4758246285575,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           242.95159159387862,
           257.9887052853902,
           211.66320983001165,
-          146.80514289651597
+          146.80514289651597,
+          279.4395910331181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
-      {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          831.4142941792805,
           393.1221553166707,
           746.8927319600032,
           736.819604365031,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           919.9278140068054,
           998.9280269622802,
           735.0279777233417,
-          544.0216925938925
+          544.0216925938925,
+          915.0510061264038
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1652,7 +1652,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
-          1032,
+          1192,
           1192,
           1192,
           1192,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1034.8188137054444,
           499.79274008824274,
           991.5358709607806,
           1021.7144416809082,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           981.7609280904134,
           983.0672017506191,
           779.2889129638672,
-          533.6910495758057
+          533.6910495758057,
+          995.6242108662923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
-      {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1926.0909589131672,
           1177.2920851026263,
           1958.2026219685872,
           1858.7134050641741,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1930.158317820231,
           1879.0770250956218,
           1500.763552393232,
-          1161.6051745096843
+          1161.6051745096843,
+          1639.1612518310546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21972.503662109375,
           10465.854170663017,
           21861.020222255163,
           22040.96430460612,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21112.943025716148,
           21287.79279581706,
           14938.777777608235,
-          10622.285263061523
+          10622.285263061523,
+          15796.528108869281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2379,7 +2379,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
       {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          866.7201562608991,
           433.6317463602339,
           769.6820955276489,
           815.0018540791103,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           836.2280292510986,
           752.8134021077838,
           573.0018540700277,
-          399.9726088523865
+          399.9726088523865,
+          725.4629685084025
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1371.1180374962944,
           737.3961765766144,
           1362.0484779064473,
           1282.5236325945173,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1277.0836035410564,
           1318.5842333475748,
           1067.1857963289533,
-          761.9303963343302
+          761.9303963343302,
+          1333.5948487599692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "144c7b566ef277dafd988bff3a188151004e9ea8",
-        "author": "dependabot[bot]",
-        "date": "Tue Oct 27 06:36:15 2026 \u002B0100",
-        "message": "chore: Bump System.Text.Json from 10.0.13 to 10.0.14 (#2117)"
-      },
-      {
         "sha": "b091e8114b027c56b6a80147aaf14592786cfa31",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 06:56:27 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
         "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
+      },
+      {
+        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
+        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
       }
     ],
     "labels": [
-      "144c7b56",
       "b091e811",
       "84c8c5e0",
       "e2339ca9",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "77e01f4b",
       "68753ad6",
       "7c05d459",
-      "3f5cc07d"
+      "3f5cc07d",
+      "3f6a8fdf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1387.4547334035237,
           807.4877299528855,
           1320.3673434938703,
           1287.7322060902914,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1277.692675145467,
           1229.8665685653687,
           1037.7501219235933,
-          798.6245455375084
+          798.6245455375084,
+          1102.595392363412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          797.6576168060303,
           442.80978135267895,
           831.9102221171062,
           786.7034755071004,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           771.6296712875367,
           809.2666116714478,
           644.9650718053182,
-          431.4190220514933
+          431.4190220514933,
+          813.2444582621257
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
