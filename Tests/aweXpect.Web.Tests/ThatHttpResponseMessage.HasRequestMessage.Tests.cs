@@ -35,7 +35,7 @@ public sealed partial class ThatHttpResponseMessage
 							.ComplyWith(item => item.HasRequestMessage(request => request.HasRequestUri(uri => uri.HasHost().EqualTo("other.example.com")))));
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""*has a request message which has a request URI which has host equal to "other.example.com" for all items,*""").AsWildcard()
+					.WithMessage("""*has a request message which has a request URI which has host equal to "other.example.com" ignoring case for all items,*""").AsWildcard()
 					.Because("each item has a single request message");
 			}
 
