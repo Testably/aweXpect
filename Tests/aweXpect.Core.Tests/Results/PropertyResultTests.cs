@@ -13,9 +13,10 @@ public sealed partial class PropertyResultTests
 		string propertyExpression,
 		Action<string?, string>? validation = null,
 		ExpectationGrammars grammars = ExpectationGrammars.None,
-		bool includeValueInContext = false)
+		bool includeValueInContext = false,
+		bool ignoringCase = false)
 		: PropertyResult.String<MyClass?, IThat<MyClass?>, MyClass?>(subject, mapper, propertyExpression, validation,
-			grammars, includeValueInContext);
+			grammars, includeValueInContext, ignoringCase);
 
 	private class MyBaseClass
 	{
@@ -294,7 +295,7 @@ public sealed partial class PropertyResultTests
 		}
 
 		public static StringProperty HasStringValue(string? stringValue,
-			ExpectationGrammars grammars = ExpectationGrammars.None)
+			ExpectationGrammars grammars = ExpectationGrammars.None, bool ignoringCase = false)
 		{
 			MyClass subject = new()
 			{
@@ -303,7 +304,8 @@ public sealed partial class PropertyResultTests
 #pragma warning disable aweXpect0001
 			IThat<MyClass> source = That(subject);
 #pragma warning restore aweXpect0001
-			return new StringProperty(source, a => a?.StringValue, "string value", null, grammars);
+			return new StringProperty(source, a => a?.StringValue, "string value", null, grammars,
+				ignoringCase: ignoringCase);
 		}
 
 		/// <summary>

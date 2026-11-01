@@ -102,7 +102,7 @@ public sealed partial class ThatHttpResponseMessage
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has a request message which has a request URI which has host equal to "other.example.com",
+					             has a request message which has a request URI which has host equal to "other.example.com" ignoring case,
 					             but the request URI had host "music.example.com", which differs at index 0:
 					                ↓ (actual)
 					               "music.example.com"

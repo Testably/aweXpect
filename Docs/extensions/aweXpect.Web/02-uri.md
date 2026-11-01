@@ -82,7 +82,7 @@ await That(uri).HasScheme("https");
 await That(uri).HasScheme().NotEqualTo("http");
 ```
 
-The scheme is compared as `Uri.Scheme` returns it, which is always lower case.
+As [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986#section-3.1) defines the scheme as case-insensitive, it is compared ignoring case by default, also without an expected value or with a match type. Add `.IgnoringCase(false)` to compare it case-sensitively, which a `.Using(comparer)` or a match type of your own that cannot ignore the casing needs as well.
 
 ## Host
 
@@ -96,7 +96,7 @@ await That(uri).HasHost("*.example.com").AsWildcard();
 await That(uri).HasHost().EndingWith(".example.com");
 ```
 
-The host is compared as `Uri.Host` returns it, which is lower case for registered names.
+As [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986#section-3.2.2) defines the host as case-insensitive, it is compared ignoring case by default, like the scheme.
 
 ## Path
 

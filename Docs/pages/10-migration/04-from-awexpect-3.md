@@ -239,6 +239,9 @@ namespace `aweXpect.Core`, which takes a `System.TimeProvider`, e.g. the `FakeTi
   body from an empty one.
 - `HasPath` keeps an encoded slash (`%2F`) in the path, so `/artists/AC%2FDC` no longer has the path
   `/artists/AC/DC`, but `/artists/AC%2FDC`.
+- `HasHost` and `HasScheme` compare ignoring case by default, also without an expected value, as RFC 3986 defines
+  the host and the scheme as case-insensitive. Add `.IgnoringCase(false)` before `.Using(comparer)` or a match type
+  of your own that cannot ignore the casing.
 
 ### Namespaces
 

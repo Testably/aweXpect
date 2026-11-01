@@ -12,17 +12,22 @@ public static partial class ThatUri
 	///     Verifies that the host of the <see cref="Uri" /> subject…
 	/// </summary>
 	/// <remarks>
+	///     The host is compared ignoring case by default, as RFC 3986 (section 3.2.2) defines it case-insensitively;
+	///     <c>IgnoringCase(false)</c> compares it case-sensitively.
+	///     <br />
 	///     <seealso cref="Uri.Host" />
 	/// </remarks>
 	[GuaranteesNotNull]
 	public static PropertyResult.String<Uri, IThat<Uri?>, Uri?> HasHost(this IThat<Uri?> subject)
-		=> new(subject.FailIfRelative(), u => u?.Host, "host");
+		=> new(subject.FailIfRelative(), u => u?.Host, "host", ignoringCase: true);
 
 	/// <summary>
 	///     Verifies that the host of the <see cref="Uri" /> subject is equal to the <paramref name="expected" /> value.
 	/// </summary>
 	/// <remarks>
-	///     The host is compared as <see cref="Uri.Host" /> returns it, which is lower case for registered names.
+	///     The host is compared ignoring case by default, as RFC 3986 (section 3.2.2) defines it case-insensitively;
+	///     <c>IgnoringCase(false)</c> compares it case-sensitively.
+	///     <br />
 	///     <seealso cref="Uri.Host" />
 	/// </remarks>
 	[GuaranteesNotNull]

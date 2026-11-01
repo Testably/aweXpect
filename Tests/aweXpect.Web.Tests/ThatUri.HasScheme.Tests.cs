@@ -17,7 +17,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "https",
+					             has scheme equal to "https" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -33,7 +33,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "https",
+					             has scheme equal to "https" ignoring case,
 					             but it was relative
 					             """);
 			}
@@ -49,7 +49,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme containing "h?p" as wildcard at least once,
+					             has scheme containing "h?p" as wildcard ignoring case at least once,
 					             but scheme did not contain "h?p" in "https"
 					             """);
 			}
@@ -81,7 +81,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme containing "http" at least once,
+					             has scheme containing "http" ignoring case at least once,
 					             but it was <null>
 					             """);
 			}
@@ -98,6 +98,18 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task EqualTo_WhenExpectedDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasScheme().EqualTo("HTTPS");
+
+				await That(Act).DoesNotThrow()
+					.Because("RFC 3986 defines the scheme as case-insensitive");
+			}
+
+			[Test]
 			public async Task EqualTo_WhenSubjectDoesNotEqualTheExpectedScheme_ShouldFail()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -108,7 +120,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "http",
+					             has scheme equal to "http" ignoring case,
 					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
 					               "s"
 					             """);
@@ -136,7 +148,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme equal to "https",
+					             does not have scheme equal to "https" ignoring case,
 					             but it had scheme "https"
 					             """);
 			}
@@ -164,6 +176,26 @@ public sealed partial class ThatUri
 			}
 
 			[Test]
+			public async Task Shorthand_IgnoringCaseFalse_WhenExpectedDiffersOnlyInCase_ShouldFail()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasScheme("HTTPS").IgnoringCase(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has scheme equal to "HTTPS",
+					             but it had scheme "https", which differs at index 0:
+					                ↓ (actual)
+					               "https"
+					               "HTTPS"
+					                ↑ (expected)
+					             """);
+			}
+
+			[Test]
 			public async Task Shorthand_IgnoringCase_WhenSubjectDiffersOnlyInCase_ShouldSucceed()
 			{
 				Uri subject = new("https://www.awexpect.com:80");
@@ -172,6 +204,18 @@ public sealed partial class ThatUri
 					=> await That(subject).HasScheme("HTTPS").IgnoringCase();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task Shorthand_WhenExpectedDiffersOnlyInCase_ShouldSucceed()
+			{
+				Uri subject = new("https://www.awexpect.com/tracks/1");
+
+				async Task Act()
+					=> await That(subject).HasScheme("HTTPS");
+
+				await That(Act).DoesNotThrow()
+					.Because("RFC 3986 defines the scheme as case-insensitive");
 			}
 
 			[Test]
@@ -198,7 +242,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "http",
+					             has scheme equal to "http" ignoring case,
 					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
 					               "s"
 					             """);
@@ -226,7 +270,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "https",
+					             has scheme equal to "https" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -257,7 +301,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme equal to "https",
+					             does not have scheme equal to "https" ignoring case,
 					             but it was <null>
 					             """);
 			}
@@ -273,7 +317,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme equal to "https",
+					             does not have scheme equal to "https" ignoring case,
 					             but it was relative
 					             """)
 					.Because("a relative URI cannot answer the question, so its negation fails as well");
@@ -290,7 +334,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme containing "ftp" at least once,
+					             has scheme containing "ftp" ignoring case at least once,
 					             but scheme did not contain "ftp" in "https"
 					             """)
 					.Because("the negation of never is at least once");
@@ -307,7 +351,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme containing "http",
+					             does not have scheme containing "http" ignoring case,
 					             but scheme contained "http" at least once in "https"
 					             """);
 			}
@@ -334,7 +378,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme equal to "https",
+					             does not have scheme equal to "https" ignoring case,
 					             but it had scheme "https"
 					             """);
 			}
@@ -361,7 +405,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has scheme equal to "http",
+					             has scheme equal to "http" ignoring case,
 					             but it had scheme "https" with a length of 5, which is longer than the expected length of 4 and has superfluous:
 					               "s"
 					             """);
@@ -389,7 +433,7 @@ public sealed partial class ThatUri
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not have scheme equal to "https",
+					             does not have scheme equal to "https" ignoring case,
 					             but it had scheme "https"
 					             """);
 			}

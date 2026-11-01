@@ -106,6 +106,17 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task Containing_WhenCaseIsIgnoredByDefault_ShouldIgnoreTheCase()
+		{
+			StringProperty sut = MyClass.HasStringValue("something with foo in it", ignoringCase: true);
+
+			async Task Act()
+				=> await sut.Containing("FOO");
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
 		public async Task Containing_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -281,6 +292,17 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task EndingWith_WhenCaseIsIgnoredByDefault_ShouldIgnoreTheCase()
+		{
+			StringProperty sut = MyClass.HasStringValue("foobar", ignoringCase: true);
+
+			async Task Act()
+				=> await sut.EndingWith("BAR");
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
 		public async Task EndingWith_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -433,6 +455,30 @@ public sealed partial class PropertyResultTests
 				             """);
 			await That(exception.InnerException).IsNull()
 				.Because("only the first evaluation could not read the property");
+		}
+
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
+		public async Task EqualTo_WhenCaseIsIgnoredByDefault_ShouldIgnoreTheCaseUnlessDisabled(bool ignoringCase)
+		{
+			StringProperty sut = MyClass.HasStringValue("foo", ignoringCase: true);
+
+			async Task Act()
+				=> await sut.EqualTo("FOO").IgnoringCase(ignoringCase);
+
+			await That(Act).Throws<FailException>()
+				.OnlyIf(!ignoringCase)
+				.WithMessage("""
+				             Expected that subject
+				             has string value equal to "FOO",
+				             but it had string value "foo", which differs at index 0:
+				                ↓ (actual)
+				               "foo"
+				               "FOO"
+				                ↑ (expected)
+				             """)
+				.Because("IgnoringCase(false) restores the case-sensitive comparison");
 		}
 
 		[Test]
