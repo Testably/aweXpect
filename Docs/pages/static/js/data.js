@@ -1668,6 +1668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -1948,7 +1954,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -2232,7 +2239,8 @@ window.BENCHMARK_DATA = {
           5149.036926269531,
           11538.968469473031,
           5343.579107557024,
-          10829.576285729041
+          10829.576285729041,
+          11342.33989461263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2468,6 +2476,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2813,7 +2822,8 @@ window.BENCHMARK_DATA = {
           175238.29954427082,
           374903.69427083334,
           183066.78771033653,
-          374672.06026785716
+          374672.06026785716,
+          368833.7420479911
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3102,7 +3112,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590288,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3394,7 +3405,8 @@ window.BENCHMARK_DATA = {
           10127.921915690104,
           19416.102231852212,
           10359.007341512044,
-          19858.351880754744
+          19858.351880754744,
+          19228.22067464193
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3406,6 +3418,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5323,6 +5336,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -5596,7 +5615,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -5873,7 +5893,8 @@ window.BENCHMARK_DATA = {
           110.37947631733758,
           229.2911872545878,
           113.63853794794817,
-          287.1688968454088
+          287.1688968454088,
+          230.71649626323156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6069,6 +6090,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6440,7 +6462,8 @@ window.BENCHMARK_DATA = {
           253.95966362953186,
           514.787457148234,
           292.8700230802809,
-          511.8373058319092
+          511.8373058319092,
+          487.23349914550784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6452,6 +6475,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7007,7 +7031,8 @@ window.BENCHMARK_DATA = {
           194.37809727986652,
           405.7353890101115,
           214.1629421869914,
-          388.3549159367879
+          388.3549159367879,
+          381.19398295084636
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7019,6 +7044,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13549,6 +13575,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -14592,7 +14624,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -15639,7 +15672,8 @@ window.BENCHMARK_DATA = {
           54.88761092083795,
           104.03254123528798,
           58.10987630060741,
-          103.95183536836079
+          103.95183536836079,
+          101.2842869247709
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16638,6 +16672,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17746,7 +17781,8 @@ window.BENCHMARK_DATA = {
           141.59912860393524,
           253.1370630900065,
           137.93693343230657,
-          251.1575956662496
+          251.1575956662496,
+          251.4639633814494
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17939,6 +17975,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19134,7 +19171,8 @@ window.BENCHMARK_DATA = {
           127.48531299432119,
           252.18819567362468,
           131.93513783386774,
-          241.95638067381722
+          241.95638067381722,
+          243.3308811823527
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19146,6 +19184,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21149,6 +21188,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -21429,7 +21474,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -21713,7 +21759,8 @@ window.BENCHMARK_DATA = {
           109.03416334731239,
           213.37237958113352,
           111.72646231834705,
-          216.57125789778573
+          216.57125789778573,
+          220.27957637493427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21918,6 +21965,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22294,7 +22342,8 @@ window.BENCHMARK_DATA = {
           266.5685008934566,
           509.5864671298436,
           275.9655268532889,
-          573.0408445358277
+          573.0408445358277,
+          514.6160136540731
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22306,6 +22355,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -22875,7 +22925,8 @@ window.BENCHMARK_DATA = {
           173.75935696760814,
           326.30080391565957,
           184.09796287463263,
-          332.31550518671673
+          332.31550518671673,
+          323.0492913041796
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -22887,6 +22938,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29424,6 +29476,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -30467,7 +30525,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -31514,7 +31573,8 @@ window.BENCHMARK_DATA = {
           352.2626902898153,
           692.4550758508535,
           368.82112033550555,
-          697.1774052840012
+          697.1774052840012,
+          731.8473407200405
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32501,6 +32561,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -33621,7 +33682,8 @@ window.BENCHMARK_DATA = {
           678.9502590497335,
           1422.7375358581544,
           761.9817543029785,
-          1374.5942497253418
+          1374.5942497253418,
+          1302.5499210357666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -33814,6 +33876,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -35009,7 +35072,8 @@ window.BENCHMARK_DATA = {
           365.32451541607196,
           666.0932256258451,
           357.53713318506874,
-          666.8766807828631
+          666.8766807828631,
+          664.0425203323364
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35021,6 +35085,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -41602,6 +41667,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -42645,7 +42716,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -43692,7 +43764,8 @@ window.BENCHMARK_DATA = {
           363.1135852018992,
           697.7412642796834,
           342.16278680165607,
-          733.19341506958
+          733.19341506958,
+          740.1904908693754
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -44679,6 +44752,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -45799,7 +45873,8 @@ window.BENCHMARK_DATA = {
           10028.400858197894,
           27821.944145789512,
           10911.04660949707,
-          27987.772721510668
+          27987.772721510668,
+          27604.970178222655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46851,6 +46926,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -47187,7 +47263,8 @@ window.BENCHMARK_DATA = {
           407.38949005944386,
           810.3842091242473,
           449.0038031578064,
-          833.2749881744385
+          833.2749881744385,
+          796.0835459391276
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47199,6 +47276,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -49550,6 +49628,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -49888,7 +49972,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -50230,7 +50315,8 @@ window.BENCHMARK_DATA = {
           337.46435488973344,
           720.3980135599772,
           360.32411171595254,
-          627.1412899834769
+          627.1412899834769,
+          646.6817438125611
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50524,6 +50610,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -50927,7 +51014,8 @@ window.BENCHMARK_DATA = {
           28605.99776349749,
           84117.65921223958,
           29925.31552734375,
-          83459.31493201622
+          83459.31493201622,
+          83440.03913762019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51274,6 +51362,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -53304,6 +53393,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -53642,7 +53737,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -53984,7 +54080,8 @@ window.BENCHMARK_DATA = {
           71.39842976729075,
           129.19413545926412,
           68.53933349022499,
-          131.8842215379079
+          131.8842215379079,
+          132.8777868906657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54278,6 +54375,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -54681,7 +54779,8 @@ window.BENCHMARK_DATA = {
           9841.868192545573,
           32477.31923014323,
           10019.365723746163,
-          32754.464224008414
+          32754.464224008414,
+          32426.790383475167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55028,6 +55127,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -55364,7 +55464,8 @@ window.BENCHMARK_DATA = {
           121.44600629806519,
           240.00553827285768,
           129.49571807043893,
-          265.9977915763855
+          265.9977915763855,
+          243.9019822438558
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55376,6 +55477,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -57379,6 +57481,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -57659,7 +57767,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -57943,7 +58052,8 @@ window.BENCHMARK_DATA = {
           150.56580436229706,
           310.80406299004187,
           165.4921919107437,
-          293.76632461547854
+          293.76632461547854,
+          301.7468532721202
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58148,6 +58258,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -58524,7 +58635,8 @@ window.BENCHMARK_DATA = {
           201.17154334272658,
           383.69004081090293,
           239.14460962159293,
-          394.9781076567514
+          394.9781076567514,
+          370.74478643281117
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58536,6 +58648,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -59105,7 +59218,8 @@ window.BENCHMARK_DATA = {
           199.94135439395905,
           414.97469459261214,
           230.9634951012475,
-          406.39162085851035
+          406.39162085851035,
+          395.37747354507445
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59117,6 +59231,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -61076,6 +61191,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -61356,7 +61477,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -61640,7 +61762,8 @@ window.BENCHMARK_DATA = {
           353.3331972190312,
           717.2310730616251,
           379.94333670934043,
-          726.815522634066
+          726.815522634066,
+          702.1594785690307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61876,6 +61999,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -62221,7 +62345,8 @@ window.BENCHMARK_DATA = {
           1017.0782284055438,
           1906.813554763794,
           1165.573017529079,
-          1948.9133529663086
+          1948.9133529663086,
+          1893.379379272461
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62233,6 +62358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -62802,7 +62928,8 @@ window.BENCHMARK_DATA = {
           449.89040534836903,
           946.2594980875651,
           496.66925730024064,
-          918.2692820866903
+          918.2692820866903,
+          913.2472551981608
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62814,6 +62941,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -64773,6 +64901,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -65053,7 +65187,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -65337,7 +65472,8 @@ window.BENCHMARK_DATA = {
           5785.469200679234,
           12014.589167277018,
           5858.163914998372,
-          12199.060856745793
+          12199.060856745793,
+          12051.085647583008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65576,6 +65712,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -65918,7 +66055,8 @@ window.BENCHMARK_DATA = {
           18488.172399902345,
           41935.74954223633,
           18245.03299184946,
-          40816.094002278645
+          40816.094002278645,
+          42589.162571498324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66204,6 +66342,7 @@ window.BENCHMARK_DATA = {
           18393,
           18394,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -66499,7 +66638,8 @@ window.BENCHMARK_DATA = {
           5630.022691345215,
           10586.485794067383,
           5474.252757439246,
-          10644.904184977213
+          10644.904184977213,
+          10564.452568562825
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66511,6 +66651,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -68470,6 +68611,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
         "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
+      },
+      {
+        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
+        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
       }
     ],
     "labels": [
@@ -68750,7 +68897,8 @@ window.BENCHMARK_DATA = {
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
-      "7c05d459"
+      "7c05d459",
+      "3f5cc07d"
     ],
     "datasets": [
       {
@@ -69034,7 +69182,8 @@ window.BENCHMARK_DATA = {
           5412.864496671236,
           11467.464492797852,
           5547.161168611967,
-          11526.127633231026
+          11526.127633231026,
+          11668.200464101938
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -69273,6 +69422,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -69615,7 +69765,8 @@ window.BENCHMARK_DATA = {
           25839.313157301684,
           59600.00262858073,
           27428.164180210657,
-          59302.18918550931
+          59302.18918550931,
+          61326.268338716945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -69904,7 +70055,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70196,7 +70348,8 @@ window.BENCHMARK_DATA = {
           10956.503026326498,
           20937.761352539062,
           11370.710338338216,
-          21097.276175362724
+          21097.276175362724,
+          20865.034844534737
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70208,6 +70361,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
