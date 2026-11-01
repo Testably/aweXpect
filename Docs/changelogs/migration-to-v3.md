@@ -17,7 +17,7 @@ To upgrade:
 Failure messages were reviewed as a whole, so tests that assert on the exact text of a failure message may need an update.
 
 :::tip[Upgrading to v4]
-When you upgrade from 2.x directly to 4.x, continue with [What's new in v4](./04-from-awexpect-3.md) after this page.
+When you upgrade from 2.x directly to 4.x, continue with [What's new in v4](./migration-to-v4.md) after this page.
 :::
 
 ## Trimming and Native AOT

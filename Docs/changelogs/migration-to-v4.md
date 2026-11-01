@@ -21,7 +21,7 @@ Many return types changed, so a binary compiled against v3 is not supported. Thi
 :::
 
 :::tip[Upgrading from aweXpect 2.x]
-Work through [What's new in v3](./03-from-awexpect-2.md) first, then through this page. Some rules changed again in v4, e.g. a repeated option threw in v3 and replaces the earlier one in v4.
+Work through [What's new in v3](./migration-to-v3.md) first, then through this page. Some rules changed again in v4, e.g. a repeated option threw in v3 and replaces the earlier one in v4.
 :::
 
 ## What to read

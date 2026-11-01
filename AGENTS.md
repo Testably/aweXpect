@@ -71,7 +71,7 @@ Correctness is a must. The other goals are strong defaults and win in this order
 - Many `.cs` files start with a UTF-8 BOM. PowerShell rewrites strip it; check `git diff` for a removed U+FEFF.
 - Comments explain why, not what; prefer XML docs.
 - No em-dashes in `Docs/**`, XML docs or the changelog.
-- `Docs/pages/10-migration/04-from-awexpect-3.md` is the changelog of the upcoming v4: touch it only for important
+- `Docs/changelogs/migration-to-v4.md` is the changelog of the upcoming v4: touch it only for important
   changes. The full list of changes is in the GitHub releases.
 
 ## Documentation

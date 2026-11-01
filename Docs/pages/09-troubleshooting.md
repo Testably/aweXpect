@@ -65,11 +65,11 @@ aweXpect is strict by default, so some rewritten expectations fail where FluentA
 
 This documentation describes aweXpect v4, which is available as a pre-release. Without a pre-release version you get v3, which lacks some of the APIs described here. [Getting started](./01-getting-started.md#install-the-package) shows how to install the pre-release.
 
-When you upgrade from v3, some expectations were renamed without an `[Obsolete]` forwarder, so their old names no longer compile. [What's new in v4](./10-migration/04-from-awexpect-3.md#renamed-expectations) lists the renames.
+When you upgrade from v3, some expectations were renamed without an `[Obsolete]` forwarder, so their old names no longer compile. [What's new in v4](/aweXpect/changelog/migration-to-v4#renamed-expectations) lists the renames.
 
 ### Which versions of the extension packages do I need?
 
-From v4 on, `aweXpect`, `aweXpect.Core`, `aweXpect.Json`, `aweXpect.Web`, `aweXpect.Xml`, `aweXpect.Reflection` and the `aweXpect.Snapshots` packages are released together with one version. Use the same version for all of them, see [one version for all packages](./10-migration/04-from-awexpect-3.md#one-version-for-all-packages).
+From v4 on, `aweXpect`, `aweXpect.Core`, `aweXpect.Json`, `aweXpect.Web`, `aweXpect.Xml`, `aweXpect.Reflection` and the `aweXpect.Snapshots` packages are released together with one version. Use the same version for all of them, see [one version for all packages](/aweXpect/changelog/migration-to-v4#one-version-for-all-packages).
 
 ### The name `That` does not exist in the current context
 
@@ -105,7 +105,7 @@ Set the language version to 13 or later in the test project:
 
 For a delegate, you can also return the task directly, as in the second line above, or declare a local function and pass it.
 
-In aweXpect.Json v4, `IsValidJson(null)` without a parameter name is ambiguous as well; write `IsValidJson(options: null)`, see [What's new in v4](./10-migration/04-from-awexpect-3.md#renamed-expectations).
+In aweXpect.Json v4, `IsValidJson(null)` without a parameter name is ambiguous as well; write `IsValidJson(options: null)`, see [What's new in v4](/aweXpect/changelog/migration-to-v4#renamed-expectations).
 
 ### `Skip` is an ambiguous reference
 
