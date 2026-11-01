@@ -34,15 +34,21 @@ public abstract class ResultContext
 	/// <summary>
 	///     The content of the context.
 	/// </summary>
+	/// <remarks>
+	///     When it throws, the failure message shows a note with the exception instead of the content. Call code of the
+	///     caller through <see cref="UserCode" /> to omit the context instead.
+	/// </remarks>
 	public abstract Task<string?> GetContent(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	///     The content of the context, or <see langword="null" /> when code of the caller throws while it is created or
-	///     when it is not available.
+	///     The content of the context, or <see langword="null" /> when code of the caller called through
+	///     <see cref="UserCode" /> throws while it is created or when it is not available.
 	/// </summary>
 	/// <remarks>
-	///     The exception already failed the expectation, e.g. when a context lists the items of a subject whose
-	///     enumeration threw, so it must not abort the failure message.<br />
+	///     The exception of the caller already failed the expectation, e.g. when a context lists the items of a subject
+	///     whose enumeration threw, so it must not abort the failure message.<br />
+	///     Any other exception returns a note with the exception instead, as a context only adds information and must
+	///     not replace the failure of the expectation.<br />
 	///     A content that is still pending when the <paramref name="cancellationToken" /> is canceled is abandoned. It is
 	///     not available then, like a content whose creation is canceled, because the failure of the expectation must
 	///     be reported nevertheless.
@@ -60,6 +66,11 @@ public abstract class ResultContext
 		catch (OperationCanceledException)
 		{
 			return null;
+		}
+		catch (Exception exception)
+		{
+			return $"the context did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: " +
+			       ValueFormatters.GetMessage(exception).DisplayWhitespace();
 		}
 	}
 
