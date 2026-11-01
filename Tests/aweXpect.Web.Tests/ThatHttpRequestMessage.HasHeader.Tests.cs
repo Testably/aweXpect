@@ -24,6 +24,23 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			[Arguments("")]
+			[Arguments(" ")]
+			[Arguments("	")]
+			public async Task WhenNameIsEmptyOrWhitespace_ShouldThrowArgumentException(string name)
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader(name);
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("name").And
+					.WithMessage("The 'name' cannot be empty or whitespace.").AsPrefix()
+					.Because("an HTTP header name cannot be empty, so it could never be found");
+			}
+
+			[Test]
 			public async Task WhenNameIsNull_ShouldThrowArgumentNullException()
 			{
 				HttpRequestMessage? subject = null;

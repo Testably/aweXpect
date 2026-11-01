@@ -24,7 +24,7 @@ public static partial class ThatHttpResponseMessage
 						"has a request message which "),
 					null,
 					false)
-				.AddExpectations(expectations),
+				.AddExpectations(expectations, MemberGrammars.AfterWhich),
 			subject);
 	}
 }

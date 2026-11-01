@@ -101,6 +101,21 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenMemberIsACollection_ShouldUseTheSingularInTheInnerExpectations()
+			{
+				HttpResponseMessage[] subjects = [ResponseBuilder.WithContent("foo"),];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasContent(content => content.HasLength().EqualTo(5))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""*has a string content which has length equal to 5 for all items,*""").AsWildcard()
+					.Because("each item has a single content");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_Negated_ShouldFail()
 			{
 				HttpResponseMessage? subject = null;

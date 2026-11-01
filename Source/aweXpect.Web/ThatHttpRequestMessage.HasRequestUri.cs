@@ -67,8 +67,7 @@ public static partial class ThatHttpRequestMessage
 						static request => request.RequestUri,
 						" the request URI"),
 					static (_, stringBuilder) => stringBuilder.Append("has a request URI which "))
-				// Clears the nested grammar of a caller, as it turns `HasHost()` into "whose host", which does not follow "which".
-				.AddExpectations(expectations, static grammars => grammars & ~ExpectationGrammars.Nested),
+				.AddExpectations(expectations, MemberGrammars.AfterWhich),
 			subject);
 	}
 
