@@ -22,7 +22,7 @@ public static partial class ThatHttpResponseMessage
 		this IThat<HttpResponseMessage?> subject,
 		string name)
 	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
+		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
 		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(name, static (name, it, grammars) =>
@@ -43,7 +43,7 @@ public static partial class ThatHttpResponseMessage
 		this IThat<HttpResponseMessage?> subject,
 		string name)
 	{
-		ThrowHelper.ThrowIfNull(name, nameof(name));
+		ThrowHelper.ThrowIfNullOrWhiteSpace(name, nameof(name));
 		return new(subject.Get().ExpectationBuilder
 				.AddSubjectContexts(ResultContextExtensions.ResponseContexts)
 				.AddConstraint(name, static (name, it, grammars) =>

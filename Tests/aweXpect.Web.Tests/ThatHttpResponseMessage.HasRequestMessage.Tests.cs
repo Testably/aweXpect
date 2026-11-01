@@ -22,6 +22,24 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenMemberIsACollection_ShouldUseTheSingularInTheInnerExpectations()
+			{
+				HttpResponseMessage[] subjects =
+				[
+					ResponseBuilder.WithRequest(HttpMethod.Get, "https://www.awexpect.com").WithRequestContent("foo"),
+				];
+
+				async Task Act()
+					=> await That(new { Responses = subjects, })
+						.Whose(x => x.Responses, items => items.All()
+							.ComplyWith(item => item.HasRequestMessage(request => request.HasRequestUri(uri => uri.HasHost().EqualTo("other.example.com")))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""*has a request message which has a request URI which has host equal to "other.example.com" for all items,*""").AsWildcard()
+					.Because("each item has a single request message");
+			}
+
+			[Test]
 			public async Task WhenRequestHasDifferentContent_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder

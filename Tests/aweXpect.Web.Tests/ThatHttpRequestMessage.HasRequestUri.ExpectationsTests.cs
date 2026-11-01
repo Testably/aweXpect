@@ -23,6 +23,21 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenMemberIsACollection_ShouldUseTheSingularInTheInnerExpectations()
+			{
+				HttpRequestMessage[] subjects = [RequestBuilder,];
+
+				async Task Act()
+					=> await That(new { Requests = subjects, })
+						.Whose(x => x.Requests, items => items.All()
+							.ComplyWith(item => item.HasRequestUri(uri => uri.HasPort().EqualTo(8080))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""*has a request URI which has port equal to 8080 for all items,*""").AsWildcard()
+					.Because("each item has a single request URI");
+			}
+
+			[Test]
 			public async Task WhenPathMatchesWildcard_ShouldSucceed()
 			{
 				HttpRequestMessage subject = new(HttpMethod.Get, "https://music.example.com/tracks/42");
