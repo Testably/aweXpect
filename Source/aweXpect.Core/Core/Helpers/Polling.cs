@@ -155,11 +155,10 @@ internal sealed class Polling : IDisposable
 	///     Waits for the <paramref name="wait" /> and returns whether the cancellation cut it short.
 	/// </summary>
 	/// <remarks>
-	///     A wait of zero still yields, so that checking without waiting does not block the thread. The wait is not
-	///     canceled by the token itself: the
-	///     <see cref="TimeProviderExtensions.CreateDelay(TimeProvider, TimeSpan, CancellationToken)" /> would register
-	///     its own callback, and the callbacks run in reverse order, so the wait could continue before the time of the
-	///     cancellation was recorded.
+	///     A wait of zero still yields, so that checking without waiting does not block the thread. The cancellation
+	///     releases the timer of the wait at once, so that a virtual clock which fires its timers inline stops at the
+	///     cancellation. As the callbacks of a token run in reverse order, the wait is canceled before the time of the
+	///     cancellation is recorded, so a canceled wait continues only after the recording.
 	/// </remarks>
 	private async Task<bool> IsCanceledDuring(TimeSpan wait)
 	{
@@ -169,14 +168,14 @@ internal sealed class Polling : IDisposable
 			return _canceled.Task.IsCompleted;
 		}
 
-		using CancellationTokenSource waitCts = new();
-		Task delay = _timeProvider.CreateDelay(wait, waitCts.Token);
-		if (await Task.WhenAny(_canceled.Task, delay) != _canceled.Task)
+		Task delay = _timeProvider.CreateDelay(wait, _cancellation.Token);
+		await Task.WhenAny(delay);
+		if (!delay.IsCanceled)
 		{
 			return false;
 		}
 
-		waitCts.Cancel();
+		await _canceled.Task;
 		return true;
 	}
 
