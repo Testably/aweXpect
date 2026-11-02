@@ -69,7 +69,9 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenACheckTakesLongerThanTheTimeout_ShouldNotCheckAgain()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		int checks = 0;
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
 
@@ -77,7 +79,7 @@ public sealed class RepeatedCheckOptionsTests
 			=> await HasMatchingItem(That(subject), _ => false, () =>
 				{
 					checks++;
-					time.Advance(600.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(600.Milliseconds());
 				})
 				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(time);
 
@@ -89,13 +91,15 @@ public sealed class RepeatedCheckOptionsTests
 			             """);
 		await That(checks).IsEqualTo(1)
 			.Because("the timeout is measured from before the first check");
-		await That(time.Now).IsEqualTo(600.Milliseconds());
+		await That(time.GetElapsedTime(start)).IsEqualTo(600.Milliseconds());
 	}
 
 	[Test]
 	public async Task CheckRepeatedly_WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachCheck()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		int checks = 0;
 		DisposeTrackingEnumerable subject = new(null, 1, 2, 3);
 
@@ -111,7 +115,7 @@ public sealed class RepeatedCheckOptionsTests
 			             """);
 		await That(checks).IsEqualTo(51)
 			.Because("the checks are made at once and then every 10 ms until the timeout");
-		await That(time.Now).IsEqualTo(500.Milliseconds());
+		await That(time.GetElapsedTime(start)).IsEqualTo(500.Milliseconds());
 		await That(subject.DisposeCount).IsEqualTo(checks)
 			.Because("every check reads the subject again, and the source of each check is released exactly once");
 	}
@@ -173,12 +177,14 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenTheIntervalExceedsTheTimeout_ShouldCheckAtTheTimeoutAndNotAfterIt()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		List<TimeSpan> checks = [];
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
 
 		async Task Act()
-			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
+			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.GetElapsedTime(start)))
 				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).WithTimeProvider(time);
 
 		await That(Act).Throws<FailException>()
@@ -190,7 +196,7 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("the third check would succeed, but no check is made after the timeout");
 		await That(checks).IsEqualTo([TimeSpan.Zero, 100.Milliseconds(),])
 			.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
-		await That(time.Now).IsEqualTo(100.Milliseconds());
+		await That(time.GetElapsedTime(start)).IsEqualTo(100.Milliseconds());
 	}
 
 	[Test]
@@ -244,7 +250,8 @@ public sealed class RepeatedCheckOptionsTests
 	[Test]
 	public async Task CheckRepeatedly_WhenUserCodeAlwaysThrows_ShouldKeepCheckingAndFailWithTheLastException()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		int checks = 0;
 		MyException? lastThrown = null;
 		IEnumerable<int> subject = Enumerable.Range(1, 3);

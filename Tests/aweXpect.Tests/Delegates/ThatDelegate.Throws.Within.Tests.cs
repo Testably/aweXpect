@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Threading;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 
 namespace aweXpect.Tests;
@@ -98,10 +97,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(20.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(20.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -128,11 +128,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExceptionIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -162,10 +163,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
@@ -296,10 +298,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_ShouldUseTheLastDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -318,10 +321,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithALongerLastDuration_ShouldApplyItAsTimeout()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(3.Seconds());
+						timeSystem.TimeProvider.AdvanceBy(3.Seconds());
 						throw new CustomException();
 					};
 
@@ -336,10 +340,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldUseTheLastDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -354,10 +359,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldUseTheLastDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -437,10 +443,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(20.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(20.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -480,11 +487,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -502,11 +510,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -520,10 +529,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
@@ -675,10 +685,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(20.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(20.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -718,11 +729,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -741,10 +753,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()

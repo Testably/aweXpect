@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 
 namespace aweXpect.Tests;
@@ -17,7 +16,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds())
-						.Because("it must be fast").And.DoesNotThrow().WithTimeProvider(new VirtualTimeProvider());
+						.Because("it must be fast").And.DoesNotThrow().WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
@@ -42,8 +41,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(50.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -144,8 +144,13 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				Func<Task> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+#if NET8_0_OR_GREATER
+				Func<Task> @delegate = () => Task.Delay(30.Seconds(), time, CancellationToken.None);
+#else
+				Func<Task> @delegate = () => TimeProviderTaskExtensions.Delay(time, 30.Seconds(), CancellationToken.None);
+#endif
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -247,8 +252,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				Func<Task<int>> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<Task<int>> @delegate = () => timeSystem.Task.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -314,8 +320,13 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				ValueTask Delegate() => new(time.Delay(30.Seconds(), CancellationToken.None));
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+#if NET8_0_OR_GREATER
+				ValueTask Delegate() => new(Task.Delay(30.Seconds(), time, CancellationToken.None));
+#else
+				ValueTask Delegate() => new(TimeProviderTaskExtensions.Delay(time, 30.Seconds(), CancellationToken.None));
+#endif
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -405,8 +416,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				ValueTask Delegate(CancellationToken token) => new(time.Delay(30.Seconds(), token));
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				ValueTask Delegate(CancellationToken token) => new(timeSystem.Task.Delay(30.Seconds(), token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -474,8 +486,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				ValueTask<int> Delegate() => new(time.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1));
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				ValueTask<int> Delegate() => new(timeSystem.Task.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -565,9 +578,10 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				ValueTask<int> Delegate(CancellationToken token)
-					=> new(time.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
+					=> new(timeSystem.Task.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -627,7 +641,7 @@ public sealed partial class ThatDelegate
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).Because("it must be fast")
-						.And.DoesNotThrow().WhoseResult.IsEqualTo(1).WithTimeProvider(new VirtualTimeProvider());
+						.And.DoesNotThrow().WhoseResult.IsEqualTo(1).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -651,10 +665,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<int> @delegate = () =>
 				{
-					time.Advance(50.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					return 0;
 				};
 
@@ -709,8 +724,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtLeast_WhenDelegateExceedsTheMinimum_ShouldNotCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(200.Milliseconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(200.Milliseconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtLeast(50.Milliseconds()).WithTimeProvider(time);
@@ -722,8 +738,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeProvider(time);
@@ -740,10 +757,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await time.Delay(30.Seconds(), token);
+					await timeSystem.Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 
@@ -762,8 +780,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds()).WithTimeProvider(time);
@@ -780,10 +799,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await time.Delay(30.Seconds(), token);
+					await timeSystem.Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 
@@ -802,8 +822,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithoutReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds()).WithTimeProvider(time);
@@ -820,10 +841,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await time.Delay(30.Seconds(), token);
+					await timeSystem.Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 
@@ -842,8 +864,13 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAbandonIt()
 			{
-				VirtualTimeProvider time = new();
-				Func<Task> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+#if NET8_0_OR_GREATER
+				Func<Task> @delegate = () => Task.Delay(30.Seconds(), time, CancellationToken.None);
+#else
+				Func<Task> @delegate = () => TimeProviderTaskExtensions.Delay(time, 30.Seconds(), CancellationToken.None);
+#endif
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -860,11 +887,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutCancellationToken_WhenSyncDelegateExceedsTheMaximum_ShouldAwaitItToCompletion()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				bool didComplete = false;
 				Action @delegate = () =>
 				{
-					time.Advance(100.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(100.Milliseconds());
 					didComplete = true;
 				};
 
@@ -887,8 +915,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenLaterTimeoutIsLonger_ShouldKeepTheUpperBound()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(60.Seconds()).WithTimeProvider(time);
@@ -905,8 +934,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutAndTheMaximum_ShouldReportTheDuration()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(200.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(100.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeProvider(time);
@@ -923,8 +953,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(200.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds()).WithTimeProvider(time);
@@ -942,8 +973,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButReachesTheMinimum_ShouldFailWithTheTimeout()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(200.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtLeast(100.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeProvider(time);
@@ -961,10 +993,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateWithValueExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<int> @delegate = () =>
 				{
-					time.Advance(200.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(200.Milliseconds());
 					return 1;
 				};
 
@@ -984,8 +1017,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(4000.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeProvider(time);
@@ -1001,10 +1035,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await time.Delay(30.Seconds(), token);
+					await timeSystem.Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 
@@ -1025,8 +1060,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
-				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 				CancellationToken cancelledToken = new(true);
 
 				async Task Act()
@@ -1043,10 +1079,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await time.Delay(30.Seconds(), token);
+					await timeSystem.Task.Delay(30.Seconds(), token);
 					return 1;
 				};
 				CancellationToken cancelledToken = new(true);

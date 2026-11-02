@@ -15,7 +15,8 @@ public sealed class ExternalWaitTests
 	[Test]
 	public async Task WhenTheTimeoutElapsesOnTheTimeProvider_ShouldFail()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Radio radio = new();
 
 		async Task Act()
@@ -23,9 +24,9 @@ public sealed class ExternalWaitTests
 
 		Task expectation = Act();
 		await radio.IsWaiting;
-		timeProvider.Advance(29.Seconds());
+		timeSystem.TimeProvider.AdvanceBy(29.Seconds());
 		bool isCompletedBeforeTheTimeout = await IsCompletedSoon(expectation);
-		timeProvider.Advance(1.Seconds());
+		timeSystem.TimeProvider.AdvanceBy(1.Seconds());
 
 		await That(isCompletedBeforeTheTimeout).IsFalse()
 			.Because("the timeout of the extension elapses on the clock of the evaluation");

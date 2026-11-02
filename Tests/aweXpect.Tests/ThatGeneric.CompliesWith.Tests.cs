@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Tests;
@@ -279,7 +278,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(200.Milliseconds())
 						.CheckEvery(1.Hours()).WithTimeout(200.Milliseconds())
-						.WithTimeProvider(new VirtualTimeProvider());
+						.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -361,7 +360,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.Satisfies(_ => ++count > 2))
 						.Within(100.Milliseconds()).CheckEvery(1.Hours())
-						.WithTimeProvider(new VirtualTimeProvider());
+						.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -442,7 +441,7 @@ public sealed partial class ThatGeneric
 					async Task Act()
 						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(30.Seconds())
 							.WithTimeout(60.Seconds())
-							.WithTimeProvider(new VirtualTimeProvider());
+							.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -467,7 +466,7 @@ public sealed partial class ThatGeneric
 				{
 					async Task Act()
 						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(30.Seconds())
-							.WithTimeProvider(new VirtualTimeProvider());
+							.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}

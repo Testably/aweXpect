@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -279,7 +278,9 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				long start = time.GetTimestamp();
 
 				bool IsOne(int x)
 				{
@@ -301,7 +302,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				await That(evaluations).IsEqualTo(0)
 					.Because("a faulted async member must fail at once instead of being retried for the 30 s window");
-				await That(time.Now).IsEqualTo(TimeSpan.Zero)
+				await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero)
 					.Because("the member must not be read again for the 30 s window either");
 			}
 
@@ -1035,7 +1036,9 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				long start = time.GetTimestamp();
 
 				bool IsOne(int x)
 				{
@@ -1057,7 +1060,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 				await That(evaluations).IsEqualTo(0)
 					.Because("a throwing member must fail at once instead of being retried for the 30 s window");
-				await That(time.Now).IsEqualTo(TimeSpan.Zero)
+				await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero)
 					.Because("the member must not be read again for the 30 s window either");
 			}
 

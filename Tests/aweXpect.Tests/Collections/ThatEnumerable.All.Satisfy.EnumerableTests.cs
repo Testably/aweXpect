@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -87,7 +86,7 @@ public sealed partial class ThatEnumerable
 
 					async Task Act()
 						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-							.All().Satisfy(_ => false).WithTimeProvider(new VirtualTimeProvider());
+							.All().Satisfy(_ => false).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""

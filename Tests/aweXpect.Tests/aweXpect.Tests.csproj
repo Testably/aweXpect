@@ -21,7 +21,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="..\aweXpect.Core.Tests\TestHelpers\VirtualTimeProvider.cs" Link="TestHelpers\VirtualTimeProvider.cs"/>
+		<PackageReference Include="Testably.Abstractions.Testing"/>
+		<Using Include="Testably.Abstractions.Testing"/>
+		<Using Include="System.TimeProvider" Alias="TimeProvider"/>
+		<Compile Include="..\aweXpect.Core.Tests\TestHelpers\TimeSystemExtensions.cs" Link="TestHelpers\TimeSystemExtensions.cs"/>
 	</ItemGroup>
 
 	<!-- .NET Framework gets the immutable and frozen collections from a package, which is referenced so that their comparers are tested there as well. -->

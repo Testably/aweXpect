@@ -1,5 +1,4 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -12,8 +11,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(5.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(5.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(5123.Milliseconds()).And(6000.Milliseconds())
@@ -30,8 +30,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(50.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(5000.Milliseconds())
@@ -43,8 +44,9 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
-				Action @delegate = () => time.Advance(50.Milliseconds());
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
+				Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(5.Milliseconds()).And(10.Milliseconds())
@@ -61,10 +63,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Action @delegate = () =>
 				{
-					time.Advance(500.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(500.Milliseconds());
 					throw new MyException();
 				};
 

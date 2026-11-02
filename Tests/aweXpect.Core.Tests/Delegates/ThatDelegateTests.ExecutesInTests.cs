@@ -66,8 +66,9 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task AtMost_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			VirtualTimeProvider time = new();
-			Action @delegate = () => time.Advance(2.Seconds());
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(2.Seconds());
 			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>> sut = That(@delegate).ExecutesIn();
 			_ = sut.AtMost(1.Seconds());
 
@@ -80,10 +81,11 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task AtMost_WithValue_WhenSpecifiedTwice_ShouldUseTheLastMaximum()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			Func<int> @delegate = () =>
 			{
-				time.Advance(2.Seconds());
+				timeSystem.TimeProvider.AdvanceBy(2.Seconds());
 				return 1;
 			};
 			ExecutesInResult<AndResult<ThatDelegate.WithValue<int>>> sut = That(@delegate).ExecutesIn();
@@ -98,8 +100,9 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task Between_WhenAndIsSpecifiedTwice_ShouldUseTheLastRange()
 		{
-			VirtualTimeProvider time = new();
-			Action @delegate = () => time.Advance(2500.Milliseconds());
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(2500.Milliseconds());
 			BetweenResult<AndResult<ThatDelegate.WithoutValue>, TimeSpan> sut =
 				That(@delegate).ExecutesIn().Between(1.Seconds());
 			_ = sut.And(2.Seconds());
@@ -199,8 +202,9 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task Within_WhenSpecifiedTwice_ShouldUseTheLastTolerance()
 		{
-			VirtualTimeProvider time = new();
-			Action @delegate = () => time.Advance(3.Seconds());
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			Action @delegate = () => timeSystem.TimeProvider.AdvanceBy(3.Seconds());
 			ExecutesInToleranceResult<AndResult<ThatDelegate.WithoutValue>> sut =
 				That(@delegate).ExecutesIn(1.Seconds());
 			_ = sut.Within(1.Seconds());

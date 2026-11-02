@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -803,8 +802,9 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceHangsAfterSomeItems_ShouldFailAfterTheTimeout()
 		{
-			VirtualTimeProvider time = new();
-			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2, 3);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			IAsyncEnumerable<int> subject = HangAfter(() => timeSystem.TimeProvider.AdvanceBy(1.Seconds()), 1, 2, 3);
 
 			async Task Act()
 				=> await That(subject).Contains(4).WithTimeout(1.Seconds()).WithTimeProvider(time);
@@ -825,8 +825,9 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceHangsBeforeTheCollectionIsFormatted_ShouldFailAfterTheTimeout()
 		{
-			VirtualTimeProvider time = new();
-			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			IAsyncEnumerable<int> subject = HangAfter(() => timeSystem.TimeProvider.AdvanceBy(1.Seconds()), 1, 2);
 
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds()).WithTimeProvider(time);
@@ -885,14 +886,15 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceObservesTheToken_ShouldCancelTheSource()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			CancellationToken sourceToken = CancellationToken.None;
 
 			async IAsyncEnumerable<int> Numbers([EnumeratorCancellation] CancellationToken cancellationToken = default)
 			{
 				sourceToken = cancellationToken;
 				Task delay = Task.Delay(30.Seconds(), cancellationToken);
-				time.Advance(1.Seconds());
+				timeSystem.TimeProvider.AdvanceBy(1.Seconds());
 				await delay;
 				yield return 1;
 			}
@@ -950,8 +952,9 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailACount()
 		{
-			VirtualTimeProvider time = new();
-			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			IAsyncEnumerable<int> subject = HangAfter(() => timeSystem.TimeProvider.AdvanceBy(1.Seconds()), 1, 2);
 
 			async Task Act()
 				=> await That(subject).HasCount(3).WithTimeout(1.Seconds()).WithTimeProvider(time);
@@ -972,8 +975,9 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailIsEqualTo()
 		{
-			VirtualTimeProvider time = new();
-			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			IAsyncEnumerable<int> subject = HangAfter(() => timeSystem.TimeProvider.AdvanceBy(1.Seconds()), 1, 2);
 
 			async Task Act()
 				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds()).WithTimeProvider(time);
@@ -997,8 +1001,9 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
 		{
-			VirtualTimeProvider time = new();
-			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			IAsyncEnumerable<int> subject = HangAfter(() => timeSystem.TimeProvider.AdvanceBy(1.Seconds()), 1, 2);
 
 			async Task Act()
 				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds())
@@ -1022,12 +1027,13 @@ public sealed partial class ThatAsyncEnumerable
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static async Task AbandonSourceThatFaultsLater(Exception exception)
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			TaskCompletionSource tcs = new();
 
 			async IAsyncEnumerable<int> Numbers()
 			{
-				time.Advance(1.Seconds());
+				timeSystem.TimeProvider.AdvanceBy(1.Seconds());
 				await tcs.Task;
 				yield return 1;
 			}

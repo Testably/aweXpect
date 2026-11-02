@@ -6,15 +6,12 @@ internal static class EventuallyExtensions
 {
 	/// <summary>
 	///     Lets the attempts measure the time and wait on the virtual clock of the <paramref name="timeProvider" />, or
-	///     of a new one.
+	///     of a new <see cref="MockTimeSystem" />.
 	/// </summary>
-	/// <remarks>
-	///     See <see cref="VirtualTimeProvider" /> for what moves its clock.
-	/// </remarks>
 	public static EventuallySubject<T> OnVirtualTime<T>(this EventuallySubject<T> subject,
-		VirtualTimeProvider? timeProvider = null)
+		TimeProvider? timeProvider = null)
 	{
-		((IExpectThat<T>)subject).ExpectationBuilder.UseTimeProvider(timeProvider ?? new VirtualTimeProvider());
+		((IExpectThat<T>)subject).ExpectationBuilder.UseTimeProvider(timeProvider ?? new MockTimeSystem().ToTimeProvider());
 		return subject;
 	}
 }

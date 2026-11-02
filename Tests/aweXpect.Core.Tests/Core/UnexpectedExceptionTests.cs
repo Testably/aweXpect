@@ -77,7 +77,9 @@ public sealed class UnexpectedExceptionTests
 	public async Task Task_WhenFailed_AndExpectationIsRepeated_ShouldFailWithoutRetrying()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 
 		async Task Act()
 			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).WithTimeProvider(time);
@@ -90,7 +92,7 @@ public sealed class UnexpectedExceptionTests
 			               failure
 			             """)
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
-		await That(time.Now).IsEqualTo(TimeSpan.Zero)
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero)
 			.Because("a faulted task must fail at once instead of being retried for the 30 s window");
 	}
 

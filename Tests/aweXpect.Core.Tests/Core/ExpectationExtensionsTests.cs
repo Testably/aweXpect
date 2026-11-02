@@ -10,7 +10,9 @@ public sealed class ExpectationExtensionsTests
 	[Test]
 	public async Task WithTimeProvider_OnACombination_ShouldRunEveryCombinedExpectationOnTheTimeProvider()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		Signaler signaler1 = new();
 		Signaler signaler2 = new();
 
@@ -22,7 +24,7 @@ public sealed class ExpectationExtensionsTests
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*never recorded within 0:10*never recorded within 0:20*").AsWildcard();
-		await That(timeProvider.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(30.Seconds())
 			.Because("both combined expectations waited one after the other on the virtual clock");
 	}
 
@@ -31,7 +33,7 @@ public sealed class ExpectationExtensionsTests
 	{
 		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue();
 
-		AndOrResult<bool, IThat<bool>> result = sut.WithTimeProvider(new VirtualTimeProvider());
+		AndOrResult<bool, IThat<bool>> result = sut.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(result).IsSameAs(sut);
 		await result;
@@ -40,7 +42,9 @@ public sealed class ExpectationExtensionsTests
 	[Test]
 	public async Task WithTimeProvider_ShouldRunTheEvaluationOnTheTimeProvider()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		Signaler signaler = new();
 
 		async Task Act()
@@ -52,7 +56,7 @@ public sealed class ExpectationExtensionsTests
 			             has recorded the callback at least once within 0:30,
 			             but it was never recorded within 0:30
 			             """);
-		await That(timeProvider.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(30.Seconds())
 			.Because("the wait elapsed on the virtual clock instead of in real time");
 	}
 
@@ -61,7 +65,7 @@ public sealed class ExpectationExtensionsTests
 	{
 		ExpectationResult? sut = null;
 
-		void Act() => sut!.WithTimeProvider(new VirtualTimeProvider());
+		void Act() => sut!.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("expectation").And
@@ -71,9 +75,9 @@ public sealed class ExpectationExtensionsTests
 	[Test]
 	public async Task WithTimeProvider_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
-		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue().WithTimeProvider(new VirtualTimeProvider());
+		AndOrResult<bool, IThat<bool>> sut = That(true).IsTrue().WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
-		void Act() => sut.WithTimeProvider(new VirtualTimeProvider());
+		void Act() => sut.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("WithTimeProvider cannot be specified more than once.");

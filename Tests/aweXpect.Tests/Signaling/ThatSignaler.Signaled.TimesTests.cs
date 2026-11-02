@@ -1,5 +1,4 @@
 ﻿using aweXpect.Core;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Signaling;
 
 namespace aweXpect.Tests;
@@ -126,7 +125,7 @@ public sealed partial class ThatSignaler
 
 				async Task Act() =>
 					await That(signaler).Signaled(2.Times()).Within(1.Seconds()).Within(50.Milliseconds())
-						.WithTimeProvider(new VirtualTimeProvider());
+						.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -31,7 +31,9 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			long start = timeProvider.GetTimestamp();
 			CancellationToken? delegateToken = null;
 			Func<CancellationToken, Task> @delegate = token =>
 			{
@@ -50,7 +52,7 @@ public sealed partial class ThatDelegateTests
 				             """).AsWildcard();
 
 			await That(delegateToken?.IsCancellationRequested).IsTrue();
-			await That(timeProvider.Now).IsEqualTo(50.Milliseconds())
+			await That(timeProvider.GetElapsedTime(start)).IsEqualTo(50.Milliseconds())
 				.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 		}
 

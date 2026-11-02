@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 using aweXpect.Customization;
 
@@ -349,7 +348,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsEqualTo(["b",]).InAnyOrder().WithTimeProvider(new VirtualTimeProvider());
+						.IsEqualTo(["b",]).InAnyOrder().WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
