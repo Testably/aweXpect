@@ -410,7 +410,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 		}
 
 		await That(traceWriter.Messages).IsEqualTo([
@@ -426,7 +426,7 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 		}
 
 		await That(traceWriter.Messages).HasCount(2);

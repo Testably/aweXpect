@@ -306,11 +306,13 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenChainedWithAnd_WhenALaterWaitIsCutShortByTheTimeout_ShouldFailWithTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		sut.NotifyCustomEvent(1);
-		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(timeProvider, TimeSpan.FromMilliseconds(900));
+		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(timeSystem, TimeSpan.FromMilliseconds(900));
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(takesAWhile)
@@ -323,7 +325,7 @@ public sealed class EventRecordingTests
 			.WithMessage("*but it did not finish within 0:01").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
 			.Because("the second constraint only watched for the rest of the timeout instead of its own second");
-		await That(timeProvider.Now).IsEqualTo(TimeSpan.FromSeconds(1))
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromSeconds(1))
 			.Because("the timeout ended the wait of the second constraint 100 ms after it started");
 	}
 
@@ -604,7 +606,9 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenCompliesWithIsRepeated_ShouldRecordAnEventThatArrivesAfterSeveralChecks()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
@@ -617,7 +621,7 @@ public sealed class EventRecordingTests
 
 		await That(Act).DoesNotThrow()
 			.Because("the repeated checks of one expectation share the recording until its evaluation ends");
-		await That(timeProvider.Now).IsEqualTo(TimeSpan.FromMilliseconds(400))
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromMilliseconds(400))
 			.Because("the fifth check recorded the event");
 		await That(sut.HasSubscribers()).IsFalse()
 			.Because("the recording stops when the evaluation of the whole expectation ends");
@@ -626,7 +630,9 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenCompliesWithIsRepeated_WhenTheEventIsNeverTriggered_ShouldFailAfterTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
@@ -643,7 +649,7 @@ public sealed class EventRecordingTests
 			             but it was never recorded
 			             """)
 			.Because("every check until the timeout reads the recording that is still running");
-		await That(timeProvider.Now).IsEqualTo(TimeSpan.FromSeconds(1));
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromSeconds(1));
 		await That(sut.HasSubscribers()).IsFalse()
 			.Because("the recording stops when the evaluation of the whole expectation ends");
 	}
@@ -651,7 +657,8 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenCompliesWithIsRepeated_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
@@ -726,7 +733,9 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenDoesNotComplyWithIsRepeated_ShouldRecordAnEventThatArrivesAfterSeveralChecks()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
@@ -740,7 +749,7 @@ public sealed class EventRecordingTests
 
 		await That(Act).DoesNotThrow()
 			.Because("the repeated checks of one expectation share the recording until its evaluation ends");
-		await That(timeProvider.Now).IsEqualTo(TimeSpan.FromMilliseconds(400))
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromMilliseconds(400))
 			.Because("the fifth check recorded the event");
 		await That(sut.HasSubscribers()).IsFalse()
 			.Because("the recording stops when the evaluation of the whole expectation ends");
@@ -749,7 +758,9 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenDoesNotComplyWithIsRepeated_WhenTheEventIsNeverTriggered_ShouldFailAfterTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
@@ -766,7 +777,7 @@ public sealed class EventRecordingTests
 			             but it was never recorded
 			             """)
 			.Because("every check until the timeout reads the recording that is still running");
-		await That(timeProvider.Now).IsEqualTo(TimeSpan.FromSeconds(1));
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromSeconds(1));
 		await That(sut.HasSubscribers()).IsFalse()
 			.Because("the recording stops when the evaluation of the whole expectation ends");
 	}
@@ -1356,14 +1367,14 @@ public sealed class EventRecordingTests
 	///     It advances the clock on its first call, so that the next constraint deterministically starts that long after
 	///     the evaluation.
 	/// </remarks>
-	private static Func<int, bool> TakesAWhileWhenFirstCalled(VirtualTimeProvider timeProvider, TimeSpan duration)
+	private static Func<int, bool> TakesAWhileWhenFirstCalled(MockTimeSystem timeSystem, TimeSpan duration)
 	{
 		int calls = 0;
 		return _ =>
 		{
 			if (Interlocked.Increment(ref calls) == 1)
 			{
-				timeProvider.Advance(duration);
+				timeSystem.TimeProvider.AdvanceBy(duration);
 			}
 
 			return true;

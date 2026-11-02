@@ -1,7 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Globalization;
 using aweXpect.Core;
-using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -19,7 +18,7 @@ public sealed partial class ThatString
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsNotParsableInto<int>().And.IsParsableInto<int>().WithTimeProvider(new VirtualTimeProvider());
+						.IsNotParsableInto<int>().And.IsParsableInto<int>().WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""

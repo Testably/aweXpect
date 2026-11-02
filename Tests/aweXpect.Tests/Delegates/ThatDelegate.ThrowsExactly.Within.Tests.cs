@@ -1,5 +1,4 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -72,11 +71,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -95,10 +95,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()
@@ -265,11 +266,12 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Exception exception = new CustomException();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 						throw exception;
 					};
 
@@ -288,10 +290,11 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
-					VirtualTimeProvider time = new();
+					MockTimeSystem timeSystem = new();
+					TimeProvider time = timeSystem.ToTimeProvider();
 					Action action = () =>
 					{
-						time.Advance(50.Milliseconds());
+						timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					};
 
 					async Task<Exception> Act()

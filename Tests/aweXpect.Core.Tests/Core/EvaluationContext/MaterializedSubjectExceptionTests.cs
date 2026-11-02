@@ -255,7 +255,8 @@ public class MaterializedSubjectExceptionTests
 	[Test]
 	public async Task WhenGetEnumeratorThrows_AndExpectationIsRepeated_ShouldAskTheSourceAgainForEveryCheck()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		InvalidOperationException exception = new("the source is broken");
 		DisposeTrackingEnumerable source = new(null, 1, 2)
 		{

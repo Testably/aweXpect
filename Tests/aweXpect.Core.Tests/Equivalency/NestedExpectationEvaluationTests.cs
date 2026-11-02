@@ -73,7 +73,8 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task Compare_WithAnEvaluation_ShouldEvaluateTheNestedExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
@@ -205,7 +206,8 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task ForEvaluation_ShouldEvaluateTheNestedExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
@@ -309,7 +311,8 @@ public sealed class NestedExpectationEvaluationTests
 	public async Task IsMetBy_ShouldEvaluateTheExpectationInAContextOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Context context = new()
 		{
 			Cancellation = EvaluationCancellation.Create(null, cts.Token),
@@ -414,7 +417,9 @@ public sealed class NestedExpectationEvaluationTests
 	[Test]
 	public async Task NestedWait_ShouldWaitOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		MyClass subject = new()
 		{
 			Value = new Signaler(),
@@ -439,14 +444,16 @@ public sealed class NestedExpectationEvaluationTests
 			             Equivalency options:
 			              - include public fields and properties
 			             """);
-		await That(timeProvider.Now).IsEqualTo(30.Seconds())
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(30.Seconds())
 			.Because("the nested expectation waited on the virtual clock of the evaluation");
 	}
 
 	[Test]
 	public async Task NestedWait_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeoutOnTheTimeProviderOfTheEvaluation()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		MyClass subject = new()
 		{
 			Value = new Signaler(),
@@ -462,7 +469,7 @@ public sealed class NestedExpectationEvaluationTests
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:10*").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:10."));
-		await That(timeProvider.Now).IsEqualTo(10.Seconds())
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(10.Seconds())
 			.Because("the timeout cuts the wait of the nested expectation short on the virtual clock");
 	}
 

@@ -12,9 +12,19 @@
 		<PackageReference Include="System.Text.Json"/>
 	</ItemGroup>
 
+	<!-- Testably.Abstractions.Testing brings System.Index in Microsoft.Bcl.Memory, which clashes with the polyfill visible from aweXpect.Core. -->
+	<Target Name="AliasBclMemory" AfterTargets="ResolveAssemblyReferences" Condition="'$(TargetFramework)' == 'net48'">
+		<ItemGroup>
+			<ReferencePath Condition="'%(Filename)' == 'Microsoft.Bcl.Memory'" Aliases="BclMemory"/>
+		</ItemGroup>
+	</Target>
+
 	<ItemGroup>
 		<PackageReference Remove="Nullable"/>
 		<PackageReference Include="aweXpect.Chronology"/>
+		<PackageReference Include="Testably.Abstractions.Testing"/>
+		<Using Include="Testably.Abstractions.Testing"/>
+		<Using Include="System.TimeProvider" Alias="TimeProvider"/>
 		<ProjectReference Include="..\..\Source\aweXpect.Analyzers\aweXpect.Analyzers.csproj"
 						  PrivateAssets="all"
 						  ReferenceOutputAssembly="false"

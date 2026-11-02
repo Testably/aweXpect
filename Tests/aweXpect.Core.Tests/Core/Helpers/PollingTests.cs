@@ -11,14 +11,15 @@ public sealed class PollingTests
 	[Test]
 	public async Task Elapsed_AfterACancellation_ShouldStayAtTheTimeOfTheCancellation()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
 		using Polling sut = Start(time, 30.Seconds(), 1.Hours(), cancellation);
-		time.CancelAt(40.Milliseconds(), cts);
+		time.CancelAfter(cts, 40.Milliseconds());
 		await sut.WaitForNextCheck();
 
-		time.Advance(1.Hours());
+		timeSystem.TimeProvider.AdvanceBy(1.Hours());
 
 		await That(sut.Elapsed).IsEqualTo(40.Milliseconds())
 			.Because("what follows a cancellation does not count for the budget");
@@ -28,12 +29,13 @@ public sealed class PollingTests
 	[Test]
 	public async Task GetElapsedTime_ShouldMeasureWithTheTimeProvider()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, 30.Seconds(), 1.Hours(), EvaluationCancellation.None);
-		time.Advance(10.Milliseconds());
+		timeSystem.TimeProvider.AdvanceBy(10.Milliseconds());
 		long timestamp = sut.GetTimestamp();
 
-		time.Advance(70.Milliseconds());
+		timeSystem.TimeProvider.AdvanceBy(70.Milliseconds());
 
 		await That(sut.GetElapsedTime(timestamp)).IsEqualTo(70.Milliseconds());
 		await That(sut.Elapsed).IsEqualTo(80.Milliseconds());
@@ -42,7 +44,9 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_AfterTheLastCheck_ShouldBeElapsed()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, 20.Milliseconds(), 1.Hours(), EvaluationCancellation.None);
 		await sut.WaitForNextCheck();
 
@@ -50,13 +54,14 @@ public sealed class PollingTests
 
 		await That(step).IsEqualTo(PollStep.Elapsed)
 			.Because("no check is made after the last one at the end of the budget");
-		await That(time.Now).IsEqualTo(20.Milliseconds());
+		await That(time.GetElapsedTime(start)).IsEqualTo(20.Milliseconds());
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_ShouldCheckInTheIntervalAndMakeTheLastCheckAtTheEndOfTheBudget()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, 250.Milliseconds(), 100.Milliseconds(), EvaluationCancellation.None);
 		(PollStep Step, TimeSpan Elapsed)[] steps = new (PollStep, TimeSpan)[4];
 
@@ -76,22 +81,25 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenACheckTookLongerThanTheBudget_ShouldBeElapsedWithoutWaiting()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, 100.Milliseconds(), 60.Milliseconds(), EvaluationCancellation.None);
-		time.Advance(130.Milliseconds());
+		timeSystem.TimeProvider.AdvanceBy(130.Milliseconds());
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.Elapsed);
-		await That(time.Now).IsEqualTo(130.Milliseconds());
+		await That(time.GetElapsedTime(start)).IsEqualTo(130.Milliseconds());
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_WhenACheckTookTime_ShouldOnlyWaitForTheRemainingBudget()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, 100.Milliseconds(), 60.Milliseconds(), EvaluationCancellation.None);
-		time.Advance(70.Milliseconds());
+		timeSystem.TimeProvider.AdvanceBy(70.Milliseconds());
 
 		PollStep step = await sut.WaitForNextCheck();
 
@@ -103,7 +111,8 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenAlreadyCanceled_ShouldBeCanceled()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		cts.Cancel();
 		EvaluationCancellation cancellation = new(null, cts.Token);
@@ -118,7 +127,9 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenOnlyASliverOfTheBudgetWouldBeLeft_ShouldMakeTheLastCheck()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, 101.Milliseconds(), 100.Milliseconds(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
@@ -127,14 +138,15 @@ public sealed class PollingTests
 		await That(step).IsEqualTo(PollStep.LastCheck)
 			.Because("the remaining millisecond is within the tolerance of the timers");
 		await That(nextStep).IsEqualTo(PollStep.Elapsed);
-		await That(time.Now).IsEqualTo(100.Milliseconds())
+		await That(time.GetElapsedTime(start)).IsEqualTo(100.Milliseconds())
 			.Because("no wait follows the last check");
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimited_ShouldCheckAgain()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, Timeout.InfiniteTimeSpan, 1.Milliseconds(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
@@ -147,11 +159,12 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimitedAndTheCallerCancels_ShouldBeCanceled()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
 		using Polling sut = Start(time, Timeout.InfiniteTimeSpan, 1.Hours(), cancellation);
-		time.CancelAt(1.Hours(), cts);
+		time.CancelAfter(cts, 1.Hours());
 
 		PollStep step = await sut.WaitForNextCheck();
 
@@ -162,36 +175,41 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimitedAndTheIntervalExceedsTheMaximumWait_ShouldCapTheWait()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, Timeout.InfiniteTimeSpan, 60.Days(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.Check);
-		await That(time.Now).IsEqualTo(TimeSpan.FromMilliseconds(int.MaxValue))
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.FromMilliseconds(int.MaxValue))
 			.Because("a longer wait is not accepted by the delay of the system time provider");
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUsedUp_ShouldBeElapsed()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, TimeSpan.Zero, 1.Hours(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.Elapsed);
-		await That(time.Now).IsEqualTo(TimeSpan.Zero);
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero);
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancels_ShouldBeCanceled()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
 		using Polling sut = Start(time, 30.Seconds(), 1.Hours(), cancellation);
-		time.CancelAt(20.Milliseconds(), cts);
+		time.CancelAfter(cts, 20.Milliseconds());
 
 		PollStep step = await sut.WaitForNextCheck();
 
@@ -218,11 +236,12 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancelsAtTheEndOfTheBudget_ShouldMakeTheLastCheck()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
 		using Polling sut = Start(time, 50.Milliseconds(), 1.Hours(), cancellation);
-		time.CancelAt(49.Milliseconds(), cts);
+		time.CancelAfter(cts, 49.Milliseconds());
 
 		PollStep step = await sut.WaitForNextCheck();
 
@@ -233,11 +252,12 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancelsDuringALaterWait_ShouldBeCanceled()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
 		using Polling sut = Start(time, 30.Seconds(), 100.Milliseconds(), cancellation);
-		time.CancelAt(250.Milliseconds(), cts);
+		time.CancelAfter(cts, 250.Milliseconds());
 
 		PollStep[] steps =
 		[
@@ -251,7 +271,8 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalExceedsTheBudget_ShouldMakeTheLastCheckAtTheEndOfTheBudget()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, 50.Milliseconds(), 1.Hours(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
@@ -264,19 +285,22 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalIsNotPositive_ShouldCheckAgainWithoutWaiting()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using Polling sut = Start(time, 30.Seconds(), TimeSpan.Zero, EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.Check);
-		await That(time.Now).IsEqualTo(TimeSpan.Zero);
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero);
 	}
 
 	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalIsShorterThanTheBudget_ShouldCheckAgain()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		using Polling sut = Start(time, 30.Seconds(), 1.Milliseconds(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
@@ -288,9 +312,10 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutElapsedBeforeTheStart_ShouldBeCanceled()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		EvaluationCancellation cancellation = new(100.Milliseconds(), CancellationToken.None, null, timeProvider);
-		timeProvider.Advance(100.Milliseconds());
+		timeSystem.TimeProvider.AdvanceBy(100.Milliseconds());
 		using Polling sut = Polling.Start(timeProvider, timeProvider.GetTimestamp(),
 			100.Milliseconds(), 1.Hours(), cancellation);
 
@@ -304,7 +329,9 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutIsShorterThanTheBudget_ShouldBeCanceled()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		long start = timeProvider.GetTimestamp();
 		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None, null, timeProvider);
 		using Polling sut = Start(timeProvider, 30.Seconds(), 1.Hours(), cancellation);
 
@@ -312,7 +339,7 @@ public sealed class PollingTests
 
 		await That(step).IsEqualTo(PollStep.Canceled)
 			.Because("a shorter timeout ends the checks, so that it is reported as the timeout");
-		await That(timeProvider.Now).IsEqualTo(20.Milliseconds());
+		await That(timeProvider.GetElapsedTime(start)).IsEqualTo(20.Milliseconds());
 		cancellation.Release();
 	}
 
@@ -334,7 +361,7 @@ public sealed class PollingTests
 			.Because("the wait is released, so the failure of the time provider surfaces instead of a hang");
 	}
 
-	private static Polling Start(VirtualTimeProvider time, TimeSpan budget, TimeSpan interval,
+	private static Polling Start(TimeProvider time, TimeSpan budget, TimeSpan interval,
 		EvaluationCancellation cancellation)
 		=> Polling.Start(time, time.GetTimestamp(), budget, interval, cancellation);
 

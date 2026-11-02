@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Core;
-using aweXpect.Core.Tests.TestHelpers;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -235,7 +234,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					async Task Act()
 						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-							.All().ComplyWith(x => x.IsGreaterThan(5)).WithTimeProvider(new VirtualTimeProvider());
+							.All().ComplyWith(x => x.IsGreaterThan(5)).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""

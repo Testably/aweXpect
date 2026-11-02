@@ -76,7 +76,8 @@ public class EvaluationContextTests
 	[Test]
 	public async Task StartAttempt_ShouldKeepTheTimeProvider()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Context context = new()
 		{
 			TimeProvider = timeProvider,
@@ -126,7 +127,8 @@ public class EvaluationContextTests
 	[Test]
 	public async Task StartCheck_ShouldKeepTheTimeProvider()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		Context context = new()
 		{
 			TimeProvider = timeProvider,
@@ -211,7 +213,7 @@ public class EvaluationContextTests
 	{
 		Context context = new()
 		{
-			TimeProvider = new VirtualTimeProvider(),
+			TimeProvider = new MockTimeSystem().ToTimeProvider(),
 		};
 
 		context.TimeProvider = TimeProvider.System;

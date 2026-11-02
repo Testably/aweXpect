@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -45,7 +44,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.HasItem(x => x == 1).AtIndex(0).WithTimeProvider(new VirtualTimeProvider());
+						.HasItem(x => x == 1).AtIndex(0).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -20,7 +20,8 @@ public sealed class MaterializedSourceReleaseTests
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithCancellation_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		PendingDisposeAsyncEnumerable source = new([1, 2,], () => cts.Cancel());
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
@@ -47,8 +48,9 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithShorterTimeout_ShouldFailWithTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
-		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeSystem.TimeProvider.AdvanceBy(10.Seconds()));
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
 
@@ -71,8 +73,9 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithTimeoutThatIsNotShorter_ShouldFail()
 	{
-		VirtualTimeProvider timeProvider = new();
-		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeProvider.Advance(60.Seconds()));
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeSystem.TimeProvider.AdvanceBy(60.Seconds()));
 		Func<IAsyncEnumerable<int>> subject = () => source;
 		Task evaluation = Evaluate();
 
@@ -158,8 +161,9 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_WithTimeout_WhenExpectationFails_ShouldReportTheFailure()
 	{
-		VirtualTimeProvider timeProvider = new();
-		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeSystem.TimeProvider.AdvanceBy(10.Seconds()));
 		Task evaluation = Evaluate();
 
 		await That(await IsCompleted(evaluation)).IsTrue()
@@ -182,8 +186,9 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_WithTimeout_WhenExpectationIsMet_ShouldStayMet()
 	{
-		VirtualTimeProvider timeProvider = new();
-		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeProvider.Advance(10.Seconds()));
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
+		PendingDisposeAsyncEnumerable subject = new([1, 2,], () => timeSystem.TimeProvider.AdvanceBy(10.Seconds()));
 		Task evaluation = Evaluate();
 
 		await That(await IsCompleted(evaluation)).IsTrue()

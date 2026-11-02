@@ -22,7 +22,8 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
 		TimeSpan timeout = 2.Seconds();
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 
 		ChangingClass sut1 = new(time);
 		ChangingClass sut2 = new(time);
@@ -56,7 +57,9 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
 	{
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(LowTimeout))
 		{
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
@@ -69,7 +72,7 @@ public sealed class CustomizeSettingsTests
 				             """);
 		}
 
-		await That(time.Now).IsEqualTo(LowTimeout);
+		await That(time.GetElapsedTime(start)).IsEqualTo(LowTimeout);
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 
@@ -350,24 +353,26 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromCancellationToken_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => timeSystem.Task.Delay(delay, cancellationToken))
 					.DoesNotThrow().WithTimeProvider(time);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
-				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => timeSystem.Task.Delay(delay, cancellationToken)
 				             does not throw any exception,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
 		}
 
-		await That(time.Now).IsEqualTo(TimeSpan.Zero)
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero)
 			.Because("the canceled evaluation must not wait for the subject");
 	}
 
@@ -393,13 +398,15 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => timeSystem.Task.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>().WithTimeProvider(time);
 
 			exception = await Catch.ExceptionAsync(Act);
@@ -407,11 +414,11 @@ public sealed class CustomizeSettingsTests
 
 		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
-			            Expected that cancellationToken => time.Delay(delay, cancellationToken)
+			            Expected that cancellationToken => timeSystem.Task.Delay(delay, cancellationToken)
 			            throws a TaskCanceledException,
 			            but it did not finish within 0:00.100
 			            """);
-		await That(time.Now).IsEqualTo(LowTimeout)
+		await That(time.GetElapsedTime(start)).IsEqualTo(LowTimeout)
 			.Because("the timeout of the test cancellation ends the wait for the subject");
 	}
 
@@ -442,13 +449,14 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => time.Delay(30.Seconds(), cancellationToken))
+				=> await That(cancellationToken => timeSystem.Task.Delay(30.Seconds(), cancellationToken))
 					.Throws<TaskCanceledException>()
 					.WithTimeout(20.Seconds()).WithTimeProvider(time);
 
@@ -457,7 +465,7 @@ public sealed class CustomizeSettingsTests
 
 		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
-			            Expected that cancellationToken => time.Delay(30.Seconds(), cancellationToken)
+			            Expected that cancellationToken => timeSystem.Task.Delay(30.Seconds(), cancellationToken)
 			            throws a TaskCanceledException,
 			            but it did not finish within 0:00.100
 			            """)
@@ -467,7 +475,9 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_None_ShouldBeApplied()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
@@ -475,24 +485,26 @@ public sealed class CustomizeSettingsTests
 			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.None()))
 			{
-				await That(cancellationToken => time.Delay(LowTimeout, cancellationToken))
+				await That(cancellationToken => timeSystem.Task.Delay(LowTimeout, cancellationToken))
 					.DoesNotThrow().WithTimeProvider(time);
 			}
 		}
 
-		await That(time.Now).IsEqualTo(LowTimeout)
+		await That(time.GetElapsedTime(start)).IsEqualTo(LowTimeout)
 			.Because("without a test cancellation the subject runs to its end");
 	}
 
 	[Test]
 	public async Task TestCancellation_PerDefault_ShouldNotCancel()
 	{
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 
-		await That(cancellationToken => time.Delay(LowTimeout, cancellationToken)).DoesNotThrow()
+		await That(cancellationToken => timeSystem.Task.Delay(LowTimeout, cancellationToken)).DoesNotThrow()
 			.WithTimeProvider(time);
 
-		await That(time.Now).IsEqualTo(LowTimeout)
+		await That(time.GetElapsedTime(start)).IsEqualTo(LowTimeout)
 			.Because("without a test cancellation the subject runs to its end");
 	}
 
@@ -500,26 +512,28 @@ public sealed class CustomizeSettingsTests
 	public async Task WithCancellation_OverwritesTheCancellationToken()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using CancellationTokenSource cts = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cts.Token)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => timeSystem.Task.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
 					.WithCancellation(cancelledToken).WithTimeProvider(time);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
-				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => timeSystem.Task.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
 		}
 
-		await That(time.Now).IsEqualTo(TimeSpan.Zero)
+		await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero)
 			.Because("the canceled evaluation must not wait for the subject");
 	}
 
@@ -527,28 +541,30 @@ public sealed class CustomizeSettingsTests
 	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		VirtualTimeProvider time = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider time = timeSystem.ToTimeProvider();
+		long start = time.GetTimestamp();
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(20.Seconds())))
 		{
 			async Task Act()
-				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => timeSystem.Task.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
 					.WithTimeout(20.Milliseconds()).WithTimeProvider(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
-				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => timeSystem.Task.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
 				             but it did not finish within 0:00.020
 				             """);
 		}
 
-		await That(time.Now).IsEqualTo(20.Milliseconds())
+		await That(time.GetElapsedTime(start)).IsEqualTo(20.Milliseconds())
 			.Because("the shorter timeout of WithTimeout ends the wait, not the test cancellation");
 	}
 
-	private sealed class ChangingClass(VirtualTimeProvider time)
+	private sealed class ChangingClass(TimeProvider time)
 	{
 		private long? _startTimestamp;
 

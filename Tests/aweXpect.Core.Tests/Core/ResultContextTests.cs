@@ -84,7 +84,8 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackNeverCompletes_InACombination_ShouldLeaveOutTheContext()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Task evaluation = Evaluate();
 
 			await That(await IsCompleted(evaluation)).IsTrue()
@@ -104,7 +105,7 @@ public sealed class ResultContextTests
 					That(1).ShowsContexts((contexts, _, _)
 							=> contexts.Add(new ResultContext.AsyncCallback("Value", _ =>
 							{
-								timeProvider.Advance(10.Seconds());
+								timeSystem.TimeProvider.AdvanceBy(10.Seconds());
 								return PendingTask.Of<string?>();
 							})))
 						.WithTimeout(5.Seconds()).WithTimeProvider(timeProvider),
@@ -145,7 +146,8 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackNeverCompletes_WithTimeout_ShouldLeaveOutTheContext()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Task evaluation = Evaluate();
 
 			await That(await IsCompleted(evaluation)).IsTrue()
@@ -165,7 +167,7 @@ public sealed class ResultContextTests
 				{
 					contexts.Add(new ResultContext.AsyncCallback("Value", _ =>
 					{
-						timeProvider.Advance(10.Seconds());
+						timeSystem.TimeProvider.AdvanceBy(10.Seconds());
 						return PendingTask.Of<string?>();
 					}));
 					contexts.Add(new ResultContext.AsyncCallback("Other", _ => Task.FromResult<string?>("completed"), 1));
@@ -277,13 +279,14 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackThrowsOnCancellation_AfterTheTimeout_ShouldStillReportTheFailure()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 
 			async Task Act()
 				=> await That(1).ShowsContexts((contexts, _, _)
 						=> contexts.Add(new ResultContext.AsyncCallback("Value", async token =>
 						{
-							timeProvider.Advance(10.Seconds());
+							timeSystem.TimeProvider.AdvanceBy(10.Seconds());
 							await Task.Yield();
 							token.ThrowIfCancellationRequested();
 							return "after the timeout";

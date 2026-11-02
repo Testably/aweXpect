@@ -164,10 +164,11 @@ public sealed partial class ThatDelegateTests
 		public async Task Throws_WhenExpectedExceptionIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			Action @delegate = () =>
 			{
-				time.Advance(50.Milliseconds());
+				timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 				throw exception;
 			};
 

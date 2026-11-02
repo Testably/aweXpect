@@ -5,6 +5,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Delegates;
@@ -151,7 +152,9 @@ public sealed partial class ThatDelegateTests
 		public async Task DefaultEventuallyTimeout_ShouldBeUsedWhenNoTimeoutIsSpecified()
 		{
 			Counter counter = new();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(VeryLowTimeout))
 			{
@@ -165,7 +168,7 @@ public sealed partial class ThatDelegateTests
 					             """);
 			}
 
-			await That(time.Now).IsEqualTo(VeryLowTimeout);
+			await That(time.GetElapsedTime(start)).IsEqualTo(VeryLowTimeout);
 		}
 
 		[Test]
@@ -452,12 +455,13 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_OnTheVirtualClock_ShouldAbandonIt()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Task<int>? attempt = null;
 
 			Task<int> Subject(CancellationToken token)
 			{
-				timeProvider.Advance(2.Hours());
+				timeSystem.TimeProvider.AdvanceBy(2.Hours());
 				attempt = PendingTask.Of<int>();
 				return attempt;
 			}
@@ -565,10 +569,11 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenAnAttemptTakesAlmostTheTimeout_ShouldEvaluateIt()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			Func<int> subject = () =>
 			{
-				time.Advance(VeryLowTimeout - TimeSpan.FromTicks(1));
+				timeSystem.TimeProvider.AdvanceBy(VeryLowTimeout - TimeSpan.FromTicks(1));
 				return 1;
 			};
 
@@ -581,10 +586,11 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenAnAttemptTakesAsLongAsTheTimeout_ShouldFail()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
 			Func<int> subject = () =>
 			{
-				time.Advance(VeryLowTimeout);
+				timeSystem.TimeProvider.AdvanceBy(VeryLowTimeout);
 				return 1;
 			};
 
@@ -650,7 +656,9 @@ public sealed partial class ThatDelegateTests
 			using CancellationTokenSource cts = new();
 			cts.Cancel();
 			Counter counter = new();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 
 			async Task Act()
 				=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(30.Seconds()).IsEqualTo(1)
@@ -664,15 +672,17 @@ public sealed partial class ThatDelegateTests
 				             """)
 				.Because("a canceled evaluation names the retry budget like every other outcome of Eventually");
 
-			await That(time.Now).IsEqualTo(TimeSpan.Zero);
+			await That(time.GetElapsedTime(start)).IsEqualTo(TimeSpan.Zero);
 		}
 
 		[Test]
 		public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 			using CancellationTokenSource cts = new();
-			time.CancelAt(100.Milliseconds(), cts);
+			time.CancelAfter(cts, 100.Milliseconds());
 			Counter counter = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
@@ -689,7 +699,7 @@ public sealed partial class ThatDelegateTests
 					             """);
 			}
 
-			await That(time.Now).IsEqualTo(100.Milliseconds())
+			await That(time.GetElapsedTime(start)).IsEqualTo(100.Milliseconds())
 				.Because("the cancellation ends the wait at once");
 		}
 
@@ -717,11 +727,13 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenCancelledWhileTheSubjectIsPending_ShouldBeInconclusive()
 		{
 			using CancellationTokenSource cts = new();
-			VirtualTimeProvider time = new();
-			time.CancelAt(50.Milliseconds(), cts);
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
+			time.CancelAfter(cts, 50.Milliseconds());
 			Func<Task<int>> subject = () =>
 			{
-				time.Advance(50.Milliseconds());
+				timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 				return PendingTask.Of<int>();
 			};
 
@@ -735,7 +747,7 @@ public sealed partial class ThatDelegateTests
 				             eventually is equal to 1 within 1:00,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
-			await That(time.Now).IsEqualTo(50.Milliseconds())
+			await That(time.GetElapsedTime(start)).IsEqualTo(50.Milliseconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
 		}
 
@@ -798,7 +810,9 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenIntervalIsLongerThanTheTimeout_ShouldEvaluateTwice()
 		{
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 			Counter counter = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
@@ -816,7 +830,7 @@ public sealed partial class ThatDelegateTests
 
 			await That(counter.EvaluationCount).IsEqualTo(2)
 				.Because("the last wait is shortened to the remaining budget and ends the retries");
-			await That(time.Now).IsEqualTo(LowTimeout)
+			await That(time.GetElapsedTime(start)).IsEqualTo(LowTimeout)
 				.Because("the last wait must not last the whole interval");
 		}
 
@@ -1109,7 +1123,9 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTestCancellationTimeoutExpires_ShouldFail()
 		{
 			Counter counter = new();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 			Exception? exception;
 
 			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
@@ -1127,7 +1143,7 @@ public sealed partial class ThatDelegateTests
 				            but it did not finish within 0:00.050
 				            """).AsWildcard().And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
-			await That(time.Now).IsEqualTo(VeryLowTimeout)
+			await That(time.GetElapsedTime(start)).IsEqualTo(VeryLowTimeout)
 				.Because("the timeout of the test cancellation ends the retries");
 		}
 
@@ -1185,13 +1201,14 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_OnTheVirtualClock_ShouldFail()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Func<int> subject = () => 1;
 
 			async Task Act()
 				=> await Awaits(That(subject).Eventually().OnVirtualTime(timeProvider).Within(1.Hours()), (_, token) =>
 				{
-					timeProvider.Advance(2.Hours());
+					timeSystem.TimeProvider.AdvanceBy(2.Hours());
 					return UntilCanceled(token);
 				});
 
@@ -1337,7 +1354,8 @@ public sealed partial class ThatDelegateTests
 		[Arguments(100)]
 		public async Task WhenTheCheckStopsUndecidedAtTheTimeout_ShouldFail(int timeoutInHours)
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Func<int> subject = () => 1;
 			EvaluationCancellation? cancellation = null;
 
@@ -1345,7 +1363,7 @@ public sealed partial class ThatDelegateTests
 				=> await Awaits(That(subject).Eventually().OnVirtualTime(timeProvider).Within(1.Hours()), async (context, _) =>
 				{
 					cancellation = context.Cancellation;
-					timeProvider.Advance(2.Hours());
+					timeSystem.TimeProvider.AdvanceBy(2.Hours());
 					try
 					{
 						return await UntilCanceled(context.Cancellation.Token);
@@ -1553,7 +1571,9 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTimeoutIsSetTwice_ShouldUseTheLastTimeout()
 		{
 			Counter counter = new();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 
 			async Task Act()
 				=> await That(() => counter.Value).Eventually().OnVirtualTime(time)
@@ -1566,7 +1586,7 @@ public sealed partial class ThatDelegateTests
 				             eventually is equal to 1 within 0:01,
 				             but it was 0, which differs by -1
 				             """);
-			await That(time.Now).IsEqualTo(1.Seconds());
+			await That(time.GetElapsedTime(start)).IsEqualTo(1.Seconds());
 		}
 
 		[Test]
@@ -1690,7 +1710,9 @@ public sealed partial class ThatDelegateTests
 		public async Task WithTimeout_ShouldCancelTheRetries()
 		{
 			Counter counter = new();
-			VirtualTimeProvider time = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider time = timeSystem.ToTimeProvider();
+			long start = time.GetTimestamp();
 
 			async Task Act()
 				=> await That(() => counter.Value).Eventually().OnVirtualTime(time).IsEqualTo(1)
@@ -1704,7 +1726,7 @@ public sealed partial class ThatDelegateTests
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 
-			await That(time.Now).IsEqualTo(VeryLowTimeout)
+			await That(time.GetElapsedTime(start)).IsEqualTo(VeryLowTimeout)
 				.Because("WithTimeout cancels the evaluation like everywhere else, instead of setting the retry budget");
 		}
 

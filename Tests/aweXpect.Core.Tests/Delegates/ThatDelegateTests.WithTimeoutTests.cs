@@ -21,10 +21,11 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenAsyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
-			VirtualTimeProvider timeProvider = new();
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			Func<Task> @delegate = () =>
 			{
-				timeProvider.Advance(100.Milliseconds());
+				timeSystem.TimeProvider.AdvanceBy(100.Milliseconds());
 				return PendingTask.Of<int>();
 			};
 

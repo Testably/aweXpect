@@ -146,7 +146,7 @@ public sealed class OnCompletedTests
 
 		await That(1).CompliesWith(it
 				=> it.HasSideEffect(log, "a", _ => ++value >= 3 ? Outcome.Success : Outcome.Failure))
-			.Within(1.Seconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(new VirtualTimeProvider());
+			.Within(1.Seconds()).CheckEvery(10.Milliseconds()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(log.Evaluations).IsEqualTo(3);
 		await That(log.Effects).IsEqualTo([
@@ -296,7 +296,8 @@ public sealed class OnCompletedTests
 	public async Task WhenTimedOut_ShouldReceiveTheTokenOfTheCaller()
 	{
 		SideEffectLog log = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		CancellationToken evaluationToken = default;
 
@@ -304,7 +305,7 @@ public sealed class OnCompletedTests
 			=> await That(1).HasSideEffect(log, "a", Outcome.Undecided, cancellationToken =>
 				{
 					evaluationToken = cancellationToken;
-					timeProvider.Advance(2.Seconds());
+					timeSystem.TimeProvider.AdvanceBy(2.Seconds());
 					return Task.CompletedTask;
 				}).WithCancellation(cts.Token).WithTimeout(1.Seconds())
 				.WithTimeProvider(timeProvider);

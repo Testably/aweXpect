@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core;
 
 namespace aweXpect.Tests;
@@ -26,10 +25,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Action @delegate = () =>
 				{
-					time.Advance(50.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					throw new MyException();
 				};
 
@@ -98,10 +98,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateWithValueThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<int> @delegate = () =>
 				{
-					time.Advance(50.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					throw new MyException();
 				};
 
@@ -134,11 +135,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenExceptionIsAllowed_ShouldNotForwardItAsInnerException()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Exception exception = new MyException();
 				Action @delegate = () =>
 				{
-					time.Advance(50.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					throw exception;
 				};
 
@@ -211,10 +213,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenToleranceIsGivenAndDelegateThrowsWithinIt_ShouldSucceed()
 			{
-				VirtualTimeProvider time = new();
+				MockTimeSystem timeSystem = new();
+				TimeProvider time = timeSystem.ToTimeProvider();
 				Action @delegate = () =>
 				{
-					time.Advance(50.Milliseconds());
+					timeSystem.TimeProvider.AdvanceBy(50.Milliseconds());
 					throw new MyException();
 				};
 

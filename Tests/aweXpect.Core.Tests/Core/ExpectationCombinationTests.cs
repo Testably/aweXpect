@@ -7,8 +7,8 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class ExpectationCombinationTests
 {
-	private static Action Taking(VirtualTimeProvider timeProvider, int milliseconds)
-		=> () => timeProvider.Advance(milliseconds.Milliseconds());
+	private static Action Taking(MockTimeSystem timeSystem, int milliseconds)
+		=> () => timeSystem.TimeProvider.AdvanceBy(milliseconds.Milliseconds());
 
 	public sealed class BecauseTests
 	{
@@ -111,7 +111,7 @@ public sealed class ExpectationCombinationTests
 				=> await ThatAll(That(1).IsEqualTo(2))
 					.Because(PendingTask.Of<string?>())
 					.WithTimeout(TimeSpan.Zero)
-					.WithTimeProvider(new VirtualTimeProvider());
+					.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -419,8 +419,9 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenAMemberHasATighterTimeout_ShouldKeepIt()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 50);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 50);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow().WithTimeout(30.Milliseconds()))
@@ -440,8 +441,9 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenAwaitedTwice_ShouldStartTheDeadlineAgain()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
 			Expectation.Combination.All sut = ThatAll(That(first).DoesNotThrow())
 				.WithTimeout(100.Milliseconds())
 				.WithTimeProvider(timeProvider);
@@ -459,8 +461,9 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenCalledWithALongerTimeout_ShouldNotLoosenTheTighterOne()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow())
@@ -481,9 +484,10 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenMembersTogetherExceedTheTimeout_ShouldOnlyGiveTheRemainingTimeToTheLaterMember()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
-			Action second = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
+			Action second = Taking(timeSystem, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())
@@ -504,9 +508,10 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenNestedCombinationRunsOutOfTime_ShouldOnlyGiveTheRemainingTimeToItsMembers()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
-			Action second = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
+			Action second = Taking(timeSystem, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), ThatAny(That(second).DoesNotThrow()))
@@ -527,8 +532,9 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenNestedCombinationSetsATighterTimeout_ShouldKeepIt()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 50);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 50);
 
 			async Task Act()
 				=> await ThatAll(ThatAll(That(first).DoesNotThrow()).WithTimeout(30.Milliseconds()))
@@ -548,9 +554,10 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenTimeoutIsInfinite_ShouldNotLimitTheMembers()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
-			Action second = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
+			Action second = Taking(timeSystem, 60);
 
 			async Task Act()
 				=> await ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())
@@ -578,7 +585,7 @@ public sealed class ExpectationCombinationTests
 			async Task Act()
 				=> await ThatAny(That(1).IsEqualTo(2), That(2).IsEqualTo(3))
 					.WithTimeout(TimeSpan.Zero)
-					.WithTimeProvider(new VirtualTimeProvider());
+					.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -595,9 +602,10 @@ public sealed class ExpectationCombinationTests
 		[Test]
 		public async Task WhenVerifiedSynchronously_ShouldOnlyGiveTheRemainingTimeToTheLaterMember()
 		{
-			VirtualTimeProvider timeProvider = new();
-			Action first = Taking(timeProvider, 60);
-			Action second = Taking(timeProvider, 60);
+			MockTimeSystem timeSystem = new();
+			TimeProvider timeProvider = timeSystem.ToTimeProvider();
+			Action first = Taking(timeSystem, 60);
+			Action second = Taking(timeSystem, 60);
 
 			void Act()
 				=> ThatAll(That(first).DoesNotThrow(), That(second).DoesNotThrow())

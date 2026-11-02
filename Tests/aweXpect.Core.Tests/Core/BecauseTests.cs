@@ -274,7 +274,8 @@ public class BecauseTests
 		WhenAsyncReasonIsPending_WhenTimeoutIsLongerThanTheRetryBudgetOfEventually_ShouldStillReportTheAssertionFailure()
 	{
 		TaskCompletionSource<string?> becauseSource = new();
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		int calls = 0;
 		Task evaluation = Evaluate();
 
@@ -293,7 +294,7 @@ public class BecauseTests
 		{
 			if (++calls == 2)
 			{
-				timeProvider.Advance(10.Milliseconds());
+				timeSystem.TimeProvider.AdvanceBy(10.Milliseconds());
 			}
 
 			return 1;
@@ -487,12 +488,13 @@ public class BecauseTests
 	public async Task
 		WhenAsyncReasonOfNestedExpectationsIsPending_WhenSubjectIsNull_ShouldStopWaitingAtTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		TaskCompletionSource<string?> becauseSource = new();
 		int[]? subject = null;
 		Task evaluation = Evaluate();
 
-		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeProvider, becauseSource)).IsTrue()
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
 			.Because("the timeout must stop waiting for a reason that does not arrive");
 		await That(() => evaluation).Throws<FailException>()
 			.WithMessage("""
@@ -510,11 +512,12 @@ public class BecauseTests
 	public async Task
 		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenAttemptExceedsTheRetryBudget_ShouldStopWaitingAtTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		TaskCompletionSource<string?> becauseSource = new();
 		Func<int[]> subject = () =>
 		{
-			timeProvider.Advance(60.Seconds());
+			timeSystem.TimeProvider.AdvanceBy(60.Seconds());
 			throw new MyException();
 		};
 		Task evaluation = Evaluate();
@@ -537,12 +540,13 @@ public class BecauseTests
 	public async Task
 		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectIsNull_ShouldStopWaitingAtTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		TaskCompletionSource<string?> becauseSource = new();
 		Func<int[]>? subject = null;
 		Task evaluation = Evaluate();
 
-		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeProvider, becauseSource)).IsTrue()
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
 			.Because("the timeout must stop waiting for a reason that does not arrive");
 		await That(() => evaluation).Throws<FailException>()
 			.WithMessage("""
@@ -560,12 +564,13 @@ public class BecauseTests
 	public async Task
 		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectReturnsANullTask_ShouldStopWaitingAtTheTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		TaskCompletionSource<string?> becauseSource = new();
 		Func<Task<int[]>> subject = () => null!;
 		Task evaluation = Evaluate();
 
-		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeProvider, becauseSource)).IsTrue()
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
 			.Because("the timeout must stop waiting for the reason, although it does not cancel the attempts");
 		await That(() => evaluation).Throws<FailException>()
 			.WithMessage("""
@@ -583,7 +588,8 @@ public class BecauseTests
 	public async Task
 		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectThrows_ShouldStopWaitingAtAShorterTimeout()
 	{
-		VirtualTimeProvider timeProvider = new();
+		MockTimeSystem timeSystem = new();
+		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		TaskCompletionSource<string?> becauseSource = new();
 		Func<int[]> subject = () => throw new MyException();
 		Task evaluation = Evaluate();
@@ -1247,16 +1253,16 @@ public class BecauseTests
 	}
 
 	/// <summary>
-	///     Moves the clock of the <paramref name="timeProvider" /> beyond every timeout until the
+	///     Moves the clock of the <paramref name="timeSystem" /> beyond every timeout until the
 	///     <paramref name="evaluation" /> completes, for an evaluation that waits without moving the clock itself.
 	/// </summary>
-	private static async Task<bool> IsCompletedOnceTheTimeoutElapsed(Task evaluation, VirtualTimeProvider timeProvider,
+	private static async Task<bool> IsCompletedOnceTheTimeoutElapsed(Task evaluation, MockTimeSystem timeSystem,
 		TaskCompletionSource<string?> becauseSource)
 	{
 		Task safetyNet = Task.Delay(TimeSpan.FromSeconds(10));
 		while (!evaluation.IsCompleted && !safetyNet.IsCompleted)
 		{
-			timeProvider.Advance(60.Seconds());
+			timeSystem.TimeProvider.AdvanceBy(60.Seconds());
 			await Task.WhenAny(evaluation, safetyNet, Task.Delay(20.Milliseconds()));
 		}
 
