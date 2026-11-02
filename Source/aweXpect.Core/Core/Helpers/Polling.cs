@@ -67,9 +67,16 @@ internal sealed class Polling : IDisposable
 		_cancellation = cancellation;
 		_registration = cancellation.Token.Register(() =>
 		{
-			// The time has to be recorded before the wait is released, so that the loop always observes it.
-			_canceledAt ??= GetElapsedTime(_startTimestamp);
-			_canceled.TrySetResult(true);
+			// The time has to be recorded before the wait is released, so that the loop always observes it, but a
+			// failing time provider must not keep the wait from being released.
+			try
+			{
+				_canceledAt ??= GetElapsedTime(_startTimestamp);
+			}
+			finally
+			{
+				_canceled.TrySetResult(true);
+			}
 		});
 	}
 
@@ -155,11 +162,10 @@ internal sealed class Polling : IDisposable
 	///     Waits for the <paramref name="wait" /> and returns whether the cancellation cut it short.
 	/// </summary>
 	/// <remarks>
-	///     A wait of zero still yields, so that checking without waiting does not block the thread. The wait is not
-	///     canceled by the token itself: the
-	///     <see cref="TimeProviderExtensions.CreateDelay(TimeProvider, TimeSpan, CancellationToken)" /> would register
-	///     its own callback, and the callbacks run in reverse order, so the wait could continue before the time of the
-	///     cancellation was recorded.
+	///     A wait of zero still yields, so that checking without waiting does not block the thread. The cancellation
+	///     releases the timer of the wait at once, so that a virtual clock which fires its timers inline stops at the
+	///     cancellation. The cancellation can release the wait before the time of the cancellation is recorded, so a
+	///     canceled wait continues only after the recording.
 	/// </remarks>
 	private async Task<bool> IsCanceledDuring(TimeSpan wait)
 	{
@@ -169,14 +175,14 @@ internal sealed class Polling : IDisposable
 			return _canceled.Task.IsCompleted;
 		}
 
-		using CancellationTokenSource waitCts = new();
-		Task delay = _timeProvider.CreateDelay(wait, waitCts.Token);
-		if (await Task.WhenAny(_canceled.Task, delay) != _canceled.Task)
+		Task delay = _timeProvider.CreateDelay(wait, _cancellation.Token);
+		await Task.WhenAny(delay);
+		if (!delay.IsCanceled)
 		{
 			return false;
 		}
 
-		waitCts.Cancel();
+		await _canceled.Task;
 		return true;
 	}
 

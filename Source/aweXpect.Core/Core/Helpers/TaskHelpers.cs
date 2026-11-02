@@ -83,24 +83,21 @@ internal static class TaskHelpers
 	}
 
 	/// <remarks>
-	///     The outcome of the <paramref name="task" /> wins when it completed by the time the cancellation is noticed,
-	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.
+	///     The outcome of the <paramref name="task" /> wins when it completed by the time of the cancellation. Whether it
+	///     was still running is decided when the cancellation arrives, as the continuation that notices it may run later,
+	///     e.g. after a virtual clock that fires its timers inline completed the <paramref name="task" /> on the way. A
+	///     task that failed or was canceled by the time the cancellation is noticed reacted to it, so it keeps reporting
+	///     its own exception.
 	/// </remarks>
 	private static async Task WaitOrAbandon(Task task, CancellationToken cancellationToken)
 	{
-#if NET8_0_OR_GREATER
-		await task.WaitAsync(cancellationToken)
-			.ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext | ConfigureAwaitOptions.SuppressThrowing);
-#else
-		TaskCompletionSource<bool> cancellation = new(TaskCreationOptions.RunContinuationsAsynchronously);
-		using (cancellationToken.Register(static state => ((TaskCompletionSource<bool>)state!).TrySetResult(true),
-			       cancellation))
+		AbandonDecision decision = new(task);
+		using (cancellationToken.Register(static state => ((AbandonDecision)state!).Decide(), decision))
 		{
-			await Task.WhenAny(task, cancellation.Task);
+			await Task.WhenAny(task, decision.Task);
 		}
-#endif
 
-		if (!task.IsCompleted)
+		if (decision.Task is { IsCompleted: true, Result: true, } && !task.IsFaulted && !task.IsCanceled)
 		{
 			throw Abandon(task);
 		}
@@ -119,5 +116,14 @@ internal static class TaskHelpers
 			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
 			TaskScheduler.Default);
 		return new TaskCanceledException();
+	}
+
+	/// <summary>
+	///     Completes with whether the task was still running when the cancellation arrived.
+	/// </summary>
+	private sealed class AbandonDecision(Task task)
+		: TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously)
+	{
+		public void Decide() => TrySetResult(!task.IsCompleted);
 	}
 }
