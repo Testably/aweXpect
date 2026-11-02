@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7839.9295000348775,
           12043.71618761335,
           10437.98568725586,
           5623.570156860352,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           11342.33989461263,
           8022.0747320992605,
           10885.283700796273,
-          6687.9808093479705
+          6687.9808093479705,
+          5062.261479304387
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          260073.44361979168,
           370915.9766927083,
           374730.36171875,
           197726.3876953125,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           368833.7420479911,
           263467.25230189733,
           372506.1619591346,
-          230790.60260881696
+          230790.60260881696,
+          160426.01946149554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590288,
           590292,
           590290,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590292,
-          590225
+          590225,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          14848.854580218975,
           19370.103010911207,
           18929.997983660018,
           11140.000682285854,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19228.22067464193,
           14757.409650675456,
           19557.364111093375,
-          15541.233731951032
+          15541.233731951032,
+          9499.995995657784
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          187.94713469346365,
           220.49511467615764,
           220.26489746570587,
           119.29923761807956,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           230.71649626323156,
           166.04677945772806,
           232.39194334348042,
-          184.08230210940044
+          184.08230210940044,
+          107.1365576505661
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          463.8245777717003,
           501.3619050979614,
           529.2206758352427,
           300.57969331741333,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           487.23349914550784,
           403.9011891805209,
           565.4544239679973,
-          431.2984214226405
+          431.2984214226405,
+          243.14533046575693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          323.3356704345116,
           389.58596245447796,
           385.72296915054324,
           217.45242825576238,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           381.19398295084636,
           290.84324990000044,
           406.7976531615624,
-          310.8841529233115
+          310.8841529233115,
+          184.8851867062705
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          84.89646662871043,
           109.80573293140957,
           104.97226091225942,
           59.70973937000547,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           101.2842869247709,
           81.63717957643362,
           109.88571999867757,
-          85.91898970603943
+          85.91898970603943,
+          52.23394394318263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          224.11021451950074,
           249.35799051920574,
           243.9872314453125,
           156.9650780237638,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           251.4639633814494,
           199.9987858613332,
           269.7832292488643,
-          231.0647668327604
+          231.0647668327604,
+          124.48387390772501
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          201.63653787544794,
           253.71124770091131,
           234.04026751858848,
           135.47953764029913,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           243.3308811823527,
           180.16475845972698,
           241.63875573476156,
-          175.8442726135254
+          175.8442726135254,
+          115.28214484453201
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          160.48556835834796,
           198.26838076909382,
           205.8019369159426,
           112.96024336020152,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           220.27957637493427,
           155.01215535799662,
           233.07144689559937,
-          170.29114083449045
+          170.29114083449045,
+          104.2314373765673
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          407.0741669450487,
           508.3953858057658,
           499.4910842259725,
           281.94205808639526,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           514.6160136540731,
           398.4745763369969,
           563.6870139439901,
-          469.2968532562256
+          469.2968532562256,
+          251.79910245308508
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          276.3500461578369,
           333.19088830947874,
           320.1984897760245,
           177.5056605974833,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           323.0492913041796,
           244.2572556177775,
           352.0609192530314,
-          267.3752918243408
+          267.3752918243408,
+          163.90244808563818
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          546.6377283976628,
           743.5845772425333,
           724.2646183013916,
           380.2787906328837,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           731.8473407200405,
           544.6200586046491,
           711.7572889328003,
-          484.3078671137492
+          484.3078671137492,
+          351.6807865460714
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1128.0791772206624,
           1382.465445109776,
           1342.9759494781495,
           728.5909455005939,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1302.5499210357666,
           1062.0516817728678,
           1387.3230361938477,
-          1132.9726112365722
+          1132.9726112365722,
+          661.3870153427124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          513.0793280919393,
           649.5115981468788,
           643.034560748509,
           358.04259456907,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           664.0425203323364,
           482.9837326322283,
           679.6016703923543,
-          507.9616528238569
+          507.9616528238569,
+          328.6695189476013
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          539.6298472540719,
           747.1063079833984,
           694.6949176107134,
           388.43279956181846,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           740.1904908693754,
           528.025872026171,
           700.8985293252127,
-          496.89772713979085
+          496.89772713979085,
+          336.45025364557904
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16573.625370279948,
           28645.10520063128,
           28228.59678548177,
           11297.385935102191,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27604.970178222655,
           15784.681262207032,
           27838.112268066405,
-          13716.832025800433
+          13716.832025800433,
+          9916.851940699986
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4225,7 +4225,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          605.1147817884173,
           804.4148065567017,
           782.9051110403879,
           444.1139889717102,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           796.0835459391276,
           567.2718527475993,
           809.9014682769775,
-          593.7603487650554
+          593.7603487650554,
+          401.7515406267984
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          524.6332745185265,
           616.0744426591056,
           662.6124880654471,
           374.55744676589967,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           646.6817438125611,
           495.0878109614054,
           639.0997926271879,
-          485.40489174769476
+          485.40489174769476,
+          321.0180395762126
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          55034.13025919596,
           83956.29605337289,
           82416.62518310547,
           31162.076904296875,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           83440.03913762019,
           53521.989685058594,
           83313.40833928034,
-          34298.46595646785
+          34298.46595646785,
+          27873.813016255695
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5256,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
       {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          105.73799150723677,
           134.1145841439565,
           132.95380571683248,
           73.96888502155032,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           132.8777868906657,
           98.39942834377288,
           132.2865676198687,
-          112.72904939310891
+          112.72904939310891,
+          68.90979267083682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15697.398236083984,
           32644.6953125,
           32627.028267415364,
           11073.761375935872,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           32426.790383475167,
           15366.246819051106,
           32021.58589390346,
-          13613.0773630778
+          13613.0773630778,
+          9323.604141235352
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5553,7 +5553,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          201.2060196240743,
           238.7123198876014,
           243.8988392353058,
           130.82821771303813,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           243.9019822438558,
           174.31505303723472,
           250.74032786914282,
-          178.7443732704435
+          178.7443732704435,
+          119.56581223805746
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          226.45373741785684,
           289.60260575612386,
           299.2795062383016,
           159.1197536468506,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           301.7468532721202,
           241.99440530141194,
           292.09971446990966,
-          226.05468099912008
+          226.05468099912008,
+          147.77105484689986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          341.4339385032654,
           375.26352630342757,
           379.6067220247709,
           207.02942035879408,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           370.74478643281117,
           326.1597420828683,
           384.0947867711385,
-          340.3533155367925
+          340.3533155367925,
+          228.5900914498738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          346.42620067596437,
           408.43828026453656,
           400.8758399327596,
           218.065802748998,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           395.37747354507445,
           338.48719635009763,
           406.85619265692577,
-          307.5243490764073
+          307.5243490764073,
+          214.34874742371696
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          578.5219897588094,
           702.298184468196,
           707.9254325457981,
           396.79741325378416,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           702.1594785690307,
           533.7317480723063,
           726.9747877120972,
-          524.3174168268839
+          524.3174168268839,
+          339.3109144142696
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1666.717170461019,
           1850.6348987579345,
           1897.3628135681151,
           1107.7804122924804,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1893.379379272461,
           1477.932856968471,
           1999.8926480611165,
-          1568.7674160003662
+          1568.7674160003662,
+          987.9840402603149
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          795.5892605463664,
           911.4032513936361,
           905.3824821880886,
           526.6922451899602,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           913.2472551981608,
           752.4170396169027,
           947.5608584721883,
-          698.5351908547538
+          698.5351908547538,
+          435.0675253527505
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8472.02957280477,
           11913.027764456612,
           11808.614476130559,
           6233.15022837321,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           12051.085647583008,
           8473.274893624442,
           11995.913034292367,
-          8115.435482788086
+          8115.435482788086,
+          5845.523921203613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27132.750196184432,
           40705.309622628345,
           40080.265148925784,
           19768.943857828777,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           42589.162571498324,
           26375.575326772836,
           41382.7380065918,
-          26739.983795166016
+          26739.983795166016,
+          17859.458293369837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7765,7 +7765,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18609,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          7909.356509868915,
           10480.001091003418,
           10516.495049612862,
           5832.580230167934,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10564.452568562825,
           7806.743946955754,
           10548.18766784668,
-          7536.659352620442
+          7536.659352620442,
+          5739.568757277269
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "e2339ca9a22fc61056cbab192219757f0a0246af",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:03:57 2026 \u002B0100",
-        "message": "feat: add the dependency and operator type filters and document OrHas and the parameter options (#2115)"
-      },
-      {
         "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
-      "e2339ca9",
       "9ea73f6f",
       "057732a7",
       "cda17b83",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8019.377580915178,
           11627.956140790668,
           11461.085594685872,
           5679.67013495309,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11668.200464101938,
           7862.5832661946615,
           11574.302649864783,
-          7630.842559814453
+          7630.842559814453,
+          5522.400224958147
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          38403.26795450846,
           59388.35749162947,
           58594.70852661133,
           26890.206795247395,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           61326.268338716945,
           37673.94204275949,
           59694.31194458008,
-          38064.83868001302
+          38064.83868001302,
+          26112.2777733436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8504,7 +8504,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8530,6 +8529,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          15404.555786132812,
           21011.581904484676,
           20842.519077845984,
           11103.698651123046,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           20865.034844534737,
           15239.803633626301,
           21265.609224759617,
-          14743.621767484225
+          14743.621767484225,
+          10794.279821123395
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
