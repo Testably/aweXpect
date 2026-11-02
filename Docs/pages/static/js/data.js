@@ -1698,6 +1698,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -1983,7 +1989,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -2272,7 +2279,8 @@ window.BENCHMARK_DATA = {
           8022.0747320992605,
           10885.283700796273,
           6687.9808093479705,
-          5062.261479304387
+          5062.261479304387,
+          10973.111887250629
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2508,6 +2516,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2863,7 +2872,8 @@ window.BENCHMARK_DATA = {
           263467.25230189733,
           372506.1619591346,
           230790.60260881696,
-          160426.01946149554
+          160426.01946149554,
+          375465.29889322916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3157,7 +3167,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590225,
-          590288
+          590288,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3454,7 +3465,8 @@ window.BENCHMARK_DATA = {
           14757.409650675456,
           19557.364111093375,
           15541.233731951032,
-          9499.995995657784
+          9499.995995657784,
+          18929.28505061223
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3466,6 +3478,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5418,6 +5431,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -5696,7 +5715,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -5978,7 +5998,8 @@ window.BENCHMARK_DATA = {
           166.04677945772806,
           232.39194334348042,
           184.08230210940044,
-          107.1365576505661
+          107.1365576505661,
+          301.6937367121379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6174,6 +6195,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6555,7 +6577,8 @@ window.BENCHMARK_DATA = {
           403.9011891805209,
           565.4544239679973,
           431.2984214226405,
-          243.14533046575693
+          243.14533046575693,
+          518.7320868174235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6567,6 +6590,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7132,7 +7156,8 @@ window.BENCHMARK_DATA = {
           290.84324990000044,
           406.7976531615624,
           310.8841529233115,
-          184.8851867062705
+          184.8851867062705,
+          411.4328280448914
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7144,6 +7169,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13709,6 +13735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -14757,7 +14789,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -15809,7 +15842,8 @@ window.BENCHMARK_DATA = {
           81.63717957643362,
           109.88571999867757,
           85.91898970603943,
-          52.23394394318263
+          52.23394394318263,
+          106.05028026898702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16808,6 +16842,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17926,7 +17961,8 @@ window.BENCHMARK_DATA = {
           199.9987858613332,
           269.7832292488643,
           231.0647668327604,
-          124.48387390772501
+          124.48387390772501,
+          252.7779610157013
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18119,6 +18155,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19324,7 +19361,8 @@ window.BENCHMARK_DATA = {
           180.16475845972698,
           241.63875573476156,
           175.8442726135254,
-          115.28214484453201
+          115.28214484453201,
+          247.13143559864588
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19336,6 +19374,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21374,6 +21413,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -21659,7 +21704,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -21948,7 +21994,8 @@ window.BENCHMARK_DATA = {
           155.01215535799662,
           233.07144689559937,
           170.29114083449045,
-          104.2314373765673
+          104.2314373765673,
+          213.6615258546976
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22153,6 +22200,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22539,7 +22587,8 @@ window.BENCHMARK_DATA = {
           398.4745763369969,
           563.6870139439901,
           469.2968532562256,
-          251.79910245308508
+          251.79910245308508,
+          552.9856308619181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22551,6 +22600,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -23130,7 +23180,8 @@ window.BENCHMARK_DATA = {
           244.2572556177775,
           352.0609192530314,
           267.3752918243408,
-          163.90244808563818
+          163.90244808563818,
+          360.81272373199465
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23142,6 +23193,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29714,6 +29766,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -30762,7 +30820,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -31814,7 +31873,8 @@ window.BENCHMARK_DATA = {
           544.6200586046491,
           711.7572889328003,
           484.3078671137492,
-          351.6807865460714
+          351.6807865460714,
+          707.0870713454026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32801,6 +32861,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -33931,7 +33992,8 @@ window.BENCHMARK_DATA = {
           1062.0516817728678,
           1387.3230361938477,
           1132.9726112365722,
-          661.3870153427124
+          661.3870153427124,
+          1375.7740164438883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34124,6 +34186,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -35329,7 +35392,8 @@ window.BENCHMARK_DATA = {
           482.9837326322283,
           679.6016703923543,
           507.9616528238569,
-          328.6695189476013
+          328.6695189476013,
+          673.3193477630615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35341,6 +35405,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -41957,6 +42022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -43005,7 +43076,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -44057,7 +44129,8 @@ window.BENCHMARK_DATA = {
           528.025872026171,
           700.8985293252127,
           496.89772713979085,
-          336.45025364557904
+          336.45025364557904,
+          697.7394412585667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45044,6 +45117,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -46174,7 +46248,8 @@ window.BENCHMARK_DATA = {
           15784.681262207032,
           27838.112268066405,
           13716.832025800433,
-          9916.851940699986
+          9916.851940699986,
+          29635.717603410994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47231,6 +47306,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -47572,7 +47648,8 @@ window.BENCHMARK_DATA = {
           567.2718527475993,
           809.9014682769775,
           593.7603487650554,
-          401.7515406267984
+          401.7515406267984,
+          830.5511998449053
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47584,6 +47661,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -49970,6 +50048,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -50313,7 +50397,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -50660,7 +50745,8 @@ window.BENCHMARK_DATA = {
           495.0878109614054,
           639.0997926271879,
           485.40489174769476,
-          321.0180395762126
+          321.0180395762126,
+          630.3253541310628
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -50954,6 +51040,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -51367,7 +51454,8 @@ window.BENCHMARK_DATA = {
           53521.989685058594,
           83313.40833928034,
           34298.46595646785,
-          27873.813016255695
+          27873.813016255695,
+          84043.52904401507
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51719,7 +51807,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53779,6 +53868,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -54122,7 +54217,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -54469,7 +54565,8 @@ window.BENCHMARK_DATA = {
           98.39942834377288,
           132.2865676198687,
           112.72904939310891,
-          68.90979267083682
+          68.90979267083682,
+          131.9709997812907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54763,6 +54860,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -55176,7 +55274,8 @@ window.BENCHMARK_DATA = {
           15366.246819051106,
           32021.58589390346,
           13613.0773630778,
-          9323.604141235352
+          9323.604141235352,
+          32509.351883951822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55528,7 +55627,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55869,7 +55969,8 @@ window.BENCHMARK_DATA = {
           174.31505303723472,
           250.74032786914282,
           178.7443732704435,
-          119.56581223805746
+          119.56581223805746,
+          266.5963453610738
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55881,6 +55982,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -57919,6 +58021,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -58204,7 +58312,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -58493,7 +58602,8 @@ window.BENCHMARK_DATA = {
           241.99440530141194,
           292.09971446990966,
           226.05468099912008,
-          147.77105484689986
+          147.77105484689986,
+          295.37672227223715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58698,6 +58808,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -59084,7 +59195,8 @@ window.BENCHMARK_DATA = {
           326.1597420828683,
           384.0947867711385,
           340.3533155367925,
-          228.5900914498738
+          228.5900914498738,
+          381.0275688171387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59096,6 +59208,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -59675,7 +59788,8 @@ window.BENCHMARK_DATA = {
           338.48719635009763,
           406.85619265692577,
           307.5243490764073,
-          214.34874742371696
+          214.34874742371696,
+          422.4070553779602
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59687,6 +59801,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -61681,6 +61796,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -61966,7 +62087,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -62255,7 +62377,8 @@ window.BENCHMARK_DATA = {
           533.7317480723063,
           726.9747877120972,
           524.3174168268839,
-          339.3109144142696
+          339.3109144142696,
+          720.2842439651489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62491,6 +62614,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -62846,7 +62970,8 @@ window.BENCHMARK_DATA = {
           1477.932856968471,
           1999.8926480611165,
           1568.7674160003662,
-          987.9840402603149
+          987.9840402603149,
+          1995.711176554362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62858,6 +62983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -63437,7 +63563,8 @@ window.BENCHMARK_DATA = {
           752.4170396169027,
           947.5608584721883,
           698.5351908547538,
-          435.0675253527505
+          435.0675253527505,
+          991.3054107030233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63449,6 +63576,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -65443,6 +65571,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -65728,7 +65862,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -66017,7 +66152,8 @@ window.BENCHMARK_DATA = {
           8473.274893624442,
           11995.913034292367,
           8115.435482788086,
-          5845.523921203613
+          5845.523921203613,
+          12156.404826863607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66256,6 +66392,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -66608,7 +66745,8 @@ window.BENCHMARK_DATA = {
           26375.575326772836,
           41382.7380065918,
           26739.983795166016,
-          17859.458293369837
+          17859.458293369837,
+          42039.99739990234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66902,6 +67040,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -67199,7 +67338,8 @@ window.BENCHMARK_DATA = {
           7806.743946955754,
           10548.18766784668,
           7536.659352620442,
-          5739.568757277269
+          5739.568757277269,
+          10813.3557673863
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67211,6 +67351,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -69205,6 +69346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
@@ -69490,7 +69637,8 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
@@ -69779,7 +69927,8 @@ window.BENCHMARK_DATA = {
           7862.5832661946615,
           11574.302649864783,
           7630.842559814453,
-          5522.400224958147
+          5522.400224958147,
+          11824.518692016602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70018,6 +70167,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -70370,7 +70520,8 @@ window.BENCHMARK_DATA = {
           37673.94204275949,
           59694.31194458008,
           38064.83868001302,
-          26112.2777733436
+          26112.2777733436,
+          59427.12653023856
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70661,6 +70812,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -70961,7 +71113,8 @@ window.BENCHMARK_DATA = {
           15239.803633626301,
           21265.609224759617,
           14743.621767484225,
-          10794.279821123395
+          10794.279821123395,
+          21787.023731776648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70973,6 +71126,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
