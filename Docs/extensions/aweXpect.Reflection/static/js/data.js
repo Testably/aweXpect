@@ -1356,6 +1356,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -1584,7 +1590,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -1816,7 +1823,8 @@ window.BENCHMARK_DATA = {
           750.2949500450721,
           440.08081589426314,
           367.9654962833111,
-          789.3136967250279
+          789.3136967250279,
+          740.8520370483399
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2040,6 +2048,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2293,7 +2302,8 @@ window.BENCHMARK_DATA = {
           940.5592269897461,
           549.0138045719692,
           488.2764450953557,
-          766.8016492979867
+          766.8016492979867,
+          884.9982870737712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2305,6 +2315,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -3900,6 +3911,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -4128,7 +4145,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -4360,7 +4378,8 @@ window.BENCHMARK_DATA = {
           102.15994429588318,
           63.46543858846029,
           54.331290061984745,
-          100.78213461807796
+          100.78213461807796,
+          118.15572428703308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4507,6 +4526,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -4837,7 +4857,8 @@ window.BENCHMARK_DATA = {
           214.79105628331502,
           136.06614362398784,
           119.07295257704598,
-          223.265803082784
+          223.265803082784,
+          200.56299683025904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4849,6 +4870,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -6444,6 +6466,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -6672,7 +6700,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -6904,7 +6933,8 @@ window.BENCHMARK_DATA = {
           1951.7897117614746,
           1001.8455847331455,
           912.5701546986897,
-          1401.115849685669
+          1401.115849685669,
+          1879.6018085479736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7099,6 +7129,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -7381,7 +7412,8 @@ window.BENCHMARK_DATA = {
           1477.729181425912,
           893.5853110722134,
           794.5334840502057,
-          1288.7274579366049
+          1288.7274579366049,
+          1420.8492529551188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7618,7 +7650,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
-          1952
+          1952,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8928,6 +8961,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -9146,7 +9185,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -9368,7 +9408,8 @@ window.BENCHMARK_DATA = {
           2815.7325673421224,
           1457.2568909962972,
           1409.3922992706298,
-          2106.1402339935303
+          2106.1402339935303,
+          2811.9830202375138
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9553,6 +9594,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -9825,7 +9867,8 @@ window.BENCHMARK_DATA = {
           3887.8210225786484,
           2342.1386190141952,
           2124.65303700765,
-          3256.571998009315
+          3256.571998009315,
+          3849.1429868425644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10052,7 +10095,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3981,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11362,6 +11406,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -11580,7 +11630,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -11802,7 +11853,8 @@ window.BENCHMARK_DATA = {
           374.5209349314372,
           205.00731192032495,
           181.75381722817053,
-          340.88693211873374
+          340.88693211873374,
+          387.34843565622964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11939,6 +11991,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -12259,7 +12312,8 @@ window.BENCHMARK_DATA = {
           2290.0378039042157,
           1433.0439879099529,
           1257.7810283660888,
-          1943.3084506988525
+          1943.3084506988525,
+          2295.225505320231
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12271,6 +12325,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -13796,6 +13851,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
         "message": "chore: release aweXpect.Xml and aweXpect.Snapshots as stable packages (#2163)"
+      },
+      {
+        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
+        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
       }
     ],
     "labels": [
@@ -14014,7 +14075,8 @@ window.BENCHMARK_DATA = {
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
-      "c2bac0d4"
+      "c2bac0d4",
+      "b53d74cc"
     ],
     "datasets": [
       {
@@ -14236,7 +14298,8 @@ window.BENCHMARK_DATA = {
           3195.6755187988283,
           1610.8632598876952,
           1398.0628689357213,
-          2142.81512260437
+          2142.81512260437,
+          2866.4763259887695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14450,6 +14513,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -14693,7 +14757,8 @@ window.BENCHMARK_DATA = {
           281659.9239257813,
           180359.81563626803,
           168473.62384033203,
-          247157.41311848958
+          247157.41311848958,
+          278892.3260323661
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14920,7 +14985,8 @@ window.BENCHMARK_DATA = {
           17835,
           17576,
           17574,
-          17528
+          17528,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
