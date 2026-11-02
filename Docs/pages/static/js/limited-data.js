@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12043.71618761335,
           10437.98568725586,
           5623.570156860352,
           10669.820510864258,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           8022.0747320992605,
           10885.283700796273,
           6687.9808093479705,
-          5062.261479304387
+          5062.261479304387,
+          10973.111887250629
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          370915.9766927083,
           374730.36171875,
           197726.3876953125,
           358646.58956473216,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           263467.25230189733,
           372506.1619591346,
           230790.60260881696,
-          160426.01946149554
+          160426.01946149554,
+          375465.29889322916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590290,
           590288,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590292,
           590225,
-          590288
+          590288,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19370.103010911207,
           18929.997983660018,
           11140.000682285854,
           19183.805079142254,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14757.409650675456,
           19557.364111093375,
           15541.233731951032,
-          9499.995995657784
+          9499.995995657784,
+          18929.28505061223
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          220.49511467615764,
           220.26489746570587,
           119.29923761807956,
           216.92249941825867,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           166.04677945772806,
           232.39194334348042,
           184.08230210940044,
-          107.1365576505661
+          107.1365576505661,
+          301.6937367121379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          501.3619050979614,
           529.2206758352427,
           300.57969331741333,
           508.6123274289645,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           403.9011891805209,
           565.4544239679973,
           431.2984214226405,
-          243.14533046575693
+          243.14533046575693,
+          518.7320868174235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          389.58596245447796,
           385.72296915054324,
           217.45242825576238,
           389.5517812728882,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           290.84324990000044,
           406.7976531615624,
           310.8841529233115,
-          184.8851867062705
+          184.8851867062705,
+          411.4328280448914
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          109.80573293140957,
           104.97226091225942,
           59.70973937000547,
           102.9668372954641,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           81.63717957643362,
           109.88571999867757,
           85.91898970603943,
-          52.23394394318263
+          52.23394394318263,
+          106.05028026898702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.35799051920574,
           243.9872314453125,
           156.9650780237638,
           244.05193662643433,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           199.9987858613332,
           269.7832292488643,
           231.0647668327604,
-          124.48387390772501
+          124.48387390772501,
+          252.7779610157013
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          253.71124770091131,
           234.04026751858848,
           135.47953764029913,
           239.59491583506266,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           180.16475845972698,
           241.63875573476156,
           175.8442726135254,
-          115.28214484453201
+          115.28214484453201,
+          247.13143559864588
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          198.26838076909382,
           205.8019369159426,
           112.96024336020152,
           199.7942601782935,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           155.01215535799662,
           233.07144689559937,
           170.29114083449045,
-          104.2314373765673
+          104.2314373765673,
+          213.6615258546976
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          508.3953858057658,
           499.4910842259725,
           281.94205808639526,
           502.31948108673095,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           398.4745763369969,
           563.6870139439901,
           469.2968532562256,
-          251.79910245308508
+          251.79910245308508,
+          552.9856308619181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          333.19088830947874,
           320.1984897760245,
           177.5056605974833,
           327.9570531527201,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           244.2572556177775,
           352.0609192530314,
           267.3752918243408,
-          163.90244808563818
+          163.90244808563818,
+          360.81272373199465
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          743.5845772425333,
           724.2646183013916,
           380.2787906328837,
           711.7673157964434,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           544.6200586046491,
           711.7572889328003,
           484.3078671137492,
-          351.6807865460714
+          351.6807865460714,
+          707.0870713454026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1382.465445109776,
           1342.9759494781495,
           728.5909455005939,
           1373.8708547864642,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1062.0516817728678,
           1387.3230361938477,
           1132.9726112365722,
-          661.3870153427124
+          661.3870153427124,
+          1375.7740164438883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          649.5115981468788,
           643.034560748509,
           358.04259456907,
           635.3209360667637,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           482.9837326322283,
           679.6016703923543,
           507.9616528238569,
-          328.6695189476013
+          328.6695189476013,
+          673.3193477630615
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          747.1063079833984,
           694.6949176107134,
           388.43279956181846,
           694.1066106649546,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           528.025872026171,
           700.8985293252127,
           496.89772713979085,
-          336.45025364557904
+          336.45025364557904,
+          697.7394412585667
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28645.10520063128,
           28228.59678548177,
           11297.385935102191,
           27462.130232747397,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           15784.681262207032,
           27838.112268066405,
           13716.832025800433,
-          9916.851940699986
+          9916.851940699986,
+          29635.717603410994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4224,7 +4224,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          804.4148065567017,
           782.9051110403879,
           444.1139889717102,
           758.9122106688363,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           567.2718527475993,
           809.9014682769775,
           593.7603487650554,
-          401.7515406267984
+          401.7515406267984,
+          830.5511998449053
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          616.0744426591056,
           662.6124880654471,
           374.55744676589967,
           642.3389695485433,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           495.0878109614054,
           639.0997926271879,
           485.40489174769476,
-          321.0180395762126
+          321.0180395762126,
+          630.3253541310628
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          83956.29605337289,
           82416.62518310547,
           31162.076904296875,
           82961.81638009207,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           53521.989685058594,
           83313.40833928034,
           34298.46595646785,
-          27873.813016255695
+          27873.813016255695,
+          84043.52904401507
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5252,
-          5252,
           5256,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
       {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          134.1145841439565,
           132.95380571683248,
           73.96888502155032,
           126.60137798235966,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           98.39942834377288,
           132.2865676198687,
           112.72904939310891,
-          68.90979267083682
+          68.90979267083682,
+          131.9709997812907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32644.6953125,
           32627.028267415364,
           11073.761375935872,
           31510.571561373195,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           15366.246819051106,
           32021.58589390346,
           13613.0773630778,
-          9323.604141235352
+          9323.604141235352,
+          32509.351883951822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          238.7123198876014,
           243.8988392353058,
           130.82821771303813,
           238.0489538192749,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           174.31505303723472,
           250.74032786914282,
           178.7443732704435,
-          119.56581223805746
+          119.56581223805746,
+          266.5963453610738
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          289.60260575612386,
           299.2795062383016,
           159.1197536468506,
           292.27979977925617,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           241.99440530141194,
           292.09971446990966,
           226.05468099912008,
-          147.77105484689986
+          147.77105484689986,
+          295.37672227223715
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          375.26352630342757,
           379.6067220247709,
           207.02942035879408,
           366.23903747967313,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           326.1597420828683,
           384.0947867711385,
           340.3533155367925,
-          228.5900914498738
+          228.5900914498738,
+          381.0275688171387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          408.43828026453656,
           400.8758399327596,
           218.065802748998,
           406.4514482021332,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           338.48719635009763,
           406.85619265692577,
           307.5243490764073,
-          214.34874742371696
+          214.34874742371696,
+          422.4070553779602
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          702.298184468196,
           707.9254325457981,
           396.79741325378416,
           709.2360028486985,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           533.7317480723063,
           726.9747877120972,
           524.3174168268839,
-          339.3109144142696
+          339.3109144142696,
+          720.2842439651489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1850.6348987579345,
           1897.3628135681151,
           1107.7804122924804,
           1819.8828868865967,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1477.932856968471,
           1999.8926480611165,
           1568.7674160003662,
-          987.9840402603149
+          987.9840402603149,
+          1995.711176554362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          911.4032513936361,
           905.3824821880886,
           526.6922451899602,
           915.4479080835978,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           752.4170396169027,
           947.5608584721883,
           698.5351908547538,
-          435.0675253527505
+          435.0675253527505,
+          991.3054107030233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11913.027764456612,
           11808.614476130559,
           6233.15022837321,
           12273.967716761998,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8473.274893624442,
           11995.913034292367,
           8115.435482788086,
-          5845.523921203613
+          5845.523921203613,
+          12156.404826863607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40705.309622628345,
           40080.265148925784,
           19768.943857828777,
           40518.84923377404,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           26375.575326772836,
           41382.7380065918,
           26739.983795166016,
-          17859.458293369837
+          17859.458293369837,
+          42039.99739990234
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10480.001091003418,
           10516.495049612862,
           5832.580230167934,
           10529.6439842811,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7806.743946955754,
           10548.18766784668,
           7536.659352620442,
-          5739.568757277269
+          5739.568757277269,
+          10813.3557673863
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "9ea73f6f957675be0127e9090d75e38b40c85501",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:04:35 2026 \u002B0100",
-        "message": "fix: never compile snapshot files of a test project (#2118)"
-      },
-      {
         "sha": "057732a7cdbc31d3dd8351c15e3d07cbb8215354",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 08:06:15 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
         "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
+      },
+      {
+        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
+        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
       }
     ],
     "labels": [
-      "9ea73f6f",
       "057732a7",
       "cda17b83",
       "3c243dad",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
-      "b53d74cc"
+      "b53d74cc",
+      "3903c857"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11627.956140790668,
           11461.085594685872,
           5679.67013495309,
           11511.122253417969,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7862.5832661946615,
           11574.302649864783,
           7630.842559814453,
-          5522.400224958147
+          5522.400224958147,
+          11824.518692016602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59388.35749162947,
           58594.70852661133,
           26890.206795247395,
           57760.91309407552,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           37673.94204275949,
           59694.31194458008,
           38064.83868001302,
-          26112.2777733436
+          26112.2777733436,
+          59427.12653023856
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8503,7 +8503,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8529,6 +8528,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21011.581904484676,
           20842.519077845984,
           11103.698651123046,
           21163.664080810548,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15239.803633626301,
           21265.609224759617,
           14743.621767484225,
-          10794.279821123395
+          10794.279821123395,
+          21787.023731776648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
