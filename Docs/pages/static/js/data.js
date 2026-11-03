@@ -1728,6 +1728,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -2018,7 +2024,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -2312,7 +2319,8 @@ window.BENCHMARK_DATA = {
           5756.750717163086,
           5405.366559542143,
           7926.032001749674,
-          10889.706274850028
+          10889.706274850028,
+          7627.157381184896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2548,6 +2556,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2913,7 +2922,8 @@ window.BENCHMARK_DATA = {
           211470.37076822916,
           181637.31432291667,
           269948.25624302455,
-          367251.37527901784
+          367251.37527901784,
+          281455.298046875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3212,7 +3222,8 @@ window.BENCHMARK_DATA = {
           590226,
           590288,
           590287,
-          590292
+          590292,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3514,7 +3525,8 @@ window.BENCHMARK_DATA = {
           13365.746838160923,
           10166.299999782017,
           14573.339771815708,
-          18971.364754813058
+          18971.364754813058,
+          17201.607529703775
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3526,6 +3538,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5513,6 +5526,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -5796,7 +5815,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -6083,7 +6103,8 @@ window.BENCHMARK_DATA = {
           154.2540704182216,
           105.04017786184947,
           175.88753628730774,
-          224.50819418980524
+          224.50819418980524,
+          208.83590509096783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6279,6 +6300,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6670,7 +6692,8 @@ window.BENCHMARK_DATA = {
           374.6030752318246,
           253.580831857828,
           481.4328207015991,
-          484.18718903405323
+          484.18718903405323,
+          544.1355526787894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6682,6 +6705,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7257,7 +7281,8 @@ window.BENCHMARK_DATA = {
           284.07751138393695,
           188.8569609948567,
           323.97513065338137,
-          380.64480083329335
+          380.64480083329335,
+          384.9446443875631
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7269,6 +7294,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13869,6 +13895,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -14922,7 +14954,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -15979,7 +16012,8 @@ window.BENCHMARK_DATA = {
           74.47833202679952,
           52.67523427406947,
           83.6982667701585,
-          102.63933994088855
+          102.63933994088855,
+          92.46883097489675
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16978,6 +17012,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -18106,7 +18141,8 @@ window.BENCHMARK_DATA = {
           205.09099875177657,
           123.61756624494281,
           218.25233629771643,
-          247.5575695991516
+          247.5575695991516,
+          267.58332344690956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18299,6 +18335,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19514,7 +19551,8 @@ window.BENCHMARK_DATA = {
           160.70414534636907,
           119.57188793818156,
           194.47944458893366,
-          232.93078387578328
+          232.93078387578328,
+          211.06066842079161
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19526,6 +19564,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21599,6 +21638,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -21889,7 +21934,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -22183,7 +22229,8 @@ window.BENCHMARK_DATA = {
           145.38262706536514,
           104.99896875711588,
           171.7875414689382,
-          196.48909185330072
+          196.48909185330072,
+          208.05918807983397
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22388,6 +22435,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22784,7 +22832,8 @@ window.BENCHMARK_DATA = {
           415.64867091178894,
           266.1798214435577,
           449.9963709626879,
-          502.1868104201097
+          502.1868104201097,
+          630.0778818766277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22796,6 +22845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -23385,7 +23435,8 @@ window.BENCHMARK_DATA = {
           252.98233178456624,
           192.1727517751547,
           267.05567751611983,
-          322.69859743118286
+          322.69859743118286,
+          341.8579696587154
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23397,6 +23448,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -30004,6 +30056,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -31057,7 +31115,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -32114,7 +32173,8 @@ window.BENCHMARK_DATA = {
           438.0749873093196,
           343.11686611175537,
           545.6689266477313,
-          677.8748190953181
+          677.8748190953181,
+          582.5335600535075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33101,6 +33161,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -34241,7 +34302,8 @@ window.BENCHMARK_DATA = {
           989.0643040974935,
           666.0769636789958,
           1192.7577843666077,
-          1329.0882294972737
+          1329.0882294972737,
+          1509.3960450490315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34434,6 +34496,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -35649,7 +35712,8 @@ window.BENCHMARK_DATA = {
           455.4622946739197,
           318.24617369969684,
           524.9119118372599,
-          643.3992274148123
+          643.3992274148123,
+          658.1765398025512
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35661,6 +35725,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -42312,6 +42377,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -43365,7 +43436,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -44422,7 +44494,8 @@ window.BENCHMARK_DATA = {
           435.0194311823164,
           334.3514902114868,
           550.3316888809204,
-          666.4590592751136
+          666.4590592751136,
+          600.2143564224243
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45409,6 +45482,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -46549,7 +46623,8 @@ window.BENCHMARK_DATA = {
           12281.724935259137,
           9822.338924701397,
           17284.7862134661,
-          27158.066702706474
+          27158.066702706474,
+          17915.179667881555
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47611,7 +47686,8 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47957,7 +48033,8 @@ window.BENCHMARK_DATA = {
           547.4209654147809,
           380.0900134359087,
           619.0496152242025,
-          772.7490729604449
+          772.7490729604449,
+          735.8025789260864
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47969,6 +48046,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -50390,6 +50468,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -50738,7 +50822,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -51090,7 +51175,8 @@ window.BENCHMARK_DATA = {
           426.90066729273116,
           328.0616179466248,
           526.6861200968425,
-          645.230176118704
+          645.230176118704,
+          563.1000343322754
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51384,6 +51470,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -51807,7 +51894,8 @@ window.BENCHMARK_DATA = {
           28293.28603108724,
           29292.941796875,
           54216.868520883414,
-          81940.87102801983
+          81940.87102801983,
+          30587.337956019812
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52164,7 +52252,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54254,6 +54343,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -54602,7 +54697,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -54954,7 +55050,8 @@ window.BENCHMARK_DATA = {
           94.49802077668053,
           64.04103977863605,
           104.3177660147349,
-          138.46997152964275
+          138.46997152964275,
+          141.3069201367242
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55248,6 +55345,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -55671,7 +55769,8 @@ window.BENCHMARK_DATA = {
           12148.750082833427,
           9072.037437438965,
           15564.22524617513,
-          31689.591413225447
+          31689.591413225447,
+          16109.422356741768
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56028,6 +56127,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -56374,7 +56474,8 @@ window.BENCHMARK_DATA = {
           164.10082709789276,
           118.2187740723292,
           197.7647521155221,
-          238.55717171941484
+          238.55717171941484,
+          242.67182127634683
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56386,6 +56487,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -58459,6 +58561,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -58749,7 +58857,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -59043,7 +59152,8 @@ window.BENCHMARK_DATA = {
           196.3419392279216,
           156.3071290084294,
           245.9511960574559,
-          298.26639505227405
+          298.26639505227405,
+          271.3908837159475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59248,6 +59358,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -59644,7 +59755,8 @@ window.BENCHMARK_DATA = {
           294.8229157243456,
           206.89085658391318,
           356.22617017305816,
-          376.007443968455
+          376.007443968455,
+          433.2526730219523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59656,6 +59768,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -60245,7 +60358,8 @@ window.BENCHMARK_DATA = {
           288.7377478159391,
           214.77503996628982,
           381.53415976251875,
-          394.6640020884
+          394.6640020884,
+          373.7446641921997
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60257,6 +60371,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -62286,6 +62401,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -62576,7 +62697,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -62870,7 +62992,8 @@ window.BENCHMARK_DATA = {
           486.66339785257975,
           339.40075082045337,
           580.2545649210612,
-          703.7280993461609
+          703.7280993461609,
+          686.6519624846322
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -63106,6 +63229,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -63471,7 +63595,8 @@ window.BENCHMARK_DATA = {
           1366.7228427300086,
           924.8067678304819,
           1738.49486718859,
-          1872.8387554713659
+          1872.8387554713659,
+          2065.9415148417156
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63483,6 +63608,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -64072,7 +64198,8 @@ window.BENCHMARK_DATA = {
           638.8890503369845,
           442.8582835878645,
           777.3126230875652,
-          921.9424249013265
+          921.9424249013265,
+          882.6872288386027
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -64084,6 +64211,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -66113,6 +66241,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -66403,7 +66537,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -66697,7 +66832,8 @@ window.BENCHMARK_DATA = {
           7132.892057800293,
           5774.602233886719,
           8534.180083054762,
-          12077.419047429012
+          12077.419047429012,
+          9168.766313680013
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66936,6 +67072,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -67298,7 +67435,8 @@ window.BENCHMARK_DATA = {
           23644.46087849935,
           17271.084782191687,
           27294.239536539713,
-          41081.52915300642
+          41081.52915300642,
+          30021.48118373326
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67597,7 +67735,8 @@ window.BENCHMARK_DATA = {
           18608,
           18609,
           18609,
-          18609
+          18609,
+          18608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67899,7 +68038,8 @@ window.BENCHMARK_DATA = {
           6745.074079660269,
           5393.629986983079,
           7938.870957594651,
-          10564.969098409018
+          10564.969098409018,
+          8352.592103068035
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67911,6 +68051,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -69940,6 +70081,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -70230,7 +70377,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -70524,7 +70672,8 @@ window.BENCHMARK_DATA = {
           6831.559999593099,
           5362.482875823975,
           8030.205415998186,
-          11589.807559204102
+          11589.807559204102,
+          8562.48451538086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70763,6 +70912,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -71125,7 +71275,8 @@ window.BENCHMARK_DATA = {
           33360.061759440105,
           25224.430810546874,
           38697.104231770834,
-          58331.12897135417
+          58331.12897135417,
+          42923.76726858957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -71416,6 +71567,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -71726,7 +71878,8 @@ window.BENCHMARK_DATA = {
           13179.423201497395,
           10704.401881917318,
           15452.229520357572,
-          20764.532616248496
+          20764.532616248496,
+          15754.595642089844
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71738,6 +71891,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
