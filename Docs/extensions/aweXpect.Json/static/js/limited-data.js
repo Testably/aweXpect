@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2041.1570022583007,
           2112.986998494466,
           2078.9626052856447,
           2002.1438337472769,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1529.9303442637126,
           1062.4421563829694,
           1156.093823506282,
-          2101.6880422319687
+          2101.6880422319687,
+          2058.476535524641
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15669.244974772135,
           15961.13096110026,
           15907.82141331264,
           15612.746715291341,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           11109.90170288086,
           6587.977097647531,
           7529.982671101888,
-          16839.187114170618
+          16839.187114170618,
+          16085.560051551232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1629.9370290120444,
           1741.379569871085,
           1691.4222714560372,
           1666.2785999591533,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1143.4355169932048,
           854.548374244145,
           925.721905263265,
-          1673.483045578003
+          1673.483045578003,
+          1673.6562520345053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14156.253602164132,
           15167.919065348307,
           14973.495389811198,
           15029.327513631184,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10531.550942993164,
           6018.258997235979,
           7265.1912246704105,
-          15453.133737836566
+          15453.133737836566,
+          14677.167522975376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5478.442045211792,
           5513.921094767253,
           5573.049152119955,
           5498.241242472331,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4045.0314031328476,
           2793.0541100135215,
           2878.2244361877442,
-          5571.581067598783
+          5571.581067598783,
+          5589.1646319798065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          48371.05629882812,
           48711.80868765024,
           48473.97191975911,
           48082.12121582031,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           33960.303385416664,
           17837.67630658831,
           19539.201289876302,
-          49355.10128549429
+          49355.10128549429,
+          47768.46976143973
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1764,7 +1764,6 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61926,
           61925,
           61926,
           61925,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
       {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9518.424818929036,
           9559.88588663737,
           9519.79383305141,
           9362.658601614145,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7775.192430768694,
           4711.701396061824,
           5087.9374857584635,
-          9620.458963666644
+          9620.458963666644,
+          9784.473254864033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          290610.9993489583,
           305782.2564778646,
           298104.2845052083,
           309273.2155761719,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           237334.86307198662,
           128110.98007436898,
           142575.05111490886,
-          313625.8534830729
+          313625.8534830729,
+          309541.97549203725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,7 +2372,6 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521594,
           521541,
           521594,
           521542,
@@ -2416,6 +2415,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
       {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2857.54761832101,
           2966.47819035848,
           2966.4180230360766,
           2822.092520305089,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2491.944344929286,
           1485.600215657552,
           1539.0551851590474,
-          2860.511367162069
+          2860.511367162069,
+          2875.3090433393204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1288,
+          1296,
           1296,
           1296,
           1296,
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2003.5903765360515,
           1964.5523948669434,
           2020.967291768392,
           1989.1352724347796,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1868.0815256754556,
           993.2651794140155,
           1106.0989636739096,
-          2036.4583116258893
+          2036.4583116258893,
+          2002.062146759033
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2926.689926692418,
           2886.198728688558,
           2964.4125410226675,
           2878.1142407735188,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2200.388329432561,
           1462.503246988569,
           1632.6405119895935,
-          2982.697763170515
+          2982.697763170515,
+          3007.885787691389
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1816.8210629781088,
           1783.0299625396729,
           1815.2466063866248,
           1685.4638674418131,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1975.040043422154,
           853.435571874891,
           1015.6368763263409,
-          1963.1865575154623
+          1963.1865575154623,
+          1844.3215240478517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2293.2801010131834,
           2331.5834429423016,
           2351.8820971171062,
           2416.109371772179,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1992.3068777720134,
           1233.8195171356201,
           1364.2688386099678,
-          2452.967204538981
+          2452.967204538981,
+          2353.3624079568044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1136.8054129282634,
           1107.8757119496663,
           1250.2372016906738,
           1145.5878542491369,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1402.2072007497152,
           554.0507183074951,
           635.4574656486511,
-          1221.2541269938151
+          1221.2541269938151,
+          1182.8154940287272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "630e8f0a732515f8914fa11739bb89c446261949",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
-        "message": "feat!: list the snapshot and public API options in the failure (#2123)"
-      },
-      {
         "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
-      "630e8f0a",
       "76bf298b",
       "26a49595",
       "6f944ab7",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3042.4292755126953,
           3010.500703684489,
           3131.058696201869,
           3037.964632161458,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2509.5227399190267,
           1514.2499171665736,
           1693.555485566457,
-          3083.0093488057455
+          3083.0093488057455,
+          3117.943437848772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1289.2114197657659,
           1320.680685043335,
           1357.6422740391322,
           1320.729950087411,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1449.4658364613852,
           628.1950280325754,
           679.0698460851397,
-          1390.7452667236328
+          1390.7452667236328,
+          1356.3512930552165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5158,6 +5158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -5209,7 +5215,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -5264,7 +5271,8 @@ window.BENCHMARK_DATA = {
           127901.54549153645,
           89118.53354317801,
           94911.84517415364,
-          163248.54805814303
+          163248.54805814303,
+          167371.45295061384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5276,6 +5284,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -5387,7 +5396,8 @@ window.BENCHMARK_DATA = {
           154154.05838216146,
           101153.82855694111,
           113644.451171875,
-          204670.83358328682
+          204670.83358328682,
+          195194.39243861608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5447,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266882,
           266936,
           266936,
-          266951
+          266951,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5755,6 +5766,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -5806,7 +5823,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -5861,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1816.5568408966064,
           1329.4111213684082,
           1469.376049722944,
-          2783.914956410726
+          2783.914956410726,
+          2728.920848083496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5873,6 +5892,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -5984,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1628.5313287099202,
           938.4507184709821,
           1077.9223961463342,
-          1949.0055333455405
+          1949.0055333455405,
+          1887.989437690148
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5996,6 +6017,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
