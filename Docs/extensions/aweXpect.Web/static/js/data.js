@@ -1404,6 +1404,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -1640,7 +1646,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -1880,7 +1887,8 @@ window.BENCHMARK_DATA = {
           354.32197618484497,
           479.5638365064348,
           247.8905804838453,
-          334.7561794916789
+          334.7561794916789,
+          352.3877403259277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2060,6 +2068,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2373,7 +2382,8 @@ window.BENCHMARK_DATA = {
           859.8134956359863,
           1103.4839130129133,
           575.1248204367502,
-          751.5023863474528
+          751.5023863474528,
+          823.6583151817322
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2385,6 +2395,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4036,6 +4047,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -4272,7 +4289,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -4512,7 +4530,8 @@ window.BENCHMARK_DATA = {
           180.37146946589152,
           251.6106086730957,
           124.58865673201424,
-          175.80076657808743
+          175.80076657808743,
+          205.8272101720174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4659,6 +4678,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5005,7 +5025,8 @@ window.BENCHMARK_DATA = {
           213.57694873809814,
           285.1488622347514,
           138.163690163539,
-          203.67925635973612
+          203.67925635973612,
+          225.79763158730097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5017,6 +5038,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -6608,6 +6630,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -6834,7 +6862,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -7064,7 +7093,8 @@ window.BENCHMARK_DATA = {
           760.0682645944448,
           997.006590906779,
           543.139175755637,
-          691.1171099344889
+          691.1171099344889,
+          784.1663217544556
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7256,6 +7286,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -7537,7 +7568,8 @@ window.BENCHMARK_DATA = {
           875.9253684557401,
           1076.0143171037946,
           503.38019231160484,
-          743.5535878401536
+          743.5535878401536,
+          832.8873869578043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7549,6 +7581,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -9130,6 +9163,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -9356,7 +9395,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -9586,7 +9626,8 @@ window.BENCHMARK_DATA = {
           1510.8230589548746,
           1980.7205449422202,
           1109.7527424948555,
-          1473.8766563415527
+          1473.8766563415527,
+          1420.9827059427896
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9725,6 +9766,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -10059,7 +10101,8 @@ window.BENCHMARK_DATA = {
           15325.140707833427,
           20317.872913067156,
           10148.716247558594,
-          14251.385841369629
+          14251.385841369629,
+          13173.81958242563
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10294,7 +10337,8 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11652,6 +11696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -11878,7 +11928,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -12108,7 +12159,8 @@ window.BENCHMARK_DATA = {
           584.5255438940866,
           769.8451211111886,
           416.11402636307935,
-          564.4042382921491
+          564.4042382921491,
+          604.791879926409
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12247,6 +12299,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -12581,7 +12634,8 @@ window.BENCHMARK_DATA = {
           1137.2971270243327,
           1536.3257658640543,
           719.7886102994283,
-          1003.669601949056
+          1003.669601949056,
+          1093.665636698405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12593,6 +12647,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -14174,6 +14229,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
         "message": "fix: register the cancellation of a delay before its timer (#2172)"
+      },
+      {
+        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
+        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
       }
     ],
     "labels": [
@@ -14400,7 +14461,8 @@ window.BENCHMARK_DATA = {
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
-      "5e27d503"
+      "5e27d503",
+      "2cb4b274"
     ],
     "datasets": [
       {
@@ -14630,7 +14692,8 @@ window.BENCHMARK_DATA = {
           1013.9994605137751,
           1277.583984375,
           753.9521387645176,
-          971.027081044515
+          971.027081044515,
+          941.2873355320522
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14800,6 +14863,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -15103,7 +15167,8 @@ window.BENCHMARK_DATA = {
           670.3013818105062,
           869.249768447876,
           421.2064799149831,
-          589.850031153361
+          589.850031153361,
+          662.7730319159372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15115,6 +15180,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
