@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
-        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
-      },
-      {
         "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
+      },
+      {
+        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
       }
     ],
     "labels": [
-      "dfdf7bc1",
       "31332abd",
       "2ba23029",
       "630e8f0a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3903c857",
       "c1f4f866",
       "36493d03",
-      "a5ae13eb"
+      "a5ae13eb",
+      "5d53b9d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          444.77126830418905,
           1087.845893713144,
           918.7346252713885,
           548.134501017057,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           490.0048530442374,
           821.4825664928982,
           891.4198982874552,
-          645.5271056493124
+          645.5271056493124,
+          875.3374515533447
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          333.9779723607577,
           741.1114924975803,
           706.496058400472,
           660.63213818868,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           363.5286680221558,
           735.9000127792358,
           693.450292451041,
-          591.0894039017813
+          591.0894039017813,
+          753.4910699208577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
-        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
-      },
-      {
         "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
+      },
+      {
+        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
       }
     ],
     "labels": [
-      "dfdf7bc1",
       "31332abd",
       "2ba23029",
       "630e8f0a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "3903c857",
       "c1f4f866",
       "36493d03",
-      "a5ae13eb"
+      "a5ae13eb",
+      "5d53b9d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2263.9936548868814,
           4975.470752970377,
           4689.018704341008,
           4131.867142813547,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           2683.4963063557943,
           4365.362184143067,
           4303.925585610526,
-          3719.2788091023763
+          3719.2788091023763,
+          4835.385817936489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24172,
           24178,
           24172,
           24179,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24172,
+          24178,
           24178
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2746.9846316019693,
           5744.9167556762695,
           5524.057436625163,
           4797.258583577474,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3033.083034515381,
           5368.274541219075,
           5289.851538085937,
-          4222.60557607015
+          4222.60557607015,
+          5585.841941324869
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
-        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
-      },
-      {
         "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
+      },
+      {
+        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
       }
     ],
     "labels": [
-      "dfdf7bc1",
       "31332abd",
       "2ba23029",
       "630e8f0a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "3903c857",
       "c1f4f866",
       "36493d03",
-      "a5ae13eb"
+      "a5ae13eb",
+      "5d53b9d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1289.9014395395914,
           2688.704825846354,
           2582.201333618164,
           2174.744265238444,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1462.400083287557,
           2491.5595565209023,
           2585.4953333536782,
-          2162.2487515767416
+          2162.2487515767416,
+          2724.7676582336426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1672,12 +1672,12 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1735.2011231013707,
           3512.239438193185,
           3676.589696611677,
           3016.4571263631183,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2034.3683068593343,
           3633.013139851888,
           3682.1226132710776,
-          2917.283984629313
+          2917.283984629313,
+          3706.12823232015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "dfdf7bc1c10168eb950b8f7a189da4fc77f183b9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:26:30 2026 \u002B0100",
-        "message": "feat!: align the package options of Json, Xml and PublicApi (#2113)"
-      },
-      {
         "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
+      },
+      {
+        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
       }
     ],
     "labels": [
-      "dfdf7bc1",
       "31332abd",
       "2ba23029",
       "630e8f0a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "3903c857",
       "c1f4f866",
       "36493d03",
-      "a5ae13eb"
+      "a5ae13eb",
+      "5d53b9d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6989.139996846517,
           15368.31226172814,
           14013.859625680107,
           10489.598468017579,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7709.100393676757,
           13868.768104044597,
           13848.51791229248,
-          11038.599586995442
+          11038.599586995442,
+          15546.908922467914
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2280,12 +2280,12 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          161314.70522460938,
           370386.5908551897,
           366168.2187875601,
           215457.50548377403,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           176262.88766276042,
           368774.86666666664,
           359579.63344029017,
-          256356.623828125
+          256356.623828125,
+          372392.89957682294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544247,
@@ -2400,6 +2399,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
