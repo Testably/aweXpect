@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5588.278465270996,
           5424.505611419678,
           11459.843388875326,
           10797.171419270833,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5405.366559542143,
           7926.032001749674,
           10889.706274850028,
-          7627.157381184896
+          7627.157381184896,
+          9406.462993915264
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          195948.40926106772,
           194503.5662923177,
           365895.34232003347,
           377037.46805245534,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           181637.31432291667,
           269948.25624302455,
           367251.37527901784,
-          281455.298046875
+          281455.298046875,
+          330910.8328683036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590288,
           590286,
           590287,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590287,
           590292,
-          590225
+          590225,
+          590266
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10748.614271981376,
           10967.85160936628,
           20577.95944918119,
           19527.97801513672,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           10166.299999782017,
           14573.339771815708,
           18971.364754813058,
-          17201.607529703775
+          17201.607529703775,
+          21402.620903602012
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          123.10455508232117,
           123.62745594978333,
           222.15356491406757,
           277.1800822575887,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           105.04017786184947,
           175.88753628730774,
           224.50819418980524,
-          208.83590509096783
+          208.83590509096783,
+          227.43900983674186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          280.3017477648599,
           282.8778758684794,
           473.2744574913612,
           501.043662071228,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           253.580831857828,
           481.4328207015991,
           484.18718903405323,
-          544.1355526787894
+          544.1355526787894,
+          575.0067411831448
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          218.51200648943583,
           205.88770232200622,
           378.3106450693948,
           405.47855777006885,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           188.8569609948567,
           323.97513065338137,
           380.64480083329335,
-          384.9446443875631
+          384.9446443875631,
+          412.92496241056
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          60.998819393771036,
           57.70954294715609,
           102.93375114294199,
           103.9876344760259,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           52.67523427406947,
           83.6982667701585,
           102.63933994088855,
-          92.46883097489675
+          92.46883097489675,
+          109.54238503774008
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          142.56300609452384,
           136.00684928894043,
           236.80462094715662,
           257.9795584042867,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           123.61756624494281,
           218.25233629771643,
           247.5575695991516,
-          267.58332344690956
+          267.58332344690956,
+          320.3447001163776
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          137.21263512543268,
           137.0595386981964,
           231.79641447748457,
           247.988765112559,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           119.57188793818156,
           194.47944458893366,
           232.93078387578328,
-          211.06066842079161
+          211.06066842079161,
+          248.1008761405945
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          119.53209295639626,
           110.19677471263068,
           202.00803639207567,
           199.10492830617088,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           104.99896875711588,
           171.7875414689382,
           196.48909185330072,
-          208.05918807983397
+          208.05918807983397,
+          219.8618232692991
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          305.0486827214559,
           267.0122317717626,
           497.2258383887155,
           516.2239767710367,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           266.1798214435577,
           449.9963709626879,
           502.1868104201097,
-          630.0778818766277
+          630.0778818766277,
+          639.2438751629421
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          203.95999769064096,
           184.54314506848652,
           327.16326669284274,
           345.65732312202454,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           192.1727517751547,
           267.05567751611983,
           322.69859743118286,
-          341.8579696587154
+          341.8579696587154,
+          375.1300419489543
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          384.95690269470214,
           355.96817350387573,
           645.05425460522,
           696.3974880854289,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           343.11686611175537,
           545.6689266477313,
           677.8748190953181,
-          582.5335600535075
+          582.5335600535075,
+          673.1875961743868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          799.7334999356951,
           679.9645639147077,
           1288.5753814697266,
           1358.248839011559,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           666.0769636789958,
           1192.7577843666077,
           1329.0882294972737,
-          1509.3960450490315
+          1509.3960450490315,
+          1516.1176207406181
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          374.2314715385437,
           337.31695093427385,
           612.1135796819415,
           657.417896270752,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           318.24617369969684,
           524.9119118372599,
           643.3992274148123,
-          658.1765398025512
+          658.1765398025512,
+          684.2733731951032
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          379.51478539980377,
           345.9251742998759,
           650.2803148905437,
           726.0114056723459,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           334.3514902114868,
           550.3316888809204,
           666.4590592751136,
-          600.2143564224243
+          600.2143564224243,
+          665.7954920988816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11533.809481107271,
           10671.081660970052,
           26969.698926653182,
           27535.047585042317,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           9822.338924701397,
           17284.7862134661,
           27158.066702706474,
-          17915.179667881555
+          17915.179667881555,
+          24195.368850708008
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4218,7 +4218,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          467.8777818339212,
           406.64245826857433,
           781.7988798958914,
           775.0309674580892,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           380.0900134359087,
           619.0496152242025,
           772.7490729604449,
-          735.8025789260864
+          735.8025789260864,
+          806.2182780674526
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          385.55329717908586,
           347.2910423960005,
           631.4353619303022,
           671.6447199503581,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           328.0616179466248,
           526.6861200968425,
           645.230176118704,
-          563.1000343322754
+          563.1000343322754,
+          651.8609915460859
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30455.763979085288,
           29416.95850078876,
           82665.55748697916,
           85204.76634114583,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           29292.941796875,
           54216.868520883414,
           81940.87102801983,
-          30587.337956019812
+          30587.337956019812,
+          62581.96607753209
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5256,
-          5256,
           5252,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5256
+          5256,
+          5254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
       {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          77.83048876126607,
           72.79545834859212,
           129.88806370099385,
           138.08560139792306,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           64.04103977863605,
           104.3177660147349,
           138.46997152964275,
-          141.3069201367242
+          141.3069201367242,
+          141.36626445452373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11113.430218287876,
           10069.468173217774,
           31616.86846516927,
           32816.33756103516,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           9072.037437438965,
           15564.22524617513,
           31689.591413225447,
-          16109.422356741768
+          16109.422356741768,
+          25437.376794433592
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5615,
-          5615,
           5614,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          139.86217216082983,
           128.34025293986002,
           241.23783599535625,
           243.6513206408574,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           118.2187740723292,
           197.7647521155221,
           238.55717171941484,
-          242.67182127634683
+          242.67182127634683,
+          252.42790273257665
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          168.62341139997756,
           161.63454699516296,
           286.7293639818827,
           305.78552825634296,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           156.3071290084294,
           245.9511960574559,
           298.26639505227405,
-          271.3908837159475
+          271.3908837159475,
+          306.28758637110394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.32398802893502,
           207.15134699528033,
           381.6550366083781,
           402.20171883900963,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           206.89085658391318,
           356.22617017305816,
           376.007443968455,
-          433.2526730219523
+          433.2526730219523,
+          454.1978060177394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          228.2763935838427,
           216.31448694637842,
           377.9918504494887,
           411.66645469665525,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           214.77503996628982,
           381.53415976251875,
           394.6640020884,
-          373.7446641921997
+          373.7446641921997,
+          461.07656717300415
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          377.4830561002096,
           367.79963426589967,
           695.4758548736572,
           716.1665360586984,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           339.40075082045337,
           580.2545649210612,
           703.7280993461609,
-          686.6519624846322
+          686.6519624846322,
+          722.1281670252482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1153.157917703901,
           1032.7291742960613,
           1799.5712409386267,
           1905.741680908203,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           924.8067678304819,
           1738.49486718859,
           1872.8387554713659,
-          2065.9415148417156
+          2065.9415148417156,
+          2187.08403805324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          546.6596738951547,
           488.47260243552074,
           900.0132682664054,
           931.1156113488333,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           442.8582835878645,
           777.3126230875652,
           921.9424249013265,
-          882.6872288386027
+          882.6872288386027,
+          946.4279719034831
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6204.468986002604,
           6058.458133443197,
           11727.758203778949,
           12045.49539082845,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           5774.602233886719,
           8534.180083054762,
           12077.419047429012,
-          9168.766313680013
+          9168.766313680013,
+          11387.294708251953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19465.606529822715,
           18413.323373647836,
           40923.16311848958,
           39399.19998372396,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           17271.084782191687,
           27294.239536539713,
           41081.52915300642,
-          30021.48118373326
+          30021.48118373326,
+          35993.04115949358
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7758,7 +7758,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18609,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5884.204850260417,
           5703.478992462158,
           10361.741874107947,
           10648.43442099435,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5393.629986983079,
           7938.870957594651,
           10564.969098409018,
-          8352.592103068035
+          8352.592103068035,
+          10080.67035457066
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
-        "message": "feat!: pass the cancellation token to the filters of aweXpect.Reflection (#2121)"
-      },
-      {
         "sha": "630e8f0a732515f8914fa11739bb89c446261949",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:14:35 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
-      "2ba23029",
       "630e8f0a",
       "76bf298b",
       "26a49595",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5920.641035897391,
           5823.725898742676,
           11090.44572652181,
           11305.323656354632,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5362.482875823975,
           8030.205415998186,
           11589.807559204102,
-          8562.48451538086
+          8562.48451538086,
+          11287.235375976563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28401.118247477214,
           26683.57372233073,
           59484.678438626805,
           57443.390529087614,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           25224.430810546874,
           38697.104231770834,
           58331.12897135417,
-          42923.76726858957
+          42923.76726858957,
+          51317.07104928153
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8497,7 +8497,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8523,6 +8522,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11541.8227255685,
           11616.01400756836,
           20852.62662556966,
           20962.097425188338,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           10704.401881917318,
           15452.229520357572,
           20764.532616248496,
-          15754.595642089844
+          15754.595642089844,
+          19637.585017613
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
