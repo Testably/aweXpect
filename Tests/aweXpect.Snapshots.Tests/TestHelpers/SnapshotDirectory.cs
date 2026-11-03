@@ -14,13 +14,15 @@ internal sealed class SnapshotDirectory : IDisposable
 {
 	public const string MemberName = "MyTest";
 
-	public SnapshotDirectory()
+	/// <param name="path">The directory to use instead of a new temporary one.</param>
+	public SnapshotDirectory(string? path = null)
 	{
+		Path = path ?? System.IO.Path.Combine(System.IO.Path.GetTempPath(),
+			$"aweXpect.Snapshots.Tests.{Guid.NewGuid():N}");
 		Directory.CreateDirectory(Path);
 	}
 
-	public string Path { get; } = System.IO.Path.Combine(System.IO.Path.GetTempPath(),
-		$"aweXpect.Snapshots.Tests.{Guid.NewGuid():N}");
+	public string Path { get; }
 
 	public string PendingPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.awexpect-snapshot.pending.txt");
 	public string SnapshotPath => System.IO.Path.Combine(Path, $"MyTests.{MemberName}.awexpect-snapshot.txt");
