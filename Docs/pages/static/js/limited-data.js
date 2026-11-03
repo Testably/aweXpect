@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5623.570156860352,
           10669.820510864258,
           10579.766005295973,
           11129.638954749475,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           6687.9808093479705,
           5062.261479304387,
           10973.111887250629,
-          5756.750717163086
+          5756.750717163086,
+          5405.366559542143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          197726.3876953125,
           358646.58956473216,
           373680.03076171875,
           387097.0216145833,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           230790.60260881696,
           160426.01946149554,
           375465.29889322916,
-          211470.37076822916
+          211470.37076822916,
+          181637.31432291667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590288,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590225,
           590288,
           590287,
-          590226
+          590226,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11140.000682285854,
           19183.805079142254,
           19347.58364054362,
           19565.5361521403,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           15541.233731951032,
           9499.995995657784,
           18929.28505061223,
-          13365.746838160923
+          13365.746838160923,
+          10166.299999782017
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          119.29923761807956,
           216.92249941825867,
           245.36239943137537,
           241.27642164230346,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           184.08230210940044,
           107.1365576505661,
           301.6937367121379,
-          154.2540704182216
+          154.2540704182216,
+          105.04017786184947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          300.57969331741333,
           508.6123274289645,
           544.3416514714559,
           572.512380472819,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           431.2984214226405,
           243.14533046575693,
           518.7320868174235,
-          374.6030752318246
+          374.6030752318246,
+          253.580831857828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          217.45242825576238,
           389.5517812728882,
           393.9096405029297,
           412.7439357757568,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           310.8841529233115,
           184.8851867062705,
           411.4328280448914,
-          284.07751138393695
+          284.07751138393695,
+          188.8569609948567
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          59.70973937000547,
           102.9668372954641,
           112.3498339732488,
           111.53625667095184,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           85.91898970603943,
           52.23394394318263,
           106.05028026898702,
-          74.47833202679952
+          74.47833202679952,
+          52.67523427406947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          156.9650780237638,
           244.05193662643433,
           255.03752769742692,
           264.72944940839494,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           231.0647668327604,
           124.48387390772501,
           252.7779610157013,
-          205.09099875177657
+          205.09099875177657,
+          123.61756624494281
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          135.47953764029913,
           239.59491583506266,
           253.0546199162801,
           256.20519806543984,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           175.8442726135254,
           115.28214484453201,
           247.13143559864588,
-          160.70414534636907
+          160.70414534636907,
+          119.57188793818156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          112.96024336020152,
           199.7942601782935,
           226.98383089701335,
           214.99728854497275,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           170.29114083449045,
           104.2314373765673,
           213.6615258546976,
-          145.38262706536514
+          145.38262706536514,
+          104.99896875711588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          281.94205808639526,
           502.31948108673095,
           543.7638500077384,
           582.0438541412353,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           469.2968532562256,
           251.79910245308508,
           552.9856308619181,
-          415.64867091178894
+          415.64867091178894,
+          266.1798214435577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          177.5056605974833,
           327.9570531527201,
           344.855140209198,
           338.9580075263977,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           267.3752918243408,
           163.90244808563818,
           360.81272373199465,
-          252.98233178456624
+          252.98233178456624,
+          192.1727517751547
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          380.2787906328837,
           711.7673157964434,
           785.2252245585124,
           710.9551493780954,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           484.3078671137492,
           351.6807865460714,
           707.0870713454026,
-          438.0749873093196
+          438.0749873093196,
+          343.11686611175537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          728.5909455005939,
           1373.8708547864642,
           1442.720152282715,
           1391.3739382425945,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1132.9726112365722,
           661.3870153427124,
           1375.7740164438883,
-          989.0643040974935
+          989.0643040974935,
+          666.0769636789958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          358.04259456907,
           635.3209360667637,
           669.6476388931275,
           725.7503536860148,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           507.9616528238569,
           328.6695189476013,
           673.3193477630615,
-          455.4622946739197
+          455.4622946739197,
+          318.24617369969684
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          388.43279956181846,
           694.1066106649546,
           780.200102742513,
           697.4695896784465,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           496.89772713979085,
           336.45025364557904,
           697.7394412585667,
-          435.0194311823164
+          435.0194311823164,
+          334.3514902114868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11297.385935102191,
           27462.130232747397,
           28420.87986653646,
           28512.240528651648,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           13716.832025800433,
           9916.851940699986,
           29635.717603410994,
-          12281.724935259137
+          12281.724935259137,
+          9822.338924701397
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4222,7 +4222,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          444.1139889717102,
           758.9122106688363,
           776.5138913472493,
           807.9473032633464,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           593.7603487650554,
           401.7515406267984,
           830.5511998449053,
-          547.4209654147809
+          547.4209654147809,
+          380.0900134359087
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          374.55744676589967,
           642.3389695485433,
           646.4320730845134,
           679.2421461741129,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           485.40489174769476,
           321.0180395762126,
           630.3253541310628,
-          426.90066729273116
+          426.90066729273116,
+          328.0616179466248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31162.076904296875,
           82961.81638009207,
           82145.40063476562,
           85207.63401692708,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           34298.46595646785,
           27873.813016255695,
           84043.52904401507,
-          28293.28603108724
+          28293.28603108724,
+          29292.941796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5256,
           5252,
           5252,
           5252,
@@ -4992,6 +4991,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
       {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          73.96888502155032,
           126.60137798235966,
           138.47056579589844,
           152.3007821559906,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           112.72904939310891,
           68.90979267083682,
           131.9709997812907,
-          94.49802077668053
+          94.49802077668053,
+          64.04103977863605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11073.761375935872,
           31510.571561373195,
           31827.609755452475,
           32859.930363581734,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           13613.0773630778,
           9323.604141235352,
           32509.351883951822,
-          12148.750082833427
+          12148.750082833427,
+          9072.037437438965
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5615,
           5614,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          130.82821771303813,
           238.0489538192749,
           243.07633110193106,
           248.2010625521342,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           178.7443732704435,
           119.56581223805746,
           266.5963453610738,
-          164.10082709789276
+          164.10082709789276,
+          118.2187740723292
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          159.1197536468506,
           292.27979977925617,
           299.81553670338224,
           315.30397198994956,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           226.05468099912008,
           147.77105484689986,
           295.37672227223715,
-          196.3419392279216
+          196.3419392279216,
+          156.3071290084294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          207.02942035879408,
           366.23903747967313,
           385.0043716430664,
           408.4983763694763,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           340.3533155367925,
           228.5900914498738,
           381.0275688171387,
-          294.8229157243456
+          294.8229157243456,
+          206.89085658391318
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          218.065802748998,
           406.4514482021332,
           413.7062550544739,
           419.894111266503,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           307.5243490764073,
           214.34874742371696,
           422.4070553779602,
-          288.7377478159391
+          288.7377478159391,
+          214.77503996628982
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          396.79741325378416,
           709.2360028486985,
           721.0766134262085,
           754.6803262710571,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           524.3174168268839,
           339.3109144142696,
           720.2842439651489,
-          486.66339785257975
+          486.66339785257975,
+          339.40075082045337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1107.7804122924804,
           1819.8828868865967,
           1997.1423573811849,
           1976.3256334940593,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1568.7674160003662,
           987.9840402603149,
           1995.711176554362,
-          1366.7228427300086
+          1366.7228427300086,
+          924.8067678304819
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          526.6922451899602,
           915.4479080835978,
           951.3066059112549,
           967.273912302653,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           698.5351908547538,
           435.0675253527505,
           991.3054107030233,
-          638.8890503369845
+          638.8890503369845,
+          442.8582835878645
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6233.15022837321,
           12273.967716761998,
           11922.093299865723,
           12008.909748957707,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8115.435482788086,
           5845.523921203613,
           12156.404826863607,
-          7132.892057800293
+          7132.892057800293,
+          5774.602233886719
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19768.943857828777,
           40518.84923377404,
           41026.02633901743,
           41094.07517089844,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           26739.983795166016,
           17859.458293369837,
           42039.99739990234,
-          23644.46087849935
+          23644.46087849935,
+          17271.084782191687
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,7 +7798,8 @@ window.BENCHMARK_DATA = {
           18608,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          5832.580230167934,
           10529.6439842811,
           10561.484159029447,
           10608.364980425153,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7536.659352620442,
           5739.568757277269,
           10813.3557673863,
-          6745.074079660269
+          6745.074079660269,
+          5393.629986983079
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "cda17b83ab02414e56206b4594068efb067cd556",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 08:07:05 2026 \u002B0100",
-        "message": "fix: separate the filter descriptions of the In.Type and In.Types sources (#2119)"
-      },
-      {
         "sha": "3c243dad2ed3b1b2e9c9d06cc260a3e98f2a1d33",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 09:32:53 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
         "message": "chore: Bump the mstest group with 2 updates (#2167)"
+      },
+      {
+        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
+        "message": "chore: Bump the tunit group with 5 updates (#2168)"
       }
     ],
     "labels": [
-      "cda17b83",
       "3c243dad",
       "dfdf7bc1",
       "31332abd",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
-      "c1f4f866"
+      "c1f4f866",
+      "36493d03"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5679.67013495309,
           11511.122253417969,
           11567.030694144112,
           11641.974334716797,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7630.842559814453,
           5522.400224958147,
           11824.518692016602,
-          6831.559999593099
+          6831.559999593099,
+          5362.482875823975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26890.206795247395,
           57760.91309407552,
           60272.29396878756,
           60230.56652832031,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38064.83868001302,
           26112.2777733436,
           59427.12653023856,
-          33360.061759440105
+          33360.061759440105,
+          25224.430810546874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8501,7 +8501,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8527,6 +8526,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          11103.698651123046,
           21163.664080810548,
           20816.230531964982,
           21299.58698817662,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           14743.621767484225,
           10794.279821123395,
           21787.023731776648,
-          13179.423201497395
+          13179.423201497395,
+          10704.401881917318
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
