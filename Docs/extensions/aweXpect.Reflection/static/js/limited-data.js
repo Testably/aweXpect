@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
-      {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          625.580910174052,
           477.2522231419881,
           664.9107264836629,
           652.548350921044,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           385.9212603569031,
           459.1086759567261,
           708.7601682799203,
-          379.2913550376892
+          379.2913550376892,
+          652.9348757607596
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -449,7 +449,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          873.3722170421055,
           704.8498471123831,
           914.3311543782552,
           925.2037527720133,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           490.1170269648234,
           553.4845267704555,
           887.1014983495077,
-          517.6340182849339
+          517.6340182849339,
+          642.518775499784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
-      {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          98.65278679132462,
           83.54979624067035,
           112.72798475424449,
           113.32602600867932,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           55.89443415403366,
           55.58727538585663,
           96.6071758031845,
-          50.2643816113472
+          50.2643816113472,
+          92.96515253384908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          215.99976619084677,
           170.84991351763406,
           205.00154617627462,
           220.2185204188029,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           117.27972888946533,
           122.6556202854429,
           204.05013230641683,
-          113.2635425879405
+          113.2635425879405,
+          173.1757731607982
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
-      {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1807.4887440999348,
           1449.6105542500813,
           1924.6272258758545,
           1844.407607014974,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           894.5126304626465,
           972.0079828409048,
           1885.9938074747722,
-          871.4064660753522
+          871.4064660753522,
+          1215.0203011830647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1808,
+          1856,
           1856,
           1856,
           1856,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1397.3083488757793,
           1129.3629906972249,
           1446.0350646972656,
           1500.9760232652936,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           780.6438542774746,
           841.9449628194174,
           1448.4920652934484,
-          734.3787422180176
+          734.3787422180176,
+          1074.952763557434
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1864,
           1953,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
       {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2724.579819605901,
           2191.858303833008,
           2814.40004196167,
           2715.5166798909504,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1347.8279290880475,
           1341.5427888234456,
           2735.3398178645543,
-          1292.8137963158745
+          1292.8137963158745,
+          1729.5372125080653
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3104,
+          3152,
           3152,
           3152,
           3152,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3900.8211244855606,
           3041.749449803279,
           3814.9808616638184,
           3877.3625057765416,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2041.0639602116175,
           2147.5286610921225,
           3739.5812858581544,
-          2013.6190861293248
+          2013.6190861293248,
+          2786.402897135417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3981,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3981,
-          3981
+          3981,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
       {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          353.833411026001,
           281.9323324839274,
           371.9933384827205,
           406.6761632919312,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           186.3508026088987,
           197.48735839525858,
           370.8365421295166,
-          177.69185491970606
+          177.69185491970606,
+          294.1364676475525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2251.7104760487873,
           1792.012609073094,
           2206.2890281677246,
           2339.105630141038,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1245.6105895409216,
           1324.8484360621526,
           2308.5755109151205,
-          1173.4271015167237
+          1173.4271015167237,
+          1614.6694018046062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "31332abd37c441bcbd7aeb12b152f46ffafbbd37",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 10:53:41 2026 \u002B0100",
-        "message": "feat!: hand out nodes from the collection views of JsonNode and keep JsonValue in IsNumber\u003CTNumber\u003E (#2107)"
-      },
-      {
         "sha": "2ba23029a67b913f53b6d8ea1abd535021d43d13",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 11:58:57 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
-      "31332abd",
       "2ba23029",
       "630e8f0a",
       "76bf298b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2997.911884894738,
           2721.564973977896,
           2920.9518320719403,
           2864.680062157767,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1445.005968775068,
           1485.918890762329,
           2894.1452036539713,
-          1325.901752090454
+          1325.901752090454,
+          1808.9827883793757
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3200,
           3248,
           3248,
           3248,
@@ -3490,6 +3489,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          306289.36247907364,
           239200.2611607143,
           277738.87561035156,
           281847.8198893229,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           160636.9008585612,
           165299.01372419085,
           277232.72412109375,
-          163231.82013346354
+          163231.82013346354,
+          213302.1185960036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17576,
           17573,
           17577,
-          17574
+          17574,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
