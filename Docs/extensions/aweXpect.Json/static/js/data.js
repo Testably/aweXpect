@@ -1392,6 +1392,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -1626,7 +1632,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -1864,7 +1871,8 @@ window.BENCHMARK_DATA = {
           1626.3912916819254,
           1529.9303442637126,
           1062.4421563829694,
-          1156.093823506282
+          1156.093823506282,
+          2101.6880422319687
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2010,6 +2018,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2353,7 +2362,8 @@ window.BENCHMARK_DATA = {
           10348.936384073893,
           11109.90170288086,
           6587.977097647531,
-          7529.982671101888
+          7529.982671101888,
+          16839.187114170618
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2365,6 +2375,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4002,6 +4013,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -4236,7 +4253,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -4474,7 +4492,8 @@ window.BENCHMARK_DATA = {
           1281.544203077044,
           1143.4355169932048,
           854.548374244145,
-          925.721905263265
+          925.721905263265,
+          1673.483045578003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4620,6 +4639,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -4963,7 +4983,8 @@ window.BENCHMARK_DATA = {
           10342.192407880511,
           10531.550942993164,
           6018.258997235979,
-          7265.1912246704105
+          7265.1912246704105,
+          15453.133737836566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4975,6 +4996,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -6552,6 +6574,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -6776,7 +6804,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -7004,7 +7033,8 @@ window.BENCHMARK_DATA = {
           4086.5129917689733,
           4045.0314031328476,
           2793.0541100135215,
-          2878.2244361877442
+          2878.2244361877442,
+          5571.581067598783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7187,6 +7217,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -7473,7 +7504,8 @@ window.BENCHMARK_DATA = {
           31198.96466471354,
           33960.303385416664,
           17837.67630658831,
-          19539.201289876302
+          19539.201289876302,
+          49355.10128549429
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7706,7 +7738,8 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61925,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9052,6 +9085,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -9276,7 +9315,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -9504,7 +9544,8 @@ window.BENCHMARK_DATA = {
           7535.867262776693,
           7775.192430768694,
           4711.701396061824,
-          5087.9374857584635
+          5087.9374857584635,
+          9620.458963666644
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9640,6 +9681,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -9973,7 +10015,8 @@ window.BENCHMARK_DATA = {
           220723.9708658854,
           237334.86307198662,
           128110.98007436898,
-          142575.05111490886
+          142575.05111490886,
+          313625.8534830729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10205,6 +10248,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594
         ],
@@ -11552,6 +11596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -11776,7 +11826,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -12004,7 +12055,8 @@ window.BENCHMARK_DATA = {
           2276.4951788095327,
           2491.944344929286,
           1485.600215657552,
-          1539.0551851590474
+          1539.0551851590474,
+          2860.511367162069
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12190,6 +12242,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -12473,7 +12526,8 @@ window.BENCHMARK_DATA = {
           1536.7581681569418,
           1868.0815256754556,
           993.2651794140155,
-          1106.0989636739096
+          1106.0989636739096,
+          2036.4583116258893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12485,6 +12539,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -14052,6 +14107,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -14276,7 +14337,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -14504,7 +14566,8 @@ window.BENCHMARK_DATA = {
           2249.440579986572,
           2200.388329432561,
           1462.503246988569,
-          1632.6405119895935
+          1632.6405119895935,
+          2982.697763170515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14687,6 +14750,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -14973,7 +15037,8 @@ window.BENCHMARK_DATA = {
           1359.9467283884685,
           1975.040043422154,
           853.435571874891,
-          1015.6368763263409
+          1015.6368763263409,
+          1963.1865575154623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14985,6 +15050,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -15850,6 +15916,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -15957,7 +16029,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -16068,7 +16141,8 @@ window.BENCHMARK_DATA = {
           1803.5024322782244,
           1992.3068777720134,
           1233.8195171356201,
-          1364.2688386099678
+          1364.2688386099678,
+          2452.967204538981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16134,6 +16208,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -16303,7 +16378,8 @@ window.BENCHMARK_DATA = {
           930.5134508768717,
           1402.2072007497152,
           554.0507183074951,
-          635.4574656486511
+          635.4574656486511,
+          1221.2541269938151
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16315,6 +16391,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -17063,6 +17140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -17170,7 +17253,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -17281,7 +17365,8 @@ window.BENCHMARK_DATA = {
           2349.2733978271485,
           2509.5227399190267,
           1514.2499171665736,
-          1693.555485566457
+          1693.555485566457,
+          3083.0093488057455
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17331,6 +17416,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -17516,7 +17602,8 @@ window.BENCHMARK_DATA = {
           1057.2626123428345,
           1449.4658364613852,
           628.1950280325754,
-          679.0698460851397
+          679.0698460851397,
+          1390.7452667236328
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17528,6 +17615,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -17934,6 +18022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -17984,7 +18078,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -18038,7 +18133,8 @@ window.BENCHMARK_DATA = {
           131221.11300223213,
           127901.54549153645,
           89118.53354317801,
-          94911.84517415364
+          94911.84517415364,
+          163248.54805814303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18050,6 +18146,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -18159,7 +18256,8 @@ window.BENCHMARK_DATA = {
           155892.25165666852,
           154154.05838216146,
           101153.82855694111,
-          113644.451171875
+          113644.451171875,
+          204670.83358328682
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18218,7 +18316,8 @@ window.BENCHMARK_DATA = {
           266950,
           266882,
           266936,
-          266936
+          266936,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18520,6 +18619,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
         "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
+      },
+      {
+        "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
+        "message": "fix: register the cancellation of a delay before its timer (#2172)"
       }
     ],
     "labels": [
@@ -18570,7 +18675,8 @@ window.BENCHMARK_DATA = {
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
-      "fa9f5111"
+      "fa9f5111",
+      "5e27d503"
     ],
     "datasets": [
       {
@@ -18624,7 +18730,8 @@ window.BENCHMARK_DATA = {
           2116.239531962077,
           1816.5568408966064,
           1329.4111213684082,
-          1469.376049722944
+          1469.376049722944,
+          2783.914956410726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18636,6 +18743,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -18745,7 +18853,8 @@ window.BENCHMARK_DATA = {
           1441.46942431132,
           1628.5313287099202,
           938.4507184709821,
-          1077.9223961463342
+          1077.9223961463342,
+          1949.0055333455405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18757,6 +18866,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
