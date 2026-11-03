@@ -1716,6 +1716,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -2004,7 +2010,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -2296,7 +2303,8 @@ window.BENCHMARK_DATA = {
           5062.261479304387,
           10973.111887250629,
           5756.750717163086,
-          5405.366559542143
+          5405.366559542143,
+          7926.032001749674
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2532,6 +2540,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2893,7 +2902,8 @@ window.BENCHMARK_DATA = {
           160426.01946149554,
           375465.29889322916,
           211470.37076822916,
-          181637.31432291667
+          181637.31432291667,
+          269948.25624302455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3190,7 +3200,8 @@ window.BENCHMARK_DATA = {
           590288,
           590287,
           590226,
-          590288
+          590288,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3490,7 +3501,8 @@ window.BENCHMARK_DATA = {
           9499.995995657784,
           18929.28505061223,
           13365.746838160923,
-          10166.299999782017
+          10166.299999782017,
+          14573.339771815708
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3502,6 +3514,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5475,6 +5488,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -5756,7 +5775,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -6041,7 +6061,8 @@ window.BENCHMARK_DATA = {
           107.1365576505661,
           301.6937367121379,
           154.2540704182216,
-          105.04017786184947
+          105.04017786184947,
+          175.88753628730774
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6237,6 +6258,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6624,7 +6646,8 @@ window.BENCHMARK_DATA = {
           243.14533046575693,
           518.7320868174235,
           374.6030752318246,
-          253.580831857828
+          253.580831857828,
+          481.4328207015991
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6636,6 +6659,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7207,7 +7231,8 @@ window.BENCHMARK_DATA = {
           184.8851867062705,
           411.4328280448914,
           284.07751138393695,
-          188.8569609948567
+          188.8569609948567,
+          323.97513065338137
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7219,6 +7244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13805,6 +13831,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -14856,7 +14888,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -15911,7 +15944,8 @@ window.BENCHMARK_DATA = {
           52.23394394318263,
           106.05028026898702,
           74.47833202679952,
-          52.67523427406947
+          52.67523427406947,
+          83.6982667701585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16910,6 +16944,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -18034,7 +18069,8 @@ window.BENCHMARK_DATA = {
           124.48387390772501,
           252.7779610157013,
           205.09099875177657,
-          123.61756624494281
+          123.61756624494281,
+          218.25233629771643
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18227,6 +18263,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19438,7 +19475,8 @@ window.BENCHMARK_DATA = {
           115.28214484453201,
           247.13143559864588,
           160.70414534636907,
-          119.57188793818156
+          119.57188793818156,
+          194.47944458893366
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19450,6 +19488,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21509,6 +21548,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -21797,7 +21842,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -22089,7 +22135,8 @@ window.BENCHMARK_DATA = {
           104.2314373765673,
           213.6615258546976,
           145.38262706536514,
-          104.99896875711588
+          104.99896875711588,
+          171.7875414689382
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22294,6 +22341,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22686,7 +22734,8 @@ window.BENCHMARK_DATA = {
           251.79910245308508,
           552.9856308619181,
           415.64867091178894,
-          266.1798214435577
+          266.1798214435577,
+          449.9963709626879
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22698,6 +22747,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -23283,7 +23333,8 @@ window.BENCHMARK_DATA = {
           163.90244808563818,
           360.81272373199465,
           252.98233178456624,
-          192.1727517751547
+          192.1727517751547,
+          267.05567751611983
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23295,6 +23346,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29888,6 +29940,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -30939,7 +30997,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -31994,7 +32053,8 @@ window.BENCHMARK_DATA = {
           351.6807865460714,
           707.0870713454026,
           438.0749873093196,
-          343.11686611175537
+          343.11686611175537,
+          545.6689266477313
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32981,6 +33041,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -34117,7 +34178,8 @@ window.BENCHMARK_DATA = {
           661.3870153427124,
           1375.7740164438883,
           989.0643040974935,
-          666.0769636789958
+          666.0769636789958,
+          1192.7577843666077
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34310,6 +34372,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -35521,7 +35584,8 @@ window.BENCHMARK_DATA = {
           328.6695189476013,
           673.3193477630615,
           455.4622946739197,
-          318.24617369969684
+          318.24617369969684,
+          524.9119118372599
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35533,6 +35597,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -42170,6 +42235,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -43221,7 +43292,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -44276,7 +44348,8 @@ window.BENCHMARK_DATA = {
           336.45025364557904,
           697.7394412585667,
           435.0194311823164,
-          334.3514902114868
+          334.3514902114868,
+          550.3316888809204
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45263,6 +45336,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -46399,7 +46473,8 @@ window.BENCHMARK_DATA = {
           9916.851940699986,
           29635.717603410994,
           12281.724935259137,
-          9822.338924701397
+          9822.338924701397,
+          17284.7862134661
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47459,6 +47534,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -47803,7 +47879,8 @@ window.BENCHMARK_DATA = {
           401.7515406267984,
           830.5511998449053,
           547.4209654147809,
-          380.0900134359087
+          380.0900134359087,
+          619.0496152242025
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47815,6 +47892,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -50222,6 +50300,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -50568,7 +50652,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -50918,7 +51003,8 @@ window.BENCHMARK_DATA = {
           321.0180395762126,
           630.3253541310628,
           426.90066729273116,
-          328.0616179466248
+          328.0616179466248,
+          526.6861200968425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51212,6 +51298,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -51631,7 +51718,8 @@ window.BENCHMARK_DATA = {
           27873.813016255695,
           84043.52904401507,
           28293.28603108724,
-          29292.941796875
+          29292.941796875,
+          54216.868520883414
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51985,6 +52073,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5256,
           5256,
           5256
         ],
@@ -54064,6 +54153,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -54410,7 +54505,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -54760,7 +54856,8 @@ window.BENCHMARK_DATA = {
           68.90979267083682,
           131.9709997812907,
           94.49802077668053,
-          64.04103977863605
+          64.04103977863605,
+          104.3177660147349
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55054,6 +55151,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -55473,7 +55571,8 @@ window.BENCHMARK_DATA = {
           9323.604141235352,
           32509.351883951822,
           12148.750082833427,
-          9072.037437438965
+          9072.037437438965,
+          15564.22524617513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55828,6 +55927,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -56172,7 +56272,8 @@ window.BENCHMARK_DATA = {
           119.56581223805746,
           266.5963453610738,
           164.10082709789276,
-          118.2187740723292
+          118.2187740723292,
+          197.7647521155221
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56184,6 +56285,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -58243,6 +58345,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -58531,7 +58639,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -58823,7 +58932,8 @@ window.BENCHMARK_DATA = {
           147.77105484689986,
           295.37672227223715,
           196.3419392279216,
-          156.3071290084294
+          156.3071290084294,
+          245.9511960574559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59028,6 +59138,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -59420,7 +59531,8 @@ window.BENCHMARK_DATA = {
           228.5900914498738,
           381.0275688171387,
           294.8229157243456,
-          206.89085658391318
+          206.89085658391318,
+          356.22617017305816
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59432,6 +59544,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -60017,7 +60130,8 @@ window.BENCHMARK_DATA = {
           214.34874742371696,
           422.4070553779602,
           288.7377478159391,
-          214.77503996628982
+          214.77503996628982,
+          381.53415976251875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60029,6 +60143,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -62044,6 +62159,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -62332,7 +62453,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -62624,7 +62746,8 @@ window.BENCHMARK_DATA = {
           339.3109144142696,
           720.2842439651489,
           486.66339785257975,
-          339.40075082045337
+          339.40075082045337,
+          580.2545649210612
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62860,6 +62983,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -63221,7 +63345,8 @@ window.BENCHMARK_DATA = {
           987.9840402603149,
           1995.711176554362,
           1366.7228427300086,
-          924.8067678304819
+          924.8067678304819,
+          1738.49486718859
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63233,6 +63358,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -63818,7 +63944,8 @@ window.BENCHMARK_DATA = {
           435.0675253527505,
           991.3054107030233,
           638.8890503369845,
-          442.8582835878645
+          442.8582835878645,
+          777.3126230875652
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63830,6 +63957,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -65845,6 +65973,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -66133,7 +66267,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -66425,7 +66560,8 @@ window.BENCHMARK_DATA = {
           5845.523921203613,
           12156.404826863607,
           7132.892057800293,
-          5774.602233886719
+          5774.602233886719,
+          8534.180083054762
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66664,6 +66800,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -67022,7 +67159,8 @@ window.BENCHMARK_DATA = {
           17859.458293369837,
           42039.99739990234,
           23644.46087849935,
-          17271.084782191687
+          17271.084782191687,
+          27294.239536539713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67319,6 +67457,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -67619,7 +67758,8 @@ window.BENCHMARK_DATA = {
           5739.568757277269,
           10813.3557673863,
           6745.074079660269,
-          5393.629986983079
+          5393.629986983079,
+          7938.870957594651
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67631,6 +67771,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -69646,6 +69787,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
         "message": "chore: Bump the tunit group with 5 updates (#2168)"
+      },
+      {
+        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
+        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
       }
     ],
     "labels": [
@@ -69934,7 +70081,8 @@ window.BENCHMARK_DATA = {
       "b53d74cc",
       "3903c857",
       "c1f4f866",
-      "36493d03"
+      "36493d03",
+      "a5ae13eb"
     ],
     "datasets": [
       {
@@ -70226,7 +70374,8 @@ window.BENCHMARK_DATA = {
           5522.400224958147,
           11824.518692016602,
           6831.559999593099,
-          5362.482875823975
+          5362.482875823975,
+          8030.205415998186
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70465,6 +70614,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -70823,7 +70973,8 @@ window.BENCHMARK_DATA = {
           26112.2777733436,
           59427.12653023856,
           33360.061759440105,
-          25224.430810546874
+          25224.430810546874,
+          38697.104231770834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -71114,6 +71265,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -71420,7 +71572,8 @@ window.BENCHMARK_DATA = {
           10794.279821123395,
           21787.023731776648,
           13179.423201497395,
-          10704.401881917318
+          10704.401881917318,
+          15452.229520357572
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71432,6 +71585,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
