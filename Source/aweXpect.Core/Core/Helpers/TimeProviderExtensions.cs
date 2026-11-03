@@ -101,9 +101,11 @@ internal static class TimeProviderExtensions
 			: base(TaskCreationOptions.RunContinuationsAsynchronously)
 		{
 			_cancellationToken = cancellationToken;
+			// The token is registered before the timer exists, as a virtual clock may move on and fire the timer as
+			// soon as it is created, also past a timeout that cancels the token.
+			_registration = cancellationToken.Register(static state => ((DelayPromise)state!).Cancel(), this);
 			_timer = timeProvider.CreateTimer(static state => ((DelayPromise)state!).Complete(), this, delay,
 				Timeout.InfiniteTimeSpan);
-			_registration = cancellationToken.Register(static state => ((DelayPromise)state!).Cancel(), this);
 			// The timer or the token can end the delay before the other one is assigned.
 			if (Task.IsCompleted)
 			{
