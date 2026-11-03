@@ -1704,6 +1704,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -1990,7 +1996,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -2280,7 +2287,8 @@ window.BENCHMARK_DATA = {
           10885.283700796273,
           6687.9808093479705,
           5062.261479304387,
-          10973.111887250629
+          10973.111887250629,
+          5756.750717163086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2516,6 +2524,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -2873,7 +2882,8 @@ window.BENCHMARK_DATA = {
           372506.1619591346,
           230790.60260881696,
           160426.01946149554,
-          375465.29889322916
+          375465.29889322916,
+          211470.37076822916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3168,7 +3178,8 @@ window.BENCHMARK_DATA = {
           590292,
           590225,
           590288,
-          590287
+          590287,
+          590226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3466,7 +3477,8 @@ window.BENCHMARK_DATA = {
           19557.364111093375,
           15541.233731951032,
           9499.995995657784,
-          18929.28505061223
+          18929.28505061223,
+          13365.746838160923
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3478,6 +3490,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5437,6 +5450,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -5716,7 +5735,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -5999,7 +6019,8 @@ window.BENCHMARK_DATA = {
           232.39194334348042,
           184.08230210940044,
           107.1365576505661,
-          301.6937367121379
+          301.6937367121379,
+          154.2540704182216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6195,6 +6216,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6578,7 +6600,8 @@ window.BENCHMARK_DATA = {
           565.4544239679973,
           431.2984214226405,
           243.14533046575693,
-          518.7320868174235
+          518.7320868174235,
+          374.6030752318246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6590,6 +6613,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7157,7 +7181,8 @@ window.BENCHMARK_DATA = {
           406.7976531615624,
           310.8841529233115,
           184.8851867062705,
-          411.4328280448914
+          411.4328280448914,
+          284.07751138393695
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7169,6 +7194,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -13741,6 +13767,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -14790,7 +14822,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -15843,7 +15876,8 @@ window.BENCHMARK_DATA = {
           109.88571999867757,
           85.91898970603943,
           52.23394394318263,
-          106.05028026898702
+          106.05028026898702,
+          74.47833202679952
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16842,6 +16876,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -17962,7 +17997,8 @@ window.BENCHMARK_DATA = {
           269.7832292488643,
           231.0647668327604,
           124.48387390772501,
-          252.7779610157013
+          252.7779610157013,
+          205.09099875177657
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18155,6 +18191,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19362,7 +19399,8 @@ window.BENCHMARK_DATA = {
           241.63875573476156,
           175.8442726135254,
           115.28214484453201,
-          247.13143559864588
+          247.13143559864588,
+          160.70414534636907
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19374,6 +19412,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -21419,6 +21458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -21705,7 +21750,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -21995,7 +22041,8 @@ window.BENCHMARK_DATA = {
           233.07144689559937,
           170.29114083449045,
           104.2314373765673,
-          213.6615258546976
+          213.6615258546976,
+          145.38262706536514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22200,6 +22247,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -22588,7 +22636,8 @@ window.BENCHMARK_DATA = {
           563.6870139439901,
           469.2968532562256,
           251.79910245308508,
-          552.9856308619181
+          552.9856308619181,
+          415.64867091178894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22600,6 +22649,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -23181,7 +23231,8 @@ window.BENCHMARK_DATA = {
           352.0609192530314,
           267.3752918243408,
           163.90244808563818,
-          360.81272373199465
+          360.81272373199465,
+          252.98233178456624
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23193,6 +23244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -29772,6 +29824,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -30821,7 +30879,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -31874,7 +31933,8 @@ window.BENCHMARK_DATA = {
           711.7572889328003,
           484.3078671137492,
           351.6807865460714,
-          707.0870713454026
+          707.0870713454026,
+          438.0749873093196
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -32861,6 +32921,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -33993,7 +34054,8 @@ window.BENCHMARK_DATA = {
           1387.3230361938477,
           1132.9726112365722,
           661.3870153427124,
-          1375.7740164438883
+          1375.7740164438883,
+          989.0643040974935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -34186,6 +34248,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -35393,7 +35456,8 @@ window.BENCHMARK_DATA = {
           679.6016703923543,
           507.9616528238569,
           328.6695189476013,
-          673.3193477630615
+          673.3193477630615,
+          455.4622946739197
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -35405,6 +35469,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -42028,6 +42093,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -43077,7 +43148,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -44130,7 +44202,8 @@ window.BENCHMARK_DATA = {
           700.8985293252127,
           496.89772713979085,
           336.45025364557904,
-          697.7394412585667
+          697.7394412585667,
+          435.0194311823164
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45117,6 +45190,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -46249,7 +46323,8 @@ window.BENCHMARK_DATA = {
           27838.112268066405,
           13716.832025800433,
           9916.851940699986,
-          29635.717603410994
+          29635.717603410994,
+          12281.724935259137
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47307,7 +47382,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47649,7 +47725,8 @@ window.BENCHMARK_DATA = {
           809.9014682769775,
           593.7603487650554,
           401.7515406267984,
-          830.5511998449053
+          830.5511998449053,
+          547.4209654147809
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47661,6 +47738,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -50054,6 +50132,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -50398,7 +50482,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -50746,7 +50831,8 @@ window.BENCHMARK_DATA = {
           639.0997926271879,
           485.40489174769476,
           321.0180395762126,
-          630.3253541310628
+          630.3253541310628,
+          426.90066729273116
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -51040,6 +51126,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -51455,7 +51542,8 @@ window.BENCHMARK_DATA = {
           83313.40833928034,
           34298.46595646785,
           27873.813016255695,
-          84043.52904401507
+          84043.52904401507,
+          28293.28603108724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51808,7 +51896,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53874,6 +53963,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -54218,7 +54313,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -54566,7 +54662,8 @@ window.BENCHMARK_DATA = {
           132.2865676198687,
           112.72904939310891,
           68.90979267083682,
-          131.9709997812907
+          131.9709997812907,
+          94.49802077668053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54860,6 +54957,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -55275,7 +55373,8 @@ window.BENCHMARK_DATA = {
           32021.58589390346,
           13613.0773630778,
           9323.604141235352,
-          32509.351883951822
+          32509.351883951822,
+          12148.750082833427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55628,6 +55727,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -55970,7 +56070,8 @@ window.BENCHMARK_DATA = {
           250.74032786914282,
           178.7443732704435,
           119.56581223805746,
-          266.5963453610738
+          266.5963453610738,
+          164.10082709789276
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55982,6 +56083,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -58027,6 +58129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -58313,7 +58421,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -58603,7 +58712,8 @@ window.BENCHMARK_DATA = {
           292.09971446990966,
           226.05468099912008,
           147.77105484689986,
-          295.37672227223715
+          295.37672227223715,
+          196.3419392279216
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58808,6 +58918,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -59196,7 +59307,8 @@ window.BENCHMARK_DATA = {
           384.0947867711385,
           340.3533155367925,
           228.5900914498738,
-          381.0275688171387
+          381.0275688171387,
+          294.8229157243456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59208,6 +59320,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -59789,7 +59902,8 @@ window.BENCHMARK_DATA = {
           406.85619265692577,
           307.5243490764073,
           214.34874742371696,
-          422.4070553779602
+          422.4070553779602,
+          288.7377478159391
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59801,6 +59915,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -61802,6 +61917,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -62088,7 +62209,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -62378,7 +62500,8 @@ window.BENCHMARK_DATA = {
           726.9747877120972,
           524.3174168268839,
           339.3109144142696,
-          720.2842439651489
+          720.2842439651489,
+          486.66339785257975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62614,6 +62737,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -62971,7 +63095,8 @@ window.BENCHMARK_DATA = {
           1999.8926480611165,
           1568.7674160003662,
           987.9840402603149,
-          1995.711176554362
+          1995.711176554362,
+          1366.7228427300086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62983,6 +63108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -63564,7 +63690,8 @@ window.BENCHMARK_DATA = {
           947.5608584721883,
           698.5351908547538,
           435.0675253527505,
-          991.3054107030233
+          991.3054107030233,
+          638.8890503369845
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63576,6 +63703,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -65577,6 +65705,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -65863,7 +65997,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -66153,7 +66288,8 @@ window.BENCHMARK_DATA = {
           11995.913034292367,
           8115.435482788086,
           5845.523921203613,
-          12156.404826863607
+          12156.404826863607,
+          7132.892057800293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66392,6 +66528,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -66746,7 +66883,8 @@ window.BENCHMARK_DATA = {
           41382.7380065918,
           26739.983795166016,
           17859.458293369837,
-          42039.99739990234
+          42039.99739990234,
+          23644.46087849935
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67041,7 +67179,8 @@ window.BENCHMARK_DATA = {
           18609,
           18608,
           18609,
-          18609
+          18609,
+          18608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67339,7 +67478,8 @@ window.BENCHMARK_DATA = {
           10548.18766784668,
           7536.659352620442,
           5739.568757277269,
-          10813.3557673863
+          10813.3557673863,
+          6745.074079660269
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67351,6 +67491,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -69352,6 +69493,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
         "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
+      },
+      {
+        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
+        "message": "chore: Bump the mstest group with 2 updates (#2167)"
       }
     ],
     "labels": [
@@ -69638,7 +69785,8 @@ window.BENCHMARK_DATA = {
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
-      "3903c857"
+      "3903c857",
+      "c1f4f866"
     ],
     "datasets": [
       {
@@ -69928,7 +70076,8 @@ window.BENCHMARK_DATA = {
           11574.302649864783,
           7630.842559814453,
           5522.400224958147,
-          11824.518692016602
+          11824.518692016602,
+          6831.559999593099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70167,6 +70316,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -70521,7 +70671,8 @@ window.BENCHMARK_DATA = {
           59694.31194458008,
           38064.83868001302,
           26112.2777733436,
-          59427.12653023856
+          59427.12653023856,
+          33360.061759440105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70812,6 +70963,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -71114,7 +71266,8 @@ window.BENCHMARK_DATA = {
           21265.609224759617,
           14743.621767484225,
           10794.279821123395,
-          21787.023731776648
+          21787.023731776648,
+          13179.423201497395
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71126,6 +71279,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
