@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
@@ -18,7 +19,8 @@ public sealed partial class ThatSnapshot
 			[Test]
 			public async Task WhenAttachingPendingFiles_ShouldAttachThePendingFileToTheTest()
 			{
-				using SnapshotDirectory directory = new();
+				SnapshotDirectory directory = new(Path.Combine(AppContext.BaseDirectory,
+					nameof(WhenAttachingPendingFiles_ShouldAttachThePendingFileToTheTest)));
 				directory.WriteSnapshot("outdated");
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().AttachPendingFiles.Set(true);
 
