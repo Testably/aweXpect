@@ -1380,6 +1380,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -1612,7 +1618,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -1848,7 +1855,8 @@ window.BENCHMARK_DATA = {
           821.4825664928982,
           891.4198982874552,
           645.5271056493124,
-          875.3374515533447
+          875.3374515533447,
+          940.159942150116
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2029,6 +2037,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2333,7 +2342,8 @@ window.BENCHMARK_DATA = {
           735.9000127792358,
           693.450292451041,
           591.0894039017813,
-          753.4910699208577
+          753.4910699208577,
+          690.986235109965
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2345,6 +2355,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -3968,6 +3979,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -4200,7 +4217,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -4436,7 +4454,8 @@ window.BENCHMARK_DATA = {
           4365.362184143067,
           4303.925585610526,
           3719.2788091023763,
-          4835.385817936489
+          4835.385817936489,
+          4450.473106384277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4676,6 +4695,7 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24172,
+          24178,
           24178,
           24178
         ],
@@ -4921,7 +4941,8 @@ window.BENCHMARK_DATA = {
           5368.274541219075,
           5289.851538085937,
           4222.60557607015,
-          5585.841941324869
+          5585.841941324869,
+          5113.37202351888
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4933,6 +4954,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6496,6 +6518,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -6718,7 +6746,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -6944,7 +6973,8 @@ window.BENCHMARK_DATA = {
           2491.5595565209023,
           2585.4953333536782,
           2162.2487515767416,
-          2724.7676582336426
+          2724.7676582336426,
+          2536.9251907348635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7167,6 +7197,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -7409,7 +7440,8 @@ window.BENCHMARK_DATA = {
           3633.013139851888,
           3682.1226132710776,
           2917.283984629313,
-          3706.12823232015
+          3706.12823232015,
+          3488.767860119159
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7421,6 +7453,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -8974,6 +9007,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
+      },
+      {
+        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
+        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
       }
     ],
     "labels": [
@@ -9196,7 +9235,8 @@ window.BENCHMARK_DATA = {
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
-      "5d53b9d1"
+      "5d53b9d1",
+      "fa9f5111"
     ],
     "datasets": [
       {
@@ -9422,7 +9462,8 @@ window.BENCHMARK_DATA = {
           13868.768104044597,
           13848.51791229248,
           11038.599586995442,
-          15546.908922467914
+          15546.908922467914,
+          13446.001353672573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9645,6 +9686,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -9887,7 +9929,8 @@ window.BENCHMARK_DATA = {
           368774.86666666664,
           359579.63344029017,
           256356.623828125,
-          372392.89957682294
+          372392.89957682294,
+          349453.7430338542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10099,6 +10142,7 @@ window.BENCHMARK_DATA = {
           544335,
           544247,
           544246,
+          544335,
           544335,
           544335,
           544335,
