@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2112.986998494466,
           2078.9626052856447,
           2002.1438337472769,
           1553.343476840428,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1062.4421563829694,
           1156.093823506282,
           2101.6880422319687,
-          2058.476535524641
+          2058.476535524641,
+          1175.600423666147
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15961.13096110026,
           15907.82141331264,
           15612.746715291341,
           12111.159053548177,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           6587.977097647531,
           7529.982671101888,
           16839.187114170618,
-          16085.560051551232
+          16085.560051551232,
+          7666.721838814871
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1741.379569871085,
           1691.4222714560372,
           1666.2785999591533,
           1287.2674263000488,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           854.548374244145,
           925.721905263265,
           1673.483045578003,
-          1673.6562520345053
+          1673.6562520345053,
+          963.8841904860276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15167.919065348307,
           14973.495389811198,
           15029.327513631184,
           11357.86665242513,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           6018.258997235979,
           7265.1912246704105,
           15453.133737836566,
-          14677.167522975376
+          14677.167522975376,
+          7424.364787801107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5513.921094767253,
           5573.049152119955,
           5498.241242472331,
           3815.971667989095,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2793.0541100135215,
           2878.2244361877442,
           5571.581067598783,
-          5589.1646319798065
+          5589.1646319798065,
+          3074.3918042500813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          48711.80868765024,
           48473.97191975911,
           48082.12121582031,
           32478.476969401043,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           17837.67630658831,
           19539.201289876302,
           49355.10128549429,
-          47768.46976143973
+          47768.46976143973,
+          20313.072583879744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1763,7 +1763,6 @@ window.BENCHMARK_DATA = {
         "data": [
           61926,
           61926,
-          61926,
           61925,
           61926,
           61925,
@@ -1809,6 +1808,7 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
+          61926,
           61926,
           61926
         ],
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
       {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9559.88588663737,
           9519.79383305141,
           9362.658601614145,
           7286.235590253557,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           4711.701396061824,
           5087.9374857584635,
           9620.458963666644,
-          9784.473254864033
+          9784.473254864033,
+          4980.286395263672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          305782.2564778646,
           298104.2845052083,
           309273.2155761719,
           230929.51668294272,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           128110.98007436898,
           142575.05111490886,
           313625.8534830729,
-          309541.97549203725
+          309541.97549203725,
+          145737.60415039063
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2371,7 +2371,6 @@ window.BENCHMARK_DATA = {
         "data": [
           521594,
           521594,
-          521594,
           521541,
           521594,
           521542,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
       {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2966.47819035848,
           2966.4180230360766,
           2822.092520305089,
           2339.903066253662,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1485.600215657552,
           1539.0551851590474,
           2860.511367162069,
-          2875.3090433393204
+          2875.3090433393204,
+          1626.9390209515889
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1964.5523948669434,
           2020.967291768392,
           1989.1352724347796,
           1779.6196866353353,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           993.2651794140155,
           1106.0989636739096,
           2036.4583116258893,
-          2002.062146759033
+          2002.062146759033,
+          1100.2137662342616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2886.198728688558,
           2964.4125410226675,
           2878.1142407735188,
           2112.002439626058,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1462.503246988569,
           1632.6405119895935,
           2982.697763170515,
-          3007.885787691389
+          3007.885787691389,
+          1615.7463476816813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1783.0299625396729,
           1815.2466063866248,
           1685.4638674418131,
           1949.1847943623861,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           853.435571874891,
           1015.6368763263409,
           1963.1865575154623,
-          1844.3215240478517
+          1844.3215240478517,
+          956.4898250579834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2331.5834429423016,
           2351.8820971171062,
           2416.109371772179,
           1833.0526563008627,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1233.8195171356201,
           1364.2688386099678,
           2452.967204538981,
-          2353.3624079568044
+          2353.3624079568044,
+          1337.4692803064981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1107.8757119496663,
           1250.2372016906738,
           1145.5878542491369,
           1360.7521257400513,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           554.0507183074951,
           635.4574656486511,
           1221.2541269938151,
-          1182.8154940287272
+          1182.8154940287272,
+          623.7351026535034
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3010.500703684489,
           3131.058696201869,
           3037.964632161458,
           2429.930246225993,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1514.2499171665736,
           1693.555485566457,
           3083.0093488057455,
-          3117.943437848772
+          3117.943437848772,
+          1740.7071010044642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1320.680685043335,
           1357.6422740391322,
           1320.729950087411,
           1552.1033114024572,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           628.1950280325754,
           679.0698460851397,
           1390.7452667236328,
-          1356.3512930552165
+          1356.3512930552165,
+          726.0079667409261
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
-      {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          169196.58732722356,
           166606.0400390625,
           160665.34225260417,
           137958.8206217448,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           89118.53354317801,
           94911.84517415364,
           163248.54805814303,
-          167371.45295061384
+          167371.45295061384,
+          98926.89944893973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          198094.59946289062,
           199580.6094970703,
           192922.53414481026,
           166827.9689860026,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           101153.82855694111,
           113644.451171875,
           204670.83358328682,
-          195194.39243861608
+          195194.39243861608,
+          114249.43017578125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5411,7 +5411,6 @@ window.BENCHMARK_DATA = {
         "data": [
           266951,
           266951,
-          266951,
           266882,
           266951,
           266882,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266936,
           266936,
           266951,
-          266950
+          266950,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "76bf298b09d57623575adaa9ce075b6160776c23",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:25:21 2026 \u002B0100",
-        "message": "perf: parse the expected JSON once and the subject of IsValidJson only once (#2122)"
-      },
       {
         "sha": "26a495951625b114b6cf7b537128b31877629eee",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
         "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
+      },
+      {
+        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
       }
     ],
     "labels": [
-      "76bf298b",
       "26a49595",
       "6f944ab7",
       "7a6e1961",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
-      "2cb4b274"
+      "2cb4b274",
+      "6f1c949d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2692.453815460205,
           2897.014651997884,
           2680.29673903329,
           2073.7609283447264,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1329.4111213684082,
           1469.376049722944,
           2783.914956410726,
-          2728.920848083496
+          2728.920848083496,
+          1539.7473066770112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1917.4742403666178,
           1926.2845264434814,
           1793.1345399220784,
           1823.9254959106445,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           938.4507184709821,
           1077.9223961463342,
           1949.0055333455405,
-          1887.989437690148
+          1887.989437690148,
+          1099.8314296177455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
