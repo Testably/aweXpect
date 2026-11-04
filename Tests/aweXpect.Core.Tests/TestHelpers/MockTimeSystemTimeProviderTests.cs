@@ -138,13 +138,15 @@ public sealed class MockTimeSystemTimeProviderTests
 		TimeProvider sut = timeSystem.ToTimeProvider();
 		long start = sut.GetTimestamp();
 		using CancellationTokenSource cts = new();
-		TimeSpan? canceledAt = null;
-		using CancellationTokenRegistration _ = cts.Token.Register(() => canceledAt = sut.GetElapsedTime(start));
+		TaskCompletionSource<TimeSpan> canceledAt = new();
+		using CancellationTokenRegistration _ =
+			cts.Token.Register(() => canceledAt.SetResult(sut.GetElapsedTime(start)));
 		sut.CancelAfter(cts, 40.Milliseconds());
 
 		await That(() => sut.CreateDelay(100.Milliseconds(), cts.Token)).Throws<OperationCanceledException>()
 			.WithMessage(new TaskCanceledException().Message);
-		await That(canceledAt).IsEqualTo(40.Milliseconds());
+		await That(await canceledAt.Task).IsEqualTo(40.Milliseconds())
+			.Because("the timer thread runs this callback only after the one that cancels the delay");
 	}
 
 	[Test]
