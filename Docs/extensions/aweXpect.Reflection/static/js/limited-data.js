@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
-      {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          361.48864084879557,
           371.8360306535448,
           658.7765026887258,
           666.1225430624826,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           656.1866428852081,
           568.3343185278086,
           748.4279061635335,
-          538.0445006915501
+          538.0445006915501,
+          386.1049940769489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -444,7 +444,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          535.7584282330105,
           538.7823316867535,
           912.7841662724812,
           910.9740199406941,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           701.6170969742996,
           689.0230503763471,
           896.5119151433308,
-          695.8938184884878
+          695.8938184884878,
+          492.9499769846598
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
-      {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          57.29377517529896,
           58.84064237276713,
           112.43246676921845,
           109.27381024360656,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           96.95035772323608,
           77.34292974472046,
           108.49733253887722,
-          76.49028652906418
+          76.49028652906418,
+          57.98802284399668
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          130.66755592823029,
           124.99929022789001,
           209.32910462788172,
           199.85296444892884,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           212.28255216280618,
           177.76527900355202,
           205.1252096494039,
-          164.04283837477365
+          164.04283837477365,
+          124.32641322796161
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
-      {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          974.9345914522806,
           996.1595478057861,
           1849.8494091033936,
           1814.0170042673747,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1238.7971176734338,
           1453.9778975168863,
           1872.4363735198974,
-          1370.9129859924317
+          1370.9129859924317,
+          1021.1502207438151
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          887.871327273051,
           811.8647864977519,
           1462.0381678263345,
           1441.8871121724446,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1160.0633935928345,
           1131.4591146615835,
           1450.0504704793295,
-          1069.246081797282
+          1069.246081797282,
+          825.0494587580363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1953,
-          1953,
           1864,
           1864,
           1953,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1952,
+          1864,
           1864,
           1864,
           1864
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
       {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1407.002833557129,
           1519.6138274329048,
           2682.1261184692385,
           2649.084877559117,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1922.469234759991,
           2099.210889376127,
           2714.5663640340167,
-          2044.0078299386162
+          2044.0078299386162,
+          1331.835197857448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2330.305312523475,
           2333.6141204833984,
           3818.6849403381348,
           3780.4813499450684,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2932.883852277483,
           3123.2681033794697,
           3755.781574521746,
-          3035.7197262900218
+          3035.7197262900218,
+          2049.6176646096364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3980,
           3981,
           3980,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3977,
           3981,
           3981,
+          3981,
           3981
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
       {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          207.92194836934408,
           207.12831432478768,
           406.50287059148155,
           369.4645639419556,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           306.91323740141735,
           287.06098693211874,
           376.1081937154134,
-          281.83198493321737
+          281.83198493321737,
+          208.005295085907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1346.5243061610631,
           1325.7920325142998,
           2301.9324806758336,
           2265.78483908517,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1758.887804667155,
           1809.0195495898906,
           2284.3193501790365,
-          1719.3842435201009
+          1719.3842435201009,
+          1299.7426523844401
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
-        "message": "feat!: split HasProblemDetailsContent by whether a type is expected (#2125)"
-      },
-      {
         "sha": "7a6e19617e9c8ee5464332377e26992643973135",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 16:46:01 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
         "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
+      },
+      {
+        "sha": "850f7373f0e59301640bab1dcb8c035805ba01d3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
+        "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
       }
     ],
     "labels": [
-      "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
       "978086a8",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
-      "7f817d0f"
+      "7f817d0f",
+      "850f7373"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1602.653688812256,
           1454.1926074981689,
           2896.1334981282553,
           2819.7892905644007,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1879.5759940514197,
           2285.385926382882,
           2819.974172152006,
-          2142.7225993020193
+          2142.7225993020193,
+          1482.1231591542562
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3469,7 +3469,6 @@ window.BENCHMARK_DATA = {
           3248,
           3248,
           3248,
-          3248,
           3264,
           3264,
           3264,
@@ -3485,6 +3484,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          163594.33670748197,
           165075.92091471356,
           281969.92259114585,
           281558.70455729164,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           228487.6092703683,
           243432.4026066707,
           279683.39200846356,
-          240073.5096609933
+          240073.5096609933,
+          174580.5145263672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17574,
           17577,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17577,
-          17576
+          17576,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
