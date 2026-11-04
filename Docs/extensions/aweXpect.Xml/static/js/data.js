@@ -1416,6 +1416,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
         "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
+      },
+      {
+        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
       }
     ],
     "labels": [
@@ -1654,7 +1660,8 @@ window.BENCHMARK_DATA = {
       "2cb4b274",
       "6f1c949d",
       "7f817d0f",
-      "850f7373"
+      "850f7373",
+      "0c95f82a"
     ],
     "datasets": [
       {
@@ -1896,7 +1903,8 @@ window.BENCHMARK_DATA = {
           787.1732439994812,
           663.2587267330715,
           968.7068709055583,
-          454.7808568318685
+          454.7808568318685,
+          663.5153481619699
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2077,6 +2085,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2393,7 +2402,8 @@ window.BENCHMARK_DATA = {
           799.3850512186687,
           610.7837354342142,
           707.5646392504374,
-          356.2112155596415
+          356.2112155596415,
+          579.7057327906291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2405,6 +2415,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4070,6 +4081,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
         "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
+      },
+      {
+        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
       }
     ],
     "labels": [
@@ -4308,7 +4325,8 @@ window.BENCHMARK_DATA = {
       "2cb4b274",
       "6f1c949d",
       "7f817d0f",
-      "850f7373"
+      "850f7373",
+      "0c95f82a"
     ],
     "datasets": [
       {
@@ -4550,7 +4568,8 @@ window.BENCHMARK_DATA = {
           4431.633692814754,
           3729.209423319499,
           4479.711524709066,
-          2652.96089553833
+          2652.96089553833,
+          3919.2665621439614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4797,7 +4816,8 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24178,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5047,7 +5067,8 @@ window.BENCHMARK_DATA = {
           5153.6997647966655,
           4454.675517272949,
           5262.970968627929,
-          3051.8571390424454
+          3051.8571390424454,
+          4404.240319824219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5059,6 +5080,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6664,6 +6686,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
         "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
+      },
+      {
+        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
       }
     ],
     "labels": [
@@ -6892,7 +6920,8 @@ window.BENCHMARK_DATA = {
       "2cb4b274",
       "6f1c949d",
       "7f817d0f",
-      "850f7373"
+      "850f7373",
+      "0c95f82a"
     ],
     "datasets": [
       {
@@ -7124,7 +7153,8 @@ window.BENCHMARK_DATA = {
           2495.7636557987757,
           2186.3819833483017,
           2495.2194463094074,
-          1476.146279335022
+          1476.146279335022,
+          2180.5318517049154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7347,6 +7377,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -7601,7 +7632,8 @@ window.BENCHMARK_DATA = {
           3516.617214457194,
           2914.4485071818035,
           3495.121695298415,
-          2029.2652422587078
+          2029.2652422587078,
+          2969.134270477295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7613,6 +7645,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9208,6 +9241,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 14:41:34 2026 \u002B0100",
         "message": "test: make the tests with real-time limits robust against a loaded machine (#2176)"
+      },
+      {
+        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
+        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
       }
     ],
     "labels": [
@@ -9436,7 +9475,8 @@ window.BENCHMARK_DATA = {
       "2cb4b274",
       "6f1c949d",
       "7f817d0f",
-      "850f7373"
+      "850f7373",
+      "0c95f82a"
     ],
     "datasets": [
       {
@@ -9668,7 +9708,8 @@ window.BENCHMARK_DATA = {
           14268.596590314593,
           10954.243966238839,
           13753.998119899205,
-          7572.715437825521
+          7572.715437825521,
+          10839.00433894566
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9891,6 +9932,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -10145,7 +10187,8 @@ window.BENCHMARK_DATA = {
           284892.31666666665,
           259388.03951822917,
           363949.9604116586,
-          174436.33787434894
+          174436.33787434894,
+          259438.26123046875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10380,6 +10423,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335
