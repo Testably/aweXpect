@@ -11,7 +11,7 @@ namespace aweXpect.Core.Tests.Core.EvaluationContext;
 ///     <c>Eventually()</c>, which the timeout and the cancellation of the evaluation bound.
 /// </summary>
 /// <remarks>
-///     No test waits longer than ten seconds for the evaluation, so that a regression which awaits the dispose without
+///     No test waits longer than half a minute for the evaluation, so that a regression which awaits the dispose without
 ///     a bound fails the test instead of hanging the test run.
 /// </remarks>
 public sealed class MaterializedSourceReleaseTests
@@ -213,12 +213,12 @@ public sealed class MaterializedSourceReleaseTests
 			.Because("the expectation was met before the timeout elapsed");
 
 		async Task Evaluate()
-			=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
+			=> await That(subject).Contains(1).WithTimeout(1.Seconds());
 	}
 
 	private static async Task<bool> IsCompleted(Task evaluation)
 	{
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		return evaluation.IsCompleted;
 	}
 

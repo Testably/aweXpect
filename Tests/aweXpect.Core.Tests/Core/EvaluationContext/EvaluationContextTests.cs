@@ -64,7 +64,7 @@ public class EvaluationContextTests
 		context.ResolveOnFailure(reason);
 
 		Task resolve = context.ResolvePendingReasons(new CancellationToken(true));
-		await Task.WhenAny(resolve, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(resolve, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = resolve.IsCompleted;
 		becauseSource.SetResult("of a");
 

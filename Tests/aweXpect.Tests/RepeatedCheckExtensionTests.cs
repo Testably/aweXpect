@@ -65,7 +65,8 @@ public sealed class RepeatedCheckExtensionTests
 		});
 
 		async Task Act()
-			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(1.Hours());
+			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(1.Hours())
+				.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -102,7 +103,8 @@ public sealed class RepeatedCheckExtensionTests
 		});
 
 		async Task Act()
-			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(10.Milliseconds());
+			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(10.Milliseconds())
+				.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

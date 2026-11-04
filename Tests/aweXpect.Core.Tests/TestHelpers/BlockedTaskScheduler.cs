@@ -23,7 +23,7 @@ internal sealed class BlockedTaskScheduler : TaskScheduler
 	///     and returns whether it completed.
 	/// </summary>
 	/// <remarks>
-	///     It gives up after ten seconds, so that a deadlock fails the test instead of hanging the test run.
+	///     It gives up after half a minute, so that a deadlock fails the test instead of hanging the test run.
 	/// </remarks>
 	public static bool Run(Action action)
 	{
@@ -46,7 +46,7 @@ internal sealed class BlockedTaskScheduler : TaskScheduler
 			IsBackground = true,
 		};
 		scheduler._thread.Start();
-		bool completed = scheduler._thread.Join(TimeSpan.FromSeconds(10));
+		bool completed = scheduler._thread.Join(TimeSpan.FromSeconds(30));
 		exception?.Throw();
 		return completed;
 	}

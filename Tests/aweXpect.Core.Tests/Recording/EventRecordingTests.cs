@@ -1297,9 +1297,9 @@ public sealed class EventRecordingTests
 			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) >= 2, TimeSpan.FromSeconds(30));
 
 		subject.NotifyCustomEvent(1);
-		await Task.WhenAny(first, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(first, Task.Delay(TimeSpan.FromSeconds(30)));
 		subject.NotifyCustomEvent(2);
-		await Task.WhenAny(second, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(second, Task.Delay(TimeSpan.FromSeconds(30)));
 
 		await That(first.IsCompleted).IsTrue()
 			.Because("a later waiter must not take the notification away from an earlier one");

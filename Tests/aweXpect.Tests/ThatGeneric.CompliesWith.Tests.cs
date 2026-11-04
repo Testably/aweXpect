@@ -344,7 +344,8 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.Satisfies(_ => ++count > 1))
-						.Within(200.Milliseconds()).CheckEvery(1.Hours());
+						.Within(200.Milliseconds()).CheckEvery(1.Hours())
+						.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).DoesNotThrow().WithTimeout(10.Seconds())
 					.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
