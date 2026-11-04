@@ -1225,7 +1225,7 @@ public class BecauseTests
 		Task evaluation = Evaluate();
 		cts.Cancel();
 
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = evaluation.IsCompleted;
 		becauseSource.SetException(exception);
 		await That(() => evaluation).Throws<FailException>();
@@ -1240,13 +1240,13 @@ public class BecauseTests
 	///     arrives, and returns whether it completed.
 	/// </summary>
 	/// <remarks>
-	///     It gives up after ten seconds and then provides no reason, so that an evaluation that waits for the reason
-	///     fails the test instead of hanging the test run.
+	///     It gives up after half a minute and then provides no reason, so that an evaluation that waits for the reason
+	///     fails the test instead of hanging the test run, also on a loaded machine.
 	/// </remarks>
 	private static async Task<bool> IsCompletedWithoutTheReason(Task evaluation,
 		TaskCompletionSource<string?> becauseSource)
 	{
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = evaluation.IsCompleted;
 		becauseSource.TrySetResult(null);
 		return isCompleted;
@@ -1259,7 +1259,7 @@ public class BecauseTests
 	private static async Task<bool> IsCompletedOnceTheTimeoutElapsed(Task evaluation, MockTimeSystem timeSystem,
 		TaskCompletionSource<string?> becauseSource)
 	{
-		Task safetyNet = Task.Delay(TimeSpan.FromSeconds(10));
+		Task safetyNet = Task.Delay(TimeSpan.FromSeconds(30));
 		while (!evaluation.IsCompleted && !safetyNet.IsCompleted)
 		{
 			timeSystem.TimeProvider.AdvanceBy(60.Seconds());

@@ -379,7 +379,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Satisfies(_ => ++count > 1).Within(200.Milliseconds())
-						.CheckEvery(1.Hours());
+						.CheckEvery(1.Hours()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).DoesNotThrow().WithTimeout(10.Seconds())
 					.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
@@ -480,7 +480,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Satisfies(ThrowingPredicate).Within(200.Milliseconds())
-						.CheckEvery(10.Milliseconds());
+						.CheckEvery(10.Milliseconds()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -513,7 +513,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(ThrowingPredicate).Within(200.Milliseconds())
-						.CheckEvery(10.Milliseconds());
+						.CheckEvery(10.Milliseconds()).WithTimeProvider(new MockTimeSystem().ToTimeProvider());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

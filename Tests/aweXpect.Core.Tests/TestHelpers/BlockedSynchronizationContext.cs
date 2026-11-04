@@ -16,7 +16,7 @@ internal sealed class BlockedSynchronizationContext : SynchronizationContext
 	///     and returns whether it completed.
 	/// </summary>
 	/// <remarks>
-	///     It gives up after ten seconds, so that a deadlock fails the test instead of hanging the test run.
+	///     It gives up after half a minute, so that a deadlock fails the test instead of hanging the test run.
 	/// </remarks>
 	public static bool Run(Action action)
 	{
@@ -37,7 +37,7 @@ internal sealed class BlockedSynchronizationContext : SynchronizationContext
 			IsBackground = true,
 		};
 		thread.Start();
-		bool completed = thread.Join(TimeSpan.FromSeconds(10));
+		bool completed = thread.Join(TimeSpan.FromSeconds(30));
 		exception?.Throw();
 		return completed;
 	}

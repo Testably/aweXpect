@@ -314,7 +314,7 @@ public class ManualExpectationBuilderTests
 		StringBuilder reasons = new();
 
 		Task evaluation = sut.IsMetBy(1, null!, new CancellationToken(true)).AsTask();
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = evaluation.IsCompleted;
 		becauseSource.SetResult("of a");
 		await evaluation;
@@ -440,7 +440,7 @@ public class ManualExpectationBuilderTests
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(_ => false, "is bar"));
 
 		Task<ConstraintResult> evaluation = sut.IsMetBy("foo", new CancellationToken(true)).AsTask();
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = evaluation.IsCompleted;
 		becauseSource.SetResult("of a");
 		ConstraintResult result = await evaluation;
@@ -511,7 +511,7 @@ public class ManualExpectationBuilderTests
 		StringBuilder sb = new();
 
 		Task preparation = sut.PrepareExpectation(null!, new CancellationToken(true));
-		await Task.WhenAny(preparation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(preparation, Task.Delay(TimeSpan.FromSeconds(30)));
 		bool isCompleted = preparation.IsCompleted;
 		becauseSource.SetResult("of a");
 		await preparation;

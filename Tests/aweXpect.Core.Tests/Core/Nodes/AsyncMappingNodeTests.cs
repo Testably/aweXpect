@@ -179,7 +179,7 @@ public class AsyncMappingNodeTests
 
 		Task<ConstraintResult> evaluation = node.IsMetBy("foo", null!, cts.Token).AsTask();
 
-		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 		await That(evaluation.IsCompleted).IsTrue();
 		Func<Task> awaitEvaluation = async () => await evaluation;
 		await That(awaitEvaluation).Throws<OperationCanceledException>();

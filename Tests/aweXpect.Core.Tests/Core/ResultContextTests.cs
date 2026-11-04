@@ -328,7 +328,7 @@ public sealed class ResultContextTests
 
 		private static async Task<bool> IsCompleted(Task evaluation)
 		{
-			await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+			await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(30)));
 			return evaluation.IsCompleted;
 		}
 	}

@@ -83,13 +83,14 @@ public sealed class TimeProviderExtensionsTests
 		TaskCompletionSource<bool> canceled = new(TaskCreationOptions.RunContinuationsAsynchronously);
 		using CancellationTokenRegistration _ = cts.Token.Register(() => canceled.TrySetResult(true));
 
-		timeProvider.CancelAfter(cts, 10.Milliseconds());
+		timeProvider.CancelAfter(cts, 1.Seconds());
 		bool isCanceledAtOnce = cts.IsCancellationRequested;
 		await Task.WhenAny(canceled.Task, Task.Delay(30.Seconds()));
 
-		await That(isCanceledAtOnce).IsFalse();
+		await That(isCanceledAtOnce).IsFalse()
+			.Because("a second is long enough that the timer cannot fire before the next statement, even on a loaded machine");
 		await That(canceled.Task.IsCompleted).IsTrue()
-			.Because("the real timer cancels the source after 10 ms, long before the half minute the test waits");
+			.Because("the real timer cancels the source after a second, long before the half minute the test waits");
 	}
 
 	[Test]

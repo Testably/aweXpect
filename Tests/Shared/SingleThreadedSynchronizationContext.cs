@@ -20,7 +20,10 @@ internal sealed class SingleThreadedSynchronizationContext : SynchronizationCont
 		});
 
 	/// <remarks>
-	///     It gives up after ten seconds, so that a deadlock fails the test instead of hanging the test run.
+	///     It gives up after half a minute, so that a deadlock fails the test instead of hanging the test run.
+	///     <para />
+	///     Neither the end of the queue nor the completion waits for a thread of the thread pool, which parallel tests can
+	///     keep busy for seconds.
 	/// </remarks>
 	public static async Task<T> Run<T>(Func<Task<T>> action)
 	{
@@ -30,7 +33,8 @@ internal sealed class SingleThreadedSynchronizationContext : SynchronizationCont
 			SingleThreadedSynchronizationContext context = new();
 			SetSynchronizationContext(context);
 			Task<T> task = action();
-			task.ContinueWith(_ => context._queue.CompleteAdding(), TaskScheduler.Default);
+			task.ContinueWith(_ => context._queue.CompleteAdding(), CancellationToken.None,
+				TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 			foreach ((SendOrPostCallback callback, object? state) in context._queue.GetConsumingEnumerable())
 			{
 				callback(state);
@@ -42,9 +46,10 @@ internal sealed class SingleThreadedSynchronizationContext : SynchronizationCont
 			IsBackground = true,
 		};
 		thread.Start();
-		if (await Task.WhenAny(started.Task, Task.Delay(TimeSpan.FromSeconds(10))) != started.Task)
+		await Task.WhenAny(started.Task, Task.Delay(TimeSpan.FromSeconds(30)));
+		if (!started.Task.IsCompleted)
 		{
-			throw new TimeoutException("The action did not complete on the synchronization context within ten seconds.");
+			throw new TimeoutException("The action did not complete on the synchronization context within half a minute.");
 		}
 
 		return await await started.Task;
