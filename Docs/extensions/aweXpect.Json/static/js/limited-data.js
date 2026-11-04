@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2078.9626052856447,
           2002.1438337472769,
           1553.343476840428,
           2041.0273508707683,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1156.093823506282,
           2101.6880422319687,
           2058.476535524641,
-          1175.600423666147
+          1175.600423666147,
+          2185.6247502840483
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15907.82141331264,
           15612.746715291341,
           12111.159053548177,
           17248.27479117257,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           7529.982671101888,
           16839.187114170618,
           16085.560051551232,
-          7666.721838814871
+          7666.721838814871,
+          16761.464113362632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1691.4222714560372,
           1666.2785999591533,
           1287.2674263000488,
           1646.505560874939,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           925.721905263265,
           1673.483045578003,
           1673.6562520345053,
-          963.8841904860276
+          963.8841904860276,
+          1795.7101196289063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14973.495389811198,
           15029.327513631184,
           11357.86665242513,
           15960.658412679037,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           7265.1912246704105,
           15453.133737836566,
           14677.167522975376,
-          7424.364787801107
+          7424.364787801107,
+          15566.961777907152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5573.049152119955,
           5498.241242472331,
           3815.971667989095,
           5685.943733215332,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2878.2244361877442,
           5571.581067598783,
           5589.1646319798065,
-          3074.3918042500813
+          3074.3918042500813,
+          5843.108795166016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          48473.97191975911,
           48082.12121582031,
           32478.476969401043,
           49438.050354003906,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           19539.201289876302,
           49355.10128549429,
           47768.46976143973,
-          20313.072583879744
+          20313.072583879744,
+          49673.30724158654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           61926,
-          61926,
           61925,
           61926,
           61925,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
+          61926,
           61926,
           61926,
           61926
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
       {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9519.79383305141,
           9362.658601614145,
           7286.235590253557,
           9539.489362444196,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5087.9374857584635,
           9620.458963666644,
           9784.473254864033,
-          4980.286395263672
+          4980.286395263672,
+          9943.665045420328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          298104.2845052083,
           309273.2155761719,
           230929.51668294272,
           316016.8295735677,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           142575.05111490886,
           313625.8534830729,
           309541.97549203725,
-          145737.60415039063
+          145737.60415039063,
+          323829.82275390625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           521594,
-          521594,
           521541,
           521594,
           521542,
@@ -2414,6 +2413,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
       {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2966.4180230360766,
           2822.092520305089,
           2339.903066253662,
           2878.234126164363,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1539.0551851590474,
           2860.511367162069,
           2875.3090433393204,
-          1626.9390209515889
+          1626.9390209515889,
+          2963.866914621989
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2020.967291768392,
           1989.1352724347796,
           1779.6196866353353,
           2005.7089811471792,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1106.0989636739096,
           2036.4583116258893,
           2002.062146759033,
-          1100.2137662342616
+          1100.2137662342616,
+          2131.0386197016787
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2964.4125410226675,
           2878.1142407735188,
           2112.002439626058,
           3143.5914372762045,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1632.6405119895935,
           2982.697763170515,
           3007.885787691389,
-          1615.7463476816813
+          1615.7463476816813,
+          3032.6112396240233
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1815.2466063866248,
           1685.4638674418131,
           1949.1847943623861,
           1927.088729095459,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1015.6368763263409,
           1963.1865575154623,
           1844.3215240478517,
-          956.4898250579834
+          956.4898250579834,
+          2038.5299530029297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2351.8820971171062,
           2416.109371772179,
           1833.0526563008627,
           2461.498104640416,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1364.2688386099678,
           2452.967204538981,
           2353.3624079568044,
-          1337.4692803064981
+          1337.4692803064981,
+          2437.4949714115687
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1250.2372016906738,
           1145.5878542491369,
           1360.7521257400513,
           1227.1598706563313,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           635.4574656486511,
           1221.2541269938151,
           1182.8154940287272,
-          623.7351026535034
+          623.7351026535034,
+          1333.3494918823242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3131.058696201869,
           3037.964632161458,
           2429.930246225993,
           3122.3266352335613,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1693.555485566457,
           3083.0093488057455,
           3117.943437848772,
-          1740.7071010044642
+          1740.7071010044642,
+          3279.5002149854386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1357.6422740391322,
           1320.729950087411,
           1552.1033114024572,
           1409.697113445827,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           679.0698460851397,
           1390.7452667236328,
           1356.3512930552165,
-          726.0079667409261
+          726.0079667409261,
+          1520.9347489220756
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
-      {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 13:46:43 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          166606.0400390625,
           160665.34225260417,
           137958.8206217448,
           162809.2893254207,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           94911.84517415364,
           163248.54805814303,
           167371.45295061384,
-          98926.89944893973
+          98926.89944893973,
+          169815.48548302284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          199580.6094970703,
           192922.53414481026,
           166827.9689860026,
           197813.32146344866,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           113644.451171875,
           204670.83358328682,
           195194.39243861608,
-          114249.43017578125
+          114249.43017578125,
+          210272.38551548548
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5410,7 +5410,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           266951,
-          266951,
           266882,
           266951,
           266882,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266936,
           266951,
           266950,
-          266936
+          266936,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "26a495951625b114b6cf7b537128b31877629eee",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 13:43:40 2026 \u002B0100",
-        "message": "feat: add nested expectations on the request URI of an HttpRequestMessage (#2124)"
-      },
       {
         "sha": "6f944ab7faeab06284ef31c629938e5fa72e711f",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
+      },
+      {
+        "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
+        "message": "test: await the cancellation callback in the delay test of the MockTimeSystem (#2175)"
       }
     ],
     "labels": [
-      "26a49595",
       "6f944ab7",
       "7a6e1961",
       "23f4f8ec",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
-      "6f1c949d"
+      "6f1c949d",
+      "7f817d0f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2897.014651997884,
           2680.29673903329,
           2073.7609283447264,
           2885.482154573713,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1469.376049722944,
           2783.914956410726,
           2728.920848083496,
-          1539.7473066770112
+          1539.7473066770112,
+          2822.8733632405597
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1926.2845264434814,
           1793.1345399220784,
           1823.9254959106445,
           1973.0849143981934,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1077.9223961463342,
           1949.0055333455405,
           1887.989437690148,
-          1099.8314296177455
+          1099.8314296177455,
+          2030.3731703077044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
