@@ -191,6 +191,32 @@ public sealed partial class ThatXElement
 			}
 
 			[Test]
+			public async Task WhenSubjectHasNestedElements_ShouldIndentThemOnceInTheActualContext()
+			{
+				XElement element = XElement.Parse("<order><item><name>Book</name></item></order>");
+
+				async Task Act()
+					=> await That(element).DoesNotComplyWith(it => it.Matches("<order/>"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that element
+					             does not match <order/>,
+					             but it did
+
+					             Actual:
+					             <order>
+					               <item>
+					                 <name>Book</name>
+					               </item>
+					             </order>
+
+					             XML options:
+					              - ignore additional nodes
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				XElement? subject = null;
