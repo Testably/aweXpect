@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10947.490519205729,
           7867.481620788574,
           7945.7524688720705,
           6718.245365687779,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           8123.215077718099,
           5528.358696492513,
           7810.143716665415,
-          11848.423706054688
+          11848.423706054688,
+          8007.460526602609
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          381394.314453125,
           264405.5708984375,
           267762.8970703125,
           223273.48118489582,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           250644.3599609375,
           169434.87372295672,
           247648.96803385418,
-          378847.12942708336
+          378847.12942708336,
+          305799.6998697917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590288,
           590288,
           590225,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590288,
           590289,
-          590292
+          590292,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20169.049327305383,
           14446.998148091634,
           14536.966057332356,
           14625.338868277413,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           15930.209485735211,
           9573.00716756185,
           14478.918527875629,
-          19844.6424407959
+          19844.6424407959,
+          18782.80645751953
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          302.57346749305725,
           166.3784828736232,
           178.03639147962843,
           177.3599785225732,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           173.8242939710617,
           108.27696202351497,
           172.0056962331136,
-          222.98982451643263
+          222.98982451643263,
+          230.52727699279785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          581.812549718221,
           402.34365412394203,
           458.5897357940674,
           423.4102638880412,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           405.3670380115509,
           268.9200170199076,
           408.8932613985879,
-          559.7048259735108
+          559.7048259735108,
+          620.0523420480581
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          443.58820667266843,
           283.52613226572674,
           319.0502178668976,
           303.69204006876265,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           298.6710053126017,
           194.9525625876018,
           308.25284954706825,
-          417.27505652109784
+          417.27505652109784,
+          430.5890859535762
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          111.5105562210083,
           80.03896193504333,
           80.7251609308379,
           81.02224788665771,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           80.87435861144748,
           53.61414847203663,
           83.29990383556911,
-          110.8168394168218
+          110.8168394168218,
+          114.31955216481136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          289.69599668796246,
           198.9348142941793,
           208.4595156510671,
           222.42156912730292,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           197.63842175557062,
           128.93804596265156,
           198.9112471617185,
-          273.2477882703145
+          273.2477882703145,
+          333.02160105338464
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          267.87051776250206,
           175.46967777839075,
           190.10771975150476,
           172.5268311867347,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           179.95571446418762,
           120.71919671126774,
           178.46005640029907,
-          247.20246624946594
+          247.20246624946594,
+          252.7544733115605
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          209.7291624704997,
           159.52876029695784,
           160.33271212237221,
           168.23191239152635,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           156.44587016105652,
           107.90373465648064,
           156.54629101072038,
-          221.87041754381997
+          221.87041754381997,
+          225.21922567912512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          533.3986874307905,
           408.4974352836609,
           413.09962926592146,
           459.87635946273804,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           408.8347214290074,
           266.24583534094006,
           412.5489536603292,
-          557.1706539789835
+          557.1706539789835,
+          689.3851971626282
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          345.6254704157511,
           258.63408451080323,
           248.5069879213969,
           256.63529373804727,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           267.3010074751718,
           173.00598689488,
           250.64235293070476,
-          360.3339057990483
+          360.3339057990483,
+          363.3836651581984
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          746.8616344451905,
           524.7071509043376,
           526.807805606297,
           485.847832271031,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           546.0625827789306,
           369.32103759901867,
           535.185325495402,
-          734.2616960525513
+          734.2616960525513,
+          631.9942833093496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1564.4947466169085,
           1098.8147351401192,
           1094.9246933800835,
           1107.796083577474,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1042.607634816851,
           685.1587026596069,
           1129.0387349446614,
-          1437.7000745137532
+          1437.7000745137532,
+          1582.185786655971
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          705.8645281791687,
           493.48600311279296,
           496.16956740159253,
           500.8570910967313,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           499.6663074493408,
           344.2104013647352,
           514.9466800689697,
-          670.2423388799032
+          670.2423388799032,
+          672.546628888448
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          733.6918453489031,
           525.7281795648428,
           523.9197857039316,
           497.0336186726888,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           523.6199264526367,
           354.662538596562,
           533.1477785110474,
-          694.7938178869395
+          694.7938178869395,
+          645.4106723240444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          29458.440590994698,
           15813.564115251813,
           16282.096799577985,
           13725.594681803386,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           16119.461829049247,
           10301.554768153599,
           16645.69649251302,
-          28616.301666259766
+          28616.301666259766,
+          18452.562399727958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33465,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          831.4107434409005,
           579.5145050457546,
           572.7637465159098,
           590.1006058965411,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           572.0882098515829,
           421.085391998291,
           604.1546475546701,
-          810.2592638015747
+          810.2592638015747,
+          800.3759000641959
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          631.1381454467773,
           514.8077551523844,
           507.01787846429005,
           467.8665428528419,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           502.1970812933786,
           345.1950779914856,
           524.5321040153503,
-          644.0213925043741
+          644.0213925043741,
+          652.1798827489217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82535.42764718192,
           54027.839359537764,
           53455.16491229717,
           33739.83185032436,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           52818.66801234654,
           28023.638079833985,
           54361.9780461238,
-          84526.63145345052
+          84526.63145345052,
+          34472.49961344401
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5256,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
       {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          156.42046100752694,
           104.1650300536837,
           105.62157160043716,
           113.09330171744028,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           101.9781055132548,
           67.52725910223447,
           100.08154468536377,
-          150.7730212722506
+          150.7730212722506,
+          151.77758941283594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33064.81743977864,
           14647.232786996025,
           15337.316233317057,
           13482.028038533528,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           14470.506467692057,
           9391.26387493427,
           14902.044854736328,
-          32627.190293532152
+          32627.190293532152,
+          17606.92450358073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5615,
           5614,
@@ -5599,6 +5598,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5614,
           5614,
           5614
         ],
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          282.2695587158203,
           179.98832218987602,
           185.74810530458177,
           174.54166514078776,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           180.32924326828547,
           121.5751291172845,
           181.6739533742269,
-          254.8461046854655
+          254.8461046854655,
+          253.34391431808473
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          293.11595487594604,
           224.02014156977336,
           224.44107014338175,
           229.92297913477972,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           229.99629299981254,
           152.21881418961746,
           224.94571908315024,
-          303.8098799864451
+          303.8098799864451,
+          297.31087248665943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          382.6408241589864,
           329.6401156584422,
           328.0731118275569,
           334.1076677322388,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           321.2339043276651,
           205.00634156862895,
           322.0321704228719,
-          425.58067301341464
+          425.58067301341464,
+          495.58503580093384
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          396.03660879135134,
           358.2384912784283,
           334.5322087287903,
           297.01897087097166,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           337.1428652445475,
           202.59611403025113,
           339.64629438945224,
-          421.1149085998535
+          421.1149085998535,
+          412.64992292722064
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          733.6035655566624,
           537.9747178004338,
           578.7595198495047,
           529.6861187861516,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           553.2262986046927,
           354.07167216709684,
           564.8827624003093,
-          738.699691431863
+          738.699691431863,
+          716.7567487444196
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2131.649586604192,
           1507.6489452362061,
           1672.9273422786168,
           1558.5533996309553,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1534.9215325673422,
           994.4309858594622,
           1561.3357577006022,
-          2097.5002080281574
+          2097.5002080281574,
+          2318.2189619881765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1015.3704358614408,
           713.9341252871922,
           765.218125851949,
           689.4425083569118,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           747.3886477152506,
           469.20987704821994,
           735.1864360400608,
-          999.0179740360805
+          999.0179740360805,
+          953.9402889524188
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11893.312091282436,
           8359.513330312875,
           8397.632245744977,
           8075.532647269113,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8429.038522573617,
           5995.546820322673,
           8449.43074622521,
-          12352.81035723005
+          12352.81035723005,
+          9744.20619419643
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41007.01089477539,
           26590.641690767727,
           26521.127140590124,
           24864.555444335936,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           26569.27856663295,
           18354.558415339543,
           27341.314037616437,
-          40617.080993652344
+          40617.080993652344,
+          32005.039204915363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7752,7 +7752,6 @@ window.BENCHMARK_DATA = {
         "data": [
           18609,
           18609,
-          18609,
           18393,
           18609,
           18609,
@@ -7796,6 +7795,7 @@ window.BENCHMARK_DATA = {
           18608,
           18609,
           18393,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10527.827033996582,
           7847.732675405649,
           7890.840198771159,
           7525.263392857143,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7879.6387939453125,
           5660.832687922886,
           7878.729117257254,
-          10771.456242152623
+          10771.456242152623,
+          9031.955790593074
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "23f4f8ec6343b5206ddc9b5ca44403d07ad31baf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Oct 27 17:24:28 2026 \u002B0100",
-        "message": "fix: drop the nested grammar in the Web member expectations ending in \u0022which\u0022 (#2127)"
-      },
-      {
         "sha": "978086a87d8ddd581d2190898f2709ff9cab5e36",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 27 17:28:44 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
-      "23f4f8ec",
       "978086a8",
       "e410691e",
       "0027e238",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11660.84493146624,
           7988.275752766927,
           7986.617923443134,
           7571.5723386492045,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7953.854785374233,
           5623.7216802324565,
           7964.515467325847,
-          11766.402814424955
+          11766.402814424955,
+          9131.166567993165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59361.00076090495,
           37850.909345354354,
           37470.711810772234,
           37013.13781534831,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           37717.00726787861,
           26090.48446437291,
           38899.27816162109,
-          58910.60290527344
+          58910.60290527344,
+          45697.09262084961
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8491,7 +8491,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8517,6 +8516,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21246.73762512207,
           15383.336443219867,
           15389.781252034505,
           14692.86303476187,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15298.692903791156,
           11109.523569379535,
           15302.247270856586,
-          21327.76236666166
+          21327.76236666166,
+          17746.82735334124
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
