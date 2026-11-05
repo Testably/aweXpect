@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
-        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
-      },
-      {
         "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
-      "0027e238",
       "76331040",
       "7558fdb1",
       "554746c6",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1019.3575731424185,
           902.6268550432645,
           481.97535434136023,
           763.5536664326986,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           663.5153481619699,
           907.2345884958903,
           1007.2256150563558,
-          491.8521828651428
+          491.8521828651428,
+          766.1589309147427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          695.8189938408988,
           806.1991023381551,
           378.1488160065242,
           836.19565984181,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           579.7057327906291,
           747.904140218099,
           737.9147873560588,
-          378.67552845818653
+          378.67552845818653,
+          803.1279058456421
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
-        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
-      },
-      {
         "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
-      "0027e238",
       "76331040",
       "7558fdb1",
       "554746c6",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4897.99711227417,
           5048.938869769757,
           3096.8459995269777,
           5364.870772298177,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3919.2665621439614,
           4777.037054208608,
           4905.140953063965,
-          3036.8672655741375
+          3036.8672655741375,
+          5039.038271767752
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,6 @@ window.BENCHMARK_DATA = {
         "data": [
           24178,
           24178,
-          24178,
           24179,
           24178,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24172,
           24178,
           24172,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5491.239741189139,
           5870.096372477214,
           3249.3142201559886,
           6241.340397761418,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4404.240319824219,
           5609.461873881022,
           5542.322755940755,
-          3323.279590352376
+          3323.279590352376,
+          5818.160186258951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
-        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
-      },
-      {
         "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
-      "0027e238",
       "76331040",
       "7558fdb1",
       "554746c6",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2761.77261912028,
           2835.6594603402273,
           1602.2741832733154,
           2957.525605519613,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2180.5318517049154,
           2679.6013394673664,
           2769.8204900105793,
-          1556.0332471302577
+          1556.0332471302577,
+          2831.3306193033854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1661,12 +1661,12 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3788.0231572469074,
           3940.651884812575,
           2190.0044459025066,
           3954.038757911095,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2969.134270477295,
           3686.4691530863442,
           3863.5458928426106,
-          2089.884005619929
+          2089.884005619929,
+          3703.4350382486978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
-        "message": "fix!: fail \u0060WhoseValue\u0060 when a header or query parameter does not have exactly one value (#2131)"
-      },
-      {
         "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
-      "0027e238",
       "76331040",
       "7558fdb1",
       "554746c6",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          15551.392347063336,
           15229.23352922712,
           7926.092670694987,
           14280.915512084961,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10839.00433894566,
           13688.482481384277,
           14418.98245021275,
-          8038.047477722168
+          8038.047477722168,
+          13894.258349100748
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2269,12 +2269,12 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          370316.52762276784,
           377816.5389927455,
           189332.71607259114,
           289888.9895207332,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           259438.26123046875,
           369416.5108816964,
           370473.52861328126,
-          186145.7418561663
+          186145.7418561663,
+          283493.42619977676
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544246,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
