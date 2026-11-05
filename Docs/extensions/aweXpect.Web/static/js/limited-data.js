@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
-      {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          478.6094778060913,
           457.49622230529786,
           488.1308433532715,
           454.9328867594401,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           504.466541494642,
           393.13746782938637,
           337.5139049212138,
-          360.17263879776
+          360.17263879776,
+          432.0374268123082
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1070.9929101126534,
           1021.4798039027622,
           925.5554426738194,
           1004.6667348316738,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           977.3774132047381,
           896.2365102767944,
           894.5700384286733,
-          948.0402340522179
+          948.0402340522179,
+          923.0064988454183
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
-      {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          249.41025761195593,
           259.32427620887756,
           231.6196001493014,
           247.38296123913355,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           252.78348580996195,
           215.81124877929688,
           192.69957841237385,
-          229.79083015124004
+          229.79083015124004,
+          252.84952510197957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          273.7050013175377,
           267.05627039500644,
           247.11147050857545,
           266.0521447317941,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           265.66814473697116,
           238.455833366939,
           247.1441742011479,
-          268.7767217499869
+          268.7767217499869,
+          240.36885870420016
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
-      {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1032.5758972167969,
           976.4981702168783,
           970.3885461262295,
           883.3648537855881,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1031.8153250558037,
           856.8820991516113,
           703.2574746268136,
-          752.585807459695
+          752.585807459695,
+          936.6029814992633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1101.2028221130372,
           1027.4066754659018,
           926.7154275349209,
           982.2797829945882,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1274.8910056522914,
           876.3387022018433,
           859.7595116297404,
-          895.7199317296346
+          895.7199317296346,
+          937.614222017924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
-      {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1958.8783255985804,
           1910.9118482149565,
           1955.3485249110631,
           1914.5855023066204,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1970.9589227529673,
           1485.7137116023473,
           1253.4065192086357,
-          1333.9417401631674
+          1333.9417401631674,
+          1895.1236245291573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22459.962811279296,
           22429.298300606864,
           20191.194490559898,
           18786.086873372395,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22250.64864908854,
           14082.458379109701,
           13245.913962809245,
-          14309.641669718425
+          14309.641669718425,
+          20840.049255371094
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2387,7 +2387,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
       {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          790.5419354120891,
           798.5347500528608,
           732.9516418163593,
           719.9084849675496,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           844.1925388063703,
           660.1283797484177,
           549.0496471845187,
-          576.4322287877401
+          576.4322287877401,
+          755.9450314839681
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1437.2649509429932,
           1410.389205796378,
           1255.4042546198918,
           1316.4993698120118,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1412.7450640360514,
           1210.636733373006,
           1131.2529127756754,
-          1149.3772983551025
+          1149.3772983551025,
+          1267.1902982271636
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "e410691eac21dd22470dd9b8afbc090e08e0770e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 12:13:01 2026 \u002B0100",
-        "message": "docs: amend the design goals where they are worded too broadly (#2129)"
-      },
-      {
         "sha": "0027e2384765d953be05b57888e8915cfdcc923d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:13:33 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
-      "e410691e",
       "0027e238",
       "76331040",
       "7558fdb1",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1373.2333023364727,
           1326.3084732055663,
           1237.9065493070161,
           1279.2880212238856,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1398.152526174273,
           1057.3421249389648,
           835.2240226745605,
-          928.5770222345988
+          928.5770222345988,
+          1292.3036208519568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          836.3457184473674,
           862.400163430434,
           740.1350386483329,
           772.4098425547282,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           785.8670385360717,
           720.573264280955,
           727.2604808807373,
-          774.9994736353557
+          774.9994736353557,
+          714.9428385954636
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
