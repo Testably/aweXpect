@@ -104,6 +104,31 @@ public sealed partial class ThatXDocument
 			}
 
 			[Test]
+			public async Task WhenRootHasNestedElements_ShouldIndentThemOnceInTheActualContext()
+			{
+				XDocument document = XDocument.Parse("""<?xml version="1.0" encoding="utf-8"?><order><item /></order>""");
+
+				async Task Act()
+					=> await That(document).DoesNotComplyWith(it => it.Matches("<order/>"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that document
+					             does not match <order/>,
+					             but it did
+
+					             Actual:
+					             <order>
+					               <item />
+					             </order>
+
+					             XML options:
+					              - ignore additional nodes
+					             """)
+					.Because("the document is written like its root element, without the declaration");
+			}
+
+			[Test]
 			public async Task WhenRootMatches_ShouldFail()
 			{
 				XDocument document = XDocument.Parse("<a x=\"1\"/>");
