@@ -1464,6 +1464,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -1710,7 +1716,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -1960,7 +1967,8 @@ window.BENCHMARK_DATA = {
           1576.177994801448,
           1528.5788828042837,
           1219.3007618586223,
-          1164.7170331319173
+          1164.7170331319173,
+          2101.274386814662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2106,6 +2114,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2473,7 +2482,8 @@ window.BENCHMARK_DATA = {
           10150.386913553873,
           10062.187292916435,
           8192.451523917061,
-          7441.881343841553
+          7441.881343841553,
+          15280.439073835101
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2485,6 +2495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4206,6 +4217,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -4452,7 +4469,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -4702,7 +4720,8 @@ window.BENCHMARK_DATA = {
           1232.4859441121419,
           1232.718726671659,
           970.8439986889178,
-          933.2086126963297
+          933.2086126963297,
+          1603.2596329909104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4848,6 +4867,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5215,7 +5235,8 @@ window.BENCHMARK_DATA = {
           10305.47396138509,
           9264.010444054236,
           6476.932324727376,
-          7202.76773223877
+          7202.76773223877,
+          13729.337122990535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5227,6 +5248,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -6888,6 +6910,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -7124,7 +7152,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -7364,7 +7393,8 @@ window.BENCHMARK_DATA = {
           4038.6126118977863,
           3819.931579883282,
           3289.137732872596,
-          2926.7716601445127
+          2926.7716601445127,
+          4997.226754324777
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7547,6 +7577,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -7857,7 +7888,8 @@ window.BENCHMARK_DATA = {
           30463.608463541666,
           28614.575122070313,
           20919.911678059896,
-          20694.152872721355
+          20694.152872721355,
+          42500.48453194754
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8102,7 +8134,8 @@ window.BENCHMARK_DATA = {
           61926,
           61705,
           61926,
-          61925
+          61925,
+          61932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9520,6 +9553,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -9756,7 +9795,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -9996,7 +10036,8 @@ window.BENCHMARK_DATA = {
           7306.787633455717,
           7283.224003131573,
           5693.14376613072,
-          5008.315219116211
+          5008.315219116211,
+          9865.281103280875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10132,6 +10173,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -10489,7 +10531,8 @@ window.BENCHMARK_DATA = {
           206065.43764648438,
           199326.73543875557,
           142479.34682617188,
-          145885.21360677082
+          145885.21360677082,
+          288900.0768103966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10734,7 +10777,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521594
+          521594,
+          521573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12152,6 +12196,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -12388,7 +12438,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -12628,7 +12679,8 @@ window.BENCHMARK_DATA = {
           2221.3314648946125,
           2224.5750097547257,
           1630.878024646214,
-          1528.5327204295568
+          1528.5327204295568,
+          3044.7324256896973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12814,6 +12866,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -13121,7 +13174,8 @@ window.BENCHMARK_DATA = {
           1488.753778048924,
           1473.186813218253,
           1149.155450957162,
-          1047.2323877334595
+          1047.2323877334595,
+          2110.2493776957194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13133,6 +13187,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -14784,6 +14839,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -15020,7 +15081,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -15260,7 +15322,8 @@ window.BENCHMARK_DATA = {
           2211.8910472576435,
           2177.089767964681,
           1540.5200232097081,
-          1493.6359672546387
+          1493.6359672546387,
+          2734.226946194967
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15443,6 +15506,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -15753,7 +15817,8 @@ window.BENCHMARK_DATA = {
           1324.189241663615,
           1333.9619255065918,
           1040.5297092437745,
-          925.8834203402201
+          925.8834203402201,
+          2008.6294118245444
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15765,6 +15830,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -16714,6 +16780,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -16833,7 +16905,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -16956,7 +17029,8 @@ window.BENCHMARK_DATA = {
           1776.2979638235909,
           1720.5347955067953,
           1320.2512763341267,
-          1257.9205870310466
+          1257.9205870310466,
+          2272.942900793893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17022,6 +17096,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -17215,7 +17290,8 @@ window.BENCHMARK_DATA = {
           912.8885090901301,
           924.3374543507894,
           587.7667066710336,
-          552.3154356820243
+          552.3154356820243,
+          1395.8038952691215
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17227,6 +17303,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -18059,6 +18136,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -18178,7 +18261,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -18301,7 +18385,8 @@ window.BENCHMARK_DATA = {
           2302.976835123698,
           2271.038771311442,
           1688.860026223319,
-          1640.911438369751
+          1640.911438369751,
+          3139.883852445162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18351,6 +18436,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -18560,7 +18646,8 @@ window.BENCHMARK_DATA = {
           1038.7029108683269,
           1039.5310550417219,
           754.0119138445173,
-          692.7010534286499
+          692.7010534286499,
+          1583.627987798055
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18572,6 +18659,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -19062,6 +19150,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -19124,7 +19218,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -19190,7 +19285,8 @@ window.BENCHMARK_DATA = {
           127523.44786658653,
           127669.76213191106,
           105614.15098353794,
-          92246.59491373698
+          92246.59491373698,
+          171032.34246826172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19202,6 +19298,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -19335,7 +19432,8 @@ window.BENCHMARK_DATA = {
           146826.62983398436,
           148206.3178222656,
           116721.84833635602,
-          110132.98283168247
+          110132.98283168247,
+          199959.15087890625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19406,7 +19504,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
-          266936
+          266936,
+          266873
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19780,6 +19879,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -19842,7 +19947,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -19908,7 +20014,8 @@ window.BENCHMARK_DATA = {
           2112.248678334554,
           2031.5272695101226,
           1473.075864655631,
-          1501.0403453826905
+          1501.0403453826905,
+          2616.3718795776367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19920,6 +20027,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -20053,7 +20161,8 @@ window.BENCHMARK_DATA = {
           1394.433391571045,
           1352.8242018381754,
           1158.7170741217476,
-          1050.0155845055212
+          1050.0155845055212,
+          2000.2458516438803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20065,6 +20174,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
