@@ -318,6 +318,18 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Test]
+	public async Task ExcludedAssemblyPrefixes_WhenContainingNull_ShouldThrowArgumentException()
+	{
+		void Act() => Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(["foo", null!,]);
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("value").And
+			.WithMessage("The 'value' cannot contain null.").AsPrefix()
+			.Because("a null prefix would only fail later, when an assembly is scanned");
+		await That(Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Get()).DoesNotContain("foo");
+	}
+
+	[Test]
 	public async Task ExcludedAssemblyPrefixes_WhenNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => Customize.aweXpect.Settings().ExcludedAssemblyPrefixes.Set(null!);

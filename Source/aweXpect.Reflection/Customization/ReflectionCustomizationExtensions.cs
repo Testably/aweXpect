@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Reflection.Helpers;
 
@@ -53,7 +55,7 @@ public static class ReflectionCustomizationExtensions
 					KeyPrefix + nameof(DependencyResolver), null),
 				TypeHelpers.SignatureDependencies);
 			ExcludedAttributeTypes = new CustomizationListValue<string>(awexpectCustomization,
-				KeyPrefix + nameof(ExcludedAttributeTypes), Array.Empty<string>());
+				KeyPrefix + nameof(ExcludedAttributeTypes), Array.Empty<string>(), ThrowIfContainsNull);
 			IncludedCompilerGeneratedMembers = new CustomizationValue<CompilerGeneratedMembers>(awexpectCustomization,
 				KeyPrefix + nameof(IncludedCompilerGeneratedMembers), CompilerGeneratedMembers.None);
 			IncludedSpecialNameMembers = new CustomizationValue<SpecialNameMembers>(awexpectCustomization,
@@ -104,6 +106,15 @@ public static class ReflectionCustomizationExtensions
 		///     Defaults to <see cref="SpecialNameMembers.None" />, so that all special-name methods are excluded.
 		/// </remarks>
 		public ICustomizationValueSetter<SpecialNameMembers> IncludedSpecialNameMembers { get; }
+
+		private static void ThrowIfContainsNull<TItem>(IReadOnlyList<TItem> value)
+		{
+			if (value.Any(item => item is null))
+			{
+				throw Tracing.WriteException(
+					new ArgumentException("The 'value' cannot contain null.", nameof(value)));
+			}
+		}
 
 		/// <summary>
 		///     Returns the <paramref name="defaultValue" /> for a stored <see langword="null" />, so that setting

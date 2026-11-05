@@ -71,6 +71,24 @@ public sealed class WebCustomizationExtensionsTests
 	}
 
 	[Test]
+	public async Task ContentProcessors_SetListWithNull_ShouldThrowArgumentExceptionAndKeepValue()
+	{
+		AwexpectCustomization customization = new();
+		IContentProcessor[] processors = [new StringContentProcessor(),];
+		using CustomizationLifetime _ = customization.Web().ContentProcessors.Set(processors);
+
+		void Act()
+			=> customization.Web().ContentProcessors.Set([new BinaryContentProcessor(), null!,]);
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("value").And
+			.WithMessage("The 'value' cannot contain null.").AsPrefix()
+			.Because("a null processor would only fail later, when a failure message is formatted");
+		await That(customization.Web().ContentProcessors.Get()).IsEqualTo(processors)
+			.Because("an invalid value must not change the stored value");
+	}
+
+	[Test]
 	public async Task ContentProcessors_SetNull_ShouldThrowArgumentNullExceptionAndKeepValue()
 	{
 		AwexpectCustomization customization = new();

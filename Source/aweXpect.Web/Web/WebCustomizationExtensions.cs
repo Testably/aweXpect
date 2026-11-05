@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Web.ContentProcessors;
 
@@ -30,7 +32,7 @@ public static class WebCustomizationExtensions
 					new JsonContentProcessor(),
 					new StringContentProcessor(),
 					new BinaryContentProcessor(),
-				]));
+				]), ThrowIfContainsNull);
 		}
 
 		/// <summary>
@@ -40,5 +42,14 @@ public static class WebCustomizationExtensions
 		///     The list is copied, so changing it afterwards does not change the setting.
 		/// </remarks>
 		public ICustomizationValueSetter<IReadOnlyList<IContentProcessor>> ContentProcessors { get; }
+
+		private static void ThrowIfContainsNull<TItem>(IReadOnlyList<TItem> value)
+		{
+			if (value.Any(item => item is null))
+			{
+				throw Tracing.WriteException(
+					new ArgumentException("The 'value' cannot contain null.", nameof(value)));
+			}
+		}
 	}
 }
