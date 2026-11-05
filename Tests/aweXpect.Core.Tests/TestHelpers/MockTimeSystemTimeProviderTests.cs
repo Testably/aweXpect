@@ -13,7 +13,7 @@ public sealed class MockTimeSystemTimeProviderTests
 	[Test]
 	public async Task AdvanceBy_ShouldMakeTheScheduledCancellationsOnTheWay()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider sut = timeSystem.ToTimeProvider();
 		long start = sut.GetTimestamp();
 		using CancellationTokenSource cts = new();
@@ -30,7 +30,7 @@ public sealed class MockTimeSystemTimeProviderTests
 	[Test]
 	public async Task CancelAfter_ShouldCancelWhenTheClockReachesTheEndOfTheDelay()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider sut = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		timeSystem.TimeProvider.AdvanceBy(10.Milliseconds());
@@ -53,7 +53,7 @@ public sealed class MockTimeSystemTimeProviderTests
 		using CancellationTokenSource cts = new();
 
 		sut.CancelAfter(cts, 40.Milliseconds());
-		await Task.Delay(50.Milliseconds());
+		await timeSystem.TimerHandler.WaitUntilIdleAsync();
 
 		await That(cts.IsCancellationRequested).IsFalse()
 			.Because("a timeout only fires when something else moves the clock");
@@ -119,7 +119,7 @@ public sealed class MockTimeSystemTimeProviderTests
 	[Test]
 	public async Task CreateDelay_WhenACancellationIsScheduledAfterIt_ShouldNotCancel()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider sut = timeSystem.ToTimeProvider();
 		long start = sut.GetTimestamp();
 		using CancellationTokenSource cts = new();
@@ -134,7 +134,7 @@ public sealed class MockTimeSystemTimeProviderTests
 	[Test]
 	public async Task CreateDelay_WhenACancellationIsScheduledWithinIt_ShouldCancelOnTheWay()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider sut = timeSystem.ToTimeProvider();
 		long start = sut.GetTimestamp();
 		using CancellationTokenSource cts = new();
