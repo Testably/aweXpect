@@ -1428,6 +1428,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
         "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
+      },
+      {
+        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
+        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
       }
     ],
     "labels": [
@@ -1668,7 +1674,8 @@ window.BENCHMARK_DATA = {
       "7f817d0f",
       "850f7373",
       "0c95f82a",
-      "13f124fd"
+      "13f124fd",
+      "60f2a583"
     ],
     "datasets": [
       {
@@ -1912,7 +1919,8 @@ window.BENCHMARK_DATA = {
           968.7068709055583,
           454.7808568318685,
           663.5153481619699,
-          907.2345884958903
+          907.2345884958903,
+          1007.2256150563558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2093,6 +2101,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2413,7 +2422,8 @@ window.BENCHMARK_DATA = {
           707.5646392504374,
           356.2112155596415,
           579.7057327906291,
-          747.904140218099
+          747.904140218099,
+          737.9147873560588
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2425,6 +2435,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4104,6 +4115,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
         "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
+      },
+      {
+        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
+        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
       }
     ],
     "labels": [
@@ -4344,7 +4361,8 @@ window.BENCHMARK_DATA = {
       "7f817d0f",
       "850f7373",
       "0c95f82a",
-      "13f124fd"
+      "13f124fd",
+      "60f2a583"
     ],
     "datasets": [
       {
@@ -4588,7 +4606,8 @@ window.BENCHMARK_DATA = {
           4479.711524709066,
           2652.96089553833,
           3919.2665621439614,
-          4777.037054208608
+          4777.037054208608,
+          4905.140953063965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4837,7 +4856,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24172,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5089,7 +5109,8 @@ window.BENCHMARK_DATA = {
           5262.970968627929,
           3051.8571390424454,
           4404.240319824219,
-          5609.461873881022
+          5609.461873881022,
+          5542.322755940755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5101,6 +5122,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6720,6 +6742,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
         "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
+      },
+      {
+        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
+        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
       }
     ],
     "labels": [
@@ -6950,7 +6978,8 @@ window.BENCHMARK_DATA = {
       "7f817d0f",
       "850f7373",
       "0c95f82a",
-      "13f124fd"
+      "13f124fd",
+      "60f2a583"
     ],
     "datasets": [
       {
@@ -7184,7 +7213,8 @@ window.BENCHMARK_DATA = {
           2495.2194463094074,
           1476.146279335022,
           2180.5318517049154,
-          2679.6013394673664
+          2679.6013394673664,
+          2769.8204900105793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7407,6 +7437,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -7665,7 +7696,8 @@ window.BENCHMARK_DATA = {
           3495.121695298415,
           2029.2652422587078,
           2969.134270477295,
-          3686.4691530863442
+          3686.4691530863442,
+          3863.5458928426106
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7677,6 +7709,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9286,6 +9319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
         "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
+      },
+      {
+        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
+        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
       }
     ],
     "labels": [
@@ -9516,7 +9555,8 @@ window.BENCHMARK_DATA = {
       "7f817d0f",
       "850f7373",
       "0c95f82a",
-      "13f124fd"
+      "13f124fd",
+      "60f2a583"
     ],
     "datasets": [
       {
@@ -9750,7 +9790,8 @@ window.BENCHMARK_DATA = {
           13753.998119899205,
           7572.715437825521,
           10839.00433894566,
-          13688.482481384277
+          13688.482481384277,
+          14418.98245021275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9973,6 +10014,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -10231,7 +10273,8 @@ window.BENCHMARK_DATA = {
           363949.9604116586,
           174436.33787434894,
           259438.26123046875,
-          369416.5108816964
+          369416.5108816964,
+          370473.52861328126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10466,6 +10509,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335,
