@@ -94,30 +94,42 @@ internal sealed class SnapshotOptions
 	/// </summary>
 	public List<SnapshotRule> Rules { get; } = new();
 
-	/// <remarks>
-	///     A new name moves the claim of the snapshot to the named one. A long name is shortened, see
+	/// <summary>
+	///     Names the snapshot after written arguments, which are shortened when they are long, see
 	///     <see cref="SnapshotTestArguments.Shorten" />.
-	/// </remarks>
-	public string? Name
-	{
-		get => _name;
-		set
-		{
-			ClaimedSnapshots.Release(Id);
-			_name = value is null ? null : SnapshotTestArguments.Shorten(value);
-			ClaimedSnapshots.Claim(Id);
-		}
-	}
+	/// </summary>
+	public void NameAfterArguments(string name)
+		=> SetName(SnapshotTestArguments.Shorten(name));
 
 	/// <summary>
 	///     Names one of several snapshots of the test case after the name of the arguments of the running test, when the
 	///     snapshot is named after them, e.g. <c>Abbey Road_1969_cover</c>.
 	/// </summary>
 	/// <remarks>
-	///     It always starts from the name of the arguments, so that a later name replaces an earlier one.
+	///     It always starts from the name of the arguments, so that a later name replaces an earlier one. Only a name
+	///     that contains the arguments is shortened, as the caller chose any other name and keeps it readable.
 	/// </remarks>
 	public void NameWithinTestCase(string name)
-		=> Name = _testArgumentsName is null ? name : $"{_testArgumentsName}_{name}";
+	{
+		if (_testArgumentsName is null)
+		{
+			SetName(name);
+		}
+		else
+		{
+			NameAfterArguments($"{_testArgumentsName}_{name}");
+		}
+	}
+
+	/// <remarks>
+	///     A new name moves the claim of the snapshot to the named one.
+	/// </remarks>
+	private void SetName(string name)
+	{
+		ClaimedSnapshots.Release(Id);
+		_name = name;
+		ClaimedSnapshots.Claim(Id);
+	}
 
 	/// <summary>
 	///     Makes the snapshot unique for the <paramref name="value" /> of the <paramref name="part" /> of the environment.

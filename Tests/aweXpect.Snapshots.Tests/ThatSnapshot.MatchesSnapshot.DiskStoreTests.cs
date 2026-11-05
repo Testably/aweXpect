@@ -257,16 +257,22 @@ public sealed partial class ThatSnapshot
 			[Arguments("de-DE", "de-DE")]
 			[Arguments("äöü", "äöü")]
 			[Arguments("10:30", "10%3A30")]
-			[Arguments("v1.2", "v1%2E2")]
+			[Arguments("v1.2", "v1.2")]
+			[Arguments("Mock.IAlbum.g", "Mock.IAlbum.g")]
 			[Arguments("50%", "50%25")]
 			[Arguments("a<b>c\"d/e\\f|g?h*i", "a%3Cb%3Ec%22d%2Fe%5Cf%7Cg%3Fh%2Ai")]
 			[Arguments("a\tb", "a%09b")]
 			[Arguments("AC@DC", "AC%40DC")]
+			[Arguments("CON", "%43ON")]
+			[Arguments("nul.json", "%6Eul.json")]
+			[Arguments("com1", "%63om1")]
+			[Arguments("Console", "Console")]
+			[Arguments("v1.", "v1.")]
 			public async Task WhenNamed_ShouldEscapeTheNameInTheFileNames(string name, string escapedName)
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.awexpect-snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.{escapedName}.awexpect-snapshot.pending.txt");
+				string snapshotPath = directory.GetNamedPath($"{escapedName}.awexpect-snapshot.txt");
+				string pendingPath = directory.GetNamedPath($"{escapedName}.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -291,9 +297,9 @@ public sealed partial class ThatSnapshot
 				await That(async () => await That("second").MatchesSnapshot(directory.TestFilePath,
 					SnapshotDirectory.MemberName).Named("a%3Ab")).Throws<FailException>();
 
-				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%3Ab.awexpect-snapshot.pending.txt")))
+				await That(File.ReadAllText(directory.GetNamedPath("a%3Ab.awexpect-snapshot.pending.txt")))
 					.IsEqualTo("first" + Environment.NewLine);
-				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests.MyTest.a%253Ab.awexpect-snapshot.pending.txt")))
+				await That(File.ReadAllText(directory.GetNamedPath("a%253Ab.awexpect-snapshot.pending.txt")))
 					.IsEqualTo("second" + Environment.NewLine)
 					.Because("the '%' is escaped as well, so that two names never share a file");
 			}
@@ -313,11 +319,50 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenNamed_ShouldAppendTheNameToTheFileNames()
+			public async Task WhenNamed_AndMemberNameEndsWithADotOrASpace_ShouldEscapeItInTheDirectory()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.login.awexpect-snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.login.awexpect-snapshot.pending.txt");
+
+				await That(async () => await That("first").MatchesSnapshot(directory.TestFilePath, "Describes.")
+					.Named("login")).Throws<FailException>();
+				await That(async () => await That("second").MatchesSnapshot(directory.TestFilePath, "Describes ")
+					.Named("login")).Throws<FailException>();
+
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests", "Describes%2E",
+						"login.awexpect-snapshot.pending.txt")))
+					.IsEqualTo("first" + Environment.NewLine);
+				await That(File.ReadAllText(Path.Combine(directory.Path, "MyTests", "Describes%20",
+						"login.awexpect-snapshot.pending.txt")))
+					.IsEqualTo("second" + Environment.NewLine)
+					.Because("Windows removes a final dot or space of a directory name, which would merge it with 'Describes'");
+			}
+
+			[Test]
+			public async Task WhenNamed_AndTestFileDirectoryDoesNotExist_ShouldNotCreateIt()
+			{
+				using SnapshotDirectory directory = new();
+				string testFilePath = Path.Combine(directory.Path, "missing", "MyTests.cs");
+				string subject = "foo";
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(testFilePath, SnapshotDirectory.MemberName).Named("login");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             *
+					             Pending snapshot:
+					             could not be written: *
+					             """).AsWildcard();
+				await That(Directory.Exists(Path.Combine(directory.Path, "missing"))).IsFalse()
+					.Because("only the directories of the snapshot are created, so that a wrong test file path is still reported");
+			}
+
+			[Test]
+			public async Task WhenNamed_ShouldKeepTheSnapshotInTheDirectoriesOfTheTestFileAndTheMethod()
+			{
+				using SnapshotDirectory directory = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests", "MyTest", "login.awexpect-snapshot.txt");
+				string pendingPath = Path.Combine(directory.Path, "MyTests", "MyTest", "login.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -344,9 +389,8 @@ public sealed partial class ThatSnapshot
 			public async Task WhenNamedAfterArguments_ShouldAppendTheirValuesToTheFileNames()
 			{
 				using SnapshotDirectory directory = new();
-				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.AC%2FDC_1979.awexpect-snapshot.txt");
-				string pendingPath =
-					Path.Combine(directory.Path, "MyTests.MyTest.AC%2FDC_1979.awexpect-snapshot.pending.txt");
+				string snapshotPath = directory.GetNamedPath("AC%2FDC_1979.awexpect-snapshot.txt");
+				string pendingPath = directory.GetNamedPath("AC%2FDC_1979.awexpect-snapshot.pending.txt");
 				(string Artist, string Album) release = ("AC/DC", "Highway to Hell");
 				int year = 1979;
 
@@ -366,8 +410,8 @@ public sealed partial class ThatSnapshot
 			{
 				using SnapshotDirectory directory = new();
 				string variant = $"{CurrentEnvironment.OperatingSystem}@{CurrentEnvironment.Architecture}";
-				string snapshotPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.awexpect-snapshot.txt");
-				string pendingPath = Path.Combine(directory.Path, $"MyTests.MyTest.Abbey Road@{variant}.awexpect-snapshot.pending.txt");
+				string snapshotPath = directory.GetNamedPath($"Abbey Road@{variant}.awexpect-snapshot.txt");
+				string pendingPath = directory.GetNamedPath($"Abbey Road@{variant}.awexpect-snapshot.pending.txt");
 				string subject = "foo";
 
 				async Task Act()
@@ -482,9 +526,9 @@ public sealed partial class ThatSnapshot
 			public async Task WithExtension_WhenNamedAndUniqueForTheEnvironment_ShouldAppendTheExtensionAfterSnapshot()
 			{
 				using SnapshotDirectory directory = new();
-				string baseName = $"MyTests.MyTest.Abbey Road@{CurrentEnvironment.OperatingSystem}";
-				string snapshotPath = Path.Combine(directory.Path, $"{baseName}.awexpect-snapshot.html");
-				string pendingPath = Path.Combine(directory.Path, $"{baseName}.awexpect-snapshot.pending.html");
+				string baseName = $"Abbey Road@{CurrentEnvironment.OperatingSystem}";
+				string snapshotPath = directory.GetNamedPath($"{baseName}.awexpect-snapshot.html");
+				string pendingPath = directory.GetNamedPath($"{baseName}.awexpect-snapshot.pending.html");
 				string subject = "<h1>Abbey Road</h1>";
 
 				async Task Act()

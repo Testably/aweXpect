@@ -141,8 +141,9 @@ internal static class SnapshotTestArguments
 	///     <c>~</c> and the hash of the whole name.
 	/// </summary>
 	/// <remarks>
-	///     Every name of a snapshot is shortened, also one from <c>.Named(…)</c>. The name is not cut within a surrogate
-	///     pair, so that it stays valid text.
+	///     Every name that is written from arguments is shortened, also one from <c>.Named(…)</c> that is appended to the
+	///     arguments of the running test, but not a name from <c>.Named(…)</c> alone. The name is not cut within a
+	///     surrogate pair, so that it stays valid text.
 	/// </remarks>
 	public static string Shorten(string name)
 	{
@@ -188,7 +189,7 @@ internal static class SnapshotTestArguments
 	}
 
 	private static int GetEscapedLength(char character)
-		=> DiskSnapshotStore.IsEscaped(character) ? 3 : 1;
+		=> DiskSnapshotStore.IsEscapedInNestedPart(character) ? 3 : 1;
 
 	/// <summary>
 	///     The FNV-1a hash of the UTF-8 bytes of the <paramref name="name" />, which is the same in every process.

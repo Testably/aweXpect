@@ -120,10 +120,13 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			public async Task WhenNamedWithLongName_ShouldShortenTheName()
+			public async Task WhenNamedWithLongName_ShouldKeepTheName()
 			{
 				InMemorySnapshotStore store = new();
-				store.Snapshots[Id with { Name = "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac", }] =
+				store.Snapshots[Id with
+					{
+						Name = "Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition, Disc One)",
+					}] =
 					"foo";
 				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
 				string subject = "foo";
@@ -133,7 +136,7 @@ public sealed partial class ThatSnapshot
 						.Named("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition, Disc One)");
 
 				await That(Act).DoesNotThrow()
-					.Because("the length of every name is limited, as a file name has a limited length");
+					.Because("the caller chose the name, so it stays readable, while only names written from arguments are shortened");
 			}
 
 			[Test]

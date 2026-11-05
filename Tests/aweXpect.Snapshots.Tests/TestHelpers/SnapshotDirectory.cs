@@ -30,6 +30,13 @@ internal sealed class SnapshotDirectory : IDisposable
 
 	public void Dispose() => Directory.Delete(Path, true);
 
+	/// <summary>
+	///     The path of the file with the <paramref name="fileName" /> in the directory of a named snapshot of
+	///     <see cref="MemberName" />.
+	/// </summary>
+	public string GetNamedPath(string fileName)
+		=> System.IO.Path.Combine(Path, "MyTests", MemberName, fileName);
+
 	public void WritePending(string content) => File.WriteAllText(PendingPath, content, new UTF8Encoding(false));
 
 	public void WriteSnapshot(string content, bool withByteOrderMark = false)

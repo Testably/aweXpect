@@ -148,7 +148,7 @@ public sealed partial class ThatSnapshot
 			{
 				Album album = new("Abbey Road", 1969);
 
-				await ShouldBeNamed("ThatSnapshot.MatchesSnapshot.NamedAfterTests.Albu~b61ea1a9",
+				await ShouldBeNamed("ThatSnapshot.MatchesSnapshot.NamedAfterTests.Album { Ti~b61ea1a9",
 					result => result.NamedAfter(album),
 					"a record is written like in a snapshot, with the name of its type and each member");
 			}
@@ -197,7 +197,7 @@ public sealed partial class ThatSnapshot
 			{
 				Track track = new();
 
-				await ShouldBeNamed("[ToString of ThatSnapshot.MatchesSnapshot.NamedAfte~28799a7b",
+				await ShouldBeNamed("[ToString of ThatSnapshot.MatchesSnapshot.NamedAfterTes~28799a7b",
 					result => result.NamedAfter(track),
 					"the exception is written like in a snapshot instead of failing the test");
 			}

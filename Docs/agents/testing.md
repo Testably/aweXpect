@@ -40,7 +40,7 @@ therefore runs almost nothing. The pipeline runs them in a step of its own for t
 ## Public API snapshots
 
 `ApiApprovalTests` reads the build of every target framework of each package (`AssemblyNames`) and compares its public
-API with the `*.awexpect-snapshot.txt` files next to it (aweXpect.Snapshots.PublicApi). The `Debug` test build reads
+API with the snapshots `ApiApprovalTests/<Assembly>/<Framework>.awexpect-snapshot.txt` (aweXpect.Snapshots.PublicApi). The `Debug` test build reads
 the `Debug` library builds.
 
 When the API changed on purpose, accept the new surface in one of these ways and commit the updated snapshots:
