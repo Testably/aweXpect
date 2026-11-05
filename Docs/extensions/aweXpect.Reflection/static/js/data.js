@@ -1458,6 +1458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -1703,7 +1709,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -1952,7 +1959,8 @@ window.BENCHMARK_DATA = {
           751.6682180991539,
           722.1957015991211,
           409.0365822315216,
-          781.582831450871
+          781.582831450871,
+          553.3825441769192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2176,6 +2184,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2463,7 +2472,8 @@ window.BENCHMARK_DATA = {
           902.4402693339756,
           869.0769025166829,
           546.3331633885701,
-          944.4801342646281
+          944.4801342646281,
+          703.799217192332
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2475,6 +2485,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4189,6 +4200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -4434,7 +4451,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -4683,7 +4701,8 @@ window.BENCHMARK_DATA = {
           103.88713658650717,
           101.66405953679767,
           60.91156035264333,
-          105.57014689275196
+          105.57014689275196,
+          80.3583123428481
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4830,6 +4849,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5194,7 +5214,8 @@ window.BENCHMARK_DATA = {
           216.9920997619629,
           214.82798318862916,
           143.58922073046367,
-          200.7239324092865
+          200.7239324092865,
+          175.2259622891744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5206,6 +5227,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -6920,6 +6942,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -7165,7 +7193,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -7414,7 +7443,8 @@ window.BENCHMARK_DATA = {
           1889.4191912137544,
           1785.052332196917,
           920.5461337906974,
-          1952.9921277364094
+          1952.9921277364094,
+          1419.185200627645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7609,6 +7639,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -7925,7 +7956,8 @@ window.BENCHMARK_DATA = {
           1537.2212629318237,
           1442.9987864176433,
           764.6617459569659,
-          1497.6625966389975
+          1497.6625966389975,
+          1068.9837843577068
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8179,7 +8211,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9591,6 +9624,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -9826,7 +9865,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -10065,7 +10105,8 @@ window.BENCHMARK_DATA = {
           2803.7182256062824,
           2635.2708887736003,
           1423.3629774366107,
-          2943.5023909977504
+          2943.5023909977504,
+          2102.6784834180557
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10250,6 +10291,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -10556,7 +10598,8 @@ window.BENCHMARK_DATA = {
           3921.484300466684,
           3778.8923416137695,
           2105.5106555393763,
-          3874.676141866048
+          3874.676141866048,
+          3097.6140153067454
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10800,7 +10843,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12212,6 +12256,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -12447,7 +12497,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -12686,7 +12737,8 @@ window.BENCHMARK_DATA = {
           388.23036511739093,
           356.92648289998374,
           200.03694906234742,
-          387.5491731961568
+          387.5491731961568,
+          287.1422596613566
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12823,6 +12875,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -13177,7 +13230,8 @@ window.BENCHMARK_DATA = {
           2360.224435533796,
           2237.424961090088,
           1241.432836151123,
-          2276.222061429705
+          2276.222061429705,
+          1775.2582056045533
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13189,6 +13243,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -14833,6 +14888,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
@@ -15068,7 +15129,8 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
@@ -15307,7 +15369,8 @@ window.BENCHMARK_DATA = {
           2929.9041873386927,
           2838.6184412638345,
           1379.4181876863752,
-          2946.9017154148646
+          2946.9017154148646,
+          2361.5648052509014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15521,6 +15584,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -15798,7 +15862,8 @@ window.BENCHMARK_DATA = {
           282025.5499441964,
           300236.6799504207,
           164346.85032435827,
-          277213.3720327524
+          277213.3720327524,
+          241244.9818638393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16042,6 +16107,7 @@ window.BENCHMARK_DATA = {
           17577,
           17577,
           17574,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
