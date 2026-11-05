@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10688.319303072416,
           10569.880418043871,
           10323.789493560791,
           11040.060776846749,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           11082.352454049247,
           7737.92293724647,
           7770.047457013811,
-          7971.755490112305
+          7971.755490112305,
+          10682.0943943904
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          317767.79609375,
           377866.3603515625,
           383074.74762834824,
           380447.4959635417,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           384164.57200520835,
           255276.38040364583,
           303825.67996651784,
-          263356.55423177086
+          263356.55423177086,
+          382770.95842633926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590292,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590225,
-          590287
+          590287,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          18274.634926932198,
           19051.5452205113,
           19679.400137765067,
           19741.100860595703,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19764.84799194336,
           14236.347882952008,
           17668.177557138297,
-          14544.71586717878
+          14544.71586717878,
+          19578.425173950196
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          222.63332084247045,
           219.45206277187054,
           234.3879771232605,
           285.11265789667766,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           331.66513713200885,
           182.89270445278711,
           225.09995566095625,
-          175.8557895251683
+          175.8557895251683,
+          270.2351848057338
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          515.4726280484881,
           496.9493532180786,
           510.2537934621175,
           510.0565294265747,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           552.7654976526896,
           422.539989344279,
           588.9297527166514,
-          438.2013214111328
+          438.2013214111328,
+          502.1989903767904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          374.19508163745587,
           383.5621375719706,
           407.3969630513872,
           386.60514545440674,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           420.9972195943197,
           314.79348105650683,
           408.55249579747516,
-          312.1380790074666
+          312.1380790074666,
+          384.33453736986434
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          102.54650102456411,
           104.8047188838323,
           105.9680711712156,
           107.74966617141452,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           108.31948997974396,
           85.58905855246952,
           113.70171150990895,
-          82.16497475306193
+          82.16497475306193,
+          109.55252869129181
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          259.240229845047,
           253.95632572968802,
           262.39755325317384,
           270.58932342529295,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           269.2680602709452,
           196.07251926830835,
           325.64638247856726,
-          200.38758434568132
+          200.38758434568132,
+          254.84425926208496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          247.07189264297486,
           244.28535856519426,
           258.3493342399597,
           243.2597882407052,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           257.8455810546875,
           176.76377620015825,
           242.0282021522522,
-          197.35148413976034
+          197.35148413976034,
+          242.13599100112916
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          197.39734176227026,
           230.85084233965193,
           238.63730181966508,
           224.45484442710875,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           219.41062421798705,
           158.1358119249344,
           217.3489405155182,
-          158.55246456464133
+          158.55246456464133,
+          216.0857523759206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          525.4433700016567,
           507.7159332547869,
           534.4437497456869,
           525.3062294006347,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           581.1067529678345,
           423.374032052358,
           665.6529387791951,
-          428.44302105903625
+          428.44302105903625,
+          547.3123740514119
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          340.30253642400106,
           345.0474009195963,
           341.7656743526459,
           333.47159004211426,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           355.635246855872,
           278.29092270533243,
           352.13671181996665,
-          255.58346786499024
+          255.58346786499024,
+          334.14066872229944
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          674.4537078312466,
           695.3184987476894,
           709.5282716751099,
           705.5347908655802,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           739.7887395858764,
           571.2629759652274,
           618.5508168765476,
-          544.2524162292481
+          544.2524162292481,
+          724.601040326632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1367.8282180513654,
           1364.768878664289,
           1468.5216963450114,
           1412.1679819652013,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1450.913328297933,
           1163.5314646402994,
           1543.6967314311437,
-          1121.4667744954427
+          1121.4667744954427,
+          1387.3948567708333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          639.0922499338786,
           652.1993022918701,
           673.2488266626993,
           668.6108720143636,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           710.2224672317504,
           546.6877751668294,
           647.6328786849975,
-          506.2031344731649
+          506.2031344731649,
+          666.432870165507
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          655.4510553223746,
           699.7413908885076,
           794.0034349986485,
           705.3468623479207,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           726.022767680032,
           557.9554260889689,
           628.684294627263,
-          535.6573098727634
+          535.6573098727634,
+          704.4348600827731
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          21189.08182634626,
           27786.776444498697,
           28601.694814046223,
           27886.524348332332,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           28945.438170369467,
           17078.28748732347,
           18253.325486246744,
-          16014.569110107423
+          16014.569110107423,
+          28462.832657877603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          738.6686579386393,
           787.397339185079,
           814.9088574091594,
           800.8299654551914,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           845.544377708435,
           635.1385590871175,
           757.0284495035808,
-          614.8974687576294
+          614.8974687576294,
+          795.9804546356202
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          593.7237216509305,
           620.6628279368083,
           664.2009996414184,
           674.4526850382487,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           635.0987175623576,
           483.70685144571155,
           626.863347307841,
-          506.4627825873239
+          506.4627825873239,
+          721.1166655858358
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          61345.367728097095,
           83532.12500813803,
           82879.86361694336,
           82043.75548444476,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           85032.96202674278,
           54837.705802408855,
           34273.07128470285,
-          55757.62966918945
+          55757.62966918945,
+          84690.81872558594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
       {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          129.3423672914505,
           146.90284189156122,
           144.70560571125574,
           138.78400479952495,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           139.74606606165568,
           103.30361034870148,
           142.81591520309448,
-          105.41215523084004
+          105.41215523084004,
+          134.30999252001445
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          18409.36429486956,
           31771.20837871845,
           32975.60360483023,
           32445.901216947117,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           33927.89495035807,
           14959.991483561198,
           17179.020436604816,
-          15707.686973571777
+          15707.686973571777,
+          32665.412686861477
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5557,7 +5557,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          230.47677998542787,
           241.57924728393556,
           272.24875631332395,
           240.69077609266554,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           255.40481907980782,
           184.632887951533,
           240.75408074061076,
-          182.5123967329661
+          182.5123967329661,
+          258.10770113127575
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          289.1258111635844,
           292.36691398620604,
           303.6053373018901,
           295.5819498062134,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           308.7871476809184,
           228.49099661622728,
           285.74098148345945,
-          233.15900200208029
+          233.15900200208029,
+          304.6103596051534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          415.7466643333435,
           378.95937837873186,
           400.1997935295105,
           382.11341156278337,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           418.9914395014445,
           330.6550660133362,
           473.8753970691136,
-          336.66280387242637
+          336.66280387242637,
+          406.3437856992086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          429.21346038182577,
           406.2996953896114,
           418.65790353502547,
           510.0736598332723,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           424.36002124150593,
           347.74627742767336,
           398.028454712459,
-          336.3426252092634
+          336.3426252092634,
+          423.000523630778
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          710.3967839649746,
           722.4072289466858,
           714.3178088324411,
           713.2217192967732,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           748.310804435185,
           570.0206724575588,
           698.2741949558258,
-          558.996187891279
+          558.996187891279,
+          720.4517538706461
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1910.7353790283203,
           1894.4751108609712,
           1943.98547261556,
           1914.3262855529786,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2120.196397781372,
           1638.542156346639,
           2207.2546043395996,
-          1720.7080759684245
+          1720.7080759684245,
+          1932.6034987313408
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          958.9197039922078,
           925.2945395787557,
           958.5127582550049,
           912.8570596694947,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           1022.1797915140788,
           830.564300610469,
           914.9931436947414,
-          781.9774660746257
+          781.9774660746257,
+          919.8531631469726
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10834.293975830078,
           11814.953919630785,
           12072.297448476156,
           11976.10413301908,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           12270.772983006069,
           8522.82632798415,
           9716.588502066475,
-          8514.822473379281
+          8514.822473379281,
+          12071.222578866142
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          34413.59047444662,
           39752.8958871024,
           40583.94004603795,
           40445.54967447917,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           40382.99315970285,
           27342.850977971004,
           32862.370064871655,
-          27592.682055664063
+          27592.682055664063,
+          40995.32376534598
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7755,7 +7755,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18394,
           18609,
           18609,
@@ -7797,6 +7796,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10145.967845662435,
           10682.023165021625,
           10500.048513793945,
           10496.540520301232,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10709.443417140415,
           7896.369658333914,
           9091.033655439105,
-          7862.589434305827
+          7862.589434305827,
+          10490.723879132953
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
-        "message": "feat!: remove the type-only overload of \u0060IgnoringMembers\u0060 in the equivalency options (#2134)"
-      },
-      {
         "sha": "554746c671599207ec99839f6537076f32e3c135",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
-      "7558fdb1",
       "554746c6",
       "fa41546d",
       "5fafaf2a",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10282.480619158063,
           11577.40517098563,
           11488.69238633376,
           11509.248116629464,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11723.398033650716,
           8110.120013645717,
           9151.2462111253,
-          8003.639696756999
+          8003.639696756999,
+          11764.603154109074
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          49215.59924316406,
           57988.149401855466,
           59027.242954799105,
           58416.44586995443,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           60028.240342360274,
           38798.54372297014,
           46678.667189534506,
-          39208.34562901088
+          39208.34562901088,
+          59545.69777972881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8486,7 +8486,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8512,6 +8511,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19659.334704589844,
           20765.1203028361,
           20902.555991036552,
           20798.3135540302,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           21463.75767211914,
           15368.306867327008,
           17911.49846473107,
-          15142.63215637207
+          15142.63215637207,
+          20756.2164175851
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
