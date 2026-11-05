@@ -329,7 +329,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutIsShorterThanTheBudget_ShouldBeCanceled()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None, null, timeProvider);
