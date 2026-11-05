@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
-        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
-      },
-      {
         "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
-      "76331040",
       "7558fdb1",
       "554746c6",
       "fa41546d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          902.6268550432645,
           481.97535434136023,
           763.5536664326986,
           821.6657193501791,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           907.2345884958903,
           1007.2256150563558,
           491.8521828651428,
-          766.1589309147427
+          766.1589309147427,
+          868.0472666195461
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          806.1991023381551,
           378.1488160065242,
           836.19565984181,
           715.8287643750508,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           747.904140218099,
           737.9147873560588,
           378.67552845818653,
-          803.1279058456421
+          803.1279058456421,
+          699.1890646389553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
-        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
-      },
-      {
         "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
-      "76331040",
       "7558fdb1",
       "554746c6",
       "fa41546d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5048.938869769757,
           3096.8459995269777,
           5364.870772298177,
           4326.338460540772,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4777.037054208608,
           4905.140953063965,
           3036.8672655741375,
-          5039.038271767752
+          5039.038271767752,
+          4857.692450968424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24179,
           24178,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24172,
-          24179
+          24179,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5870.096372477214,
           3249.3142201559886,
           6241.340397761418,
           5223.582142966135,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5609.461873881022,
           5542.322755940755,
           3323.279590352376,
-          5818.160186258951
+          5818.160186258951,
+          5679.595049540202
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
-        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
-      },
-      {
         "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
-      "76331040",
       "7558fdb1",
       "554746c6",
       "fa41546d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2835.6594603402273,
           1602.2741832733154,
           2957.525605519613,
           2663.201132638114,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2679.6013394673664,
           2769.8204900105793,
           1556.0332471302577,
-          2831.3306193033854
+          2831.3306193033854,
+          2803.5553299585977
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1660,12 +1660,12 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3940.651884812575,
           2190.0044459025066,
           3954.038757911095,
           3381.316428120931,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3686.4691530863442,
           3863.5458928426106,
           2089.884005619929,
-          3703.4350382486978
+          3703.4350382486978,
+          3686.421055348714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "763310401c57e5ccb7d4ec27877203bcdfa8be22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 13:22:27 2026 \u002B0100",
-        "message": "fix!: make the Json and Xml option methods available with only \u0060using aweXpect;\u0060 (#2130)"
-      },
-      {
         "sha": "7558fdb1276a56ca5c9bd06c84299217c9cae701",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 13:51:58 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
         "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
+      },
+      {
+        "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
+        "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
       }
     ],
     "labels": [
-      "76331040",
       "7558fdb1",
       "554746c6",
       "fa41546d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "13f124fd",
       "60f2a583",
       "4f093bbd",
-      "a5924ccd"
+      "a5924ccd",
+      "34bd6e69"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          15229.23352922712,
           7926.092670694987,
           14280.915512084961,
           12839.355934729943,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13688.482481384277,
           14418.98245021275,
           8038.047477722168,
-          13894.258349100748
+          13894.258349100748,
+          14486.604932657878
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2268,12 +2268,12 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          377816.5389927455,
           189332.71607259114,
           289888.9895207332,
           315537.9216471354,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           369416.5108816964,
           370473.52861328126,
           186145.7418561663,
-          283493.42619977676
+          283493.42619977676,
+          356686.0393880208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544246,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544246
+          544246,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
