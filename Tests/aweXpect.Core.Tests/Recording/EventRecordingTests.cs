@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
@@ -74,7 +75,7 @@ public sealed class EventRecordingTests
 
 		IEventRecording<ManyParametersClass> recording = subject.Record().Events();
 		subject.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.GetEventCount(nameof(ManyParametersClass.OtherEvent))).IsEqualTo(1)
 			.Because("an event the reflective fallback cannot bind a handler to must not cost the recording of all the other events");
@@ -85,7 +86,7 @@ public sealed class EventRecordingTests
 	{
 		ManyParametersClass sut = new();
 		IEventRecording<ManyParametersClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount(nameof(ManyParametersClass.CustomEvent));
@@ -103,7 +104,7 @@ public sealed class EventRecordingTests
 		IEventRecording<ManyParametersClass> recording =
 			subject.Record().Events(nameof(ManyParametersClass.OtherEvent));
 		subject.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.GetEventCount(nameof(ManyParametersClass.OtherEvent))).IsEqualTo(1)
 			.Because("only the requested events are attached, so an unattachable event of the same type is never touched");
@@ -141,7 +142,7 @@ public sealed class EventRecordingTests
 	{
 		ManyParametersClass sut = new();
 		IEventRecording<ManyParametersClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount("Typo");
@@ -158,7 +159,7 @@ public sealed class EventRecordingTests
 		CustomEventClass subject = new();
 		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
 		subject.NotifyCustomEvent(1);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 		Action<int> inFlightEvent = subject.StartNotifyingCustomEvent();
 		recording.Dispose();
 
@@ -176,7 +177,7 @@ public sealed class EventRecordingTests
 		IEventRecording<CustomEventClass> recording = subject.Record().Events();
 		subject.NotifyCustomEvent(1);
 		Action<int> inFlightEvent = subject.StartNotifyingCustomEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		inFlightEvent(2);
 
@@ -683,7 +684,7 @@ public sealed class EventRecordingTests
 		CustomEventClass subject = new();
 		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
 		subject.NotifyCustomEvent(1);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		recording.Dispose();
 		subject.NotifyCustomEvent(2);
@@ -701,7 +702,7 @@ public sealed class EventRecordingTests
 		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
 		subject.NotifyCustomEvent(1);
 		IEventRecordingResult? live = null;
-		await recording.StopWhen(r =>
+		await EventRecordings.StopWhen(recording,r =>
 		{
 			live = r;
 			return true;
@@ -804,7 +805,7 @@ public sealed class EventRecordingTests
 	{
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount("OtherEvent");
@@ -843,7 +844,7 @@ public sealed class EventRecordingTests
 		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Once();
 
 		async Task Act()
-			=> await recording.StopWhen(_ => false, TimeSpan.Zero);
+			=> await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(
@@ -869,7 +870,7 @@ public sealed class EventRecordingTests
 	{
 		ReturningHandlerClass sut = new();
 		IEventRecording<ReturningHandlerClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount(nameof(ReturningHandlerClass.CustomEvent));
@@ -897,7 +898,7 @@ public sealed class EventRecordingTests
 	{
 		ByReferenceHandlerClass sut = new();
 		IEventRecording<ByReferenceHandlerClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount(nameof(ByReferenceHandlerClass.CustomEvent));
@@ -912,7 +913,7 @@ public sealed class EventRecordingTests
 	{
 		OnlyUnrecordableClass sut = new();
 		IEventRecording<OnlyUnrecordableClass> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount("Typo");
@@ -928,7 +929,7 @@ public sealed class EventRecordingTests
 	{
 		WithoutEvents sut = new();
 		IEventRecording<WithoutEvents> recording = sut.Record().Events();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount("CustomEvent");
@@ -947,7 +948,7 @@ public sealed class EventRecordingTests
 		IEventRecording<CustomEventClass> recording = subject.Record().Events();
 		subject.NotifyCustomEvent(1);
 		subject.NotifyCustomEvent(2);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 		subject.NotifyCustomEvent(3);
 
 		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(2);
@@ -962,7 +963,7 @@ public sealed class EventRecordingTests
 
 		IEventRecording<MemberRegisteredClass> recording = subject.Record().Events();
 		subject.NotifyCustomEvent(1);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.GetEventCount(nameof(MemberRegisteredClass.CustomEvent))).IsEqualTo(1)
 			.Because("a member registration says nothing about the events, which still have to be reflected over");
@@ -978,7 +979,7 @@ public sealed class EventRecordingTests
 		string? withThreeParameters = null;
 		string? withFourParameters = null;
 
-		await recording.StopWhen(r =>
+		await EventRecordings.StopWhen(recording,r =>
 		{
 			withoutParameters = r.ToString(nameof(ParameterCountsClass.WithoutParameters));
 			withThreeParameters = r.ToString(nameof(ParameterCountsClass.WithThreeParameters));
@@ -1028,7 +1029,7 @@ public sealed class EventRecordingTests
 		IEventRecording<RegisteredClass> recording = subject.Record().Events();
 		subject.NotifyCustomEvent(1);
 		subject.NotifyCustomEvent(2);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 		subject.NotifyCustomEvent(3);
 
 		await That(result.GetEventCount(nameof(RegisteredClass.CustomEvent), p => p[0] is 20)).IsEqualTo(1)
@@ -1049,7 +1050,7 @@ public sealed class EventRecordingTests
 		RegisterCustomEvent();
 		RegisteredClass sut = new();
 		IEventRecording<RegisteredClass> recording = sut.Record().Events(nameof(RegisteredClass.CustomEvent));
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.ToString(nameof(RegisteredClass.OtherEvent));
@@ -1066,7 +1067,7 @@ public sealed class EventRecordingTests
 		GC.Collect();
 		GC.WaitForPendingFinalizers();
 
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 		StaticEventClass.NotifyStaticEvent();
 
 		await That(StaticEventClass.HasSubscribers()).IsFalse()
@@ -1083,7 +1084,7 @@ public sealed class EventRecordingTests
 		subject.NotifyCustomEvent(1);
 		subject.NotifyCustomEvent(2);
 
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		subject.NotifyCustomEvent(3);
 
@@ -1096,7 +1097,7 @@ public sealed class EventRecordingTests
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.ToString()).IsEqualTo("sut");
 	}
@@ -1107,10 +1108,10 @@ public sealed class EventRecordingTests
 		CustomEventClass sut = new();
 
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
-		await recording.StopWhen(_ => false, TimeSpan.Zero);
+		await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		async Task Act()
-			=> await recording.StopWhen(_ => false, TimeSpan.Zero);
+			=> await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage(
@@ -1125,7 +1126,7 @@ public sealed class EventRecordingTests
 		IEventRecording<CustomEventClass> recording = subject.Record().Events();
 
 		async Task Act()
-			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+			=> await EventRecordings.StopWhen(recording,_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
 
 		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
 		subject.NotifyCustomEvent(1);
@@ -1144,7 +1145,7 @@ public sealed class EventRecordingTests
 			subject.NotifyCustomEvent(1);
 		});
 
-		IEventRecordingResult result = await recording.StopWhen(
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,
 			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) > 0, TimeSpan.MaxValue);
 
 		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
@@ -1160,7 +1161,7 @@ public sealed class EventRecordingTests
 			IEventRecording<CustomEventClass> recording = subject.Record().Events();
 			SynchronizationContext.Current!.Post(_ => subject.NotifyCustomEvent(1), null);
 
-			IEventRecordingResult result = await recording.StopWhen(
+			IEventRecordingResult result = await EventRecordings.StopWhen(recording,
 				r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) > 0, TimeSpan.FromSeconds(5));
 			return result.GetEventCount(nameof(CustomEventClass.CustomEvent));
 		});
@@ -1258,7 +1259,7 @@ public sealed class EventRecordingTests
 		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
 
 		async Task Act()
-			=> await recording.StopWhen(_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
+			=> await EventRecordings.StopWhen(recording,_ => throw new InvalidOperationException("boom"), TimeSpan.FromSeconds(1));
 
 		await That(Act).Throws<InvalidOperationException>().WithMessage("boom");
 		await That(subject.HasSubscribers()).IsTrue()
@@ -1275,7 +1276,7 @@ public sealed class EventRecordingTests
 	{
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
-		await recording.StopWhen(_ => false, TimeSpan.Zero);
+		await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> recording.UntilDisposed();
@@ -1291,9 +1292,9 @@ public sealed class EventRecordingTests
 	{
 		CustomEventClass subject = new();
 		using IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
-		Task<IEventRecordingResult> first = recording.StopWhen(
+		Task<IEventRecordingResult> first = EventRecordings.StopWhen(recording,
 			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) >= 1, TimeSpan.FromSeconds(30));
-		Task<IEventRecordingResult> second = recording.StopWhen(
+		Task<IEventRecordingResult> second = EventRecordings.StopWhen(recording,
 			r => r.GetEventCount(nameof(CustomEventClass.CustomEvent)) >= 2, TimeSpan.FromSeconds(30));
 
 		subject.NotifyCustomEvent(1);
@@ -1411,12 +1412,7 @@ public sealed class EventRecordingTests
 		}
 	}
 
-	private sealed class ForeignRecording : IEventRecording<CustomEventClass>
-	{
-		public Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-			IEvaluationContext? context = null, CancellationToken cancellationToken = default)
-			=> throw new NotSupportedException();
-	}
+	private sealed class ForeignRecording : IEventRecording<CustomEventClass>;
 
 	private sealed class MemberRegisteredClass
 	{
@@ -1585,7 +1581,7 @@ public sealed class EventRecordingTests
 		IEventRecording<RefStructHandlerClass> recording =
 			sut.Record().Events(nameof(RefStructHandlerClass.OtherEvent));
 		sut.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1)
 			.Because("an event that cannot be recorded must not cost the recording of the other events of its type");
@@ -1597,7 +1593,7 @@ public sealed class EventRecordingTests
 		RefStructHandlerClass sut = new();
 		IEventRecording<RefStructHandlerClass> recording = sut.Record().Events();
 		sut.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		void Act()
 			=> result.GetEventCount(nameof(RefStructHandlerClass.CustomEvent));
