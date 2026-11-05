@@ -1788,6 +1788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -2088,7 +2094,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -2392,7 +2399,8 @@ window.BENCHMARK_DATA = {
           11848.423706054688,
           8007.460526602609,
           11082.352454049247,
-          7737.92293724647
+          7737.92293724647,
+          7770.047457013811
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2628,6 +2636,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3013,7 +3022,8 @@ window.BENCHMARK_DATA = {
           378847.12942708336,
           305799.6998697917,
           384164.57200520835,
-          255276.38040364583
+          255276.38040364583,
+          303825.67996651784
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3322,7 +3332,8 @@ window.BENCHMARK_DATA = {
           590292,
           590225,
           590292,
-          590288
+          590288,
+          590225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3634,7 +3645,8 @@ window.BENCHMARK_DATA = {
           19844.6424407959,
           18782.80645751953,
           19764.84799194336,
-          14236.347882952008
+          14236.347882952008,
+          17668.177557138297
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3646,6 +3658,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5703,6 +5716,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -5996,7 +6015,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -6293,7 +6313,8 @@ window.BENCHMARK_DATA = {
           222.98982451643263,
           230.52727699279785,
           331.66513713200885,
-          182.89270445278711
+          182.89270445278711,
+          225.09995566095625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6489,6 +6510,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -6900,7 +6922,8 @@ window.BENCHMARK_DATA = {
           559.7048259735108,
           620.0523420480581,
           552.7654976526896,
-          422.539989344279
+          422.539989344279,
+          588.9297527166514
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6912,6 +6935,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7507,7 +7531,8 @@ window.BENCHMARK_DATA = {
           417.27505652109784,
           430.5890859535762,
           420.9972195943197,
-          314.79348105650683
+          314.79348105650683,
+          408.55249579747516
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7519,6 +7544,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14189,6 +14215,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -15252,7 +15284,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -16319,7 +16352,8 @@ window.BENCHMARK_DATA = {
           110.8168394168218,
           114.31955216481136,
           108.31948997974396,
-          85.58905855246952
+          85.58905855246952,
+          113.70171150990895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17318,6 +17352,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -18466,7 +18501,8 @@ window.BENCHMARK_DATA = {
           273.2477882703145,
           333.02160105338464,
           269.2680602709452,
-          196.07251926830835
+          196.07251926830835,
+          325.64638247856726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18659,6 +18695,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -19894,7 +19931,8 @@ window.BENCHMARK_DATA = {
           247.20246624946594,
           252.7544733115605,
           257.8455810546875,
-          176.76377620015825
+          176.76377620015825,
+          242.0282021522522
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -19906,6 +19944,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -22049,6 +22088,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -22349,7 +22394,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -22653,7 +22699,8 @@ window.BENCHMARK_DATA = {
           221.87041754381997,
           225.21922567912512,
           219.41062421798705,
-          158.1358119249344
+          158.1358119249344,
+          217.3489405155182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22858,6 +22905,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -23274,7 +23322,8 @@ window.BENCHMARK_DATA = {
           557.1706539789835,
           689.3851971626282,
           581.1067529678345,
-          423.374032052358
+          423.374032052358,
+          665.6529387791951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23286,6 +23335,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -23895,7 +23945,8 @@ window.BENCHMARK_DATA = {
           360.3339057990483,
           363.3836651581984,
           355.635246855872,
-          278.29092270533243
+          278.29092270533243,
+          352.13671181996665
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23907,6 +23958,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -30584,6 +30636,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -31647,7 +31705,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -32714,7 +32773,8 @@ window.BENCHMARK_DATA = {
           734.2616960525513,
           631.9942833093496,
           739.7887395858764,
-          571.2629759652274
+          571.2629759652274,
+          618.5508168765476
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -33701,6 +33761,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -34861,7 +34922,8 @@ window.BENCHMARK_DATA = {
           1437.7000745137532,
           1582.185786655971,
           1450.913328297933,
-          1163.5314646402994
+          1163.5314646402994,
+          1543.6967314311437
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35054,6 +35116,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -36289,7 +36352,8 @@ window.BENCHMARK_DATA = {
           670.2423388799032,
           672.546628888448,
           710.2224672317504,
-          546.6877751668294
+          546.6877751668294,
+          647.6328786849975
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36301,6 +36365,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -43022,6 +43087,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -44085,7 +44156,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -45152,7 +45224,8 @@ window.BENCHMARK_DATA = {
           694.7938178869395,
           645.4106723240444,
           726.022767680032,
-          557.9554260889689
+          557.9554260889689,
+          628.684294627263
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46139,6 +46212,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -47299,7 +47373,8 @@ window.BENCHMARK_DATA = {
           28616.301666259766,
           18452.562399727958,
           28945.438170369467,
-          17078.28748732347
+          17078.28748732347,
+          18253.325486246744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48371,7 +48446,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48727,7 +48803,8 @@ window.BENCHMARK_DATA = {
           810.2592638015747,
           800.3759000641959,
           845.544377708435,
-          635.1385590871175
+          635.1385590871175,
+          757.0284495035808
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48739,6 +48816,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -51230,6 +51308,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -51588,7 +51672,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -51950,7 +52035,8 @@ window.BENCHMARK_DATA = {
           644.0213925043741,
           652.1798827489217,
           635.0987175623576,
-          483.70685144571155
+          483.70685144571155,
+          626.863347307841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -52244,6 +52330,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -52687,7 +52774,8 @@ window.BENCHMARK_DATA = {
           84526.63145345052,
           34472.49961344401,
           85032.96202674278,
-          54837.705802408855
+          54837.705802408855,
+          34273.07128470285
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53054,6 +53142,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -55204,6 +55293,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -55562,7 +55657,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -55924,7 +56020,8 @@ window.BENCHMARK_DATA = {
           150.7730212722506,
           151.77758941283594,
           139.74606606165568,
-          103.30361034870148
+          103.30361034870148,
+          142.81591520309448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56218,6 +56315,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -56661,7 +56759,8 @@ window.BENCHMARK_DATA = {
           32627.190293532152,
           17606.92450358073,
           33927.89495035807,
-          14959.991483561198
+          14959.991483561198,
+          17179.020436604816
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57028,6 +57127,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -57384,7 +57484,8 @@ window.BENCHMARK_DATA = {
           254.8461046854655,
           253.34391431808473,
           255.40481907980782,
-          184.632887951533
+          184.632887951533,
+          240.75408074061076
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57396,6 +57497,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -59539,6 +59641,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -59839,7 +59947,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -60143,7 +60252,8 @@ window.BENCHMARK_DATA = {
           303.8098799864451,
           297.31087248665943,
           308.7871476809184,
-          228.49099661622728
+          228.49099661622728,
+          285.74098148345945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60348,6 +60458,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -60764,7 +60875,8 @@ window.BENCHMARK_DATA = {
           425.58067301341464,
           495.58503580093384,
           418.9914395014445,
-          330.6550660133362
+          330.6550660133362,
+          473.8753970691136
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60776,6 +60888,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -61385,7 +61498,8 @@ window.BENCHMARK_DATA = {
           421.1149085998535,
           412.64992292722064,
           424.36002124150593,
-          347.74627742767336
+          347.74627742767336,
+          398.028454712459
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -61397,6 +61511,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -63496,6 +63611,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -63796,7 +63917,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -64100,7 +64222,8 @@ window.BENCHMARK_DATA = {
           738.699691431863,
           716.7567487444196,
           748.310804435185,
-          570.0206724575588
+          570.0206724575588,
+          698.2741949558258
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64336,6 +64459,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -64721,7 +64845,8 @@ window.BENCHMARK_DATA = {
           2097.5002080281574,
           2318.2189619881765,
           2120.196397781372,
-          1638.542156346639
+          1638.542156346639,
+          2207.2546043395996
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -64733,6 +64858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -65342,7 +65468,8 @@ window.BENCHMARK_DATA = {
           999.0179740360805,
           953.9402889524188,
           1022.1797915140788,
-          830.564300610469
+          830.564300610469,
+          914.9931436947414
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -65354,6 +65481,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -67453,6 +67581,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -67753,7 +67887,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -68057,7 +68192,8 @@ window.BENCHMARK_DATA = {
           12352.81035723005,
           9744.20619419643,
           12270.772983006069,
-          8522.82632798415
+          8522.82632798415,
+          9716.588502066475
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -68296,6 +68432,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -68678,7 +68815,8 @@ window.BENCHMARK_DATA = {
           40617.080993652344,
           32005.039204915363,
           40382.99315970285,
-          27342.850977971004
+          27342.850977971004,
+          32862.370064871655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -68987,6 +69125,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -69299,7 +69438,8 @@ window.BENCHMARK_DATA = {
           10771.456242152623,
           9031.955790593074,
           10709.443417140415,
-          7896.369658333914
+          7896.369658333914,
+          9091.033655439105
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -69311,6 +69451,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -71410,6 +71551,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
         "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
+      },
+      {
+        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
+        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
       }
     ],
     "labels": [
@@ -71710,7 +71857,8 @@ window.BENCHMARK_DATA = {
       "0c95f82a",
       "13f124fd",
       "60f2a583",
-      "4f093bbd"
+      "4f093bbd",
+      "a5924ccd"
     ],
     "datasets": [
       {
@@ -72014,7 +72162,8 @@ window.BENCHMARK_DATA = {
           11766.402814424955,
           9131.166567993165,
           11723.398033650716,
-          8110.120013645717
+          8110.120013645717,
+          9151.2462111253
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -72253,6 +72402,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -72635,7 +72785,8 @@ window.BENCHMARK_DATA = {
           58910.60290527344,
           45697.09262084961,
           60028.240342360274,
-          38798.54372297014
+          38798.54372297014,
+          46678.667189534506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -72926,6 +73077,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -73256,7 +73408,8 @@ window.BENCHMARK_DATA = {
           21327.76236666166,
           17746.82735334124,
           21463.75767211914,
-          15368.306867327008
+          15368.306867327008,
+          17911.49846473107
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -73268,6 +73421,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
