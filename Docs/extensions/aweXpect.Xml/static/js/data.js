@@ -1458,6 +1458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -1703,7 +1709,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -1952,7 +1959,8 @@ window.BENCHMARK_DATA = {
           491.8521828651428,
           766.1589309147427,
           868.0472666195461,
-          692.040686861674
+          692.040686861674,
+          835.4179099400839
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2133,6 +2141,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2463,7 +2472,8 @@ window.BENCHMARK_DATA = {
           378.67552845818653,
           803.1279058456421,
           699.1890646389553,
-          570.8611010771531
+          570.8611010771531,
+          755.3909554163615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2475,6 +2485,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4189,6 +4200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -4434,7 +4451,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -4683,7 +4701,8 @@ window.BENCHMARK_DATA = {
           3036.8672655741375,
           5039.038271767752,
           4857.692450968424,
-          3571.4985724857875
+          3571.4985724857875,
+          4914.060402933756
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4937,7 +4956,8 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24172,
-          24179
+          24179,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5194,7 +5214,8 @@ window.BENCHMARK_DATA = {
           3323.279590352376,
           5818.160186258951,
           5679.595049540202,
-          3891.1916834513345
+          3891.1916834513345,
+          5832.564754740397
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5206,6 +5227,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6860,6 +6882,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -7095,7 +7123,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -7334,7 +7363,8 @@ window.BENCHMARK_DATA = {
           1556.0332471302577,
           2831.3306193033854,
           2803.5553299585977,
-          2106.973723347982
+          2106.973723347982,
+          2781.6805905659994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7578,7 +7608,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7825,7 +7856,8 @@ window.BENCHMARK_DATA = {
           2089.884005619929,
           3703.4350382486978,
           3686.421055348714,
-          2978.742046083723
+          2978.742046083723,
+          3722.167692057292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7837,6 +7869,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9481,6 +9514,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
@@ -9716,7 +9755,8 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
@@ -9955,7 +9995,8 @@ window.BENCHMARK_DATA = {
           8038.047477722168,
           13894.258349100748,
           14486.604932657878,
-          10606.586554972331
+          10606.586554972331,
+          14673.151072184244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10199,7 +10240,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10446,7 +10488,8 @@ window.BENCHMARK_DATA = {
           186145.7418561663,
           283493.42619977676,
           356686.0393880208,
-          260398.90970052083
+          260398.90970052083,
+          342786.5363606771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10690,7 +10733,8 @@ window.BENCHMARK_DATA = {
           544335,
           544246,
           544335,
-          544335
+          544335,
+          544298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
