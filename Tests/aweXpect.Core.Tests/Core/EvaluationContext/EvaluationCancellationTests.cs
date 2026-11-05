@@ -64,7 +64,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task ForRemainingTimeout_ShouldMeasureAndElapseOnTheTimeProvider()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		EvaluationCancellation sut = EvaluationCancellation.Create(10.Seconds(), CancellationToken.None, timeProvider);
 		timeSystem.TimeProvider.AdvanceBy(4.Seconds());
@@ -307,7 +307,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task Reason_WhenTheTimeoutElapsedOnTheTimeProvider_ShouldBeTimeout()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeProvider);
 
@@ -397,7 +397,7 @@ public class EvaluationCancellationTests
 	/// </summary>
 	private static EvaluationCancellation TimedOutAfter(TimeSpan timeout, CancellationToken callerToken = default)
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		EvaluationCancellation cancellation = new(timeout, callerToken, null, timeProvider);
 		timeSystem.TimeProvider.AdvanceBy(timeout);
