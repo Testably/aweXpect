@@ -296,7 +296,7 @@ public sealed class OnCompletedTests
 	public async Task WhenTimedOut_ShouldReceiveTheTokenOfTheCaller()
 	{
 		SideEffectLog log = new();
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		CancellationToken evaluationToken = default;

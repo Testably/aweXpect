@@ -398,7 +398,7 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		long start = time.GetTimestamp();
 		Exception? exception;
@@ -449,7 +449,7 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
@@ -541,7 +541,7 @@ public sealed class CustomizeSettingsTests
 	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		long start = time.GetTimestamp();
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation

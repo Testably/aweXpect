@@ -429,7 +429,7 @@ public sealed partial class ThatEventRecording
 						await That(recording)
 							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 							.Within(30.Seconds()).WithTimeout(60.Seconds())
-							.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
+							.WithTimeProvider(new MockTimeSystem(o => o.EnableStrictTimerOrder()).ToTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}

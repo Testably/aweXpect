@@ -306,7 +306,7 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenChainedWithAnd_WhenALaterWaitIsCutShortByTheTimeout_ShouldFailWithTheTimeout()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();

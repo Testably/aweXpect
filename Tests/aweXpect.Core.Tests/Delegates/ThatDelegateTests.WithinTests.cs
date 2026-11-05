@@ -31,7 +31,7 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 		{
-			MockTimeSystem timeSystem = new();
+			MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 			long start = timeProvider.GetTimestamp();
 			CancellationToken? delegateToken = null;

@@ -561,7 +561,7 @@ public sealed partial class ThatGeneric
 				{
 					async Task Act()
 						=> await That(subject).Satisfies(_ => false).Within(30.Seconds()).WithTimeout(60.Seconds())
-							.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
+							.WithTimeProvider(new MockTimeSystem(o => o.EnableStrictTimerOrder()).ToTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -586,7 +586,7 @@ public sealed partial class ThatGeneric
 				{
 					async Task Act()
 						=> await That(subject).Satisfies(_ => false).Within(30.Seconds())
-							.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
+							.WithTimeProvider(new MockTimeSystem(o => o.EnableStrictTimerOrder()).ToTimeProvider());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}

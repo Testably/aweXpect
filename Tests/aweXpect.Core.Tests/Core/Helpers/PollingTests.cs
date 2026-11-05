@@ -11,7 +11,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task Elapsed_AfterACancellation_ShouldStayAtTheTimeOfTheCancellation()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
@@ -159,7 +159,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimitedAndTheCallerCancels_ShouldBeCanceled()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
@@ -204,7 +204,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancels_ShouldBeCanceled()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
@@ -252,7 +252,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancelsDuringALaterWait_ShouldBeCanceled()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider time = timeSystem.ToTimeProvider();
 		using CancellationTokenSource cts = new();
 		EvaluationCancellation cancellation = new(null, cts.Token);
@@ -312,7 +312,7 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutElapsedBeforeTheStart_ShouldBeCanceled()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		EvaluationCancellation cancellation = new(100.Milliseconds(), CancellationToken.None, null, timeProvider);
 		timeSystem.TimeProvider.AdvanceBy(100.Milliseconds());

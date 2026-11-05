@@ -279,7 +279,7 @@ public sealed class ResultContextTests
 		[Test]
 		public async Task WhenCallbackThrowsOnCancellation_AfterTheTimeout_ShouldStillReportTheFailure()
 		{
-			MockTimeSystem timeSystem = new();
+			MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 			TimeProvider timeProvider = timeSystem.ToTimeProvider();
 
 			async Task Act()

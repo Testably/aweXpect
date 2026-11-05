@@ -144,7 +144,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 #if NET8_0_OR_GREATER
 				Func<Task> @delegate = () => Task.Delay(30.Seconds(), time, CancellationToken.None);
@@ -324,7 +324,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 #if NET8_0_OR_GREATER
 				ValueTask Delegate() => new(Task.Delay(30.Seconds(), time, CancellationToken.None));
@@ -420,7 +420,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				ValueTask Delegate(CancellationToken token) => new(timeSystem.Task.Delay(30.Seconds(), token));
 
@@ -586,7 +586,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				ValueTask<int> Delegate(CancellationToken token)
 					=> new(timeSystem.Task.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
@@ -746,7 +746,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
@@ -765,7 +765,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
@@ -788,7 +788,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
@@ -807,7 +807,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
@@ -830,7 +830,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithoutReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
@@ -849,7 +849,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
@@ -872,7 +872,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAbandonIt()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 #if NET8_0_OR_GREATER
 				Func<Task> @delegate = () => Task.Delay(30.Seconds(), time, CancellationToken.None);
@@ -923,7 +923,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenLaterTimeoutIsLonger_ShouldKeepTheUpperBound()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
@@ -1025,7 +1025,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task> @delegate = token => timeSystem.Task.Delay(30.Seconds(), token);
 
@@ -1043,7 +1043,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				MockTimeSystem timeSystem = new();
+				MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 				TimeProvider time = timeSystem.ToTimeProvider();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
