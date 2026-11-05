@@ -353,7 +353,7 @@ public class EvaluationCancellationTests
 	{
 		Signaler<int> signaler = new();
 		signaler.Signal(1);
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		int calls = 0;
