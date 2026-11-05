@@ -1458,6 +1458,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -1703,7 +1709,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -1952,7 +1959,8 @@ window.BENCHMARK_DATA = {
           1570.6625500996909,
           1576.177994801448,
           1528.5788828042837,
-          1219.3007618586223
+          1219.3007618586223,
+          1164.7170331319173
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2098,6 +2106,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2463,7 +2472,8 @@ window.BENCHMARK_DATA = {
           11264.263571519117,
           10150.386913553873,
           10062.187292916435,
-          8192.451523917061
+          8192.451523917061,
+          7441.881343841553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2475,6 +2485,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4189,6 +4200,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -4434,7 +4451,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -4683,7 +4701,8 @@ window.BENCHMARK_DATA = {
           1255.5343602044243,
           1232.4859441121419,
           1232.718726671659,
-          970.8439986889178
+          970.8439986889178,
+          933.2086126963297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4829,6 +4848,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5194,7 +5214,8 @@ window.BENCHMARK_DATA = {
           10249.275527954102,
           10305.47396138509,
           9264.010444054236,
-          6476.932324727376
+          6476.932324727376,
+          7202.76773223877
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5206,6 +5227,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -6860,6 +6882,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -7095,7 +7123,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -7334,7 +7363,8 @@ window.BENCHMARK_DATA = {
           4044.3626001993816,
           4038.6126118977863,
           3819.931579883282,
-          3289.137732872596
+          3289.137732872596,
+          2926.7716601445127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7517,6 +7547,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -7825,7 +7856,8 @@ window.BENCHMARK_DATA = {
           31231.133309500558,
           30463.608463541666,
           28614.575122070313,
-          20919.911678059896
+          20919.911678059896,
+          20694.152872721355
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8069,7 +8101,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61705,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9481,6 +9514,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -9716,7 +9755,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -9955,7 +9995,8 @@ window.BENCHMARK_DATA = {
           7734.413223266602,
           7306.787633455717,
           7283.224003131573,
-          5693.14376613072
+          5693.14376613072,
+          5008.315219116211
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10091,6 +10132,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -10446,7 +10488,8 @@ window.BENCHMARK_DATA = {
           224622.6550048828,
           206065.43764648438,
           199326.73543875557,
-          142479.34682617188
+          142479.34682617188,
+          145885.21360677082
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10678,6 +10721,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -12102,6 +12146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -12337,7 +12387,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -12576,7 +12627,8 @@ window.BENCHMARK_DATA = {
           2234.763489649846,
           2221.3314648946125,
           2224.5750097547257,
-          1630.878024646214
+          1630.878024646214,
+          1528.5327204295568
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12762,6 +12814,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -13067,7 +13120,8 @@ window.BENCHMARK_DATA = {
           1567.7584961482457,
           1488.753778048924,
           1473.186813218253,
-          1149.155450957162
+          1149.155450957162,
+          1047.2323877334595
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13079,6 +13133,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -14723,6 +14778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -14958,7 +15019,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -15197,7 +15259,8 @@ window.BENCHMARK_DATA = {
           2335.956957244873,
           2211.8910472576435,
           2177.089767964681,
-          1540.5200232097081
+          1540.5200232097081,
+          1493.6359672546387
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15380,6 +15443,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -15688,7 +15752,8 @@ window.BENCHMARK_DATA = {
           1532.6604554494222,
           1324.189241663615,
           1333.9619255065918,
-          1040.5297092437745
+          1040.5297092437745,
+          925.8834203402201
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15700,6 +15765,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -16642,6 +16708,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -16760,7 +16832,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -16882,7 +16955,8 @@ window.BENCHMARK_DATA = {
           1878.9646237691243,
           1776.2979638235909,
           1720.5347955067953,
-          1320.2512763341267
+          1320.2512763341267,
+          1257.9205870310466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16948,6 +17022,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -17139,7 +17214,8 @@ window.BENCHMARK_DATA = {
           987.9210304260254,
           912.8885090901301,
           924.3374543507894,
-          587.7667066710336
+          587.7667066710336,
+          552.3154356820243
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17151,6 +17227,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -17976,6 +18053,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -18094,7 +18177,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -18216,7 +18300,8 @@ window.BENCHMARK_DATA = {
           2448.1776609420776,
           2302.976835123698,
           2271.038771311442,
-          1688.860026223319
+          1688.860026223319,
+          1640.911438369751
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18266,6 +18351,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -18473,7 +18559,8 @@ window.BENCHMARK_DATA = {
           1104.2503603526525,
           1038.7029108683269,
           1039.5310550417219,
-          754.0119138445173
+          754.0119138445173,
+          692.7010534286499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18485,6 +18572,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -18968,6 +19056,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -19029,7 +19123,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -19094,7 +19189,8 @@ window.BENCHMARK_DATA = {
           129386.39495442709,
           127523.44786658653,
           127669.76213191106,
-          105614.15098353794
+          105614.15098353794,
+          92246.59491373698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19106,6 +19202,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -19237,7 +19334,8 @@ window.BENCHMARK_DATA = {
           153813.46525065103,
           146826.62983398436,
           148206.3178222656,
-          116721.84833635602
+          116721.84833635602,
+          110132.98283168247
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19307,7 +19405,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
-          266950
+          266950,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19675,6 +19774,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
         "message": "feat: keep named snapshots in a directory per test file and method (#2181)"
+      },
+      {
+        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
+        "message": "feat: store public API snapshots as C# files (#2182)"
       }
     ],
     "labels": [
@@ -19736,7 +19841,8 @@ window.BENCHMARK_DATA = {
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
-      "34bd6e69"
+      "34bd6e69",
+      "e1ceda7d"
     ],
     "datasets": [
       {
@@ -19801,7 +19907,8 @@ window.BENCHMARK_DATA = {
           2153.941861216227,
           2112.248678334554,
           2031.5272695101226,
-          1473.075864655631
+          1473.075864655631,
+          1501.0403453826905
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19813,6 +19920,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -19944,7 +20052,8 @@ window.BENCHMARK_DATA = {
           1498.5659577687582,
           1394.433391571045,
           1352.8242018381754,
-          1158.7170741217476
+          1158.7170741217476,
+          1050.0155845055212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19956,6 +20065,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
