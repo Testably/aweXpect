@@ -28,6 +28,21 @@ public sealed class ReflectionCustomizationExtensionsTests
 #endif
 
 	[Test]
+	public async Task ExcludedAttributeTypes_SetListWithNull_ShouldThrowArgumentException()
+	{
+		void Act()
+		{
+			Customize.aweXpect.Reflection().ExcludedAttributeTypes.Set([UnusedAttributeName, null!,]);
+		}
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("value").And
+			.WithMessage("The 'value' cannot contain null.").AsPrefix()
+			.Because("a null attribute type name would silently exclude nothing");
+		await That(Customize.aweXpect.Reflection().ExcludedAttributeTypes.Get()).IsEmpty();
+	}
+
+	[Test]
 	public async Task ExcludedAttributeTypes_SetNull_ShouldThrowArgumentNullException()
 	{
 		void Act()

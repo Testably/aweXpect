@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -95,7 +96,7 @@ public partial class AwexpectCustomization
 					"TUnit",
 					"Castle",
 					"DynamicProxyGenAssembly2",
-				]));
+				]), ThrowIfContainsNull);
 			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
 				TestCancellationKey, null);
 		}
@@ -202,5 +203,14 @@ public partial class AwexpectCustomization
 		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
 		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
 			=> _awexpectCustomization.Set(key, value);
+
+		private static void ThrowIfContainsNull<TItem>(IReadOnlyList<TItem> value)
+		{
+			if (value.Any(item => item is null))
+			{
+				throw Tracing.WriteException(
+					new ArgumentException("The 'value' cannot contain null.", nameof(value)));
+			}
+		}
 	}
 }
