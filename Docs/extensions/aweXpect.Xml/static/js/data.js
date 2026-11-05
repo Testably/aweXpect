@@ -1422,6 +1422,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
@@ -1661,7 +1667,8 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
@@ -1904,7 +1911,8 @@ window.BENCHMARK_DATA = {
           663.2587267330715,
           968.7068709055583,
           454.7808568318685,
-          663.5153481619699
+          663.5153481619699,
+          907.2345884958903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2085,6 +2093,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2403,7 +2412,8 @@ window.BENCHMARK_DATA = {
           610.7837354342142,
           707.5646392504374,
           356.2112155596415,
-          579.7057327906291
+          579.7057327906291,
+          747.904140218099
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2415,6 +2425,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4087,6 +4098,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
@@ -4326,7 +4343,8 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
@@ -4569,7 +4587,8 @@ window.BENCHMARK_DATA = {
           3729.209423319499,
           4479.711524709066,
           2652.96089553833,
-          3919.2665621439614
+          3919.2665621439614,
+          4777.037054208608
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4817,7 +4836,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24178,
-          24172
+          24172,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5068,7 +5088,8 @@ window.BENCHMARK_DATA = {
           4454.675517272949,
           5262.970968627929,
           3051.8571390424454,
-          4404.240319824219
+          4404.240319824219,
+          5609.461873881022
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5080,6 +5101,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -6692,6 +6714,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
@@ -6921,7 +6949,8 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
@@ -7154,7 +7183,8 @@ window.BENCHMARK_DATA = {
           2186.3819833483017,
           2495.2194463094074,
           1476.146279335022,
-          2180.5318517049154
+          2180.5318517049154,
+          2679.6013394673664
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7377,6 +7407,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -7633,7 +7664,8 @@ window.BENCHMARK_DATA = {
           2914.4485071818035,
           3495.121695298415,
           2029.2652422587078,
-          2969.134270477295
+          2969.134270477295,
+          3686.4691530863442
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7645,6 +7677,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9247,6 +9280,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
         "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
+      },
+      {
+        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
+        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
       }
     ],
     "labels": [
@@ -9476,7 +9515,8 @@ window.BENCHMARK_DATA = {
       "6f1c949d",
       "7f817d0f",
       "850f7373",
-      "0c95f82a"
+      "0c95f82a",
+      "13f124fd"
     ],
     "datasets": [
       {
@@ -9709,7 +9749,8 @@ window.BENCHMARK_DATA = {
           10954.243966238839,
           13753.998119899205,
           7572.715437825521,
-          10839.00433894566
+          10839.00433894566,
+          13688.482481384277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9932,6 +9973,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -10188,7 +10230,8 @@ window.BENCHMARK_DATA = {
           259388.03951822917,
           363949.9604116586,
           174436.33787434894,
-          259438.26123046875
+          259438.26123046875,
+          369416.5108816964
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10423,6 +10466,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335,
