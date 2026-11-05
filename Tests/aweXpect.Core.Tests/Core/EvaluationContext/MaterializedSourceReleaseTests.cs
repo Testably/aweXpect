@@ -73,7 +73,7 @@ public sealed class MaterializedSourceReleaseTests
 	[Test]
 	public async Task WhenDisposeIsPending_BetweenAttemptsOfEventually_WithTimeoutThatIsNotShorter_ShouldFail()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		PendingDisposeAsyncEnumerable source = new([1, 2,], () => timeSystem.TimeProvider.AdvanceBy(60.Seconds()));
 		Func<IAsyncEnumerable<int>> subject = () => source;

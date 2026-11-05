@@ -75,7 +75,7 @@ public sealed class EvaluationTimeProviderTests
 	[Test]
 	public async Task Signaled_Within_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeout()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		Signaler signaler = new();
@@ -143,7 +143,7 @@ public sealed class EvaluationTimeProviderTests
 	[Test]
 	public async Task Triggered_Within_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeout()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		CustomEventClass sut = new();
@@ -167,7 +167,7 @@ public sealed class EvaluationTimeProviderTests
 	[Test]
 	public async Task WithTimeout_ShouldElapseOnTheTimeProvider()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		bool? isCanceledAfterTheTimeout = null;
 		Func<CancellationToken, Task> subject = token =>

@@ -128,7 +128,7 @@ public sealed class RepeatedCheckExtensionTests
 		{
 			async Task Act()
 				=> await That(probe).ReturnsPositive().Within(30.Seconds()).WithTimeout(60.Seconds())
-					.WithTimeProvider(new MockTimeSystem().ToTimeProvider());
+					.WithTimeProvider(new MockTimeSystem(o => o.EnableStrictTimerOrder()).ToTimeProvider());
 
 			exception = await Catch.ExceptionAsync(Act);
 		}

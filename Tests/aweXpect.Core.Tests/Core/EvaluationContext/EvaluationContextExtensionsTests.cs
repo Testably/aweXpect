@@ -32,7 +32,7 @@ public class EvaluationContextExtensionsTests
 	[Test]
 	public async Task CancelAfter_ShouldCancelOnTheTimeProviderOfTheEvaluation()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		IEvaluationContext context = new Context
 		{

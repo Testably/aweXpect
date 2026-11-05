@@ -451,7 +451,7 @@ public sealed class NestedExpectationEvaluationTests
 	[Test]
 	public async Task NestedWait_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeoutOnTheTimeProviderOfTheEvaluation()
 	{
-		MockTimeSystem timeSystem = new();
+		MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 		TimeProvider timeProvider = timeSystem.ToTimeProvider();
 		long start = timeProvider.GetTimestamp();
 		MyClass subject = new()

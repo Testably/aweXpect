@@ -678,7 +678,7 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 		{
-			MockTimeSystem timeSystem = new();
+			MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 			TimeProvider time = timeSystem.ToTimeProvider();
 			long start = time.GetTimestamp();
 			using CancellationTokenSource cts = new();
@@ -1123,7 +1123,7 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTestCancellationTimeoutExpires_ShouldFail()
 		{
 			Counter counter = new();
-			MockTimeSystem timeSystem = new();
+			MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 			TimeProvider time = timeSystem.ToTimeProvider();
 			long start = time.GetTimestamp();
 			Exception? exception;
@@ -1710,7 +1710,7 @@ public sealed partial class ThatDelegateTests
 		public async Task WithTimeout_ShouldCancelTheRetries()
 		{
 			Counter counter = new();
-			MockTimeSystem timeSystem = new();
+			MockTimeSystem timeSystem = new(o => o.EnableStrictTimerOrder());
 			TimeProvider time = timeSystem.ToTimeProvider();
 			long start = time.GetTimestamp();
 
