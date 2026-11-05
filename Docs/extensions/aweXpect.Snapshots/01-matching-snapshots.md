@@ -81,7 +81,7 @@ await That(json).MatchesSnapshot().WithExtension("json");
 
 The extension replaces `txt` in both files, e.g. `AlbumTests.Describes.awexpect-snapshot.json` and
 `AlbumTests.Describes.awexpect-snapshot.pending.json`, also together with a name or an environment, e.g.
-`AlbumTests.Describes.Abbey Road@net8.0.awexpect-snapshot.html` for
+`AlbumTests/Describes/Abbey Road@net8.0.awexpect-snapshot.html` for
 `.Named("Abbey Road").UniqueFor.TargetFramework().WithExtension("html")`. It is passed without the leading dot. Objects
 are always stored as `.txt`.
 

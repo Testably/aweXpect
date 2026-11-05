@@ -85,7 +85,7 @@ public static class SnapshotsCustomizationExtensions
 
 		/// <summary>
 		///     Names each snapshot of a parameterized test after the arguments of the running test case, e.g.
-		///     <c>&lt;Class&gt;.&lt;Method&gt;.Abbey Road_1969.awexpect-snapshot.txt</c>, so that its cases are kept apart
+		///     <c>&lt;Class&gt;/&lt;Method&gt;/Abbey Road_1969.awexpect-snapshot.txt</c>, so that its cases are kept apart
 		///     without <c>.NamedAfter(…)</c>.
 		/// </summary>
 		/// <remarks>
@@ -101,9 +101,9 @@ public static class SnapshotsCustomizationExtensions
 		///     <see cref="float" /> with the fewest digits that round-trip, and a collection, tuple, record or other object
 		///     like in a snapshot, e.g. <c>[1, 2, 3]</c>; a <see cref="System.Threading.CancellationToken" /> is skipped. The
 		///     arguments of a parameterized test class come first, but only values, so that an injected fixture is skipped,
-		///     while every argument of the test method is written. Like every name, a name longer than 64 characters in the
-		///     file name, where each escaped character takes three, is shortened and ends with <c>~</c> and a hash of the
-		///     whole name, so that it stays unique.<br />
+		///     while every argument of the test method is written. A name longer than 64 characters in the file name, where
+		///     each escaped character takes three, is shortened and ends with <c>~</c> and a hash of the whole name, so that
+		///     it stays unique.<br />
 		///     An argument that is written differently in each run, e.g. a new <see cref="System.Guid" />, gives the snapshot
 		///     another name in each run, so name such a test with <c>.Named(…)</c> or <c>.NamedAfter(…)</c> instead.
 		/// </remarks>

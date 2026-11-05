@@ -43,11 +43,11 @@ public sealed partial class ThatSnapshot
 			}
 
 			[Test]
-			[Arguments("1.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20")]
+			[Arguments("1:2:3:4:5:6:7:8:9:10:11:12:13:14:15:16:17:18:19:20")]
 			public async Task WhenArgumentsAreLongOnceEscaped_ShouldShortenTheName(string version)
 			{
-				await ShouldBeNamed("1.2.3.4.5.6.7.8.9.10.11.12.13~9b01af3b", result => result,
-					$"each '.' in {version} takes three characters in the file name, where the length is limited");
+				await ShouldBeNamed("1:2:3:4:5:6:7:8:9:10:11:12:13~1edbd847", result => result,
+					$"each ':' in {version} takes three characters in the file name, where the length is limited");
 			}
 
 			[Test]
@@ -56,8 +56,8 @@ public sealed partial class ThatSnapshot
 			public async Task WhenArgumentsAreLong_ShouldShortenTheNameAndAppendAHashOfTheWholeName(string title)
 			{
 				string name = title.EndsWith("One)")
-					? "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac"
-					: "Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~cd159f2a";
+					? "Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~e0c652ac"
+					: "Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~cd159f2a";
 
 				await ShouldBeNamed(name, result => result,
 					"a file name has a limited length, and the hash keeps two names apart that only differ after the first 55 characters in the file name");
@@ -92,7 +92,7 @@ public sealed partial class ThatSnapshot
 			[Arguments("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super Deluxe Edition")]
 			public async Task WhenNamedAndTheNameBecomesLong_ShouldShortenTheWholeName(string title)
 			{
-				await ShouldBeNamed("Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~8e83c61c",
+				await ShouldBeNamed("Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~8e83c61c",
 					result => result.Named("Disc One"),
 					$"the name appended to the arguments of {title} counts towards the limited length");
 			}

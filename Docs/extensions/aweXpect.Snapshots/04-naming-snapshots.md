@@ -19,21 +19,34 @@ public async Task Describes(string title)
 }
 ```
 
-The name is appended to the file names, e.g. `AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt`. The same
-applies to several snapshots in one test method.
+A named snapshot is kept in a directory for the test file and one for the test method, so that the snapshots of a test
+stay together:
+
+```text
+AlbumTests.cs
+AlbumTests/
+  Describes/
+    Abbey Road.awexpect-snapshot.txt
+    Let It Be.awexpect-snapshot.txt
+```
+
+The same applies to several snapshots in one test method, e.g. to the generated files of a source generator with
+`.Named("Album.g").WithExtension("cs")`.
 
 <details>
 <summary>Escaped characters and long names</summary>
 
 Characters that a file name cannot hold on every operating system (`< > : " / \ | ? *` and control characters), as well
-as `%` and `.`, are escaped as `%XX` in the file name, e.g. `.Named("AC/DC")` is stored in
-`ArtistTests.Describes.AC%2FDC.awexpect-snapshot.txt`. The same holds for `@`, which separates the environment (see
-below).
+as `%`, are escaped as `%XX` in the file name, e.g. `.Named("AC/DC")` is stored in `AC%2FDC.awexpect-snapshot.txt`. The
+same holds for `@`, which separates the environment (see below). A dot is kept, e.g. `.Named("v1.2")` is stored in
+`v1.2.awexpect-snapshot.txt`. The first character of a name that Windows reserves for a device, e.g. `CON` or `NUL`, is
+escaped as well.
 
-A name longer than 64 characters in the file name, where each escaped character takes three, is shortened to 55
-characters, followed by `~` and a hash of the whole name, e.g.
-`Sgt. Pepper's Lonely Hearts Club Band (Remastered Sup~e0c652ac`, so that the path of the snapshot stays short enough
-for every file system. This applies to every name, also to one from `.Named(…)`.
+A name from `.Named(…)` is kept as it is. A name that is written from arguments, by `.NamedAfter(…)` or after the
+test case (see below), and is longer than 64 characters in the file name, where each escaped character takes three, is
+shortened to 55 characters, followed by `~` and a hash of the whole name, e.g.
+`Sgt. Pepper's Lonely Hearts Club Band (Remastered Super~e0c652ac`, so that the path of the snapshot stays short enough
+for every file system.
 
 </details>
 
@@ -60,8 +73,8 @@ they are the same file on Windows and macOS but two files on Linux:
 
 ```text title="Failure message"
 Expected that description
-matches the snapshot "/src/Tests/AlbumTests.Describes.live.awexpect-snapshot.txt",
-but the snapshot "/src/Tests/AlbumTests.Describes.Live.awexpect-snapshot.txt", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
+matches the snapshot "/src/Tests/AlbumTests/Describes/live.awexpect-snapshot.txt",
+but the snapshot "/src/Tests/AlbumTests/Describes/Live.awexpect-snapshot.txt", whose id only differs in case, was already used in this test run, so give them names that differ in more than the case with .Named(…) or .NamedAfter(…)
 ```
 
 </details>
@@ -84,7 +97,7 @@ public async Task Describes(string title, int year)
 ```
 
 The values are written in the invariant culture and separated by `_`, e.g.
-`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
+`AlbumTests/Describes/Abbey Road_1969.awexpect-snapshot.txt`. The name holds only the values, so that renaming a
 parameter keeps the snapshot, and it is escaped and shortened like any other name.
 
 <details>
@@ -127,7 +140,7 @@ public async Task Describes(string title, int year)
 ```
 
 The arguments are written like those of `.NamedAfter(…)`, e.g.
-`AlbumTests.Describes.Abbey Road_1969.awexpect-snapshot.txt`. A test without parameters keeps its snapshot.
+`AlbumTests/Describes/Abbey Road_1969.awexpect-snapshot.txt`. A test without parameters keeps its snapshot.
 `.Named(…)` is appended to the arguments, e.g. `.Named("cover")` gives `Abbey Road_1969_cover`, so that each case can
 hold several snapshots, while `.NamedAfter(…)` replaces them.
 
@@ -182,7 +195,7 @@ await That(exception.Message).MatchesSnapshot()
 
 The environment is appended to the file names after an `@`, e.g.
 `AlbumTests.Describes@net8.0@windows.awexpect-snapshot.txt`, or
-`AlbumTests.Describes.Abbey Road@net8.0@windows@x64.awexpect-snapshot.txt` together with `.Named("Abbey Road")`:
+`AlbumTests/Describes/Abbey Road@net8.0@windows@x64.awexpect-snapshot.txt` together with `.Named("Abbey Road")`:
 
 | Option                         | Values                                                           |
 |--------------------------------|------------------------------------------------------------------|
@@ -206,16 +219,17 @@ missing. On another operating system, `.UniqueFor.OperatingSystem()` throws a `P
 
 ## Nesting in the IDE
 
-In a C# project, the build targets of aweXpect.Snapshots nest each snapshot and pending file under its test file, so
-that Rider and Visual Studio show them below it in the solution explorer.
+In a C# project, the build targets of aweXpect.Snapshots nest each snapshot and pending file without a name under its
+test file, so that Rider and Visual Studio show them below it in the solution explorer. Named snapshots are already
+grouped in the directory of their test file.
 
 <details>
 <summary>How the test file is found</summary>
 
-As the names of test files and snapshots can both contain dots, the test file is the longest prefix of the file name,
+As the names of test files and methods can both contain dots, the test file is the longest prefix of the file name,
 of up to eight parts separated by a dot, for which a `.cs` file exists in the same directory, e.g.
-`AlbumTests.Describes.Abbey Road.awexpect-snapshot.txt` is nested under `AlbumTests.Describes.cs` if it exists, and
-under `AlbumTests.cs` otherwise.
+`AlbumTests.Tracks.Count.awexpect-snapshot.txt` is nested under `AlbumTests.Tracks.cs` if it exists, and under
+`AlbumTests.cs` otherwise.
 
 </details>
 
@@ -223,7 +237,7 @@ A `DependentUpon` that you set yourself is kept, e.g. to nest the snapshots unde
 
 ```xml
 <ItemGroup>
-  <None Update="ApiApprovalTests.*.awexpect-snapshot.txt" DependentUpon="ApiApprovalTests.cs"/>
+  <None Update="AlbumTests.*.awexpect-snapshot.txt" DependentUpon="AlbumFixture.cs"/>
 </ItemGroup>
 ```
 

@@ -21,11 +21,15 @@ namespace aweXpect.Snapshots;
 ///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.<br />
 ///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
 ///     <see cref="SourceRoots" />.<br />
-///     The method name and the name of the snapshot are escaped in the file name, see
-///     <see cref="EscapeFileNamePart(string)" />, and a <see cref="SnapshotId.Variant" /> is appended after an <c>@</c>,
-///     e.g. <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.awexpect-snapshot.txt</c>. The
+///     The method name is escaped in the file name, see <see cref="EscapeFileNamePart(string)" />, and a
+///     <see cref="SnapshotId.Variant" /> is appended after an <c>@</c>, e.g.
+///     <c>&lt;Class&gt;.&lt;Method&gt;@net8.0@windows.awexpect-snapshot.txt</c>. The
 ///     <see cref="SnapshotId.Extension" /> replaces <c>txt</c>, e.g.
 ///     <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.pending.json</c>.<br />
+///     A snapshot with a <see cref="SnapshotId.Name" /> is kept in a directory for its class and one for its method,
+///     <c>&lt;Class&gt;/&lt;Method&gt;/&lt;Name&gt;.awexpect-snapshot.txt</c>, so that the snapshots of a test stay
+///     together and their names stay readable, as each part has a path segment of its own and only needs the escaping
+///     of <see cref="EscapeNestedPart(string, bool)" />.<br />
 ///     The distinctive marker <c>.awexpect-snapshot.</c> keeps files of other tools, e.g. <c>*.snapshot.*</c>, from
 ///     being read or listed as snapshots.
 /// </remarks>
@@ -60,6 +64,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 
 	public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
+		CreateNestedDirectories(id);
 		File.WriteAllBytes(GetPendingPath(id), actual);
 		return default;
 	}
@@ -70,6 +75,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </remarks>
 	public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
+		CreateNestedDirectories(id);
 		File.WriteAllBytes(GetSnapshotPath(id), actual);
 		try
 		{
@@ -87,6 +93,48 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	{
 		DeletePending(id);
 		return default;
+	}
+
+	/// <summary>
+	///     Creates the directories of the class and the method of a snapshot with a name, but only next to an existing
+	///     test file directory, so that a missing one is still reported.
+	/// </summary>
+	private static void CreateNestedDirectories(SnapshotId id)
+	{
+		if (id.Name is null)
+		{
+			return;
+		}
+
+		string methodDirectory = Path.GetDirectoryName(GetBasePath(id))!;
+		if (Directory.Exists(Path.GetDirectoryName(Path.GetDirectoryName(methodDirectory))))
+		{
+			Directory.CreateDirectory(methodDirectory);
+		}
+	}
+
+	/// <summary>
+	///     Deletes the directories of the method and the class of a deleted snapshot with a name when they are empty.
+	/// </summary>
+	/// <remarks>
+	///     An empty directory is only a leftover, so one that cannot be deleted does not fail the deletion.
+	/// </remarks>
+	private static void DeleteEmptyNestedDirectories(string basePath)
+	{
+		string? directory = Path.GetDirectoryName(basePath);
+		for (int i = 0; i < 2 && directory is not null && !Directory.EnumerateFileSystemEntries(directory).Any(); i++)
+		{
+			try
+			{
+				Directory.Delete(directory);
+			}
+			catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+			{
+				return;
+			}
+
+			directory = Path.GetDirectoryName(directory);
+		}
 	}
 
 	private static void DeletePending(SnapshotId id)
@@ -133,7 +181,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 		ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> listed = new(ClaimedSnapshots.Comparer);
 		foreach (string projectDirectory in SourceRoots.GetProjectDirectories().Where(Directory.Exists))
 		{
-			CollectSnapshots(projectDirectory, listed, cancellationToken);
+			CollectSnapshots(projectDirectory, 0, listed, cancellationToken);
 		}
 
 		_listed = listed;
@@ -154,20 +202,32 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 			File.Delete(path);
 		}
 
+		if (id.Name is not null)
+		{
+			DeleteEmptyNestedDirectories(basePath);
+		}
+
 		return default;
 	}
 
-	private static void CollectSnapshots(string directory,
+	/// <remarks>
+	///     A snapshot with a name lies two directories below its test file, so from the <paramref name="depth" /> of 2
+	///     below the project directory on, the files of that test file directory are passed on as well.
+	/// </remarks>
+	private static void CollectSnapshots(string directory, int depth,
 		ConcurrentDictionary<SnapshotId, (string BasePath, string Extension)> listed,
 		CancellationToken cancellationToken)
 	{
 		cancellationToken.ThrowIfCancellationRequested();
 		string[] files = Directory.GetFiles(directory);
+		string[]? nestedTestFiles = depth >= 2
+			? Directory.GetFiles(Path.GetDirectoryName(Path.GetDirectoryName(directory))!)
+			: null;
 		foreach (string file in files)
 		{
 			(string BaseName, string Extension)? snapshotFile = ParseFileName(Path.GetFileName(file));
 			if (snapshotFile is { } parsed &&
-			    TryGetId(directory, parsed.BaseName, parsed.Extension, files, out SnapshotId? id))
+			    TryGetId(directory, parsed, files, nestedTestFiles, out SnapshotId? id))
 			{
 				listed.TryAdd(id, (Path.Combine(directory, parsed.BaseName), parsed.Extension));
 			}
@@ -184,7 +244,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 				continue;
 			}
 
-			CollectSnapshots(subdirectory, listed, cancellationToken);
+			CollectSnapshots(subdirectory, depth + 1, listed, cancellationToken);
 		}
 	}
 
@@ -219,74 +279,137 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 			: null;
 
 	/// <summary>
-	///     Reads the <paramref name="baseName" /> of a snapshot file back into the id that it was written for.
+	///     Reads the base name of a snapshot file in the <paramref name="directory" /> back into the id that it was
+	///     written for.
 	/// </summary>
 	/// <remarks>
-	///     The class part is the name of a test file in the same directory, which may contain dots. The method and the
-	///     name follow, with their dots escaped, so the rest has one or two parts, followed by the parts of the variant,
-	///     each after an <c>@</c>, which is escaped in the method and the name. When several test files fit, e.g.
-	///     <c>AlbumTests.cs</c> and <c>AlbumTests.Tracks.cs</c> for <c>AlbumTests.Tracks.Count</c>, the one for which a
-	///     test claimed the snapshot wins, so that a used snapshot is never listed as another, unused one; otherwise the
-	///     longest one wins. Without such a test file, which was then deleted or renamed, the last part is taken as the
-	///     method.<br />
-	///     The id is only used when it is escaped into the same file name again, so that a file that was not written by
-	///     the disk store, e.g. one with a name that is not escaped, is never listed.
+	///     A snapshot without a name lies next to its test file, see <see cref="GetFlatIds" />, and one with a name two
+	///     directories below it, see <see cref="GetNestedIds" />, whose test file is one of the
+	///     <paramref name="nestedTestFiles" />. When several test files fit, the one for which a test claimed the snapshot
+	///     wins, so that a used snapshot is never listed as another, unused one; otherwise the first one wins. Only without
+	///     any test file that fits, which was then deleted or renamed, the test file is guessed, see
+	///     <see cref="GetIdsOfDeletedTestFile" />.<br />
+	///     The id is only used when it is escaped into the same path again, so that a file that was not written by the
+	///     disk store, e.g. one with a name that is not escaped, is never listed.
 	/// </remarks>
-	private static bool TryGetId(string directory, string baseName, string extension, string[] files,
-		[NotNullWhen(true)] out SnapshotId? id)
+	private static bool TryGetId(string directory, (string BaseName, string Extension) file, string[] files,
+		string[]? nestedTestFiles, [NotNullWhen(true)] out SnapshotId? id)
 	{
-		List<string> testFiles = files
-			.Where(file => ParseFileName(Path.GetFileName(file)) is null)
-			.Where(file => baseName.StartsWith(Path.GetFileNameWithoutExtension(file) + ".", FileSystemPaths.Comparison))
-			.OrderByDescending(file => Path.GetFileNameWithoutExtension(file).Length)
-			.ToList();
-		int variantStart = baseName.IndexOf(SnapshotEnvironment.Separator);
-		string withoutVariant = variantStart < 0 ? baseName : baseName.Substring(0, variantStart);
-		string testClass = Path.GetFileNameWithoutExtension(withoutVariant);
-		if (testFiles.Count == 0 && testClass.Length > 0 && testClass != withoutVariant)
-		{
-			testFiles.Add(Path.Combine(directory, testClass + ".cs"));
-		}
-
-		SnapshotId[] candidates = testFiles
-			.Select(testFile => TryGetIdOfTestFile(baseName, extension, testFile))
-			.OfType<SnapshotId>()
+		string[] flatTestFiles = files
+			.Where(testFile => ParseFileName(Path.GetFileName(testFile)) is null)
+			.Where(testFile => file.BaseName.StartsWith(Path.GetFileNameWithoutExtension(testFile) + ".",
+				FileSystemPaths.Comparison))
+			.OrderByDescending(testFile => Path.GetFileNameWithoutExtension(testFile).Length)
 			.ToArray();
+		string className = Path.GetFileName(Path.GetDirectoryName(directory)) ?? "";
+		string[] nestedFiles = nestedTestFiles?
+			.Where(testFile => ParseFileName(Path.GetFileName(testFile)) is null)
+			.Where(testFile => string.Equals(Path.GetFileNameWithoutExtension(testFile), className,
+				FileSystemPaths.Comparison))
+			.ToArray() ?? [];
+		List<SnapshotId> candidates = flatTestFiles.Length == 0 && nestedFiles.Length == 0
+			? GetIdsOfDeletedTestFile(directory, file.BaseName, file.Extension, nestedTestFiles is not null)
+			:
+			[
+				.. GetFlatIds(file.BaseName, file.Extension, flatTestFiles),
+				.. GetNestedIds(directory, file.BaseName, file.Extension, nestedFiles),
+			];
+
 		id = candidates.FirstOrDefault(ClaimedSnapshots.IsClaimed) ?? candidates.FirstOrDefault();
 		return id is not null;
 	}
 
-	private static SnapshotId? TryGetIdOfTestFile(string baseName, string extension, string testFile)
+	/// <summary>
+	///     Guesses the test file of a snapshot whose test file was deleted or renamed: <c>&lt;Class&gt;.cs</c> after the
+	///     directory of the class when the snapshot can have a name, otherwise after the part before the last <c>.</c>.
+	/// </summary>
+	private static List<SnapshotId> GetIdsOfDeletedTestFile(string directory, string baseName, string extension,
+		bool canBeNested)
 	{
-		string className = baseName.Substring(0, Path.GetFileNameWithoutExtension(testFile).Length);
-		string[] variantParts = baseName.Substring(className.Length + 1).Split(SnapshotEnvironment.Separator);
-		string[] parts = variantParts[0].Split('.');
-		if (parts.Length > 2 || !TryUnescape(parts[0], out string? memberName) || memberName.Length == 0)
+		if (canBeNested)
 		{
-			return null;
+			string classDirectory = Path.GetDirectoryName(directory)!;
+			List<SnapshotId> nestedIds = GetNestedIds(directory, baseName, extension,
+				[Path.Combine(Path.GetDirectoryName(classDirectory)!, Path.GetFileName(classDirectory) + ".cs"),]);
+			if (nestedIds.Count > 0)
+			{
+				return nestedIds;
+			}
 		}
 
-		string? name = null;
-		if (parts.Length == 2 && (!TryUnescape(parts[1], out name) || name.Length == 0))
+		int variantStart = baseName.IndexOf(SnapshotEnvironment.Separator);
+		string withoutVariant = variantStart < 0 ? baseName : baseName.Substring(0, variantStart);
+		string testClass = Path.GetFileNameWithoutExtension(withoutVariant);
+		return testClass.Length > 0 && testClass != withoutVariant
+			? GetFlatIds(baseName, extension, [Path.Combine(directory, testClass + ".cs"),])
+			: [];
+	}
+
+	/// <summary>
+	///     Reads <c>&lt;Class&gt;.&lt;Method&gt;</c> back, where the class part is the name of the test file, which may
+	///     contain dots, and the method follows with its dots escaped, followed by the parts of the variant, each after an
+	///     <c>@</c>, which is escaped in the method.
+	/// </summary>
+	private static List<SnapshotId> GetFlatIds(string baseName, string extension, IEnumerable<string> testFiles)
+	{
+		List<SnapshotId> ids = [];
+		foreach (string testFile in testFiles)
 		{
-			return null;
+			string className = baseName.Substring(0, Path.GetFileNameWithoutExtension(testFile).Length);
+			string[] variantParts = baseName.Substring(className.Length + 1).Split(SnapshotEnvironment.Separator);
+			if (TryUnescape(variantParts[0], out string? memberName) && memberName.Length > 0 &&
+			    TryGetVariant(variantParts, out string? variant) &&
+			    string.Equals(GetFlatBaseName(className, memberName, variant), baseName, StringComparison.Ordinal))
+			{
+				ids.Add(new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName)
+				{
+					Variant = variant,
+					Extension = extension,
+				});
+			}
 		}
 
-		if (variantParts.Any(part => part.Length == 0))
+		return ids;
+	}
+
+	/// <summary>
+	///     Reads <c>&lt;Class&gt;/&lt;Method&gt;/&lt;Name&gt;</c> back, where the <paramref name="directory" /> is the one
+	///     of the method and the <paramref name="baseName" /> is the name, followed by the parts of the variant, each after
+	///     an <c>@</c>, which is escaped in the name.
+	/// </summary>
+	private static List<SnapshotId> GetNestedIds(string directory, string baseName, string extension,
+		IEnumerable<string> testFiles)
+	{
+		string methodDirectory = Path.GetFileName(directory);
+		string[] variantParts = baseName.Split(SnapshotEnvironment.Separator);
+		if (!TryUnescape(methodDirectory, out string? memberName) || memberName.Length == 0 ||
+		    !TryUnescape(variantParts[0], out string? name) || name.Length == 0 ||
+		    !TryGetVariant(variantParts, out string? variant) ||
+		    !string.Equals(EscapeNestedPart(memberName, true), methodDirectory, StringComparison.Ordinal) ||
+		    !string.Equals(GetNestedBaseName(name, variant), baseName, StringComparison.Ordinal))
 		{
-			return null;
+			return [];
 		}
 
-		string? variant = variantParts.Length == 1
-			? null
-			: string.Join(SnapshotEnvironment.Separator.ToString(), variantParts, 1, variantParts.Length - 1);
-		return string.Equals(GetBaseName(className, memberName, name, variant), baseName, StringComparison.Ordinal)
-			? new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName, name)
+		return testFiles
+			.Select(testFile => new SnapshotId(SourceRoots.GetSourceFileOfPath(testFile), memberName, name)
 			{
 				Variant = variant,
 				Extension = extension,
-			}
-			: null;
+			})
+			.ToList();
+	}
+
+	/// <summary>
+	///     Joins the parts of the variant after the first of the <paramref name="variantParts" />, or returns
+	///     <see langword="false" /> when one of them is empty.
+	/// </summary>
+	private static bool TryGetVariant(string[] variantParts, out string? variant)
+	{
+		variant = variantParts.Length == 1
+			? null
+			: string.Join(SnapshotEnvironment.Separator.ToString(), variantParts, 1, variantParts.Length - 1);
+		return variantParts.All(part => part.Length > 0);
 	}
 
 	private static string GetSnapshotPath(SnapshotId id) => GetSnapshotPath(GetBasePath(id), id.Extension);
@@ -302,23 +425,35 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	private static string GetBasePath(SnapshotId id)
 	{
 		string testFilePath = SourceRoots.GetPath(id.SourceFile);
-		return Path.Combine(Path.GetDirectoryName(testFilePath) ?? "",
-			GetBaseName(Path.GetFileNameWithoutExtension(testFilePath), id.MemberName, id.Name, id.Variant));
+		string directory = Path.GetDirectoryName(testFilePath) ?? "";
+		string className = Path.GetFileNameWithoutExtension(testFilePath);
+		return id.Name is null
+			? Path.Combine(directory, GetFlatBaseName(className, id.MemberName, id.Variant))
+			: Path.Combine(directory, className, EscapeNestedPart(id.MemberName, true),
+				GetNestedBaseName(id.Name, id.Variant));
 	}
 
 	/// <summary>
-	///     Returns <c>&lt;Class&gt;.&lt;Method&gt;</c> or <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;</c>, followed by
-	///     <c>@&lt;Variant&gt;</c> with a <paramref name="variant" />, with the method and the name escaped.
+	///     Returns <c>&lt;Class&gt;.&lt;Method&gt;</c>, followed by <c>@&lt;Variant&gt;</c> with a
+	///     <paramref name="variant" />, with the method escaped.
 	/// </summary>
 	/// <remarks>
 	///     The variant is not escaped, as its parts are names like <c>net8.0</c> or <c>x64</c>, which a file name can hold
 	///     and which stay readable.
 	/// </remarks>
-	private static string GetBaseName(string className, string memberName, string? name, string? variant)
+	private static string GetFlatBaseName(string className, string memberName, string? variant)
 	{
-		string baseName = name is null
-			? $"{className}.{EscapeFileNamePart(memberName)}"
-			: $"{className}.{EscapeFileNamePart(memberName)}.{EscapeFileNamePart(name)}";
+		string baseName = $"{className}.{EscapeFileNamePart(memberName)}";
+		return variant is null ? baseName : $"{baseName}{SnapshotEnvironment.Separator}{variant}";
+	}
+
+	/// <summary>
+	///     Returns the escaped <paramref name="name" />, followed by <c>@&lt;Variant&gt;</c> with a
+	///     <paramref name="variant" />.
+	/// </summary>
+	private static string GetNestedBaseName(string name, string? variant)
+	{
+		string baseName = EscapeNestedPart(name, false);
 		return variant is null ? baseName : $"{baseName}{SnapshotEnvironment.Separator}{variant}";
 	}
 
@@ -329,17 +464,48 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </summary>
 	/// <remarks>
 	///     Escaping <c>%</c> keeps the file names of two different names apart, e.g. <c>a:b</c> and <c>a%3Ab</c>, and
-	///     escaping <c>.</c> and <c>@</c> keeps them in <c>&lt;Class&gt;.&lt;Method&gt;.&lt;Name&gt;@&lt;Variant&gt;</c>
-	///     as the only separators, so that a file name can be read back into its parts. A name without such characters is
-	///     used unchanged.
+	///     escaping <c>.</c> and <c>@</c> keeps them in <c>&lt;Class&gt;.&lt;Method&gt;@&lt;Variant&gt;</c> as the only
+	///     separators, so that a file name can be read back into its parts. A name without such characters is used
+	///     unchanged.
 	/// </remarks>
 	private static string EscapeFileNamePart(string part)
+		=> Escape(part, static (character, _) => IsEscaped(character));
+
+	/// <summary>
+	///     Escapes the method or the name of a snapshot with a name as a path segment of its own, like
+	///     <see cref="EscapeFileNamePart(string)" />, but keeps <c>.</c>, as the segments are separated by the directories.
+	/// </summary>
+	/// <remarks>
+	///     The first character of a name that Windows reserves for a device, e.g. <c>CON</c> or <c>com1.json</c>, is
+	///     escaped, as is a final <c>.</c> or space of a <paramref name="isDirectory">directory</paramref>, which Windows
+	///     removes, while a file always ends with the marker.
+	/// </remarks>
+	private static string EscapeNestedPart(string part, bool isDirectory)
+	{
+		bool escapesFirst = IsReservedName(part);
+		bool escapesLast = isDirectory && part.Length > 0 && part[part.Length - 1] is '.' or ' ';
+		return Escape(part, (character, index)
+			=> IsEscapedInNestedPart(character) ||
+			   (index == 0 && escapesFirst) ||
+			   (index == part.Length - 1 && escapesLast));
+	}
+
+	private static bool IsReservedName(string part)
+	{
+		int dot = part.IndexOf('.');
+		string stem = (dot < 0 ? part : part.Substring(0, dot)).TrimEnd(' ').ToUpperInvariant();
+		return stem is "CON" or "PRN" or "AUX" or "NUL" ||
+		       (stem.Length == 4 && stem.StartsWith("COM", StringComparison.Ordinal) && char.IsDigit(stem[3])) ||
+		       (stem.Length == 4 && stem.StartsWith("LPT", StringComparison.Ordinal) && char.IsDigit(stem[3]));
+	}
+
+	private static string Escape(string part, Func<char, int, bool> isEscaped)
 	{
 		StringBuilder? escaped = null;
 		for (int i = 0; i < part.Length; i++)
 		{
 			char character = part[i];
-			if (IsEscaped(character))
+			if (isEscaped(character, i))
 			{
 				escaped ??= new StringBuilder(part, 0, i, part.Length + 8);
 				escaped.Append('%').Append(((int)character).ToString("X2", CultureInfo.InvariantCulture));
@@ -356,9 +522,16 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// <summary>
 	///     Whether <see cref="EscapeFileNamePart(string)" /> escapes the <paramref name="character" /> as <c>%XX</c>.
 	/// </summary>
-	internal static bool IsEscaped(char character)
+	private static bool IsEscaped(char character)
+		=> character == '.' || IsEscapedInNestedPart(character);
+
+	/// <summary>
+	///     Whether <see cref="EscapeNestedPart(string, bool)" /> escapes the <paramref name="character" /> as <c>%XX</c>
+	///     wherever it is.
+	/// </summary>
+	internal static bool IsEscapedInNestedPart(char character)
 		=> char.IsControl(character) ||
-		   character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '.' or '@';
+		   character is '<' or '>' or ':' or '"' or '/' or '\\' or '|' or '?' or '*' or '%' or '@';
 
 	/// <summary>
 	///     Reverses <see cref="EscapeFileNamePart(string)" />, or returns <see langword="false" /> for a <c>%</c> that is

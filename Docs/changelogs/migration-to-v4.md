@@ -175,9 +175,10 @@ Checks consider inherited attributes, operators, members and relations by defaul
 
 :::warning[Update your existing snapshots]
 1. Rename the snapshot files: they carry the marker `.awexpect-snapshot.` instead of `.snapshot.`.
-2. Update your `.gitignore`: pending files match `*.awexpect-snapshot.pending.*`.
-3. Accept again the snapshots with masked values, as numbered placeholders are wrapped in braces, e.g. `{Guid_1}`, and those with a name from `.Named(…)` that contains `.` or `%`, as the name is escaped in the file name.
-4. If you set `AWEXPECT_ACCEPT_SNAPSHOTS`, use `none`, `new` or `all`.
+2. Move the snapshots with a name from `.Named(…)` or `.NamedAfter(…)` into a directory for their test file and one for their test method, e.g. `AlbumTests.Describes.Abbey Road.snapshot.txt` to `AlbumTests/Describes/Abbey Road.awexpect-snapshot.txt`.
+3. Update your `.gitignore`: pending files match `*.awexpect-snapshot.pending.*`.
+4. Accept again the snapshots with masked values, as numbered placeholders are wrapped in braces, e.g. `{Guid_1}`, and those with a name that contains `%`, `@` or a character that a file name cannot hold, as the name is escaped in the file name.
+5. If you set `AWEXPECT_ACCEPT_SNAPSHOTS`, use `none`, `new` or `all`.
 :::
 
 **Fix compile errors**

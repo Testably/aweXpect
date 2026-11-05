@@ -48,7 +48,7 @@ e.g. after the case `"Let It Be"` was removed from `AlbumTests.Describes`:
 
 ```text title="Failure message"
 Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
-  /src/Tests/AlbumTests.Describes.Let It Be.awexpect-snapshot.txt
+  /src/Tests/AlbumTests/Describes/Let It Be.awexpect-snapshot.txt
 ```
 
 While accepting all changes (`SnapshotAcceptance.All`, see [Accepting snapshots](02-accepting-snapshots.md)), the
@@ -57,7 +57,7 @@ unnoticed; `SnapshotAcceptance.New` only adds snapshots, so it keeps them:
 
 ```text title="Failure message"
 Expected that every snapshot is used by a test of this run, but 1 snapshot was not used by any test:
-  /src/Tests/AlbumTests.Describes.Let It Be.awexpect-snapshot.txt (deleted)
+  /src/Tests/AlbumTests/Describes/Let It Be.awexpect-snapshot.txt (deleted)
 ```
 
 A test run that only runs some of the tests, e.g. a single test in the IDE, cannot be told apart from a complete one,
@@ -84,8 +84,8 @@ The check cannot know about tests that did not reach `MatchesSnapshot()`:
 
 Only the directory of the test project is searched, without `bin`, `obj`, hidden directories and the directories of
 other projects in it, and only for files with the marker `.awexpect-snapshot.`, so that files of other tools are never
-reported or deleted. A snapshot counts as used as soon as `MatchesSnapshot()` is called for it, even if it is not
-compared, e.g. after `.Or` was already met. A file name that only differs in case from a used snapshot counts as used,
-as it is the same file on Windows and macOS.
+reported or deleted. The directories of a named snapshot are deleted with it when they are empty. A snapshot counts as
+used as soon as `MatchesSnapshot()` is called for it, even if it is not compared, e.g. after `.Or` was already met. A
+file name that only differs in case from a used snapshot counts as used, as it is the same file on Windows and macOS.
 
 </details>
