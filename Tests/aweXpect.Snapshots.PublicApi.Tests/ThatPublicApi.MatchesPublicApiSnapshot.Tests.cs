@@ -55,7 +55,7 @@ public sealed partial class ThatPublicApi
 				Assembly subject = typeof(Album).Assembly;
 
 				async Task Act()
-					=> await That(subject).MatchesPublicApiSnapshot().WithExtension("cs")
+					=> await That(subject).MatchesPublicApiSnapshot().WithExtension("txt")
 						.Accepting(SnapshotAcceptance.None);
 
 				await That(Act).Throws<FailException>()
@@ -65,7 +65,24 @@ public sealed partial class ThatPublicApi
 					             but the snapshot did not exist
 					             *
 					             """).AsWildcard().IgnoringNewlineStyle();
-				await That(store.Mismatch?.Extension).IsEqualTo("cs");
+				await That(store.Mismatch?.Extension).IsEqualTo("txt")
+					.Because("the extension replaces the default 'cs'");
+			}
+
+			[Test]
+			public async Task WithoutExtension_ShouldStoreTheSnapshotAsCSharp()
+			{
+				RecordingSnapshotStore store = new();
+				using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+				Assembly subject = typeof(Album).Assembly;
+
+				async Task Act()
+					=> await That(subject).MatchesPublicApiSnapshot().Accepting(SnapshotAcceptance.None);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("*but the snapshot did not exist*").AsWildcard();
+				await That(store.Mismatch?.Extension).IsEqualTo("cs")
+					.Because("the public API is written as C# declarations, which editors and diff tools then highlight");
 			}
 		}
 	}

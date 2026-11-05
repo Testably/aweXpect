@@ -18,11 +18,12 @@ public static class ThatPublicApi
 {
 	/// <summary>
 	///     Verifies that the public API of the assembly, generated with the optional <paramref name="options" />, matches
-	///     the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c> next to the test file.
+	///     the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.cs</c> next to the test file.
 	/// </summary>
 	/// <remarks>
 	///     The public API is written as C# declarations by
-	///     <see cref="PublicApiDeclarations.GenerateFrom(Assembly, Func{PublicApiOptions, PublicApiOptions})" />. It
+	///     <see cref="PublicApiDeclarations.GenerateFrom(Assembly, Func{PublicApiOptions, PublicApiOptions})" />, so the
+	///     snapshot has the extension <c>cs</c>, which <c>.WithExtension(…)</c> can replace, e.g. with <c>txt</c>. It
 	///     usually differs between the target frameworks of a library, so keep a snapshot per target framework of the test
 	///     project with <c>.UniqueFor.TargetFramework()</c>; each target framework of the test project loads the matching
 	///     build of the library.<br />
@@ -49,7 +50,7 @@ public static class ThatPublicApi
 
 	/// <summary>
 	///     Verifies that the public API of the assembly in the file, generated with the optional
-	///     <paramref name="options" />, matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.txt</c>
+	///     <paramref name="options" />, matches the snapshot <c>&lt;Class&gt;.&lt;Method&gt;.awexpect-snapshot.cs</c>
 	///     next to the test file.
 	/// </summary>
 	/// <remarks>
@@ -76,6 +77,12 @@ public static class ThatPublicApi
 		=> AddPublicApiSnapshot(subject, options,
 			static (file, generateWith) => PublicApiDeclarations.GenerateFrom(file, generateWith),
 			callerFilePath, callerMemberName);
+
+	/// <summary>
+	///     The public API is written as C# declarations, so the snapshot is stored as a C# file, which editors and diff
+	///     tools highlight and the build targets of aweXpect.Snapshots never compile.
+	/// </summary>
+	private const string PublicApiExtension = "cs";
 
 	/// <remarks>
 	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the
@@ -105,7 +112,7 @@ public static class ThatPublicApi
 			{
 				expectationBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions?.AddContext(contexts));
 				result = new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath,
-					callerMemberName)!;
+					callerMemberName).WithExtension(PublicApiExtension)!;
 			});
 		return result!;
 	}
