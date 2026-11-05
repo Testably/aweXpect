@@ -31,7 +31,9 @@ namespace MusicStore
 ```
 
 It behaves like [`MatchesSnapshot()` for strings](01-matching-snapshots.md#strings), e.g. for the files and
-[accepting changes](02-accepting-snapshots.md).
+[accepting changes](02-accepting-snapshots.md). The snapshot is stored with the extension `cs`, e.g.
+`AlbumTests.PublicApi@net8.0.awexpect-snapshot.cs`, so that editors and diff tools highlight it, while the build targets
+of aweXpect.Snapshots never compile it. `.WithExtension("txt")` stores it as text instead.
 
 ## Target frameworks and reference assemblies
 
