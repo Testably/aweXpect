@@ -1440,6 +1440,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -1682,7 +1688,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -1928,7 +1935,8 @@ window.BENCHMARK_DATA = {
           1198.7228419440132,
           2024.2918801988874,
           1516.7682041440692,
-          1570.6625500996909
+          1570.6625500996909,
+          1576.177994801448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2074,6 +2082,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2433,7 +2442,8 @@ window.BENCHMARK_DATA = {
           8364.371936798096,
           16145.221973964146,
           10469.140495300293,
-          11264.263571519117
+          11264.263571519117,
+          10150.386913553873
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2445,6 +2455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4138,6 +4149,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -4380,7 +4397,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -4626,7 +4644,8 @@ window.BENCHMARK_DATA = {
           1012.8036221822102,
           1670.9583698272704,
           1212.5352279663086,
-          1255.5343602044243
+          1255.5343602044243,
+          1232.4859441121419
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4772,6 +4791,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5131,7 +5151,8 @@ window.BENCHMARK_DATA = {
           7115.443501790364,
           14529.213978068034,
           10376.209665570941,
-          10249.275527954102
+          10249.275527954102,
+          10305.47396138509
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5143,6 +5164,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -6776,6 +6798,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -7008,7 +7036,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -7244,7 +7273,8 @@ window.BENCHMARK_DATA = {
           3078.2969760894775,
           5420.51114654541,
           3846.2639882014346,
-          4044.3626001993816
+          4044.3626001993816,
+          4038.6126118977863
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7427,6 +7457,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -7729,7 +7760,8 @@ window.BENCHMARK_DATA = {
           21343.283730643136,
           46265.30142211914,
           29320.590589083156,
-          31231.133309500558
+          31231.133309500558,
+          30463.608463541666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7970,6 +8002,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -9364,6 +9397,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -9596,7 +9635,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -9832,7 +9872,8 @@ window.BENCHMARK_DATA = {
           5382.198513539633,
           9579.354129028321,
           7298.170358930315,
-          7734.413223266602
+          7734.413223266602,
+          7306.787633455717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9968,6 +10009,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -10317,7 +10359,8 @@ window.BENCHMARK_DATA = {
           155368.51022135417,
           294528.84736328124,
           201156.0059640067,
-          224622.6550048828
+          224622.6550048828,
+          206065.43764648438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10549,6 +10592,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -11952,6 +11996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -12184,7 +12234,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -12420,7 +12471,8 @@ window.BENCHMARK_DATA = {
           1667.9871774400983,
           2894.3931582132977,
           2180.906681605748,
-          2234.763489649846
+          2234.763489649846,
+          2221.3314648946125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12606,6 +12658,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -12905,7 +12958,8 @@ window.BENCHMARK_DATA = {
           1190.6243685313634,
           1947.1150057474772,
           1490.138208253043,
-          1567.7584961482457
+          1567.7584961482457,
+          1488.753778048924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12917,6 +12971,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -14540,6 +14595,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -14772,7 +14833,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -15008,7 +15070,8 @@ window.BENCHMARK_DATA = {
           1702.2648797353108,
           2966.483023071289,
           2116.51745707194,
-          2335.956957244873
+          2335.956957244873,
+          2211.8910472576435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15191,6 +15254,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -15493,7 +15557,8 @@ window.BENCHMARK_DATA = {
           1063.2106075286865,
           1752.7520659310478,
           1391.5584870656332,
-          1532.6604554494222
+          1532.6604554494222,
+          1324.189241663615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15505,6 +15570,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -16426,6 +16492,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -16541,7 +16613,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -16660,7 +16733,8 @@ window.BENCHMARK_DATA = {
           1425.0826082229614,
           2349.417063395182,
           1688.6918304988317,
-          1878.9646237691243
+          1878.9646237691243,
+          1776.2979638235909
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16726,6 +16800,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -16911,7 +16986,8 @@ window.BENCHMARK_DATA = {
           723.0316363743374,
           1169.7907464345296,
           916.239855834416,
-          987.9210304260254
+          987.9210304260254,
+          912.8885090901301
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16923,6 +16999,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -17727,6 +17804,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -17842,7 +17925,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -17961,7 +18045,8 @@ window.BENCHMARK_DATA = {
           1866.4550837003267,
           3124.053300221761,
           2326.3533022562665,
-          2448.1776609420776
+          2448.1776609420776,
+          2302.976835123698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18011,6 +18096,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -18212,7 +18298,8 @@ window.BENCHMARK_DATA = {
           778.5111038501447,
           1299.4629280090332,
           1042.8247774759927,
-          1104.2503603526525
+          1104.2503603526525,
+          1038.7029108683269
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18224,6 +18311,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -18686,6 +18774,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -18744,7 +18838,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -18806,7 +18901,8 @@ window.BENCHMARK_DATA = {
           97786.93975360577,
           167298.53982979912,
           125892.29657854352,
-          129386.39495442709
+          129386.39495442709,
+          127523.44786658653
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18818,6 +18914,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -18943,7 +19040,8 @@ window.BENCHMARK_DATA = {
           116475.14571126302,
           191215.26126302083,
           148932.11780598958,
-          153813.46525065103
+          153813.46525065103,
+          146826.62983398436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19010,6 +19108,7 @@ window.BENCHMARK_DATA = {
           266936,
           266950,
           266951,
+          266950,
           266950
         ],
         "borderColor": "#FF671B",
@@ -19360,6 +19459,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
         "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
+      },
+      {
+        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
+        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
       }
     ],
     "labels": [
@@ -19418,7 +19523,8 @@ window.BENCHMARK_DATA = {
       "850f7373",
       "0c95f82a",
       "13f124fd",
-      "60f2a583"
+      "60f2a583",
+      "4f093bbd"
     ],
     "datasets": [
       {
@@ -19480,7 +19586,8 @@ window.BENCHMARK_DATA = {
           1514.1533808026995,
           2762.8252130235946,
           2086.6922517504013,
-          2153.941861216227
+          2153.941861216227,
+          2112.248678334554
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19492,6 +19599,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -19617,7 +19725,8 @@ window.BENCHMARK_DATA = {
           1155.753547668457,
           1800.0268741335187,
           1451.7397939046225,
-          1498.5659577687582
+          1498.5659577687582,
+          1394.433391571045
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19629,6 +19738,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
