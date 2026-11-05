@@ -254,7 +254,11 @@ public sealed partial class ThatDelegate
 			{
 				MockTimeSystem timeSystem = new();
 				TimeProvider time = timeSystem.ToTimeProvider();
-				Func<Task<int>> @delegate = () => timeSystem.Task.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1);
+				Func<Task<int>> @delegate = () =>
+				{
+					timeSystem.TimeProvider.AdvanceBy(30.Seconds());
+					return new TaskCompletionSource<int>().Task;
+				};
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
@@ -488,7 +492,11 @@ public sealed partial class ThatDelegate
 			{
 				MockTimeSystem timeSystem = new();
 				TimeProvider time = timeSystem.ToTimeProvider();
-				ValueTask<int> Delegate() => new(timeSystem.Task.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1));
+				ValueTask<int> Delegate()
+				{
+					timeSystem.TimeProvider.AdvanceBy(30.Seconds());
+					return new(new TaskCompletionSource<int>().Task);
+				}
 
 				async Task Act()
 					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeProvider(time);
