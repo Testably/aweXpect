@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10569.880418043871,
           10323.789493560791,
           11040.060776846749,
           11502.332045335035,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7737.92293724647,
           7770.047457013811,
           7971.755490112305,
-          10682.0943943904
+          10682.0943943904,
+          7931.04435143104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          377866.3603515625,
           383074.74762834824,
           380447.4959635417,
           407581.4698242188,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           255276.38040364583,
           303825.67996651784,
           263356.55423177086,
-          382770.95842633926
+          382770.95842633926,
+          258878.79368489582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590292,
           590287,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590225,
           590287,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19051.5452205113,
           19679.400137765067,
           19741.100860595703,
           21357.944913736977,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14236.347882952008,
           17668.177557138297,
           14544.71586717878,
-          19578.425173950196
+          19578.425173950196,
+          14434.922869873048
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          219.45206277187054,
           234.3879771232605,
           285.11265789667766,
           257.73639052708944,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           182.89270445278711,
           225.09995566095625,
           175.8557895251683,
-          270.2351848057338
+          270.2351848057338,
+          168.33460025787355
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          496.9493532180786,
           510.2537934621175,
           510.0565294265747,
           603.7357696805682,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           422.539989344279,
           588.9297527166514,
           438.2013214111328,
-          502.1989903767904
+          502.1989903767904,
+          435.79489653905233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          383.5621375719706,
           407.3969630513872,
           386.60514545440674,
           439.1301575978597,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           314.79348105650683,
           408.55249579747516,
           312.1380790074666,
-          384.33453736986434
+          384.33453736986434,
+          348.4645422867366
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          104.8047188838323,
           105.9680711712156,
           107.74966617141452,
           116.27920695940654,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           85.58905855246952,
           113.70171150990895,
           82.16497475306193,
-          109.55252869129181
+          109.55252869129181,
+          79.70712162767138
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.95632572968802,
           262.39755325317384,
           270.58932342529295,
           287.3558907849448,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           196.07251926830835,
           325.64638247856726,
           200.38758434568132,
-          254.84425926208496
+          254.84425926208496,
+          206.38414963654108
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          244.28535856519426,
           258.3493342399597,
           243.2597882407052,
           279.2784065246582,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           176.76377620015825,
           242.0282021522522,
           197.35148413976034,
-          242.13599100112916
+          242.13599100112916,
+          186.04121959209442
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          230.85084233965193,
           238.63730181966508,
           224.45484442710875,
           216.61943868001302,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           158.1358119249344,
           217.3489405155182,
           158.55246456464133,
-          216.0857523759206
+          216.0857523759206,
+          156.73081194437466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          507.7159332547869,
           534.4437497456869,
           525.3062294006347,
           573.4939267294748,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           423.374032052358,
           665.6529387791951,
           428.44302105903625,
-          547.3123740514119
+          547.3123740514119,
+          451.3399315198263
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          345.0474009195963,
           341.7656743526459,
           333.47159004211426,
           366.01871445973717,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           278.29092270533243,
           352.13671181996665,
           255.58346786499024,
-          334.14066872229944
+          334.14066872229944,
+          284.5666858037313
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          695.3184987476894,
           709.5282716751099,
           705.5347908655802,
           751.0712633768718,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           571.2629759652274,
           618.5508168765476,
           544.2524162292481,
-          724.601040326632
+          724.601040326632,
+          547.7654306547983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1364.768878664289,
           1468.5216963450114,
           1412.1679819652013,
           1571.4425968757043,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1163.5314646402994,
           1543.6967314311437,
           1121.4667744954427,
-          1387.3948567708333
+          1387.3948567708333,
+          1179.4152186075846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          652.1993022918701,
           673.2488266626993,
           668.6108720143636,
           696.0671773274739,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           546.6877751668294,
           647.6328786849975,
           506.2031344731649,
-          666.432870165507
+          666.432870165507,
+          513.5285079320272
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          699.7413908885076,
           794.0034349986485,
           705.3468623479207,
           748.9268885294597,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           557.9554260889689,
           628.684294627263,
           535.6573098727634,
-          704.4348600827731
+          704.4348600827731,
+          535.3313143412272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27786.776444498697,
           28601.694814046223,
           27886.524348332332,
           31403.382381184896,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           17078.28748732347,
           18253.325486246744,
           16014.569110107423,
-          28462.832657877603
+          28462.832657877603,
+          17545.951978410994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          787.397339185079,
           814.9088574091594,
           800.8299654551914,
           813.2973634174892,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           635.1385590871175,
           757.0284495035808,
           614.8974687576294,
-          795.9804546356202
+          795.9804546356202,
+          620.7387568155924
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          620.6628279368083,
           664.2009996414184,
           674.4526850382487,
           697.2781012217204,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           483.70685144571155,
           626.863347307841,
           506.4627825873239,
-          721.1166655858358
+          721.1166655858358,
+          496.9776355743408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          83532.12500813803,
           82879.86361694336,
           82043.75548444476,
           95980.9520304362,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           54837.705802408855,
           34273.07128470285,
           55757.62966918945,
-          84690.81872558594
+          84690.81872558594,
+          52872.31494140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5252,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
       {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          146.90284189156122,
           144.70560571125574,
           138.78400479952495,
           152.8979833285014,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           103.30361034870148,
           142.81591520309448,
           105.41215523084004,
-          134.30999252001445
+          134.30999252001445,
+          123.53128833770752
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31771.20837871845,
           32975.60360483023,
           32445.901216947117,
           35181.452185058595,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           14959.991483561198,
           17179.020436604816,
           15707.686973571777,
-          32665.412686861477
+          32665.412686861477,
+          14949.248994954427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5556,7 +5556,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          241.57924728393556,
           272.24875631332395,
           240.69077609266554,
           268.10425011316937,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           184.632887951533,
           240.75408074061076,
           182.5123967329661,
-          258.10770113127575
+          258.10770113127575,
+          188.5168319384257
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          292.36691398620604,
           303.6053373018901,
           295.5819498062134,
           326.71692212422687,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           228.49099661622728,
           285.74098148345945,
           233.15900200208029,
-          304.6103596051534
+          304.6103596051534,
+          228.42252747217813
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          378.95937837873186,
           400.1997935295105,
           382.11341156278337,
           401.96247708002727,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           330.6550660133362,
           473.8753970691136,
           336.66280387242637,
-          406.3437856992086
+          406.3437856992086,
+          345.96329294840496
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          406.2996953896114,
           418.65790353502547,
           510.0736598332723,
           435.440534224877,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           347.74627742767336,
           398.028454712459,
           336.3426252092634,
-          423.000523630778
+          423.000523630778,
+          334.62842814127606
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          722.4072289466858,
           714.3178088324411,
           713.2217192967732,
           763.0974944432577,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           570.0206724575588,
           698.2741949558258,
           558.996187891279,
-          720.4517538706461
+          720.4517538706461,
+          551.2606260435922
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1894.4751108609712,
           1943.98547261556,
           1914.3262855529786,
           1948.7437267303467,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1638.542156346639,
           2207.2546043395996,
           1720.7080759684245,
-          1932.6034987313408
+          1932.6034987313408,
+          1740.5729477746147
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          925.2945395787557,
           958.5127582550049,
           912.8570596694947,
           966.9812909444173,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           830.564300610469,
           914.9931436947414,
           781.9774660746257,
-          919.8531631469726
+          919.8531631469726,
+          764.9542441685994
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11814.953919630785,
           12072.297448476156,
           11976.10413301908,
           12846.251729329428,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8522.82632798415,
           9716.588502066475,
           8514.822473379281,
-          12071.222578866142
+          12071.222578866142,
+          8566.173863002232
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          39752.8958871024,
           40583.94004603795,
           40445.54967447917,
           44904.441576276506,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           27342.850977971004,
           32862.370064871655,
           27592.682055664063,
-          40995.32376534598
+          40995.32376534598,
+          27002.049198404948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7754,7 +7754,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18394,
           18609,
           18609,
@@ -7796,6 +7795,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10682.023165021625,
           10500.048513793945,
           10496.540520301232,
           11220.927234903971,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7896.369658333914,
           9091.033655439105,
           7862.589434305827,
-          10490.723879132953
+          10490.723879132953,
+          7887.915387667143
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "554746c671599207ec99839f6537076f32e3c135",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:00:46 2026 \u002B0100",
-        "message": "fix!: reject an invalid expected JSON of \u0060IsJsonSerializedAs\u0060 when the expectation is written (#2136)"
-      },
-      {
         "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
         "message": "feat: store public API snapshots as C# files (#2182)"
+      },
+      {
+        "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
+        "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
       }
     ],
     "labels": [
-      "554746c6",
       "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
-      "e1ceda7d"
+      "e1ceda7d",
+      "58c2e4bf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11577.40517098563,
           11488.69238633376,
           11509.248116629464,
           12490.163258361816,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           8110.120013645717,
           9151.2462111253,
           8003.639696756999,
-          11764.603154109074
+          11764.603154109074,
+          8075.0719523111975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          57988.149401855466,
           59027.242954799105,
           58416.44586995443,
           65725.63345772879,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38798.54372297014,
           46678.667189534506,
           39208.34562901088,
-          59545.69777972881
+          59545.69777972881,
+          38636.018157958984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8485,7 +8485,6 @@ window.BENCHMARK_DATA = {
         "data": [
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8511,6 +8510,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20765.1203028361,
           20902.555991036552,
           20798.3135540302,
           22296.423626708984,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15368.306867327008,
           17911.49846473107,
           15142.63215637207,
-          20756.2164175851
+          20756.2164175851,
+          15188.399296351841
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
