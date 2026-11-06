@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10323.789493560791,
           11040.060776846749,
           11502.332045335035,
           7871.454311664288,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7770.047457013811,
           7971.755490112305,
           10682.0943943904,
-          7931.04435143104
+          7931.04435143104,
+          10608.079466683525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          383074.74762834824,
           380447.4959635417,
           407581.4698242188,
           277296.1037597656,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           303825.67996651784,
           263356.55423177086,
           382770.95842633926,
-          258878.79368489582
+          258878.79368489582,
+          383808.6199869792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590292,
           590287,
           590287,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590225,
           590287,
           590292,
+          590287,
           590287
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19679.400137765067,
           19741.100860595703,
           21357.944913736977,
           15653.950175694057,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           17668.177557138297,
           14544.71586717878,
           19578.425173950196,
-          14434.922869873048
+          14434.922869873048,
+          19565.374257405598
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          234.3879771232605,
           285.11265789667766,
           257.73639052708944,
           186.9764168580373,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           225.09995566095625,
           175.8557895251683,
           270.2351848057338,
-          168.33460025787355
+          168.33460025787355,
+          214.37586432236893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          510.2537934621175,
           510.0565294265747,
           603.7357696805682,
           462.91304941177367,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           588.9297527166514,
           438.2013214111328,
           502.1989903767904,
-          435.79489653905233
+          435.79489653905233,
+          510.62042801720753
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          407.3969630513872,
           386.60514545440674,
           439.1301575978597,
           310.0391542116801,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           408.55249579747516,
           312.1380790074666,
           384.33453736986434,
-          348.4645422867366
+          348.4645422867366,
+          386.6459264119466
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          105.9680711712156,
           107.74966617141452,
           116.27920695940654,
           84.77129473136021,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           113.70171150990895,
           82.16497475306193,
           109.55252869129181,
-          79.70712162767138
+          79.70712162767138,
+          102.96371171474456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          262.39755325317384,
           270.58932342529295,
           287.3558907849448,
           235.73803017934162,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           325.64638247856726,
           200.38758434568132,
           254.84425926208496,
-          206.38414963654108
+          206.38414963654108,
+          253.3926186243693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          258.3493342399597,
           243.2597882407052,
           279.2784065246582,
           189.1074573834737,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           242.0282021522522,
           197.35148413976034,
           242.13599100112916,
-          186.04121959209442
+          186.04121959209442,
+          231.80752642949423
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          238.63730181966508,
           224.45484442710875,
           216.61943868001302,
           166.81118837424688,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           217.3489405155182,
           158.55246456464133,
           216.0857523759206,
-          156.73081194437466
+          156.73081194437466,
+          206.5133592923482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          534.4437497456869,
           525.3062294006347,
           573.4939267294748,
           458.7736264546712,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           665.6529387791951,
           428.44302105903625,
           547.3123740514119,
-          451.3399315198263
+          451.3399315198263,
+          497.4497086842855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          341.7656743526459,
           333.47159004211426,
           366.01871445973717,
           262.8572775522868,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           352.13671181996665,
           255.58346786499024,
           334.14066872229944,
-          284.5666858037313
+          284.5666858037313,
+          333.02174088160194
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          709.5282716751099,
           705.5347908655802,
           751.0712633768718,
           569.5773542949131,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           618.5508168765476,
           544.2524162292481,
           724.601040326632,
-          547.7654306547983
+          547.7654306547983,
+          676.2534862927029
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1468.5216963450114,
           1412.1679819652013,
           1571.4425968757043,
           1242.2306915283202,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1543.6967314311437,
           1121.4667744954427,
           1387.3948567708333,
-          1179.4152186075846
+          1179.4152186075846,
+          1297.5598445892333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          673.2488266626993,
           668.6108720143636,
           696.0671773274739,
           520.0890223821004,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           647.6328786849975,
           506.2031344731649,
           666.432870165507,
-          513.5285079320272
+          513.5285079320272,
+          657.1318377812703
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          794.0034349986485,
           705.3468623479207,
           748.9268885294597,
           530.027265103658,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           628.684294627263,
           535.6573098727634,
           704.4348600827731,
-          535.3313143412272
+          535.3313143412272,
+          681.3753870555332
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28601.694814046223,
           27886.524348332332,
           31403.382381184896,
           17312.150975153996,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           18253.325486246744,
           16014.569110107423,
           28462.832657877603,
-          17545.951978410994
+          17545.951978410994,
+          27815.885099283852
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          814.9088574091594,
           800.8299654551914,
           813.2973634174892,
           615.2371544471154,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           757.0284495035808,
           614.8974687576294,
           795.9804546356202,
-          620.7387568155924
+          620.7387568155924,
+          795.2268980026245
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          664.2009996414184,
           674.4526850382487,
           697.2781012217204,
           516.9446788200966,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           626.863347307841,
           506.4627825873239,
           721.1166655858358,
-          496.9776355743408
+          496.9776355743408,
+          654.1703790937152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82879.86361694336,
           82043.75548444476,
           95980.9520304362,
           55902.93911539714,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           34273.07128470285,
           55757.62966918945,
           84690.81872558594,
-          52872.31494140625
+          52872.31494140625,
+          81845.18314772386
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5252,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
       {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          144.70560571125574,
           138.78400479952495,
           152.8979833285014,
           116.80455354849498,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           142.81591520309448,
           105.41215523084004,
           134.30999252001445,
-          123.53128833770752
+          123.53128833770752,
+          140.04407937186105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32975.60360483023,
           32445.901216947117,
           35181.452185058595,
           15057.741507393974,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           17179.020436604816,
           15707.686973571777,
           32665.412686861477,
-          14949.248994954427
+          14949.248994954427,
+          31899.3619913737
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5555,7 +5555,6 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614,
           5615,
           5614,
           5614,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          272.24875631332395,
           240.69077609266554,
           268.10425011316937,
           182.0034183184306,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           240.75408074061076,
           182.5123967329661,
           258.10770113127575,
-          188.5168319384257
+          188.5168319384257,
+          242.05321095784504
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          303.6053373018901,
           295.5819498062134,
           326.71692212422687,
           228.27548126073984,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           285.74098148345945,
           233.15900200208029,
           304.6103596051534,
-          228.42252747217813
+          228.42252747217813,
+          304.1991942723592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          400.1997935295105,
           382.11341156278337,
           401.96247708002727,
           355.4234770366124,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           473.8753970691136,
           336.66280387242637,
           406.3437856992086,
-          345.96329294840496
+          345.96329294840496,
+          405.81380977630613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          418.65790353502547,
           510.0736598332723,
           435.440534224877,
           321.15883728436063,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           398.028454712459,
           336.3426252092634,
           423.000523630778,
-          334.62842814127606
+          334.62842814127606,
+          408.7251625696818
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          714.3178088324411,
           713.2217192967732,
           763.0974944432577,
           580.3030179977417,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           698.2741949558258,
           558.996187891279,
           720.4517538706461,
-          551.2606260435922
+          551.2606260435922,
+          732.3039527620588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1943.98547261556,
           1914.3262855529786,
           1948.7437267303467,
           1743.8817689259847,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2207.2546043395996,
           1720.7080759684245,
           1932.6034987313408,
-          1740.5729477746147
+          1740.5729477746147,
+          1886.5447996775308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          958.5127582550049,
           912.8570596694947,
           966.9812909444173,
           795.1447787602742,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           914.9931436947414,
           781.9774660746257,
           919.8531631469726,
-          764.9542441685994
+          764.9542441685994,
+          940.1899452845256
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12072.297448476156,
           11976.10413301908,
           12846.251729329428,
           8539.392781938825,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           9716.588502066475,
           8514.822473379281,
           12071.222578866142,
-          8566.173863002232
+          8566.173863002232,
+          12123.833104060246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40583.94004603795,
           40445.54967447917,
           44904.441576276506,
           27200.608716692244,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           32862.370064871655,
           27592.682055664063,
           40995.32376534598,
-          27002.049198404948
+          27002.049198404948,
+          42422.184365408764
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7753,7 +7753,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18394,
           18609,
           18609,
@@ -7795,6 +7794,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18394,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10500.048513793945,
           10496.540520301232,
           11220.927234903971,
           7987.613770621164,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           9091.033655439105,
           7862.589434305827,
           10490.723879132953,
-          7887.915387667143
+          7887.915387667143,
+          10679.984093802315
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "fa41546d5f555395fb8b6a5361490e5b1c4fe808",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:08:19 2026 \u002B0100",
-        "message": "refactor!: put TResult first in IEnumPropertyResult (#2135)"
-      },
-      {
         "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
-      "fa41546d",
       "5fafaf2a",
       "2a51fd6f",
       "348ea074",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11488.69238633376,
           11509.248116629464,
           12490.163258361816,
           8052.052983210637,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           9151.2462111253,
           8003.639696756999,
           11764.603154109074,
-          8075.0719523111975
+          8075.0719523111975,
+          11695.37262901893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59027.242954799105,
           58416.44586995443,
           65725.63345772879,
           39179.9456258138,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           46678.667189534506,
           39208.34562901088,
           59545.69777972881,
-          38636.018157958984
+          38636.018157958984,
+          61088.96731770833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8484,7 +8484,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8532,7 +8531,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20902.555991036552,
           20798.3135540302,
           22296.423626708984,
           15426.16258591872,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           17911.49846473107,
           15142.63215637207,
           20756.2164175851,
-          15188.399296351841
+          15188.399296351841,
+          21076.91270882743
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
