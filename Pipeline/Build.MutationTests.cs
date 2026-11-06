@@ -24,9 +24,13 @@ namespace Build;
 
 partial class Build
 {
-	// Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of the unit tests within the
-	// time limit of the mutation jobs: https://github.com/stryker-mutator/stryker-net/issues/3871
-	private static bool DisableMutationTests = true;
+	// Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of the 26k tests of `aweXpect.Tests`
+	// within the time limit of the mutation jobs: https://github.com/stryker-mutator/stryker-net/issues/3871
+	// `aweXpect.Core.Tests` and the test suites of the extension packages are small enough, so their mutation tests run
+	// (`MutationTestsCore` as a trial).
+	private static bool DisableMainMutationTests = true;
+	private static bool DisableCoreMutationTests = false;
+	private static bool DisableExtensionMutationTests = false;
 
 	private const long MaxMutationReportSize = 100 * 1024 * 1024;
 
@@ -74,6 +78,27 @@ partial class Build
 		("rest", []),
 	];
 
+	/// <summary>
+	///     Disjoint slices of the mutated <c>aweXpect.Reflection</c> source, following the same rules as
+	///     <see cref="MainMutationSlices" />.
+	/// </summary>
+	/// <remarks>
+	///     The expectations are files in the project folder itself, so their slices select them by the prefix of the
+	///     subject instead of by folder. No nested folder contains a file with such a prefix.
+	/// </remarks>
+	private static readonly (string Name, string[] Patterns)[] ReflectionMutationSlices =
+	[
+		("types-plural", ["**/ThatTypes*.cs",]),
+		("types", ["**/ThatType*.cs",]),
+		("methods", ["**/ThatMethod*.cs",]),
+		("properties-fields", ["**/ThatPropert*.cs", "**/ThatField*.cs",]),
+		("constructors-events", ["**/ThatConstructor*.cs", "**/ThatEvent*.cs",]),
+		("assemblies-members", ["**/ThatAssembl*.cs", "**/ThatMember*.cs",]),
+		("filters", ["**/Filters/*.cs",]),
+		("helpers", ["**/Helpers/*.cs",]),
+		("rest", []),
+	];
+
 	[Parameter("The slice of the source to mutate - when unset, the whole project is mutated")]
 	readonly string MutationSlice;
 
@@ -82,7 +107,7 @@ partial class Build
 
 	Target MutationTestsCore => _ => _
 		.DependsOn(Compile)
-		.OnlyWhenDynamic(() => !DisableMutationTests)
+		.OnlyWhenDynamic(() => !DisableCoreMutationTests)
 		.Executes(() =>
 		{
 			// The framework projects run on VSTest, which the runner for the Microsoft.Testing.Platform cannot execute.
@@ -92,17 +117,47 @@ partial class Build
 
 	Target MutationTestsMain => _ => _
 		.DependsOn(Compile)
-		.OnlyWhenDynamic(() => !DisableMutationTests)
+		.OnlyWhenDynamic(() => !DisableMainMutationTests)
 		.Executes(() =>
 		{
 			ExecuteMutationTest(Solution.aweXpect,
 				[Solution.Tests.aweXpect_Tests, Solution.Tests.aweXpect_Internal_Tests,], MainMutationSlices);
 		});
 
+	Target MutationTestsJson => _ => _
+		.DependsOn(Compile)
+		.OnlyWhenDynamic(() => !DisableExtensionMutationTests)
+		.Executes(() => ExecuteMutationTest(Solution.aweXpect_Json, [Solution.Tests.aweXpect_Json_Tests,], []));
+
+	Target MutationTestsReflection => _ => _
+		.DependsOn(Compile)
+		.OnlyWhenDynamic(() => !DisableExtensionMutationTests)
+		.Executes(() => ExecuteMutationTest(Solution.aweXpect_Reflection,
+			[Solution.Tests.aweXpect_Reflection_Tests, Solution.Tests.aweXpect_Reflection_Internal_Tests,],
+			ReflectionMutationSlices));
+
+	Target MutationTestsSnapshots => _ => _
+		.DependsOn(Compile)
+		.OnlyWhenDynamic(() => !DisableExtensionMutationTests)
+		.Executes(() => ExecuteMutationTest(Solution.aweXpect_Snapshots, [Solution.Tests.aweXpect_Snapshots_Tests,], []));
+
+	Target MutationTestsWeb => _ => _
+		.DependsOn(Compile)
+		.OnlyWhenDynamic(() => !DisableExtensionMutationTests)
+		.Executes(() => ExecuteMutationTest(Solution.aweXpect_Web,
+			[Solution.Tests.aweXpect_Web_Tests, Solution.Tests.aweXpect_Web_Internal_Tests,], []));
+
+	Target MutationTestsXml => _ => _
+		.DependsOn(Compile)
+		.OnlyWhenDynamic(() => !DisableExtensionMutationTests)
+		.Executes(() => ExecuteMutationTest(Solution.aweXpect_Xml, [Solution.Tests.aweXpect_Xml_Tests,], []));
+
 	Target MutationTestsDashboard => _ => _
 		.After(MutationTestsMain)
 		.After(MutationTestsCore)
-		.OnlyWhenDynamic(() => !DisableMutationTests)
+		.After(MutationTestsJson, MutationTestsReflection, MutationTestsSnapshots, MutationTestsWeb, MutationTestsXml)
+		.OnlyWhenDynamic(() =>
+			!DisableMainMutationTests || !DisableCoreMutationTests || !DisableExtensionMutationTests)
 		.Executes(async () =>
 		{
 			string version = await GetMutationDashboardVersion();
@@ -115,13 +170,25 @@ partial class Build
 			ArtifactsDirectory.CreateDirectory();
 			List<Project> projects = [];
 			List<Project> projectsWithoutReport = [];
-			foreach ((Project project, string artifactName, (string Name, string[] Patterns)[] slices) in
+			foreach ((Project project, string artifactName, (string Name, string[] Patterns)[] slices, bool isDisabled) in
 			         new[]
 			         {
-				         (Solution.aweXpect, "MutationTestsMain", MainMutationSlices),
-				         (Solution.aweXpect_Core, "MutationTestsCore", CoreMutationSlices),
+				         (Solution.aweXpect, "MutationTestsMain", MainMutationSlices, DisableMainMutationTests),
+				         (Solution.aweXpect_Core, "MutationTestsCore", CoreMutationSlices, DisableCoreMutationTests),
+				         (Solution.aweXpect_Json, "MutationTestsJson", [], DisableExtensionMutationTests),
+				         (Solution.aweXpect_Reflection, "MutationTestsReflection", ReflectionMutationSlices,
+					         DisableExtensionMutationTests),
+				         (Solution.aweXpect_Snapshots, "MutationTestsSnapshots", [], DisableExtensionMutationTests),
+				         (Solution.aweXpect_Web, "MutationTestsWeb", [], DisableExtensionMutationTests),
+				         (Solution.aweXpect_Xml, "MutationTestsXml", [], DisableExtensionMutationTests),
 			         })
 			{
+				if (isDisabled)
+				{
+					// A skipped job still uploads the artifacts of `Compile`, which would count as a missing report.
+					continue;
+				}
+
 				bool? hasReport = await DownloadSlicedMutationReport(project.Name, artifactName, slices);
 				if (hasReport is null)
 				{
@@ -146,7 +213,7 @@ partial class Build
 
 			if (projectsWithoutReport.Count > 0)
 			{
-				// One report but not the other means a run that was meant to publish and did not get that far.
+				// Some reports but not all means a run that was meant to publish and did not get that far.
 				Assert.Fail(
 					$"No mutation report for {string.Join(", ", projectsWithoutReport.Select(project => project.Name))}");
 			}
