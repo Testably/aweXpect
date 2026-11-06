@@ -89,12 +89,15 @@ internal sealed class MatchesXmlConstraint<TNode>(
 		return this;
 	}
 
+	/// <remarks>
+	///     The subject is written with <see cref="XNode.ToString()" />, like the "Actual" context of the lookups, see
+	///     <see cref="HasNodeConstraint.AddActualContext" />.
+	/// </remarks>
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
-		if (Grammars.IsNegated() && Outcome == Outcome.Failure)
+		if (Grammars.IsNegated() && Outcome == Outcome.Failure && Actual is { } actual)
 		{
-			TNode? actual = Actual;
-			contexts.Add(new ResultContext.SyncCallback("Actual", () => Formatter.Format(actual)));
+			contexts.Add(new ResultContext.SyncCallback("Actual", actual.ToString));
 		}
 
 		options.AddContext(contexts, _comparisonResult?.GetUnmatchedMembersToIgnore());

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Recording;
@@ -71,7 +72,8 @@ public static partial class ThatEventRecording
 
 			_isMatch = CurrentFilter.IsMatch;
 			long? startTimestamp = CurrentOptions.IsRepeated ? context.GetTimestamp() : null;
-			_result = await actual.StopWhen(_areFound ??= AreFound, CurrentOptions.Timeout, context, cancellationToken);
+			_result = await EventRecordings.StopWhen(actual, _areFound ??= AreFound, CurrentOptions.Timeout, context,
+				cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, _isMatch);
 			if (startTimestamp is not null)
 			{

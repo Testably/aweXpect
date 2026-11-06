@@ -957,6 +957,10 @@ namespace aweXpect.Core.Extending
     {
         public EvaluationCancellationTokenAttribute() { }
     }
+    public static class EventRecordings
+    {
+        public static System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult> StopWhen<TSubject>(aweXpect.Recording.IEventRecording<TSubject> recording, System.Func<aweXpect.Recording.IEventRecordingResult, bool> areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) where TSubject : notnull { }
+    }
     public static class ExpectationBuilderExtensions
     {
         public static aweXpect.Core.ExpectationBuilder AddEqualityConstraint<TSubject, TExpected>(this aweXpect.Core.ExpectationBuilder expectationBuilder, TExpected expected, aweXpect.Core.ObjectMatchType<TSubject> options, out aweXpect.Core.IOptionsHolderSource<aweXpect.Core.ObjectMatchType<TSubject>> optionsSource, bool isNegated = false, string? expectedExpression = null) { }
@@ -1910,7 +1914,6 @@ namespace aweXpect.Recording
     }
     public interface IEventRecording<TSubject>
     {
-        System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult> StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult, bool> areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
     public interface IEventRecordingResult
     {

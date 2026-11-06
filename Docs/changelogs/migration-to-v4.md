@@ -264,6 +264,7 @@ If you wrote your own expectations on `aweXpect.Core`, the compiler points out m
 | the async `ExpectationBuilder.ForWhich`                            | `ForAsyncWhich`                                                            |
 | `MemberAccessor.FromFunc`, `FromFuncAsMemberAccessor`              | `FromFuncWithName`, `FromFuncWithCallerExpression`                         |
 | `ReflectionFallback` in `aweXpect.Core`                            | `ReflectionFallback` in `aweXpect.Core.Extending`                          |
+| `IEventRecording<TSubject>.StopWhen(…)`                            | `EventRecordings.StopWhen(recording, …)` in `aweXpect.Core.Extending`, which only supports a recording created by `.Record().Events()` |
 | `Quantifier.Never()` as static factory                             | the option method, e.g. `Quantifier.Default.Never()`                       |
 | `SetTolerance` and other methods that mirror a user-facing option  | the name of the option, e.g. `Within`                                      |
 
