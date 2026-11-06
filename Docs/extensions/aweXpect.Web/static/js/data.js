@@ -1482,6 +1482,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -1731,7 +1737,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -1984,7 +1991,8 @@ window.BENCHMARK_DATA = {
           228.4073472738266,
           355.7095827375139,
           227.88011135373796,
-          354.07126255830127
+          354.07126255830127,
+          464.17532021658764
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2164,6 +2172,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2503,7 +2512,8 @@ window.BENCHMARK_DATA = {
           500.5204112370809,
           836.7714953104655,
           482.85660239628385,
-          902.6810405095418
+          902.6810405095418,
+          1061.3809125264486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2515,6 +2525,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4257,6 +4268,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -4506,7 +4523,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -4759,7 +4777,8 @@ window.BENCHMARK_DATA = {
           120.46900096734365,
           185.7817667893001,
           124.15877677599589,
-          202.91081964969635
+          202.91081964969635,
+          240.30705676078796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4906,6 +4925,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5278,7 +5298,8 @@ window.BENCHMARK_DATA = {
           130.85188695362635,
           213.0579957008362,
           127.09643233739413,
-          262.74541257222495
+          262.74541257222495,
+          255.247495834644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5290,6 +5311,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -6972,6 +6994,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -7211,7 +7239,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -7454,7 +7483,8 @@ window.BENCHMARK_DATA = {
           489.7260799407959,
           746.767326037089,
           500.62523038046703,
-          756.9799492518107
+          756.9799492518107,
+          977.2244734446208
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7646,6 +7676,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -7953,7 +7984,8 @@ window.BENCHMARK_DATA = {
           502.50946178436277,
           819.2762525558471,
           506.59911855061847,
-          889.6906820933024
+          889.6906820933024,
+          986.4515163421631
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7965,6 +7997,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -9637,6 +9670,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -9876,7 +9915,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -10119,7 +10159,8 @@ window.BENCHMARK_DATA = {
           1050.2471432319055,
           1562.853025163923,
           1070.8240281513758,
-          1361.637860997518
+          1361.637860997518,
+          1970.544095357259
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10258,6 +10299,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -10618,7 +10660,8 @@ window.BENCHMARK_DATA = {
           9553.765062604632,
           15420.82025381235,
           9650.97907002767,
-          14555.522253183219
+          14555.522253183219,
+          19423.09619547526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10866,6 +10909,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
+          34712,
           34712
         ],
         "borderColor": "#FF671B",
@@ -12302,6 +12346,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -12541,7 +12591,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -12784,7 +12835,8 @@ window.BENCHMARK_DATA = {
           380.53352553503856,
           595.2629620234171,
           427.711298306783,
-          594.6533529917399
+          594.6533529917399,
+          766.1675936381022
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12923,6 +12975,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -13283,7 +13336,8 @@ window.BENCHMARK_DATA = {
           678.7558785756429,
           1091.5954096476237,
           679.5587807337444,
-          1174.5343807765416
+          1174.5343807765416,
+          1389.7713011423746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13295,6 +13349,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -14967,6 +15022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
@@ -15206,7 +15267,8 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
@@ -15449,7 +15511,8 @@ window.BENCHMARK_DATA = {
           754.820012664795,
           1052.0525977794941,
           768.0505401747567,
-          923.4157918521336
+          923.4157918521336,
+          1254.2845175425211
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15619,6 +15682,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -15948,7 +16012,8 @@ window.BENCHMARK_DATA = {
           396.62689444224037,
           632.6699003219604,
           400.9503671939556,
-          746.62786916097
+          746.62786916097,
+          764.6244032723563
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15960,6 +16025,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
