@@ -1470,6 +1470,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -1717,7 +1723,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -1968,7 +1975,8 @@ window.BENCHMARK_DATA = {
           1528.5788828042837,
           1219.3007618586223,
           1164.7170331319173,
-          2101.274386814662
+          2101.274386814662,
+          1640.6081005096435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2114,6 +2122,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2483,7 +2492,8 @@ window.BENCHMARK_DATA = {
           10062.187292916435,
           8192.451523917061,
           7441.881343841553,
-          15280.439073835101
+          15280.439073835101,
+          11008.760184733073
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2495,6 +2505,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4223,6 +4234,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -4470,7 +4487,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -4721,7 +4739,8 @@ window.BENCHMARK_DATA = {
           1232.718726671659,
           970.8439986889178,
           933.2086126963297,
-          1603.2596329909104
+          1603.2596329909104,
+          1282.1262341908046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4867,6 +4886,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5236,7 +5256,8 @@ window.BENCHMARK_DATA = {
           9264.010444054236,
           6476.932324727376,
           7202.76773223877,
-          13729.337122990535
+          13729.337122990535,
+          10161.80207010905
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5248,6 +5269,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -6916,6 +6938,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -7153,7 +7181,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -7394,7 +7423,8 @@ window.BENCHMARK_DATA = {
           3819.931579883282,
           3289.137732872596,
           2926.7716601445127,
-          4997.226754324777
+          4997.226754324777,
+          4006.1066350301107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7577,6 +7607,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -7889,7 +7920,8 @@ window.BENCHMARK_DATA = {
           28614.575122070313,
           20919.911678059896,
           20694.152872721355,
-          42500.48453194754
+          42500.48453194754,
+          31023.902799479165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8135,7 +8167,8 @@ window.BENCHMARK_DATA = {
           61705,
           61926,
           61925,
-          61932
+          61932,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9559,6 +9592,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -9796,7 +9835,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -10037,7 +10077,8 @@ window.BENCHMARK_DATA = {
           7283.224003131573,
           5693.14376613072,
           5008.315219116211,
-          9865.281103280875
+          9865.281103280875,
+          7649.655676269531
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10173,6 +10214,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -10532,7 +10574,8 @@ window.BENCHMARK_DATA = {
           199326.73543875557,
           142479.34682617188,
           145885.21360677082,
-          288900.0768103966
+          288900.0768103966,
+          209553.9464029948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10778,7 +10821,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521573
+          521573,
+          521542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12202,6 +12246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -12439,7 +12489,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -12680,7 +12731,8 @@ window.BENCHMARK_DATA = {
           2224.5750097547257,
           1630.878024646214,
           1528.5327204295568,
-          3044.7324256896973
+          3044.7324256896973,
+          2508.00612004598
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12866,6 +12918,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -13175,7 +13228,8 @@ window.BENCHMARK_DATA = {
           1473.186813218253,
           1149.155450957162,
           1047.2323877334595,
-          2110.2493776957194
+          2110.2493776957194,
+          1731.5336634772164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13187,6 +13241,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -14845,6 +14900,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -15082,7 +15143,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -15323,7 +15385,8 @@ window.BENCHMARK_DATA = {
           2177.089767964681,
           1540.5200232097081,
           1493.6359672546387,
-          2734.226946194967
+          2734.226946194967,
+          2126.4985376085556
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15506,6 +15569,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -15818,7 +15882,8 @@ window.BENCHMARK_DATA = {
           1333.9619255065918,
           1040.5297092437745,
           925.8834203402201,
-          2008.6294118245444
+          2008.6294118245444,
+          1656.4797300974528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15830,6 +15895,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -16786,6 +16852,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -16906,7 +16978,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -17030,7 +17103,8 @@ window.BENCHMARK_DATA = {
           1720.5347955067953,
           1320.2512763341267,
           1257.9205870310466,
-          2272.942900793893
+          2272.942900793893,
+          1809.4410732269287
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17096,6 +17170,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -17291,7 +17366,8 @@ window.BENCHMARK_DATA = {
           924.3374543507894,
           587.7667066710336,
           552.3154356820243,
-          1395.8038952691215
+          1395.8038952691215,
+          1157.0985036577497
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17303,6 +17379,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -18142,6 +18219,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -18262,7 +18345,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -18386,7 +18470,8 @@ window.BENCHMARK_DATA = {
           2271.038771311442,
           1688.860026223319,
           1640.911438369751,
-          3139.883852445162
+          3139.883852445162,
+          2382.8600351969403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18436,6 +18521,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -18647,7 +18733,8 @@ window.BENCHMARK_DATA = {
           1039.5310550417219,
           754.0119138445173,
           692.7010534286499,
-          1583.627987798055
+          1583.627987798055,
+          1312.040745417277
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18659,6 +18746,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -19156,6 +19244,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -19219,7 +19313,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -19286,7 +19381,8 @@ window.BENCHMARK_DATA = {
           127669.76213191106,
           105614.15098353794,
           92246.59491373698,
-          171032.34246826172
+          171032.34246826172,
+          140936.50411283053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19298,6 +19394,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -19433,7 +19530,8 @@ window.BENCHMARK_DATA = {
           148206.3178222656,
           116721.84833635602,
           110132.98283168247,
-          199959.15087890625
+          199959.15087890625,
+          157602.29415690104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19505,7 +19603,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266936,
-          266873
+          266873,
+          266883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19885,6 +19984,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
         "message": "fix: indent nested elements once in the \u0022Actual\u0022 context of a negated Xml Matches (#2189)"
+      },
+      {
+        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
+        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
       }
     ],
     "labels": [
@@ -19948,7 +20053,8 @@ window.BENCHMARK_DATA = {
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
-      "58c2e4bf"
+      "58c2e4bf",
+      "09367520"
     ],
     "datasets": [
       {
@@ -20015,7 +20121,8 @@ window.BENCHMARK_DATA = {
           2031.5272695101226,
           1473.075864655631,
           1501.0403453826905,
-          2616.3718795776367
+          2616.3718795776367,
+          1912.7924176534018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20027,6 +20134,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -20162,7 +20270,8 @@ window.BENCHMARK_DATA = {
           1352.8242018381754,
           1158.7170741217476,
           1050.0155845055212,
-          2000.2458516438803
+          2000.2458516438803,
+          1591.157462801252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20174,6 +20283,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
