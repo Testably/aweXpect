@@ -46,7 +46,10 @@ public class ValueFormatter
 	///     disposed.
 	/// </summary>
 	/// <remarks>
-	///     Without <paramref name="formatters" />, nothing changes.
+	///     Without <paramref name="formatters" />, nothing changes. When the <see cref="ScopedFormatters" /> already end
+	///     with the <paramref name="formatters" />, e.g. for each item of a nested expectation of the same extension,
+	///     nothing changes either, as appending them again would not change which formatter formats a value, and
+	///     changing the async-local value allocates.
 	/// </remarks>
 	internal static FormatterScope UseScopedFormatters(IValueFormatter[]? formatters)
 	{
@@ -56,8 +59,39 @@ public class ValueFormatter
 		}
 
 		IValueFormatter[]? previous = ScopedFormattersInFlow.Value;
-		ScopedFormattersInFlow.Value = previous is null ? formatters : [..previous, ..formatters,];
+		if (previous is null)
+		{
+			ScopedFormattersInFlow.Value = formatters;
+		}
+		else if (EndsWith(previous, formatters))
+		{
+			return default;
+		}
+		else
+		{
+			ScopedFormattersInFlow.Value = [..previous, ..formatters,];
+		}
+
 		return new FormatterScope(previous);
+	}
+
+	private static bool EndsWith(IValueFormatter[] scopedFormatters, IValueFormatter[] formatters)
+	{
+		int offset = scopedFormatters.Length - formatters.Length;
+		if (offset < 0)
+		{
+			return false;
+		}
+
+		for (int i = 0; i < formatters.Length; i++)
+		{
+			if (!ReferenceEquals(scopedFormatters[offset + i], formatters[i]))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/// <summary>

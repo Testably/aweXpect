@@ -436,6 +436,68 @@ public class ValueFormatterTests
 		}
 	}
 
+	[Test]
+	public async Task UseScopedFormatters_WhenAnotherFormatterFollowsThem_ShouldAppendThem()
+	{
+		MyCustomFormatter first = new("first");
+		MyCustomFormatter second = new("second");
+		IValueFormatter[]? scopedFormatters;
+		string result;
+		using (ValueFormatter.UseScopedFormatters([first, second,]))
+		{
+			using (ValueFormatter.UseScopedFormatters([first,]))
+			{
+				scopedFormatters = ValueFormatter.ScopedFormatters;
+				result = Formatter.Format(new MyFormattableClass());
+			}
+		}
+
+		await That(scopedFormatters).IsEqualTo([first, second, first,]);
+		await That(result).IsEqualTo("first")
+			.Because("the formatter of the inner scope takes precedence over the one that was added after it before");
+	}
+
+	[Test]
+	public async Task UseScopedFormatters_WhenTheFlowEndsWithThem_ShouldKeepTheScopedFormatters()
+	{
+		MyCustomFormatter first = new("first");
+		MyCustomFormatter second = new("second");
+		IValueFormatter[] outer = [first, second,];
+		IValueFormatter[]? inScope;
+		IValueFormatter[]? afterScope;
+		using (ValueFormatter.UseScopedFormatters(outer))
+		{
+			using (ValueFormatter.UseScopedFormatters([second,]))
+			{
+				inScope = ValueFormatter.ScopedFormatters;
+			}
+
+			afterScope = ValueFormatter.ScopedFormatters;
+		}
+
+		await That(inScope).IsSameAs(outer)
+			.Because("appending the formatters the flow already ends with would not change which one formats a value");
+		await That(afterScope).IsSameAs(outer)
+			.Because("disposing the skipped scope must not remove the formatters of the outer one");
+	}
+
+	[Test]
+	public async Task UseScopedFormatters_WhenTheyAreMoreThanInTheFlow_ShouldAppendThem()
+	{
+		MyCustomFormatter first = new("first");
+		MyCustomFormatter second = new("second");
+		IValueFormatter[]? scopedFormatters;
+		using (ValueFormatter.UseScopedFormatters([second,]))
+		{
+			using (ValueFormatter.UseScopedFormatters([first, second,]))
+			{
+				scopedFormatters = ValueFormatter.ScopedFormatters;
+			}
+		}
+
+		await That(scopedFormatters).IsEqualTo([second, first, second,]);
+	}
+
 	/// <remarks>
 	///     Registrations are process-wide, so it only formats values in the test that created it and leaves the
 	///     tests running in parallel alone.
