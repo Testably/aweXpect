@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
-        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
-      },
-      {
         "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
-      "5fafaf2a",
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          987.7774327141898,
           708.1894378662109,
           539.9525723139445,
           938.7004898616245,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           868.0472666195461,
           692.040686861674,
           835.4179099400839,
-          920.5865637915475
+          920.5865637915475,
+          940.7775998796735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          657.0614561353411,
           728.0082688013713,
           364.6620374066489,
           738.3787677764892,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           699.1890646389553,
           570.8611010771531,
           755.3909554163615,
-          808.5359552383422
+          808.5359552383422,
+          706.2097478594098
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
-        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
-      },
-      {
         "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
-      "5fafaf2a",
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4197.798227750338,
           3788.827237447103,
           2447.415637089656,
           4497.900282796224,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4857.692450968424,
           3571.4985724857875,
           4914.060402933756,
-          4999.999930318197
+          4999.999930318197,
+          4498.199612544133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24172,
           24172,
           24178,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24172,
+          24178,
           24178
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5184.855137416294,
           4655.360830579485,
           2788.144450554481,
           5534.413301595052,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5679.595049540202,
           3891.1916834513345,
           5832.564754740397,
-          5958.191146850586
+          5958.191146850586,
+          5043.230907985142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
-        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
-      },
-      {
         "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
-      "5fafaf2a",
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2526.819222768148,
           2249.9826909383137,
           1395.3412930624825,
           2750.1413935343426,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2803.5553299585977,
           2106.973723347982,
           2781.6805905659994,
-          2767.0736536661784
+          2767.0736536661784,
+          2585.5399562290736
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1656,7 +1656,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1684,6 +1683,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654
         ],
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3385.9729502541677,
           3383.365534591675,
           2033.068307495117,
           3729.1144289652507,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3686.421055348714,
           2978.742046083723,
           3722.167692057292,
-          3922.4374603271485
+          3922.4374603271485,
+          3461.405462137858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "5fafaf2a3a95a270133c3439dc7ceae77b23bb19",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:38:16 2026 \u002B0100",
-        "message": "fix!: fail the reflection collection expectations and their negations for a null item (#2132)"
-      },
-      {
         "sha": "2a51fd6f4818e7ddd137aeece75d8a1e34e2ddde",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 14:38:54 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
         "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
+      },
+      {
+        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
+        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
       }
     ],
     "labels": [
-      "5fafaf2a",
       "2a51fd6f",
       "348ea074",
       "91e67fd2",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
-      "09367520"
+      "09367520",
+      "7524c744"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13529.988846333821,
           12560.10968170166,
           7782.923489379883,
           14086.909571329752,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14486.604932657878,
           10606.586554972331,
           14673.151072184244,
-          14240.05289001465
+          14240.05289001465,
+          14724.432180132184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2264,7 +2264,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2292,6 +2291,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367
         ],
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          347104.13514927455,
           257802.13424479167,
           171294.2576904297,
           356412.9297921317,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           356686.0393880208,
           260398.90970052083,
           342786.5363606771,
-          379217.9697265625
+          379217.9697265625,
+          363890.465234375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544246,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
