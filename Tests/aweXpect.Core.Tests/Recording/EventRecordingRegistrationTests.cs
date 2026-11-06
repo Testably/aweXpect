@@ -1,5 +1,6 @@
 #if NET8_0_OR_GREATER
 using System.Linq;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 using aweXpect.Recording;
 
@@ -14,7 +15,7 @@ public sealed class EventRecordingRegistrationTests
 
 		IEventRecording<Publisher> recording = subject.Record().Events(nameof(Publisher.Counted));
 		subject.RaiseCounted(1, "foo", true, DateTime.MinValue, 2);
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 
 		await That(result.GetEventCount(nameof(Publisher.Counted), p => p[0] is 1 && p[4] is 2)).IsEqualTo(1)
 			.Because("the generated handler boxes every argument itself and has no parameter ceiling");
@@ -27,7 +28,7 @@ public sealed class EventRecordingRegistrationTests
 
 		IEventRecording<Publisher> recording = subject.Record().Events(nameof(Publisher.StaticChanged));
 		Publisher.RaiseStaticChanged();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+		IEventRecordingResult result = await EventRecordings.StopWhen(recording,_ => false, TimeSpan.Zero);
 		Publisher.RaiseStaticChanged();
 
 		await That(result.GetEventCount(nameof(Publisher.StaticChanged))).IsEqualTo(1)

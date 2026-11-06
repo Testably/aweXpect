@@ -31,12 +31,19 @@ public static class EventRecordings
 	///     non-<see langword="null" /> <paramref name="context" /> can check it again.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="recording" /> is <see langword="null" />.</exception>
+	/// <exception cref="NotSupportedException">
+	///     The <paramref name="recording" /> was not created by <c>.Record().Events()</c>.
+	/// </exception>
 	public static Task<IEventRecordingResult> StopWhen<TSubject>(IEventRecording<TSubject> recording,
 		Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
 		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
 		where TSubject : notnull
 	{
 		recording.ThrowIfNull();
-		return recording.StopWhen(areFound, timeout, context, cancellationToken);
+		return recording is EventRecording<TSubject> eventRecording
+			? eventRecording.StopWhen(areFound, timeout, context, cancellationToken)
+			: throw Tracing.WriteException(
+				new NotSupportedException(
+					$"Only a recording created by .Record().Events() supports {nameof(EventRecordings)}.{nameof(StopWhen)}(), but it was {Formatter.Format(recording)}."));
 	}
 }

@@ -1914,7 +1914,6 @@ namespace aweXpect.Recording
     }
     public interface IEventRecording<TSubject>
     {
-        System.Threading.Tasks.Task<aweXpect.Recording.IEventRecordingResult> StopWhen(System.Func<aweXpect.Recording.IEventRecordingResult, bool> areFound, System.TimeSpan timeout, aweXpect.Core.EvaluationContext.IEvaluationContext? context = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
     }
     public interface IEventRecordingResult
     {
