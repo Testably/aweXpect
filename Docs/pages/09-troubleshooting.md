@@ -77,7 +77,7 @@ From v4 on, `aweXpect`, `aweXpect.Core`, `aweXpect.Json`, `aweXpect.Web`, `aweXp
 
 ### `Seconds()` does not exist
 
-The samples in this documentation write durations like `5.Seconds()` with the [aweXpect.Chronology](/aweXpect/extensions/aweXpect.Chronology) package. Install it, or write `TimeSpan.FromSeconds(5)` instead.
+The samples in this documentation write durations like `5.Seconds()` with the [aweXpect.Chronology](/aweXpect/chronology) package. Install it, or write `TimeSpan.FromSeconds(5)` instead.
 
 ## Compiler errors and warnings
 

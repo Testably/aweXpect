@@ -22,7 +22,7 @@ same version. **Separate** extensions have their own repository and release cycl
 | [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)     | separate | the file and time systems of [Testably.Abstractions](/Abstractions): `HasFile`, `HasDirectory`, timers, watcher events                                                                                             |
 | [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)   | separate | interactions with [Mockolate](/Mockolate) mocks: `Once`, `Never`, `AtLeast`, `Then`, `AllInteractionsAreVerified`                                                                                                  |
 
-[aweXpect.Chronology](/aweXpect/extensions/aweXpect.Chronology) adds no expectations, but readable `TimeSpan` and
+[aweXpect.Chronology](/aweXpect/chronology) adds no expectations, but readable `TimeSpan` and
 `DateTime` values like `5.Seconds()` or `24.December(2024)`. It does not depend on aweXpect, and many samples in
 this documentation use it.
 
