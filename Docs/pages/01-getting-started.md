@@ -26,7 +26,7 @@ using static aweXpect.Expect;
 ```
 
 :::note
-The samples in this documentation write durations like `5.Seconds()` with the [aweXpect.Chronology](/aweXpect/extensions/aweXpect.Chronology) package, marked with the comment `// from the aweXpect.Chronology package`; `TimeSpan.FromSeconds(5)` works as well.
+The samples in this documentation write durations like `5.Seconds()` with the [aweXpect.Chronology](/aweXpect/chronology) package, marked with the comment `// from the aweXpect.Chronology package`; `TimeSpan.FromSeconds(5)` works as well.
 :::
 
 ## Write your first test
