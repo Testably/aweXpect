@@ -1500,6 +1500,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -1752,7 +1758,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -2008,7 +2015,8 @@ window.BENCHMARK_DATA = {
           717.5179582008949,
           429.3098341623942,
           543.5374744279044,
-          664.0968567984445
+          664.0968567984445,
+          392.5334567683084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2232,6 +2240,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2533,7 +2542,8 @@ window.BENCHMARK_DATA = {
           947.2699757258098,
           555.6820547921317,
           680.3650275548299,
-          663.8181403477987
+          663.8181403477987,
+          509.4206007548741
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2545,6 +2555,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4308,6 +4319,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -4560,7 +4577,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -4816,7 +4834,8 @@ window.BENCHMARK_DATA = {
           111.61525899171829,
           58.290672332048416,
           76.65000887100513,
-          94.35255511317935
+          94.35255511317935,
+          57.27294135945184
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4963,6 +4982,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5341,7 +5361,8 @@ window.BENCHMARK_DATA = {
           224.8436607837677,
           135.3694212606975,
           166.10222601890564,
-          187.62089467048645
+          187.62089467048645,
+          121.81824134077344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5353,6 +5374,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7116,6 +7138,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -7368,7 +7396,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -7624,7 +7653,8 @@ window.BENCHMARK_DATA = {
           1793.0935502370198,
           1027.1825102170308,
           1376.0138969421387,
-          1236.950510433742
+          1236.950510433742,
+          983.8002708435058
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7819,6 +7849,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8149,7 +8180,8 @@ window.BENCHMARK_DATA = {
           1479.931122716268,
           911.6958290100098,
           1106.4752630869548,
-          1143.904374395098
+          1143.904374395098,
+          822.776640006474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8410,6 +8442,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -9864,6 +9897,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -10106,7 +10145,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -10352,7 +10392,8 @@ window.BENCHMARK_DATA = {
           2560.291895059439,
           1517.7161038262504,
           2047.229819077712,
-          1904.6519088745117
+          1904.6519088745117,
+          1424.6891048431396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10537,6 +10578,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -10857,7 +10899,8 @@ window.BENCHMARK_DATA = {
           3859.997623737042,
           2287.9864204951696,
           2891.7440596989222,
-          2998.4758017403738
+          2998.4758017403738,
+          2234.5605222066242
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11108,7 +11151,8 @@ window.BENCHMARK_DATA = {
           3978,
           3980,
           3980,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12562,6 +12606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -12804,7 +12854,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -13050,7 +13101,8 @@ window.BENCHMARK_DATA = {
           468.74567426045735,
           204.88041591644287,
           291.9017965952555,
-          299.13122612635294
+          299.13122612635294,
+          192.43040011610304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13187,6 +13239,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -13555,7 +13608,8 @@ window.BENCHMARK_DATA = {
           2490.9512931278773,
           1383.7872416178386,
           1772.4772457395281,
-          1741.0799905141196
+          1741.0799905141196,
+          1271.9582562764485
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13567,6 +13621,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -15260,6 +15315,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -15502,7 +15563,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -15748,7 +15810,8 @@ window.BENCHMARK_DATA = {
           2680.6432723999023,
           1565.8620859781902,
           2167.218856302897,
-          1925.7261387751653
+          1925.7261387751653,
+          1467.985004266103
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15962,6 +16025,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -16253,7 +16317,8 @@ window.BENCHMARK_DATA = {
           270707.44720052084,
           171066.82264927455,
           241798.53278996394,
-          233643.61171177455
+          233643.61171177455,
+          168027.48861929087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16504,7 +16569,8 @@ window.BENCHMARK_DATA = {
           17558,
           17574,
           17576,
-          17528
+          17528,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
