@@ -1488,6 +1488,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -1738,7 +1744,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -1992,7 +1999,8 @@ window.BENCHMARK_DATA = {
           920.5865637915475,
           940.7775998796735,
           494.2572853905814,
-          480.05623251597086
+          480.05623251597086,
+          967.9859626770019
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2173,6 +2181,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2513,7 +2522,8 @@ window.BENCHMARK_DATA = {
           808.5359552383422,
           706.2097478594098,
           399.4256422996521,
-          371.2013638202961
+          371.2013638202961,
+          821.386204401652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2525,6 +2535,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4274,6 +4285,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -4524,7 +4541,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -4778,7 +4796,8 @@ window.BENCHMARK_DATA = {
           4999.999930318197,
           4498.199612544133,
           3094.2211710611978,
-          2725.2136789049423
+          2725.2136789049423,
+          5474.957975769043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5037,7 +5056,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24172,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5299,7 +5319,8 @@ window.BENCHMARK_DATA = {
           5958.191146850586,
           5043.230907985142,
           3502.432845524379,
-          3188.030600139073
+          3188.030600139073,
+          6085.385595194499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5311,6 +5332,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7000,6 +7022,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -7240,7 +7268,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -7484,7 +7513,8 @@ window.BENCHMARK_DATA = {
           2767.0736536661784,
           2585.5399562290736,
           1595.3679968970162,
-          1416.310806274414
+          1416.310806274414,
+          3099.2470219930015
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7729,6 +7759,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -7985,7 +8016,8 @@ window.BENCHMARK_DATA = {
           3922.4374603271485,
           3461.405462137858,
           2203.787975056966,
-          2066.117052968343
+          2066.117052968343,
+          4085.484759521484
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7997,6 +8029,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9676,6 +9709,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
         "message": "docs: link aweXpect.Chronology at its new location (#2191)"
+      },
+      {
+        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
+        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
       }
     ],
     "labels": [
@@ -9916,7 +9955,8 @@ window.BENCHMARK_DATA = {
       "09367520",
       "7524c744",
       "cefa1d5e",
-      "cc35431a"
+      "cc35431a",
+      "4d8ac6be"
     ],
     "datasets": [
       {
@@ -10160,7 +10200,8 @@ window.BENCHMARK_DATA = {
           14240.05289001465,
           14724.432180132184,
           8409.441881619967,
-          7878.311723981585
+          7878.311723981585,
+          14708.98719242641
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10405,6 +10446,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -10661,7 +10703,8 @@ window.BENCHMARK_DATA = {
           379217.9697265625,
           363890.465234375,
           185856.5203857422,
-          181203.33919270834
+          181203.33919270834,
+          372987.3054547991
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10907,6 +10950,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335,
           544335,
           544335,
