@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Collections;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatObject
 {
@@ -39,6 +41,18 @@ public sealed partial class ThatObject
 					             but it was "say \"hi\"\nbye"
 					             """)
 					.Because("a string held by an object is formatted like the subject of a string expectation");
+			}
+
+			[Test]
+			public async Task WhenSubjectIsANullNonGenericEnumerable_ShouldSucceed()
+			{
+				IEnumerable? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsNull();
+
+				await That(Act).DoesNotThrow()
+					.Because("a non-generic enumerable uses the generic overload of That, which accepts null");
 			}
 
 			[Test]
