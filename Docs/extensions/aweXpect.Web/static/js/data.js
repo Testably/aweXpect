@@ -1524,6 +1524,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -1780,7 +1786,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -2040,7 +2047,8 @@ window.BENCHMARK_DATA = {
           426.9934498469035,
           356.8894415537516,
           338.6182895024618,
-          484.90661873136247
+          484.90661873136247,
+          210.19834791819255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2220,6 +2228,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2573,7 +2582,8 @@ window.BENCHMARK_DATA = {
           1104.0352654774983,
           727.4845709433922,
           753.665256245931,
-          1116.3289230891637
+          1116.3289230891637,
+          473.9439888636271
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2585,6 +2595,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4376,6 +4387,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -4632,7 +4649,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -4892,7 +4910,8 @@ window.BENCHMARK_DATA = {
           247.73440783364433,
           168.97363936106365,
           171.00144333839415,
-          256.36533662251065
+          256.36533662251065,
+          112.66835227012635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5039,6 +5058,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5425,7 +5445,8 @@ window.BENCHMARK_DATA = {
           281.90998336247037,
           201.51027666727703,
           205.6811504840851,
-          302.12337834494457
+          302.12337834494457,
+          120.81080665038182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5437,6 +5458,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7168,6 +7190,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -7414,7 +7442,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -7664,7 +7693,8 @@ window.BENCHMARK_DATA = {
           936.5313198725382,
           664.6222269351666,
           683.8553036371867,
-          1059.555549621582
+          1059.555549621582,
+          462.1221591063908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7856,6 +7886,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8177,7 +8208,8 @@ window.BENCHMARK_DATA = {
           1029.834334309896,
           710.4350616455079,
           731.360378742218,
-          1092.98411996024
+          1092.98411996024,
+          440.83453092575076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8189,6 +8221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -9910,6 +9943,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -10156,7 +10195,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -10406,7 +10446,8 @@ window.BENCHMARK_DATA = {
           1682.2827657063801,
           1455.0910160882133,
           1465.0292893818446,
-          1922.4851902553014
+          1922.4851902553014,
+          1022.25754737854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10545,6 +10586,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -10919,7 +10961,8 @@ window.BENCHMARK_DATA = {
           16421.029397147042,
           13784.341008867535,
           14078.629677405725,
-          21090.994164603097
+          21090.994164603097,
+          8826.081477238582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11174,7 +11217,8 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12652,6 +12696,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -12898,7 +12948,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -13148,7 +13199,8 @@ window.BENCHMARK_DATA = {
           734.9194453557333,
           537.1974818365915,
           555.4904356002808,
-          787.1205213253314
+          787.1205213253314,
+          362.76999262173973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13287,6 +13339,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -13661,7 +13714,8 @@ window.BENCHMARK_DATA = {
           1373.5542538506645,
           975.8025608062744,
           997.8122164862497,
-          1515.7170279576228
+          1515.7170279576228,
+          667.2920645305088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13673,6 +13727,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -15394,6 +15449,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
@@ -15640,7 +15701,8 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
@@ -15890,7 +15952,8 @@ window.BENCHMARK_DATA = {
           1112.6286829630533,
           970.6570403235299,
           1008.276535306658,
-          1289.309011186872
+          1289.309011186872,
+          739.9473722321646
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16060,6 +16123,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -16403,7 +16467,8 @@ window.BENCHMARK_DATA = {
           814.1402980940683,
           594.755026953561,
           595.3485330854144,
-          927.696897983551
+          927.696897983551,
+          378.8111919403076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16415,6 +16480,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
