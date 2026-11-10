@@ -1524,6 +1524,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
@@ -1780,7 +1786,8 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
@@ -2040,7 +2047,8 @@ window.BENCHMARK_DATA = {
           516.7821545283,
           885.9557149251302,
           663.7383292516073,
-          927.1998291696821
+          927.1998291696821,
+          870.5031931740897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2221,6 +2229,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2573,7 +2582,8 @@ window.BENCHMARK_DATA = {
           397.81393111546834,
           632.833589553833,
           539.3796554974148,
-          696.2858406702677
+          696.2858406702677,
+          661.6432409286499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2585,6 +2595,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4376,6 +4387,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
@@ -4632,7 +4649,8 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
@@ -4892,7 +4910,8 @@ window.BENCHMARK_DATA = {
           2897.288352203369,
           4162.350963047573,
           3160.4795273372106,
-          4200.61108194987
+          4200.61108194987,
+          4166.357889447893
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5157,6 +5176,7 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24172,
+          24178,
           24178
         ],
         "borderColor": "#63A2AC",
@@ -5425,7 +5445,8 @@ window.BENCHMARK_DATA = {
           3211.4535771687824,
           4758.509466552734,
           4029.0340701511927,
-          5050.63349609375
+          5050.63349609375,
+          4883.908458455404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5437,6 +5458,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7168,6 +7190,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
@@ -7414,7 +7442,8 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
@@ -7664,7 +7693,8 @@ window.BENCHMARK_DATA = {
           1601.9269877115885,
           2379.655566151937,
           1833.029231584989,
-          2590.313037599836
+          2590.313037599836,
+          2377.205401284354
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7916,6 +7946,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -8177,7 +8208,8 @@ window.BENCHMARK_DATA = {
           2086.230089187622,
           3259.6560043921836,
           2726.2065898350306,
-          3607.7651390075685
+          3607.7651390075685,
+          3305.5031720674956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8189,6 +8221,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9910,6 +9943,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
@@ -10156,7 +10195,8 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
@@ -10406,7 +10446,8 @@ window.BENCHMARK_DATA = {
           8383.189709981283,
           13349.113824462891,
           10144.061152140299,
-          13851.899473063151
+          13851.899473063151,
+          13081.795353190104
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10658,6 +10699,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -10919,7 +10961,8 @@ window.BENCHMARK_DATA = {
           188405.78095354352,
           334733.4513811384,
           242822.37312825522,
-          343361.5473257211
+          343361.5473257211,
+          348114.1427734375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11165,6 +11208,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335,
           544335,
           544335,
