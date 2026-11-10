@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2028.449082007775,
           2045.6192062922887,
           1144.4436431884765,
           1552.4622871398926,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2089.648218536377,
           1279.3513465881347,
           1509.2452847162883,
-          2036.4569170633952
+          2036.4569170633952,
+          1140.3008514404296
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16963.501809256417,
           17545.676153564455,
           7693.358083284818,
           10231.446584429059,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           16163.861046927315,
           8185.659481811524,
           10225.483813694545,
-          16405.859407697404
+          16405.859407697404,
+          6750.2724136352535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1626.987015883128,
           1666.6745916094098,
           916.2483698527018,
           1232.2781910896301,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1674.9081576211113,
           1011.1518456776937,
           1255.4216372626167,
-          1671.422877629598
+          1671.422877629598,
+          871.3681794484456
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15543.29375566755,
           16085.386404184195,
           7335.567544047038,
           9284.946076529366,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           14586.417444501605,
           7394.163623046875,
           9511.79260144915,
-          15173.880303955078
+          15173.880303955078,
+          6183.913349405924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5444.0469572884695,
           5467.672707875569,
           3092.797406060355,
           4046.3676704993613,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5561.626392618815,
           3106.027884165446,
           3861.1715660095215,
-          5609.187294006348
+          5609.187294006348,
+          3036.934961446126
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          49454.616908482145,
           51170.30817522322,
           22062.37817600795,
           30793.3183207194,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           48534.947941706734,
           22124.832357553336,
           28384.210298665366,
-          47880.10602678572
+          47880.10602678572,
+          20213.44189046224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61925,
           61925,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61700,
           61705,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
       {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9733.990040370396,
           9570.244184053861,
           5392.995062764486,
           7354.033125070425,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9487.90351155599,
           5315.4510055542,
           7232.586342444787,
-          9611.967385864258
+          9611.967385864258,
+          4998.037128741925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          316981.71175130206,
           321336.3372279576,
           157618.29176432293,
           201854.92325265068,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           310455.28888811386,
           146205.84716796875,
           202625.79385811943,
-          303290.44876534597
+          303290.44876534597,
+          144980.48174176898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
       {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2846.4745060847354,
           2916.3037678645205,
           1652.5230827331543,
           2190.9447432297925,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2912.562702723912,
           1667.3484702791486,
           2186.2125141437236,
-          2864.0226549784343
+          2864.0226549784343,
+          1586.439702351888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2024.1209363301596,
           2037.1141006469727,
           1121.3568122046333,
           1485.8427047729492,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2013.688312802996,
           1174.4418003718058,
           1463.5360726674398,
-          2019.7148592631022
+          2019.7148592631022,
+          1128.5250615340012
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2973.2866235460556,
           3048.4037722269695,
           1702.6748824800763,
           2235.9134895324705,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           3079.4694310506184,
           1707.5325141906737,
           2186.7256603240967,
-          2990.2793983459474
+          2990.2793983459474,
+          1561.4393478121076
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1958.2512814839681,
           2081.9494272867837,
           1080.4568865639824,
           1485.0938915252686,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1956.669413248698,
           948.4157443413368,
           1297.8287948880877,
-          1793.9054161071776
+          1793.9054161071776,
+          991.497759215037
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2391.9529581069946,
           2458.96487562997,
           1352.507899420602,
           1715.3575024238,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2450.3043275560653,
           1434.306384746845,
           1716.3946898533748,
-          2443.3870096842447
+          2443.3870096842447,
+          1304.6790632520404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1313.8394449778966,
           1399.985789162772,
           615.6915029117039,
           925.1687107819778,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1145.3849838256835,
           631.9147556940715,
           912.5126584370931,
-          1148.1366883595786
+          1148.1366883595786,
+          586.286518796285
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3189.8700566973007,
           3200.396547757662,
           1786.010848236084,
           2325.747447713216,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           3111.0404103597007,
           1767.9737749735514,
           2308.357018025716,
-          3106.9266682942707
+          3106.9266682942707,
+          1548.7482321602959
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1462.4393900553384,
           1564.4122807820638,
           720.7498853047689,
           1059.218563079834,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1293.626700337728,
           750.4520538965861,
           1023.8625492095947,
-          1328.6523034413656
+          1328.6523034413656,
+          645.9341051737467
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
-      {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          165448.3605143229,
           167344.51487630207,
           96665.73575063852,
           125787.46069335938,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           163837.1616774339,
           99992.66883196149,
           126137.21133188102,
-          167855.98917061943
+          167855.98917061943,
+          91226.74255371094
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          203846.4302280971,
           202206.20424107142,
           115151.00320870536,
           149787.5247453962,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           193116.54748535156,
           119533.16932024274,
           146814.39772251673,
-          193096.7361328125
+          193096.7361328125,
+          103854.21428034856
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266951,
           266950,
           266936,
           266950,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266951,
           266936,
           266950,
-          266950
+          266950,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
-        "message": "chore: fail the Release build on missing XML documentation (#2143)"
-      },
       {
         "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
         "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
+      },
+      {
+        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
+        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
       }
     ],
     "labels": [
-      "dbfb8e56",
       "155bfd1e",
       "2bba8222",
       "33ef507b",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
-      "d8a0d145"
+      "d8a0d145",
+      "b438547b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2867.793790083665,
           2859.093085068923,
           1484.1264026641845,
           2048.4122166951497,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2800.776454416911,
           1556.8808671315512,
           2047.6509335835774,
-          2782.372423553467
+          2782.372423553467,
+          1412.6118176778157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1964.5629010518392,
           2046.1422299702963,
           1028.9430993887095,
           1382.913792882647,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1846.136782836914,
           1120.7202083587647,
           1359.5288590651292,
-          1833.161324818929
+          1833.161324818929,
+          956.6296964009603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
