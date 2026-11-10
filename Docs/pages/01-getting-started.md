@@ -14,9 +14,7 @@ aweXpect supports test projects on .NET Framework 4.8 and on .NET 6 or later; so
 
 ## Install the package
 
-<PackageInstall package="aweXpect" prerelease />
-
-This documentation describes aweXpect v4, which is available as a pre-release, so the snippets above install the latest pre-release. Without `--prerelease` or a pre-release version you get v3, which lacks some of the APIs described here.
+<PackageInstall package="aweXpect" />
 
 Add the following `using` directives: the first brings the static `Expect` class and lots of extension methods into scope, the second lets you write `That(...)` instead of `Expect.That(...)`:
 

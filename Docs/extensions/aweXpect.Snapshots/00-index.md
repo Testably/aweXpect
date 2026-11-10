@@ -10,7 +10,7 @@ import PackageInstall from '@site/src/components/PackageInstall';
 
 ## Installation
 
-<PackageInstall package="aweXpect.Snapshots" prerelease />
+<PackageInstall package="aweXpect.Snapshots" />
 
 - [aweXpect.Snapshots](https://www.nuget.org/packages/aweXpect.Snapshots): `MatchesSnapshot` for strings, objects,
   binary data and files. The other two packages bring it with them.

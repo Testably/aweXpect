@@ -8,7 +8,7 @@ import PackageInstall from '@site/src/components/PackageInstall';
 
 Reference the package aweXpect.Snapshots.DiffEngine in the test project, and a missing or different snapshot opens a diff tool with [DiffEngine](https://github.com/VerifyTests/DiffEngine), which finds the tools installed on the machine, e.g. Rider, Visual Studio, VS Code, Beyond Compare or WinMerge:
 
-<PackageInstall package="aweXpect.Snapshots.DiffEngine" prerelease />
+<PackageInstall package="aweXpect.Snapshots.DiffEngine" />
 
 The diff tool compares the pending file with the snapshot file, e.g.
 `AlbumTests.Describes.awexpect-snapshot.pending.txt` with `AlbumTests.Describes.awexpect-snapshot.txt`, so taking over

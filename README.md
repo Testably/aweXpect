@@ -24,10 +24,8 @@ but it was "It's a complement", which differs at index 12:
 
 ## Installation
 
-aweXpect v4 is available as a pre-release:
-
 ```shell
-dotnet add package aweXpect --prerelease
+dotnet add package aweXpect
 ```
 
 Add the following `using` directives: the first brings the static `Expect` class and lots of extension methods into scope, the second lets you write `That(...)` instead of `Expect.That(...)`, as all examples do:

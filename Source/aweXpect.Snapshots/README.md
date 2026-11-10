@@ -7,7 +7,7 @@
 ## Installation
 
 ```shell
-dotnet add package aweXpect.Snapshots --prerelease
+dotnet add package aweXpect.Snapshots
 ```
 
 - [aweXpect.Snapshots](https://www.nuget.org/packages/aweXpect.Snapshots): `MatchesSnapshot` for strings, objects,

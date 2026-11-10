@@ -11,7 +11,7 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
-<PackageInstall package="aweXpect.Core" prerelease />
+<PackageInstall package="aweXpect.Core" />
 
 <details>
 <summary>Namespaces used on this page</summary>
