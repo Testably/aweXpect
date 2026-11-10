@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1144.4436431884765,
           1552.4622871398926,
           1948.9220331632173,
           2058.591058731079,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1509.2452847162883,
           2036.4569170633952,
           1140.3008514404296,
-          1972.1327214922223
+          1972.1327214922223,
+          1183.2427139282227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7693.358083284818,
           10231.446584429059,
           13111.943348185221,
           15206.500785827637,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10225.483813694545,
           16405.859407697404,
           6750.2724136352535,
-          15563.101790364582
+          15563.101790364582,
+          8017.65335904635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          916.2483698527018,
           1232.2781910896301,
           1358.02166223526,
           1710.313231248122,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1255.4216372626167,
           1671.422877629598,
           871.3681794484456,
-          1606.0217206319173
+          1606.0217206319173,
+          982.8551705678304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7335.567544047038,
           9284.946076529366,
           12081.88805516561,
           13956.257080078125,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9511.79260144915,
           15173.880303955078,
           6183.913349405924,
-          14458.01047668457
+          14458.01047668457,
+          7342.289443969727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3092.797406060355,
           4046.3676704993613,
           4291.330167643229,
           5437.478547316331,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3861.1715660095215,
           5609.187294006348,
           3036.934961446126,
-          5415.6979420979815
+          5415.6979420979815,
+          3253.6454385610728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22062.37817600795,
           30793.3183207194,
           36060.0250807542,
           47665.58600260417,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           28384.210298665366,
           47880.10602678572,
           20213.44189046224,
-          45683.573567708336
+          45683.573567708336,
+          22083.93601074219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61925,
           61922,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61705,
           61926,
           61926,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
       {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5392.995062764486,
           7354.033125070425,
           8488.892574310303,
           9419.360936991374,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7232.586342444787,
           9611.967385864258,
           4998.037128741925,
-          9204.362469264439
+          9204.362469264439,
+          5534.431563786098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          157618.29176432293,
           201854.92325265068,
           252509.8329702524,
           303545.9892740885,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           202625.79385811943,
           303290.44876534597,
           144980.48174176898,
-          293874.3419270833
+          293874.3419270833,
+          164001.1685267857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521542,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
       {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1652.5230827331543,
           2190.9447432297925,
           3178.5071411132812,
           2878.8900449117023,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2186.2125141437236,
           2864.0226549784343,
           1586.439702351888,
-          2820.426012185904
+          2820.426012185904,
+          1721.6348050435383
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1121.3568122046333,
           1485.8427047729492,
           2036.1909277779716,
           1976.4782573154994,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1463.5360726674398,
           2019.7148592631022,
           1128.5250615340012,
-          1929.2136393955775
+          1929.2136393955775,
+          1157.2739714304605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1702.6748824800763,
           2235.9134895324705,
           2324.9784932817734,
           2875.8307699475968,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2186.7256603240967,
           2990.2793983459474,
           1561.4393478121076,
-          2754.947356087821
+          2754.947356087821,
+          1668.8920480183192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1080.4568865639824,
           1485.0938915252686,
           2070.3343767438614,
           1752.2482493718464,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1297.8287948880877,
           1793.9054161071776,
           991.497759215037,
-          1764.1727305192214
+          1764.1727305192214,
+          1011.9261238391583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1352.507899420602,
           1715.3575024238,
           2021.0343993504841,
           2347.8711610940786,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1716.3946898533748,
           2443.3870096842447,
           1304.6790632520404,
-          2249.3473172505696
+          2249.3473172505696,
+          1470.9796900431315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          615.6915029117039,
           925.1687107819778,
           1488.5297245612512,
           1110.2594125111898,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           912.5126584370931,
           1148.1366883595786,
           586.286518796285,
-          1126.0239278157553
+          1126.0239278157553,
+          632.0781650543213
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1786.010848236084,
           2325.747447713216,
           2703.965768080491,
           3031.494597117106,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2308.357018025716,
           3106.9266682942707,
           1548.7482321602959,
-          2942.5403480529785
+          2942.5403480529785,
+          1803.962487734281
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          720.7498853047689,
           1059.218563079834,
           1700.4188789367677,
           1232.871432240804,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1023.8625492095947,
           1328.6523034413656,
           645.9341051737467,
-          1270.6794090270996
+          1270.6794090270996,
+          749.8240190233503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
-      {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 20:27:38 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          96665.73575063852,
           125787.46069335938,
           163628.84291992188,
           164269.91196289062,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           126137.21133188102,
           167855.98917061943,
           91226.74255371094,
-          165896.29754638672
+          165896.29754638672,
+          97559.29846191406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          115151.00320870536,
           149787.5247453962,
           188707.96360560827,
           191946.5867513021,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           146814.39772251673,
           193096.7361328125,
           103854.21428034856,
-          188700.35750325522
+          188700.35750325522,
+          121579.36063058036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266950,
           266883,
           266950,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266936,
-          266951
+          266951,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
-        "message": "fix: remove ConfigureAwait(false) from the Core evaluation (#2145)"
-      },
       {
         "sha": "33ef507b49bfef0fbb997cf69352a8b5776a332d",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
         "message": "chore: Bump the fallout group with 2 updates (#2196)"
+      },
+      {
+        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2197)"
       }
     ],
     "labels": [
-      "2bba8222",
       "33ef507b",
       "f8435557",
       "b48cdddb",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "4ca5e961",
       "d8a0d145",
       "b438547b",
-      "1ccacb5f"
+      "1ccacb5f",
+      "688a3ba2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1484.1264026641845,
           2048.4122166951497,
           2232.8610100379356,
           2725.89577293396,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2047.6509335835774,
           2782.372423553467,
           1412.6118176778157,
-          2763.722824369158
+          2763.722824369158,
+          1551.7483517964681
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1028.9430993887095,
           1382.913792882647,
           2018.718560218811,
           1810.713012967791,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1359.5288590651292,
           1833.161324818929,
           956.6296964009603,
-          1866.1492294311524
+          1866.1492294311524,
+          1131.9903043111165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
