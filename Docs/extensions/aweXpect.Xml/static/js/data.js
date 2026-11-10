@@ -1494,6 +1494,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -1745,7 +1751,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -2000,7 +2007,8 @@ window.BENCHMARK_DATA = {
           940.7775998796735,
           494.2572853905814,
           480.05623251597086,
-          967.9859626770019
+          967.9859626770019,
+          498.89107397624423
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2181,6 +2189,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2523,7 +2532,8 @@ window.BENCHMARK_DATA = {
           706.2097478594098,
           399.4256422996521,
           371.2013638202961,
-          821.386204401652
+          821.386204401652,
+          402.1901468890054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2535,6 +2545,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4291,6 +4302,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -4542,7 +4559,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -4797,7 +4815,8 @@ window.BENCHMARK_DATA = {
           4498.199612544133,
           3094.2211710611978,
           2725.2136789049423,
-          5474.957975769043
+          5474.957975769043,
+          2462.7635069627026
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5057,7 +5076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24178,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5320,7 +5340,8 @@ window.BENCHMARK_DATA = {
           5043.230907985142,
           3502.432845524379,
           3188.030600139073,
-          6085.385595194499
+          6085.385595194499,
+          2829.7398678915843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5332,6 +5353,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7028,6 +7050,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -7269,7 +7297,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -7514,7 +7543,8 @@ window.BENCHMARK_DATA = {
           2585.5399562290736,
           1595.3679968970162,
           1416.310806274414,
-          3099.2470219930015
+          3099.2470219930015,
+          1384.0519980021886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7764,7 +7794,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8017,7 +8048,8 @@ window.BENCHMARK_DATA = {
           3461.405462137858,
           2203.787975056966,
           2066.117052968343,
-          4085.484759521484
+          4085.484759521484,
+          1833.9655157725017
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8029,6 +8061,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -9715,6 +9748,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -9956,7 +9995,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -10201,7 +10241,8 @@ window.BENCHMARK_DATA = {
           14724.432180132184,
           8409.441881619967,
           7878.311723981585,
-          14708.98719242641
+          14708.98719242641,
+          7514.234054056803
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10451,7 +10492,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10704,7 +10746,8 @@ window.BENCHMARK_DATA = {
           363890.465234375,
           185856.5203857422,
           181203.33919270834,
-          372987.3054547991
+          372987.3054547991,
+          166104.2158578726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10950,6 +10993,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335,
           544335,
           544335,
