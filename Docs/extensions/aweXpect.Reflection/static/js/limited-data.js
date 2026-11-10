@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
-      {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          614.3767366409302,
           656.0288326263428,
           342.4948868433634,
           347.6062619345529,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           429.3098341623942,
           543.5374744279044,
           664.0968567984445,
-          392.5334567683084
+          392.5334567683084,
+          566.5283140769371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -430,7 +430,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          882.9032936096191,
           983.1232933044433,
           487.0153755187988,
           511.8779330934797,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           555.6820547921317,
           680.3650275548299,
           663.8181403477987,
-          509.4206007548741
+          509.4206007548741,
+          707.1455027716501
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
-      {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          104.55142676035562,
           107.19626475175222,
           54.710572803020476,
           53.70245317476137,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           58.290672332048416,
           76.65000887100513,
           94.35255511317935,
-          57.27294135945184
+          57.27294135945184,
+          77.34818905194601
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          219.3249032497406,
           253.21939550127303,
           120.28429956436158,
           119.4272324187415,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           135.3694212606975,
           166.10222601890564,
           187.62089467048645,
-          121.81824134077344
+          121.81824134077344,
+          167.77317768335342
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
-      {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1845.0904158274332,
           1805.63905275785,
           942.0844794591268,
           911.125733311971,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1027.1825102170308,
           1376.0138969421387,
           1236.950510433742,
-          983.8002708435058
+          983.8002708435058,
+          1441.4695877662073
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1399.0184700305645,
           1503.6241540908813,
           845.1625427246094,
           876.3808537165324,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           911.6958290100098,
           1106.4752630869548,
           1143.904374395098,
-          822.776640006474
+          822.776640006474,
+          1091.7911231177193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1864,
           1953,
           1953,
@@ -1809,6 +1808,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
       {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2588.9653475625173,
           2563.8966729300364,
           1374.5715264638266,
           1389.655174255371,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1517.7161038262504,
           2047.229819077712,
           1904.6519088745117,
-          1424.6891048431396
+          1424.6891048431396,
+          2189.371463012695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3856.8591782706126,
           3923.106797354562,
           2170.910491434733,
           2190.125603267125,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2287.9864204951696,
           2891.7440596989222,
           2998.4758017403738,
-          2234.5605222066242
+          2234.5605222066242,
+          3030.2800661722817
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3978,
           3980,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3977,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
       {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          360.8480878898076,
           452.79995121274675,
           182.54585393269858,
           182.38411378860474,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           204.88041591644287,
           291.9017965952555,
           299.13122612635294,
-          192.43040011610304
+          192.43040011610304,
+          293.1139336268107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2250.60019329616,
           2440.501351220267,
           1275.5570963541666,
           1304.7158854166667,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1383.7872416178386,
           1772.4772457395281,
           1741.0799905141196,
-          1271.9582562764485
+          1271.9582562764485,
+          1775.3944683074951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "d75e07696149b914c7f4fff5e3d55c26de94d9f4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 14:46:12 2026 \u002B0100",
-        "message": "fix!: map an IPv4-mapped address to IPv4 before the loopback check of \u0060IPAddress\u0060 (#2141)"
-      },
-      {
         "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
-      "d75e0769",
       "8ebddc03",
       "19fa288e",
       "dbfb8e56",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2862.6179227193197,
           2851.834618159703,
           1500.3998168064998,
           1574.9868636812482,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1565.8620859781902,
           2167.218856302897,
           1925.7261387751653,
-          1467.985004266103
+          1467.985004266103,
+          2237.5355731419154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3470,7 +3470,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
-          3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          302061.569148137,
           279888.1878580729,
           152993.37360839843,
           167452.27479771205,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           171066.82264927455,
           241798.53278996394,
           233643.61171177455,
-          168027.48861929087
+          168027.48861929087,
+          241286.9073311942
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17558,
           17576,
           17574,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17574,
           17576,
           17528,
-          17574
+          17574,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
