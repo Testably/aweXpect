@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          696.7373105684916,
           490.540476505573,
           490.72599763136645,
           497.3230905532837,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           737.735542003925,
           400.1520606109074,
           827.6279435157776,
-          568.9313060896737
+          568.9313060896737,
+          819.0581947735378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -423,7 +423,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          790.4320733887809,
           708.5777561323983,
           665.4192113195147,
           703.5042640141079,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           899.4573769887288,
           511.06593596140544,
           984.2311358133952,
-          725.8831263860067
+          725.8831263860067,
+          913.4978887240092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          118.5670189005988,
           77.53727840460263,
           76.86909932356615,
           79.13060296433312,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           120.53059094746908,
           57.16346213022868,
           103.83807978459767,
-          76.32027355829875
+          76.32027355829875,
+          107.02324020011085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.3366008122762,
           166.55057371457417,
           165.92093671162922,
           179.80845202718461,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           197.9962565422058,
           124.53415803114574,
           262.24984975961536,
-          198.6625288963318
+          198.6625288963318,
+          243.6465947151184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1435.3627314934363,
           1459.5368584852952,
           1458.2327002207437,
           1413.701334953308,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1992.0018882751465,
           960.5079491933187,
           1767.143611907959,
-          1458.5773421696254
+          1458.5773421696254,
+          1761.7159704844157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1305.6793030330114,
           1102.7004746028356,
           1108.8906436920165,
           1095.0173041479927,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1436.3445479075115,
           857.4577054977417,
           1432.1636741638183,
-          1057.7829053585347
+          1057.7829053585347,
+          1468.0308181762696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1952,
           1864,
           1953,
           1953,
@@ -1809,6 +1808,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
       {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2146.982179005941,
           2219.2679290771484,
           2131.8465270996094,
           2176.5136316935223,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2821.7462865193684,
           1405.2954604285103,
           2575.514080341046,
-          2109.9129116351787
+          2109.9129116351787,
+          2578.5432428213267
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3375.942433039347,
           3069.464875857035,
           3050.4185153416224,
           3113.1773846944175,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3718.9514709472655,
           2243.5182914733887,
           3851.6102504730225,
-          3072.737395967756
+          3072.737395967756,
+          3866.8988602956138
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3977,
           3981,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3978,
-          3981
+          3981,
+          3978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
       {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          350.7862903888409,
           276.85460163752236,
           298.73875055994307,
           269.6119394642966,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           391.93509209950764,
           181.83336407343546,
           452.31352008183796,
-          274.9893047650655
+          274.9893047650655,
+          397.3490235964457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1985.8646915142353,
           1782.379663173969,
           1810.3501697540282,
           1761.449574279785,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2342.5372197287425,
           1332.4218020439148,
           2405.6092630113876,
-          1766.4688184102376
+          1766.4688184102376,
+          2400.4618334089005
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2301.2389460245768,
           2370.2347396850587,
           2302.5291647229874,
           2339.978988919939,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2974.1649673461916,
           1486.160194269816,
           2653.946414629618,
-          2176.6312291281565
+          2176.6312291281565,
+          2659.704170481364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3463,7 +3463,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
-          3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          267586.37831333705,
           242239.423374721,
           239280.1405874399,
           245503.88201497396,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           273690.736328125,
           183177.38987630207,
           277373.29095052084,
-          241440.80493164062
+          241440.80493164062,
+          278199.04509626114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17658,
           17577,
           17577,
           17575,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17577,
           17574,
           17558,
-          17577
+          17577,
+          17558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
