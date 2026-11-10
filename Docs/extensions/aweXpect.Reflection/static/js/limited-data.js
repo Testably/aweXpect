@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
-      {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          342.4948868433634,
           347.6062619345529,
           502.6281225340707,
           651.9188171386719,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           664.0968567984445,
           392.5334567683084,
           566.5283140769371,
-          749.3445533116659
+          749.3445533116659,
+          561.698604788099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -428,7 +428,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          487.0153755187988,
           511.8779330934797,
           662.5472027460734,
           935.6048184076946,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           663.8181403477987,
           509.4206007548741,
           707.1455027716501,
-          920.2273643493652
+          920.2273643493652,
+          711.208186002878
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
-      {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          54.710572803020476,
           53.70245317476137,
           78.0545424904142,
           101.0828171798161,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           94.35255511317935,
           57.27294135945184,
           77.34818905194601,
-          106.74458060264587
+          106.74458060264587,
+          82.27390624795642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          120.28429956436158,
           119.4272324187415,
           165.33249569856204,
           207.54211529095969,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           187.62089467048645,
           121.81824134077344,
           167.77317768335342,
-          215.44007484118143
+          215.44007484118143,
+          182.12315941651661
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
-      {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          942.0844794591268,
           911.125733311971,
           1385.623242441813,
           1897.014309338161,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1236.950510433742,
           983.8002708435058,
           1441.4695877662073,
-          2089.6706604003907
+          2089.6706604003907,
+          1368.3416313443865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          845.1625427246094,
           876.3808537165324,
           1078.323911412557,
           1489.6223116556803,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1143.904374395098,
           822.776640006474,
           1091.7911231177193,
-          1448.224633916219
+          1448.224633916219,
+          1062.8706575393676
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1764,7 +1764,6 @@ window.BENCHMARK_DATA = {
           1953,
           1953,
           1953,
-          1953,
           1864,
           1952,
           1864,
@@ -1807,6 +1806,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864,
           1864,
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
       {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1374.5715264638266,
           1389.655174255371,
           2140.318687438965,
           2787.6499687194823,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1904.6519088745117,
           1424.6891048431396,
           2189.371463012695,
-          2774.791020202637
+          2774.791020202637,
+          2206.068262540377
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2170.910491434733,
           2190.125603267125,
           3020.092459814889,
           3813.7754229227703,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2998.4758017403738,
           2234.5605222066242,
           3030.2800661722817,
-          3889.0770138331823
+          3889.0770138331823,
+          3007.02693094526
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3977,
           3980,
           3981,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
       {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          182.54585393269858,
           182.38411378860474,
           270.76650756200155,
           376.86722021102906,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           299.13122612635294,
           192.43040011610304,
           293.1139336268107,
-          407.1716090611049
+          407.1716090611049,
+          273.80720601763045
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1275.5570963541666,
           1304.7158854166667,
           1715.0311513900756,
           2286.398344930013,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1741.0799905141196,
           1271.9582562764485,
           1775.3944683074951,
-          2298.4000231424966
+          2298.4000231424966,
+          1765.9219498316447
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
-        "message": "refactor!: align the member-type and parameter filter names of aweXpect.Reflection (#2144)"
-      },
-      {
         "sha": "dbfb8e56532b271c7886bf19e08dc3c7deeee41e",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:56:08 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
-      "19fa288e",
       "dbfb8e56",
       "155bfd1e",
       "2bba8222",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1500.3998168064998,
           1574.9868636812482,
           2227.2492291132608,
           3007.581505584717,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1925.7261387751653,
           1467.985004266103,
           2237.5355731419154,
-          3269.3771971189058
+          3269.3771971189058,
+          2130.29181543986
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3468,7 +3468,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
-          3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          152993.37360839843,
           167452.27479771205,
           240757.59542410713,
           280960.5022670201,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           233643.61171177455,
           168027.48861929087,
           241286.9073311942,
-          280759.3633161272
+          280759.3633161272,
+          241017.0182354267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17574,
           17577,
           17707,
@@ -3633,6 +3632,7 @@ window.BENCHMARK_DATA = {
           17576,
           17528,
           17574,
+          17577,
           17577,
           17577
         ],
