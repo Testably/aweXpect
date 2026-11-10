@@ -1842,6 +1842,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -2151,7 +2157,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -2464,7 +2471,8 @@ window.BENCHMARK_DATA = {
           10137.631005423409,
           7959.882150503306,
           7803.246886117117,
-          11031.000391642252
+          11031.000391642252,
+          11876.021284993489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2700,6 +2708,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3103,7 +3112,8 @@ window.BENCHMARK_DATA = {
           323323.06861979165,
           243675.92054966517,
           262154.2669921875,
-          371340.60234375
+          371340.60234375,
+          386995.4571707589
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3421,6 +3431,7 @@ window.BENCHMARK_DATA = {
           590292,
           590287,
           590288,
+          590292,
           590292
         ],
         "borderColor": "#FF671B",
@@ -3742,7 +3753,8 @@ window.BENCHMARK_DATA = {
           17858.779056803385,
           14469.355956013997,
           14622.660138956706,
-          19351.050311748797
+          19351.050311748797,
+          19846.9825108846
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3754,6 +3766,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5874,6 +5887,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -6176,7 +6195,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -6482,7 +6502,8 @@ window.BENCHMARK_DATA = {
           208.87941603660585,
           161.89681979815165,
           166.2567313194275,
-          229.96013372739156
+          229.96013372739156,
+          283.37907282511395
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6678,6 +6699,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7107,7 +7129,8 @@ window.BENCHMARK_DATA = {
           508.70168622334796,
           393.96162356649126,
           428.0057591120402,
-          484.58168303171794
+          484.58168303171794,
+          541.6617058436076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7119,6 +7142,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7732,7 +7756,8 @@ window.BENCHMARK_DATA = {
           369.62409804417535,
           300.9781217575073,
           323.5025046666463,
-          392.741326491038
+          392.741326491038,
+          412.99044898351036
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7744,6 +7769,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14477,6 +14503,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -15549,7 +15581,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -16625,7 +16658,8 @@ window.BENCHMARK_DATA = {
           100.8766347510474,
           78.94480741024017,
           81.75965797049659,
-          103.88722542921703
+          103.88722542921703,
+          115.00788141091665
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17624,6 +17658,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -18790,7 +18825,8 @@ window.BENCHMARK_DATA = {
           261.87613214765275,
           197.8486979007721,
           213.42550539970398,
-          247.4270489692688
+          247.4270489692688,
+          272.92975432078043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18983,6 +19019,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -20236,7 +20273,8 @@ window.BENCHMARK_DATA = {
           232.76838575090682,
           180.6218508283297,
           196.30537273202623,
-          238.0476198196411
+          238.0476198196411,
+          254.9073706626892
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20248,6 +20286,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -22454,6 +22493,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -22763,7 +22808,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -23076,7 +23122,8 @@ window.BENCHMARK_DATA = {
           216.33711908658344,
           155.90165632565817,
           153.4959559781211,
-          217.1506158312162
+          217.1506158312162,
+          223.03358271916707
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23281,6 +23328,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -23715,7 +23763,8 @@ window.BENCHMARK_DATA = {
           558.724038441976,
           406.46562846501666,
           422.73710273106894,
-          527.7376961026873
+          527.7376961026873,
+          561.4596558252971
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23727,6 +23776,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -24354,7 +24404,8 @@ window.BENCHMARK_DATA = {
           330.82211879094444,
           251.76433563232422,
           273.94033104578654,
-          334.3567443575178
+          334.3567443575178,
+          357.0936460861793
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24366,6 +24417,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -31106,6 +31158,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -32178,7 +32236,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -33254,7 +33313,8 @@ window.BENCHMARK_DATA = {
           725.707298151652,
           525.7086536407471,
           562.7786797205607,
-          693.827470779419
+          693.827470779419,
+          688.4619017328534
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34241,6 +34301,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -35419,7 +35480,8 @@ window.BENCHMARK_DATA = {
           1355.3107813517252,
           1072.6766210283552,
           1134.6178508486066,
-          1316.3601741790771
+          1316.3601741790771,
+          1451.2735652923584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35612,6 +35674,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -36865,7 +36928,8 @@ window.BENCHMARK_DATA = {
           664.2478162325345,
           509.3383426030477,
           512.0386052131653,
-          667.8833206176757
+          667.8833206176757,
+          669.0012270609537
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36877,6 +36941,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -43661,6 +43726,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -44733,7 +44804,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -45809,7 +45881,8 @@ window.BENCHMARK_DATA = {
           701.9973940531413,
           523.151575088501,
           536.9702291488647,
-          672.9194149971008
+          672.9194149971008,
+          700.0046897301307
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46796,6 +46869,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -47974,7 +48048,8 @@ window.BENCHMARK_DATA = {
           21526.38395690918,
           15632.790828450521,
           16110.69993693034,
-          27657.830584716798
+          27657.830584716798,
+          28118.44223836263
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49055,6 +49130,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -49420,7 +49496,8 @@ window.BENCHMARK_DATA = {
           790.1711921691895,
           590.4517343521118,
           593.7618377685546,
-          831.6804093678792
+          831.6804093678792,
+          804.3960875102451
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49432,6 +49509,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -51986,6 +52064,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -52353,7 +52437,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -52724,7 +52809,8 @@ window.BENCHMARK_DATA = {
           605.644882275508,
           477.712306192943,
           519.819572130839,
-          625.8513116200764
+          625.8513116200764,
+          667.6932766987727
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53018,6 +53104,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -53479,7 +53566,8 @@ window.BENCHMARK_DATA = {
           61592.10012817383,
           51886.26803588867,
           55635.811279296875,
-          82884.87744140625
+          82884.87744140625,
+          82980.98720703126
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53855,6 +53943,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -56059,6 +56148,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -56426,7 +56521,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -56797,7 +56893,8 @@ window.BENCHMARK_DATA = {
           127.96633184873141,
           105.66020696503776,
           101.14249401887258,
-          142.0470640182495
+          142.0470640182495,
+          137.14855569203695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57091,6 +57188,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -57552,7 +57650,8 @@ window.BENCHMARK_DATA = {
           17939.296055720402,
           14544.53648845966,
           15427.740129597982,
-          31774.567041015624
+          31774.567041015624,
+          32175.560616048177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57928,6 +58027,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -58293,7 +58393,8 @@ window.BENCHMARK_DATA = {
           229.04256766637167,
           173.98043456077576,
           184.28350630828314,
-          243.67869393030801
+          243.67869393030801,
+          255.96837606430054
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58305,6 +58406,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -60511,6 +60613,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -60820,7 +60928,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -61133,7 +61242,8 @@ window.BENCHMARK_DATA = {
           302.83035236994425,
           213.3800098101298,
           244.7992775440216,
-          324.70811093648274
+          324.70811093648274,
+          316.91883632114957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61338,6 +61448,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -61772,7 +61883,8 @@ window.BENCHMARK_DATA = {
           406.86759430567423,
           313.36169017155964,
           343.34278849193026,
-          383.44226023356117
+          383.44226023356117,
+          423.3418236732483
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61784,6 +61896,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -62411,7 +62524,8 @@ window.BENCHMARK_DATA = {
           416.24519265492756,
           326.63699769973755,
           354.4219442049662,
-          422.4118323167165
+          422.4118323167165,
+          434.49510901769
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62423,6 +62537,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -64585,6 +64700,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -64894,7 +65015,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -65207,7 +65329,8 @@ window.BENCHMARK_DATA = {
           704.0444652850812,
           567.7479864529201,
           570.0826933200543,
-          709.8398679097494
+          709.8398679097494,
+          722.937846660614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65443,6 +65566,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -65846,7 +65970,8 @@ window.BENCHMARK_DATA = {
           1893.5317328316826,
           1476.5951918284097,
           1687.089169184367,
-          1824.1309634617396
+          1824.1309634617396,
+          1916.589319864909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65858,6 +65983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -66485,7 +66611,8 @@ window.BENCHMARK_DATA = {
           923.2589094298227,
           722.3109516416278,
           754.0370127360026,
-          915.653475027818
+          915.653475027818,
+          982.4632586161296
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66497,6 +66624,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -68659,6 +68787,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -68968,7 +69102,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -69281,7 +69416,8 @@ window.BENCHMARK_DATA = {
           10783.037465776715,
           8367.470450265067,
           8332.133079528809,
-          12098.135479518345
+          12098.135479518345,
+          12126.125119890485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -69520,6 +69656,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -69920,7 +70057,8 @@ window.BENCHMARK_DATA = {
           35025.82209879557,
           26751.73465401786,
           26917.41825212751,
-          40085.674970354354
+          40085.674970354354,
+          39454.24228108724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70238,7 +70376,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609
+          18609,
+          18394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70559,7 +70698,8 @@ window.BENCHMARK_DATA = {
           10078.839403424945,
           7757.767791748047,
           7834.1095286778045,
-          10647.618620808918
+          10647.618620808918,
+          10596.049982706705
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70571,6 +70711,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -72733,6 +72874,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
         "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
+      },
+      {
+        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
       }
     ],
     "labels": [
@@ -73042,7 +73189,8 @@ window.BENCHMARK_DATA = {
       "7524c744",
       "cefa1d5e",
       "cc35431a",
-      "4d8ac6be"
+      "4d8ac6be",
+      "564b7a26"
     ],
     "datasets": [
       {
@@ -73355,7 +73503,8 @@ window.BENCHMARK_DATA = {
           10256.21080344064,
           7862.295891825358,
           7978.600208536784,
-          11944.832268269856
+          11944.832268269856,
+          11635.912450154623
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -73594,6 +73743,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -73994,7 +74144,8 @@ window.BENCHMARK_DATA = {
           49469.82942853655,
           37667.544437662764,
           38786.44224330357,
-          57957.63320688101
+          57957.63320688101,
+          57581.9883219401
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -74309,6 +74460,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -74633,7 +74785,8 @@ window.BENCHMARK_DATA = {
           19607.054248516375,
           15167.160341535297,
           15176.10234287807,
-          20963.554813929968
+          20963.554813929968,
+          20867.62366739909
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -74645,6 +74798,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
