@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          632.6389473597209,
           477.13713887532555,
           736.5105171203613,
           769.4778426715305,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           663.7383292516073,
           927.1998291696821,
           870.5031931740897,
-          633.1980058670044
+          633.1980058670044,
+          481.2269781112671
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          540.954058442797,
           353.1126400140616,
           728.0977241075956,
           840.2885588963826,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           539.3796554974148,
           696.2858406702677,
           661.6432409286499,
-          560.2568008422852
+          560.2568008422852,
+          378.32481404713224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3279.5806364331925,
           2592.36826978411,
           4465.921338399251,
           5210.988810403006,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3160.4795273372106,
           4200.61108194987,
           4166.357889447893,
-          3554.4842018714317
+          3554.4842018714317,
+          2552.696700032552
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24179,
           24179,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24172,
           24178,
           24178,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3794.0204157511394,
           3183.124319458008,
           5364.329725646972,
           6014.937510681152,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4029.0340701511927,
           5050.63349609375,
           4883.908458455404,
-          4000.1306404700645
+          4000.1306404700645,
+          2822.3510540553502
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1878.433842250279,
           1412.2787977854412,
           2480.6914037068686,
           2891.949890954154,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1833.029231584989,
           2590.313037599836,
           2377.205401284354,
-          1981.5784276326497
+          1981.5784276326497,
+          1441.5393086751303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1645,7 +1645,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2626.7572768075124,
           1863.8440446217855,
           3371.942509514945,
           3842.424764779898,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2726.2065898350306,
           3607.7651390075685,
           3305.5031720674956,
-          2767.322171020508
+          2767.322171020508,
+          2089.9985433306015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "f8435557d17b864c209c3b4bdb6124877e64978b",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 20:40:29 2026 \u002B0100",
-        "message": "feat!: replace ITimeSystem with TimeProvider (#2148)"
-      },
-      {
         "sha": "b48cdddbce07676ff9f45bb860f18fd015b90698",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 21:52:41 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
-      "f8435557",
       "b48cdddb",
       "f256c5ca",
       "fea53298",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10001.813723754884,
           7496.374237060547,
           13235.170797075543,
           14029.467061360678,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10144.061152140299,
           13851.899473063151,
           13081.795353190104,
-          10178.156646728516
+          10178.156646728516,
+          7572.3518483088565
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2253,7 +2253,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          240725.7471923828,
           172681.89765276227,
           269606.2269856771,
           286695.3203125,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           242822.37312825522,
           343361.5473257211,
           348114.1427734375,
-          252240.18254743304
+          252240.18254743304,
+          180046.09258161273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544247,
           544246,
@@ -2407,6 +2406,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335,
           544335,
           544335,
