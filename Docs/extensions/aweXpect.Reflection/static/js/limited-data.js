@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
-      {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          656.0288326263428,
           342.4948868433634,
           347.6062619345529,
           502.6281225340707,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           543.5374744279044,
           664.0968567984445,
           392.5334567683084,
-          566.5283140769371
+          566.5283140769371,
+          749.3445533116659
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -429,7 +429,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
-          368,
+          544,
           544,
           544,
           544,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          983.1232933044433,
           487.0153755187988,
           511.8779330934797,
           662.5472027460734,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           680.3650275548299,
           663.8181403477987,
           509.4206007548741,
-          707.1455027716501
+          707.1455027716501,
+          920.2273643493652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
-      {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          107.19626475175222,
           54.710572803020476,
           53.70245317476137,
           78.0545424904142,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           76.65000887100513,
           94.35255511317935,
           57.27294135945184,
-          77.34818905194601
+          77.34818905194601,
+          106.74458060264587
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.21939550127303,
           120.28429956436158,
           119.4272324187415,
           165.33249569856204,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           166.10222601890564,
           187.62089467048645,
           121.81824134077344,
-          167.77317768335342
+          167.77317768335342,
+          215.44007484118143
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
-      {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1805.63905275785,
           942.0844794591268,
           911.125733311971,
           1385.623242441813,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1376.0138969421387,
           1236.950510433742,
           983.8002708435058,
-          1441.4695877662073
+          1441.4695877662073,
+          2089.6706604003907
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1503.6241540908813,
           845.1625427246094,
           876.3808537165324,
           1078.323911412557,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1106.4752630869548,
           1143.904374395098,
           822.776640006474,
-          1091.7911231177193
+          1091.7911231177193,
+          1448.224633916219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1953,
           1953,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864,
           1864
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
       {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2563.8966729300364,
           1374.5715264638266,
           1389.655174255371,
           2140.318687438965,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2047.229819077712,
           1904.6519088745117,
           1424.6891048431396,
-          2189.371463012695
+          2189.371463012695,
+          2774.791020202637
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3923.106797354562,
           2170.910491434733,
           2190.125603267125,
           3020.092459814889,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2891.7440596989222,
           2998.4758017403738,
           2234.5605222066242,
-          3030.2800661722817
+          3030.2800661722817,
+          3889.0770138331823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3978,
           3980,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3980,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
       {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          452.79995121274675,
           182.54585393269858,
           182.38411378860474,
           270.76650756200155,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           291.9017965952555,
           299.13122612635294,
           192.43040011610304,
-          293.1139336268107
+          293.1139336268107,
+          407.1716090611049
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2440.501351220267,
           1275.5570963541666,
           1304.7158854166667,
           1715.0311513900756,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1772.4772457395281,
           1741.0799905141196,
           1271.9582562764485,
-          1775.3944683074951
+          1775.3944683074951,
+          2298.4000231424966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "8ebddc035231ebc79e6a381b3ef21f2b8c026fef",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 15:29:39 2026 \u002B0100",
-        "message": "fix!: treat a missing content of a request like that of a response (#2138)"
-      },
-      {
         "sha": "19fa288ec07fe2cb8fef95836967194f4f7e035a",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 15:34:13 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
-      "8ebddc03",
       "19fa288e",
       "dbfb8e56",
       "155bfd1e",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2851.834618159703,
           1500.3998168064998,
           1574.9868636812482,
           2227.2492291132608,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2167.218856302897,
           1925.7261387751653,
           1467.985004266103,
-          2237.5355731419154
+          2237.5355731419154,
+          3269.3771971189058
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3469,7 +3469,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
-          3264,
+          2752,
           2752,
           2752,
           2752,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279888.1878580729,
           152993.37360839843,
           167452.27479771205,
           240757.59542410713,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           241798.53278996394,
           233643.61171177455,
           168027.48861929087,
-          241286.9073311942
+          241286.9073311942,
+          280759.3633161272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17558,
           17576,
           17574,
           17577,
@@ -3634,6 +3633,7 @@ window.BENCHMARK_DATA = {
           17576,
           17528,
           17574,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
