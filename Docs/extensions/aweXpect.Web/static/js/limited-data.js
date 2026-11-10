@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
-      {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          500.76539478302004,
           527.4150661740985,
           490.8544050852458,
           482.59102834974016,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           356.8894415537516,
           338.6182895024618,
           484.90661873136247,
-          210.19834791819255
+          210.19834791819255,
+          442.5257850646973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1086.2820332390922,
           1043.5138197580973,
           1017.8715096987211,
           1078.6155003767747,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           727.4845709433922,
           753.665256245931,
           1116.3289230891637,
-          473.9439888636271
+          473.9439888636271,
+          1134.9262437184652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
-      {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306.5293654123942,
           243.46431465148925,
           256.7388755253383,
           254.96218070983886,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           168.97363936106365,
           171.00144333839415,
           256.36533662251065,
-          112.66835227012635
+          112.66835227012635,
+          256.0678748130798
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          305.0619183608464,
           262.91809272766113,
           260.98547519048054,
           274.15821339289346,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           201.51027666727703,
           205.6811504840851,
           302.12337834494457,
-          120.81080665038182
+          120.81080665038182,
+          314.0624558766683
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
-      {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          993.8616753986904,
           1031.6353096008302,
           976.9161876678467,
           1008.7345860345023,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           664.6222269351666,
           683.8553036371867,
           1059.555549621582,
-          462.1221591063908
+          462.1221591063908,
+          935.1418494542439
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1025.217236328125,
           982.7938363393148,
           1087.29874903361,
           1038.1699677785239,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           710.4350616455079,
           731.360378742218,
           1092.98411996024,
-          440.83453092575076
+          440.83453092575076,
+          1071.2368014653523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
-      {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1971.1112192789712,
           2001.2130208333333,
           2024.3861897786458,
           1913.9054886744573,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1455.0910160882133,
           1465.0292893818446,
           1922.4851902553014,
-          1022.25754737854
+          1022.25754737854,
+          1634.6663829803467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22793.638942173548,
           22024.219218662805,
           22478.297462972005,
           22487.15575467623,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           13784.341008867535,
           14078.629677405725,
           21090.994164603097,
-          8826.081477238582
+          8826.081477238582,
+          16729.777658315805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2373,7 +2373,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
       {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          839.4234569256122,
           835.9516654014587,
           758.2569639205933,
           829.2920172764705,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           537.1974818365915,
           555.4904356002808,
           787.1205213253314,
-          362.76999262173973
+          362.76999262173973,
+          721.0387221063886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1405.2916517893473,
           1367.5818361554827,
           1431.4166532244,
           1414.0908218383788,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           975.8025608062744,
           997.8122164862497,
           1515.7170279576228,
-          667.2920645305088
+          667.2920645305088,
+          1442.2711138044085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "155bfd1e378dc70271e9552005be40d26e8c3e9e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 16:37:45 2026 \u002B0100",
-        "message": "fix!: keep encoded slashes distinguishable in \u0060HasPath\u0060 (#2142)"
-      },
-      {
         "sha": "2bba8222cec064299f4137dceafe29eae2e3ab29",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 28 17:11:20 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
-      "155bfd1e",
       "2bba8222",
       "33ef507b",
       "f8435557",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1375.4480187733968,
           1351.9152256011962,
           1322.2692782538277,
           1397.5895426823542,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           970.6570403235299,
           1008.276535306658,
           1289.309011186872,
-          739.9473722321646
+          739.9473722321646,
+          1123.9316042491369
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          830.035285504659,
           812.2311939239502,
           788.6927172978719,
           835.8459091186523,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           594.755026953561,
           595.3485330854144,
           927.696897983551,
-          378.8111919403076
+          378.8111919403076,
+          906.7983738581339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
