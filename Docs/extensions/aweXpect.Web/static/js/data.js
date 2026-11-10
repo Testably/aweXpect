@@ -1530,6 +1530,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -1787,7 +1793,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -2048,7 +2055,8 @@ window.BENCHMARK_DATA = {
           356.8894415537516,
           338.6182895024618,
           484.90661873136247,
-          210.19834791819255
+          210.19834791819255,
+          442.5257850646973
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2228,6 +2236,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2583,7 +2592,8 @@ window.BENCHMARK_DATA = {
           727.4845709433922,
           753.665256245931,
           1116.3289230891637,
-          473.9439888636271
+          473.9439888636271,
+          1134.9262437184652
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2595,6 +2605,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4393,6 +4404,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -4650,7 +4667,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -4911,7 +4929,8 @@ window.BENCHMARK_DATA = {
           168.97363936106365,
           171.00144333839415,
           256.36533662251065,
-          112.66835227012635
+          112.66835227012635,
+          256.0678748130798
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5058,6 +5077,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5446,7 +5466,8 @@ window.BENCHMARK_DATA = {
           201.51027666727703,
           205.6811504840851,
           302.12337834494457,
-          120.81080665038182
+          120.81080665038182,
+          314.0624558766683
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5458,6 +5479,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7196,6 +7218,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -7443,7 +7471,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -7694,7 +7723,8 @@ window.BENCHMARK_DATA = {
           664.6222269351666,
           683.8553036371867,
           1059.555549621582,
-          462.1221591063908
+          462.1221591063908,
+          935.1418494542439
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7886,6 +7916,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8209,7 +8240,8 @@ window.BENCHMARK_DATA = {
           710.4350616455079,
           731.360378742218,
           1092.98411996024,
-          440.83453092575076
+          440.83453092575076,
+          1071.2368014653523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8221,6 +8253,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -9949,6 +9982,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -10196,7 +10235,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -10447,7 +10487,8 @@ window.BENCHMARK_DATA = {
           1455.0910160882133,
           1465.0292893818446,
           1922.4851902553014,
-          1022.25754737854
+          1022.25754737854,
+          1634.6663829803467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10586,6 +10627,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -10962,7 +11004,8 @@ window.BENCHMARK_DATA = {
           13784.341008867535,
           14078.629677405725,
           21090.994164603097,
-          8826.081477238582
+          8826.081477238582,
+          16729.777658315805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11218,7 +11261,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12702,6 +12746,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -12949,7 +12999,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -13200,7 +13251,8 @@ window.BENCHMARK_DATA = {
           537.1974818365915,
           555.4904356002808,
           787.1205213253314,
-          362.76999262173973
+          362.76999262173973,
+          721.0387221063886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13339,6 +13391,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -13715,7 +13768,8 @@ window.BENCHMARK_DATA = {
           975.8025608062744,
           997.8122164862497,
           1515.7170279576228,
-          667.2920645305088
+          667.2920645305088,
+          1442.2711138044085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13727,6 +13781,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -15455,6 +15510,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
         "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
+      },
+      {
+        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
+        "message": "chore: Bump the fallout group with 2 updates (#2196)"
       }
     ],
     "labels": [
@@ -15702,7 +15763,8 @@ window.BENCHMARK_DATA = {
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
-      "b438547b"
+      "b438547b",
+      "1ccacb5f"
     ],
     "datasets": [
       {
@@ -15953,7 +16015,8 @@ window.BENCHMARK_DATA = {
           970.6570403235299,
           1008.276535306658,
           1289.309011186872,
-          739.9473722321646
+          739.9473722321646,
+          1123.9316042491369
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16123,6 +16186,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -16468,7 +16532,8 @@ window.BENCHMARK_DATA = {
           594.755026953561,
           595.3485330854144,
           927.696897983551,
-          378.8111919403076
+          378.8111919403076,
+          906.7983738581339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16480,6 +16545,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
