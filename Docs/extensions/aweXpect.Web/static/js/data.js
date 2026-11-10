@@ -1518,6 +1518,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -1773,7 +1779,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -2032,7 +2039,8 @@ window.BENCHMARK_DATA = {
           486.4692967732747,
           426.9934498469035,
           356.8894415537516,
-          338.6182895024618
+          338.6182895024618,
+          484.90661873136247
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2212,6 +2220,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2563,7 +2572,8 @@ window.BENCHMARK_DATA = {
           1063.23406292842,
           1104.0352654774983,
           727.4845709433922,
-          753.665256245931
+          753.665256245931,
+          1116.3289230891637
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2575,6 +2585,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4359,6 +4370,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -4614,7 +4631,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -4873,7 +4891,8 @@ window.BENCHMARK_DATA = {
           246.99476623535156,
           247.73440783364433,
           168.97363936106365,
-          171.00144333839415
+          171.00144333839415,
+          256.36533662251065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5020,6 +5039,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5404,7 +5424,8 @@ window.BENCHMARK_DATA = {
           280.7596593856812,
           281.90998336247037,
           201.51027666727703,
-          205.6811504840851
+          205.6811504840851,
+          302.12337834494457
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5416,6 +5437,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7140,6 +7162,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -7385,7 +7413,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -7634,7 +7663,8 @@ window.BENCHMARK_DATA = {
           1054.0909311930338,
           936.5313198725382,
           664.6222269351666,
-          683.8553036371867
+          683.8553036371867,
+          1059.555549621582
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7826,6 +7856,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8145,7 +8176,8 @@ window.BENCHMARK_DATA = {
           1072.6894055684409,
           1029.834334309896,
           710.4350616455079,
-          731.360378742218
+          731.360378742218,
+          1092.98411996024
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8157,6 +8189,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -9871,6 +9904,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -10116,7 +10155,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -10365,7 +10405,8 @@ window.BENCHMARK_DATA = {
           1988.760061645508,
           1682.2827657063801,
           1455.0910160882133,
-          1465.0292893818446
+          1465.0292893818446,
+          1922.4851902553014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10504,6 +10545,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -10876,7 +10918,8 @@ window.BENCHMARK_DATA = {
           20312.337469482423,
           16421.029397147042,
           13784.341008867535,
-          14078.629677405725
+          14078.629677405725,
+          21090.994164603097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11130,7 +11173,8 @@ window.BENCHMARK_DATA = {
           34712,
           34712,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12602,6 +12646,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -12847,7 +12897,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -13096,7 +13147,8 @@ window.BENCHMARK_DATA = {
           762.898933092753,
           734.9194453557333,
           537.1974818365915,
-          555.4904356002808
+          555.4904356002808,
+          787.1205213253314
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13235,6 +13287,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -13607,7 +13660,8 @@ window.BENCHMARK_DATA = {
           1460.5343994140626,
           1373.5542538506645,
           975.8025608062744,
-          997.8122164862497
+          997.8122164862497,
+          1515.7170279576228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13619,6 +13673,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -15333,6 +15388,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
         "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
+      },
+      {
+        "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
+        "message": "chore: Bump EnricoMi/publish-unit-test-result-action from 2.25.0 to 2.26.0 (#2194)"
       }
     ],
     "labels": [
@@ -15578,7 +15639,8 @@ window.BENCHMARK_DATA = {
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
-      "4ca5e961"
+      "4ca5e961",
+      "d8a0d145"
     ],
     "datasets": [
       {
@@ -15827,7 +15889,8 @@ window.BENCHMARK_DATA = {
           1247.6740617752075,
           1112.6286829630533,
           970.6570403235299,
-          1008.276535306658
+          1008.276535306658,
+          1289.309011186872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15997,6 +16060,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -16338,7 +16402,8 @@ window.BENCHMARK_DATA = {
           886.7203978220622,
           814.1402980940683,
           594.755026953561,
-          595.3485330854144
+          595.3485330854144,
+          927.696897983551
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16350,6 +16415,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
