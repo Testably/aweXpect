@@ -1548,6 +1548,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -1808,7 +1814,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -2072,7 +2079,8 @@ window.BENCHMARK_DATA = {
           737.735542003925,
           400.1520606109074,
           827.6279435157776,
-          568.9313060896737
+          568.9313060896737,
+          819.0581947735378
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2296,6 +2304,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2613,7 +2622,8 @@ window.BENCHMARK_DATA = {
           899.4573769887288,
           511.06593596140544,
           984.2311358133952,
-          725.8831263860067
+          725.8831263860067,
+          913.4978887240092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2625,6 +2635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4444,6 +4455,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -4704,7 +4721,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -4968,7 +4986,8 @@ window.BENCHMARK_DATA = {
           120.53059094746908,
           57.16346213022868,
           103.83807978459767,
-          76.32027355829875
+          76.32027355829875,
+          107.02324020011085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5115,6 +5134,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5509,7 +5529,8 @@ window.BENCHMARK_DATA = {
           197.9962565422058,
           124.53415803114574,
           262.24984975961536,
-          198.6625288963318
+          198.6625288963318,
+          243.6465947151184
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5521,6 +5542,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7340,6 +7362,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -7600,7 +7628,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -7864,7 +7893,8 @@ window.BENCHMARK_DATA = {
           1992.0018882751465,
           960.5079491933187,
           1767.143611907959,
-          1458.5773421696254
+          1458.5773421696254,
+          1761.7159704844157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8059,6 +8089,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8405,7 +8436,8 @@ window.BENCHMARK_DATA = {
           1436.3445479075115,
           857.4577054977417,
           1432.1636741638183,
-          1057.7829053585347
+          1057.7829053585347,
+          1468.0308181762696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8673,6 +8705,7 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -10176,6 +10209,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -10426,7 +10465,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -10680,7 +10720,8 @@ window.BENCHMARK_DATA = {
           2821.7462865193684,
           1405.2954604285103,
           2575.514080341046,
-          2109.9129116351787
+          2109.9129116351787,
+          2578.5432428213267
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10865,6 +10906,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11201,7 +11243,8 @@ window.BENCHMARK_DATA = {
           3718.9514709472655,
           2243.5182914733887,
           3851.6102504730225,
-          3072.737395967756
+          3072.737395967756,
+          3866.8988602956138
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11460,7 +11503,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3978,
-          3981
+          3981,
+          3978
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12962,6 +13006,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -13212,7 +13262,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -13466,7 +13517,8 @@ window.BENCHMARK_DATA = {
           391.93509209950764,
           181.83336407343546,
           452.31352008183796,
-          274.9893047650655
+          274.9893047650655,
+          397.3490235964457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13603,6 +13655,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -13987,7 +14040,8 @@ window.BENCHMARK_DATA = {
           2342.5372197287425,
           1332.4218020439148,
           2405.6092630113876,
-          1766.4688184102376
+          1766.4688184102376,
+          2400.4618334089005
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13999,6 +14053,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -15748,6 +15803,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
         "message": "chore: Bump the xunit group with 3 updates (#2198)"
+      },
+      {
+        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
+        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
       }
     ],
     "labels": [
@@ -15998,7 +16059,8 @@ window.BENCHMARK_DATA = {
       "b438547b",
       "1ccacb5f",
       "688a3ba2",
-      "991a946f"
+      "991a946f",
+      "3d57c42d"
     ],
     "datasets": [
       {
@@ -16252,7 +16314,8 @@ window.BENCHMARK_DATA = {
           2974.1649673461916,
           1486.160194269816,
           2653.946414629618,
-          2176.6312291281565
+          2176.6312291281565,
+          2659.704170481364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16466,6 +16529,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -16773,7 +16837,8 @@ window.BENCHMARK_DATA = {
           273690.736328125,
           183177.38987630207,
           277373.29095052084,
-          241440.80493164062
+          241440.80493164062,
+          278199.04509626114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17032,7 +17097,8 @@ window.BENCHMARK_DATA = {
           17577,
           17574,
           17558,
-          17577
+          17577,
+          17558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
