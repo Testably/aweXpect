@@ -10,7 +10,7 @@ import PackageInstall from '@site/src/components/PackageInstall';
 
 ## Installation
 
-<PackageInstall package="aweXpect.Reflection" prerelease />
+<PackageInstall package="aweXpect.Reflection" />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well. The expectations live in the namespace `aweXpect`; the

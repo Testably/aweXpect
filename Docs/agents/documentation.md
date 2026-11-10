@@ -40,7 +40,7 @@ in XML docs and `Docs/agents`, not in the user docs.
   negation; for a quantifier write e.g. "use `None()`".
 - Where expectations overlap, e.g. `Contains(predicate)`, `Any().Satisfy(…)` and `HasItem(…)`, say which one to use
   and why.
-- An extension package index follows the extension page template of the style guide: the pitch linking aweXpect (`/aweXpect`), Installation (`<PackageInstall package="..." prerelease />`, the needed `using`, and that `aweXpect` is referenced as well), At a glance with a failure message, Overview with the tables, then a Documentation page list and, when the package has settings, a Customization table. Its settings page is called "Customization".
+- An extension package index follows the extension page template of the style guide: the pitch linking aweXpect (`/aweXpect`), Installation (`<PackageInstall package="..." />`, the needed `using`, and that `aweXpect` is referenced as well), At a glance with a failure message, Overview with the tables, then a Documentation page list and, when the package has settings, a Customization table. Its settings page is called "Customization".
 
 ## Samples
 

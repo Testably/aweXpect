@@ -63,7 +63,7 @@ aweXpect is strict by default, so some rewritten expectations fail where FluentA
 
 ### The documented API is missing
 
-This documentation describes aweXpect v4, which is available as a pre-release. Without a pre-release version you get v3, which lacks some of the APIs described here. [Getting started](./01-getting-started.md#install-the-package) shows how to install the pre-release.
+This documentation describes aweXpect v4. A project that still references v3 lacks some of the APIs described here, so update the package to v4, as [Getting started](./01-getting-started.md#install-the-package) shows.
 
 When you upgrade from v3, some expectations were renamed without an `[Obsolete]` forwarder, so their old names no longer compile. [What's new in v4](/aweXpect/changelog/migration-to-v4#renamed-expectations) lists the renames.
 

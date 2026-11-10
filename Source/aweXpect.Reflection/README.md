@@ -7,7 +7,7 @@
 ## Installation
 
 ```shell
-dotnet add package aweXpect.Reflection --prerelease
+dotnet add package aweXpect.Reflection
 ```
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference

@@ -10,7 +10,7 @@ import PackageInstall from '@site/src/components/PackageInstall';
 
 ## Installation
 
-<PackageInstall package="aweXpect.Xml" prerelease />
+<PackageInstall package="aweXpect.Xml" />
 
 The package brings `Expect.That` with it, but not the expectations for strings, numbers or collections, so reference
 [`aweXpect`](https://www.nuget.org/packages/aweXpect) as well, e.g. for the `IsEqualTo` of `IsEqualTo(…).AsXml()`.
