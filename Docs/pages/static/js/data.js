@@ -1848,6 +1848,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -2158,7 +2164,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -2472,7 +2479,8 @@ window.BENCHMARK_DATA = {
           7959.882150503306,
           7803.246886117117,
           11031.000391642252,
-          11876.021284993489
+          11876.021284993489,
+          5189.25288848877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2708,6 +2716,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3113,7 +3122,8 @@ window.BENCHMARK_DATA = {
           243675.92054966517,
           262154.2669921875,
           371340.60234375,
-          386995.4571707589
+          386995.4571707589,
+          163739.83412388392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3432,7 +3442,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590292,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3754,7 +3765,8 @@ window.BENCHMARK_DATA = {
           14469.355956013997,
           14622.660138956706,
           19351.050311748797,
-          19846.9825108846
+          19846.9825108846,
+          9534.820371355328
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3766,6 +3778,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -5893,6 +5906,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -6196,7 +6215,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -6503,7 +6523,8 @@ window.BENCHMARK_DATA = {
           161.89681979815165,
           166.2567313194275,
           229.96013372739156,
-          283.37907282511395
+          283.37907282511395,
+          104.90374805927277
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6699,6 +6720,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7130,7 +7152,8 @@ window.BENCHMARK_DATA = {
           393.96162356649126,
           428.0057591120402,
           484.58168303171794,
-          541.6617058436076
+          541.6617058436076,
+          241.32536231676738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7142,6 +7165,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7757,7 +7781,8 @@ window.BENCHMARK_DATA = {
           300.9781217575073,
           323.5025046666463,
           392.741326491038,
-          412.99044898351036
+          412.99044898351036,
+          188.6567723751068
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7769,6 +7794,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14509,6 +14535,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -15582,7 +15614,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -16659,7 +16692,8 @@ window.BENCHMARK_DATA = {
           78.94480741024017,
           81.75965797049659,
           103.88722542921703,
-          115.00788141091665
+          115.00788141091665,
+          51.328976726531984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17658,6 +17692,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -18826,7 +18861,8 @@ window.BENCHMARK_DATA = {
           197.8486979007721,
           213.42550539970398,
           247.4270489692688,
-          272.92975432078043
+          272.92975432078043,
+          119.08723103205362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19019,6 +19055,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -20274,7 +20311,8 @@ window.BENCHMARK_DATA = {
           180.6218508283297,
           196.30537273202623,
           238.0476198196411,
-          254.9073706626892
+          254.9073706626892,
+          115.9367892742157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20286,6 +20324,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -22499,6 +22538,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -22809,7 +22854,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -23123,7 +23169,8 @@ window.BENCHMARK_DATA = {
           155.90165632565817,
           153.4959559781211,
           217.1506158312162,
-          223.03358271916707
+          223.03358271916707,
+          107.34193975130717
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23328,6 +23375,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -23764,7 +23812,8 @@ window.BENCHMARK_DATA = {
           406.46562846501666,
           422.73710273106894,
           527.7376961026873,
-          561.4596558252971
+          561.4596558252971,
+          259.2275501887004
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23776,6 +23825,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -24405,7 +24455,8 @@ window.BENCHMARK_DATA = {
           251.76433563232422,
           273.94033104578654,
           334.3567443575178,
-          357.0936460861793
+          357.0936460861793,
+          164.25704462528228
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24417,6 +24468,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -31164,6 +31216,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -32237,7 +32295,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -33314,7 +33373,8 @@ window.BENCHMARK_DATA = {
           525.7086536407471,
           562.7786797205607,
           693.827470779419,
-          688.4619017328534
+          688.4619017328534,
+          341.40882549967085
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34301,6 +34361,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -35481,7 +35542,8 @@ window.BENCHMARK_DATA = {
           1072.6766210283552,
           1134.6178508486066,
           1316.3601741790771,
-          1451.2735652923584
+          1451.2735652923584,
+          643.3586839040121
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -35674,6 +35736,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -36929,7 +36992,8 @@ window.BENCHMARK_DATA = {
           509.3383426030477,
           512.0386052131653,
           667.8833206176757,
-          669.0012270609537
+          669.0012270609537,
+          320.5903032847813
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -36941,6 +37005,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -43732,6 +43797,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -44805,7 +44876,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -45882,7 +45954,8 @@ window.BENCHMARK_DATA = {
           523.151575088501,
           536.9702291488647,
           672.9194149971008,
-          700.0046897301307
+          700.0046897301307,
+          332.062513033549
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46869,6 +46942,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -48049,7 +48123,8 @@ window.BENCHMARK_DATA = {
           15632.790828450521,
           16110.69993693034,
           27657.830584716798,
-          28118.44223836263
+          28118.44223836263,
+          9848.686695979191
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49131,6 +49206,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -49497,7 +49573,8 @@ window.BENCHMARK_DATA = {
           590.4517343521118,
           593.7618377685546,
           831.6804093678792,
-          804.3960875102451
+          804.3960875102451,
+          394.5558218002319
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49509,6 +49586,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -52070,6 +52148,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -52438,7 +52522,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -52810,7 +52895,8 @@ window.BENCHMARK_DATA = {
           477.712306192943,
           519.819572130839,
           625.8513116200764,
-          667.6932766987727
+          667.6932766987727,
+          316.70064312616984
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53104,6 +53190,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -53567,7 +53654,8 @@ window.BENCHMARK_DATA = {
           51886.26803588867,
           55635.811279296875,
           82884.87744140625,
-          82980.98720703126
+          82980.98720703126,
+          27834.34186880929
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -53944,7 +54032,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56154,6 +56243,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -56522,7 +56617,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -56894,7 +56990,8 @@ window.BENCHMARK_DATA = {
           105.66020696503776,
           101.14249401887258,
           142.0470640182495,
-          137.14855569203695
+          137.14855569203695,
+          63.435048767498564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57188,6 +57285,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -57651,7 +57749,8 @@ window.BENCHMARK_DATA = {
           14544.53648845966,
           15427.740129597982,
           31774.567041015624,
-          32175.560616048177
+          32175.560616048177,
+          9299.698098318917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58028,7 +58127,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58394,7 +58494,8 @@ window.BENCHMARK_DATA = {
           173.98043456077576,
           184.28350630828314,
           243.67869393030801,
-          255.96837606430054
+          255.96837606430054,
+          115.7964951912562
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58406,6 +58507,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -60619,6 +60721,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -60929,7 +61037,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -61243,7 +61352,8 @@ window.BENCHMARK_DATA = {
           213.3800098101298,
           244.7992775440216,
           324.70811093648274,
-          316.91883632114957
+          316.91883632114957,
+          139.62104085286458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61448,6 +61558,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -61884,7 +61995,8 @@ window.BENCHMARK_DATA = {
           313.36169017155964,
           343.34278849193026,
           383.44226023356117,
-          423.3418236732483
+          423.3418236732483,
+          189.49704946004428
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61896,6 +62008,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -62525,7 +62638,8 @@ window.BENCHMARK_DATA = {
           326.63699769973755,
           354.4219442049662,
           422.4118323167165,
-          434.49510901769
+          434.49510901769,
+          191.19732829729716
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62537,6 +62651,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -64706,6 +64821,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -65016,7 +65137,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -65330,7 +65452,8 @@ window.BENCHMARK_DATA = {
           567.7479864529201,
           570.0826933200543,
           709.8398679097494,
-          722.937846660614
+          722.937846660614,
+          340.1291316986084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65566,6 +65689,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -65971,7 +66095,8 @@ window.BENCHMARK_DATA = {
           1476.5951918284097,
           1687.089169184367,
           1824.1309634617396,
-          1916.589319864909
+          1916.589319864909,
+          956.1529507954915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65983,6 +66108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -66612,7 +66738,8 @@ window.BENCHMARK_DATA = {
           722.3109516416278,
           754.0370127360026,
           915.653475027818,
-          982.4632586161296
+          982.4632586161296,
+          433.7372810999552
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66624,6 +66751,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -68793,6 +68921,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -69103,7 +69237,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -69417,7 +69552,8 @@ window.BENCHMARK_DATA = {
           8367.470450265067,
           8332.133079528809,
           12098.135479518345,
-          12126.125119890485
+          12126.125119890485,
+          6027.029600016276
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -69656,6 +69792,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -70058,7 +70195,8 @@ window.BENCHMARK_DATA = {
           26751.73465401786,
           26917.41825212751,
           40085.674970354354,
-          39454.24228108724
+          39454.24228108724,
+          18519.650596110027
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70377,7 +70515,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18394
+          18394,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70699,7 +70838,8 @@ window.BENCHMARK_DATA = {
           7757.767791748047,
           7834.1095286778045,
           10647.618620808918,
-          10596.049982706705
+          10596.049982706705,
+          5669.669638061523
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70711,6 +70851,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -72880,6 +73021,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
         "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
+      },
+      {
+        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
+        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
       }
     ],
     "labels": [
@@ -73190,7 +73337,8 @@ window.BENCHMARK_DATA = {
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
-      "564b7a26"
+      "564b7a26",
+      "4ca5e961"
     ],
     "datasets": [
       {
@@ -73504,7 +73652,8 @@ window.BENCHMARK_DATA = {
           7862.295891825358,
           7978.600208536784,
           11944.832268269856,
-          11635.912450154623
+          11635.912450154623,
+          5581.991181437174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -73743,6 +73892,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -74145,7 +74295,8 @@ window.BENCHMARK_DATA = {
           37667.544437662764,
           38786.44224330357,
           57957.63320688101,
-          57581.9883219401
+          57581.9883219401,
+          25966.138586425783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -74460,6 +74611,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -74786,7 +74938,8 @@ window.BENCHMARK_DATA = {
           15167.160341535297,
           15176.10234287807,
           20963.554813929968,
-          20867.62366739909
+          20867.62366739909,
+          11261.72590637207
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -74798,6 +74951,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
