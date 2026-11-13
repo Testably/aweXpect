@@ -80,6 +80,7 @@ public sealed class DiffEngineReporter : SnapshotReporter
 			return;
 		}
 
+		cancellationToken.ThrowIfCancellationRequested();
 		if (mismatch.Store is IFileSnapshotStore fileStore)
 		{
 			await _diffRunner.LaunchAsync(fileStore.GetPendingFile(mismatch.Id),
@@ -109,6 +110,7 @@ public sealed class DiffEngineReporter : SnapshotReporter
 	/// <inheritdoc />
 	public override ValueTask OnMatchAsync(SnapshotMatch match, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		if (match.Store is IFileSnapshotStore fileStore)
 		{
 			string pendingFile = fileStore.GetPendingFile(match.Id);

@@ -211,7 +211,11 @@ public static partial class ThatSnapshot
 		[CallerMemberName] string callerMemberName = "")
 		=> AddBinarySnapshot<FileInfo, FileInfo?>(subject,
 			new SnapshotOptions(GetSourceFile(callerFilePath), callerMemberName),
-			static (file, _) => new ValueTask<byte[]>(File.ReadAllBytes(file!.FullName)));
+			static (file, cancellationToken) =>
+			{
+				cancellationToken.ThrowIfCancellationRequested();
+				return new ValueTask<byte[]>(File.ReadAllBytes(file!.FullName));
+			});
 
 	/// <summary>
 	///     Stores the snapshot of a <see cref="string" /> with the file <paramref name="extension" /> instead of

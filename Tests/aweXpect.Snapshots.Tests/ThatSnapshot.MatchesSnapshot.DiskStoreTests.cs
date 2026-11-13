@@ -1,5 +1,8 @@
 using System.IO;
+using System.Threading;
+using aweXpect.Customization;
 using aweXpect.Snapshots.Tests.TestHelpers;
+using TUnit.Core.Exceptions;
 
 namespace aweXpect.Snapshots.Tests;
 
@@ -203,6 +206,95 @@ public sealed partial class ThatSnapshot
 					             matches the snapshot "*MyTests.MyTest.awexpect-snapshot.txt",
 					             but the snapshot could not be read: The path "/_9/Tests/MyTests.cs" comes from a deterministic build, but the test assembly records no source root for it, which the build targets of aweXpect.Snapshots add.
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenCanceled_ShouldNotAcceptTheSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("foo");
+				directory.WritePending("bar");
+				SnapshotStore store = Customize.aweXpect.Snapshots().Store.Get();
+				SnapshotId id = new(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				async Task Act()
+					=> await store.AcceptAsync(id, [0x62, 0x61, 0x7A,], new CancellationToken(true));
+
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage(new OperationCanceledException().Message);
+				await That(File.ReadAllText(directory.SnapshotPath)).IsEqualTo("foo")
+					.Because("a canceled test must not change the snapshot");
+				await That(File.ReadAllText(directory.PendingPath)).IsEqualTo("bar");
+			}
+
+			[Test]
+			public async Task WhenCanceled_ShouldNotDeleteTheFilesOfASnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("foo");
+				directory.WritePending("bar");
+				SnapshotStore store = Customize.aweXpect.Snapshots().Store.Get();
+				SnapshotId id = new(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				async Task Act()
+					=> await store.DeleteAsync(id, new CancellationToken(true));
+
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage(new OperationCanceledException().Message);
+				await That(File.Exists(directory.SnapshotPath)).IsTrue()
+					.Because("a canceled deletion of orphaned snapshots must not delete them");
+				await That(File.Exists(directory.PendingPath)).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenCanceled_ShouldNotDeleteThePendingSnapshotOfAMatch()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WritePending("bar");
+				SnapshotStore store = Customize.aweXpect.Snapshots().Store.Get();
+				SnapshotId id = new(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				async Task Act()
+					=> await store.RecordMatchAsync(id, new CancellationToken(true));
+
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage(new OperationCanceledException().Message);
+				await That(File.Exists(directory.PendingPath)).IsTrue()
+					.Because("a canceled test must not delete the pending snapshot");
+			}
+
+			[Test]
+			public async Task WhenCanceled_ShouldNotReadTheSnapshot()
+			{
+				using SnapshotDirectory directory = new();
+				directory.WriteSnapshot("foo");
+				using FileStream lockedSnapshot = new(directory.SnapshotPath, FileMode.Open, FileAccess.Read,
+					FileShare.None);
+				SnapshotStore store = Customize.aweXpect.Snapshots().Store.Get();
+				SnapshotId id = new(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				async Task Act()
+					=> await store.ReadAsync(id, new CancellationToken(true));
+
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage(new OperationCanceledException().Message)
+					.Because("reading the locked snapshot would throw an IOException");
+			}
+
+			[Test]
+			public async Task WhenCanceled_ShouldNotRecordTheMismatch()
+			{
+				using SnapshotDirectory directory = new();
+				SnapshotStore store = Customize.aweXpect.Snapshots().Store.Get();
+				SnapshotId id = new(directory.TestFilePath, SnapshotDirectory.MemberName);
+
+				async Task Act()
+					=> await store.RecordMismatchAsync(id, [0x62, 0x61, 0x72,], new CancellationToken(true));
+
+				await That(Act).Throws<OperationCanceledException>()
+					.WithMessage(new OperationCanceledException().Message);
+				await That(File.Exists(directory.PendingPath)).IsFalse()
+					.Because("a canceled test must not write a pending snapshot");
 			}
 
 			[Test]
@@ -932,6 +1024,31 @@ public sealed partial class ThatSnapshot
 				await That(File.ReadAllBytes(pendingPath)).IsEqualTo(File.ReadAllBytes(subject.FullName));
 				File.Move(pendingPath, snapshotPath);
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithFileInfo_WhenCanceled_ShouldNotReadTheFile()
+			{
+				using SnapshotDirectory directory = new();
+				using SnapshotDirectory output = new();
+				string snapshotPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pdf");
+				string pendingPath = Path.Combine(directory.Path, "MyTests.MyTest.awexpect-snapshot.pending.pdf");
+				FileInfo subject = new(Path.Combine(output.Path, "liner-notes.pdf"));
+				File.WriteAllBytes(subject.FullName, [0x25, 0x50, 0x44, 0x46,]);
+				using FileStream lockedSubject = new(subject.FullName, FileMode.Open, FileAccess.Read, FileShare.None);
+
+				async Task Act()
+					=> await That(subject).MatchesSnapshot(directory.TestFilePath, SnapshotDirectory.MemberName)
+						.WithCancellation(new CancellationToken(true));
+
+				await That(Act).Throws<InconclusiveTestException>()
+					.WithMessage($"""
+					              Expected that subject
+					              matches the snapshot "{snapshotPath}",
+					              but it could not be verified, because the evaluation was already canceled
+					              """)
+					.Because("reading the locked file would fail the expectation instead");
+				await That(File.Exists(pendingPath)).IsFalse();
 			}
 
 			[Test]

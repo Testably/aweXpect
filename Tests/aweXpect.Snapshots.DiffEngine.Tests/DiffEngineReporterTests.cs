@@ -1,8 +1,10 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using aweXpect.Customization;
 using aweXpect.Snapshots.DiffEngine.Tests.TestHelpers;
+using TUnit.Core.Exceptions;
 
 namespace aweXpect.Snapshots.DiffEngine.Tests;
 
@@ -71,6 +73,62 @@ public sealed class DiffEngineReporterTests
 		await That(Act).DoesNotThrow();
 		await That(diffRunner.Killed).IsEmpty()
 			.Because("without a pending file no diff can be open, so the processes are not searched");
+	}
+
+	[Test]
+	public async Task WithOtherStore_WhenCanceledBeforeTheMatchIsReported_ShouldNotCloseTheDiff()
+	{
+		RecordingDiffRunner diffRunner = new();
+		using TestScope scope = new(diffRunner);
+		using CancellationTokenSource cancellationTokenSource = new();
+		InMemorySnapshotStore store = new();
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+		await That(async () => await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName))
+			.Throws<FailException>();
+		store.Snapshots[scope.Id] = store.Mismatches[scope.Id];
+		store.OnRead = cancellationTokenSource.Cancel;
+
+		async Task Act()
+			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName)
+				.WithCancellation(cancellationTokenSource.Token);
+
+		await That(Act).Throws<InconclusiveTestException>()
+			.WithMessage("""
+			             Expected that "foo"
+			             matches the snapshot "MyTests.MyTest",
+			             but it could not be verified, because the evaluation was already canceled
+
+			             Actual:
+			             foo
+
+			             Snapshot:
+			             foo
+			             """);
+		await That(diffRunner.Killed).IsEmpty();
+		await That(File.Exists(scope.TemporaryReceivedFile)).IsTrue()
+			.Because("a canceled test must not delete the temporary files");
+	}
+
+	[Test]
+	public async Task WithOtherStore_WhenCanceledBeforeTheMismatchIsReported_ShouldNeitherWriteTemporaryFilesNorLaunch()
+	{
+		RecordingDiffRunner diffRunner = new();
+		using TestScope scope = new(diffRunner);
+		using CancellationTokenSource cancellationTokenSource = new();
+		InMemorySnapshotStore store = new()
+		{
+			OnRecordMismatch = cancellationTokenSource.Cancel,
+		};
+		using CustomizationLifetime _ = Customize.aweXpect.Snapshots().Store.Set(store);
+
+		async Task Act()
+			=> await That("foo").MatchesSnapshot(scope.TestFilePath, TestScope.MemberName)
+				.WithCancellation(cancellationTokenSource.Token);
+
+		await That(Act).Throws<OperationCanceledException>().WithMessage(new OperationCanceledException().Message);
+		await That(diffRunner.Launched).IsEmpty();
+		await That(File.Exists(scope.TemporaryReceivedFile)).IsFalse()
+			.Because("a canceled test must not write temporary files");
 	}
 
 	[Test]
