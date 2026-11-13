@@ -1608,6 +1608,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -1878,7 +1884,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -2152,7 +2159,8 @@ window.BENCHMARK_DATA = {
           777.0389597756522,
           379.0568346977234,
           560.1607680638631,
-          593.7585604985555
+          593.7585604985555,
+          374.60401463508606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2376,6 +2384,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2713,7 +2722,8 @@ window.BENCHMARK_DATA = {
           898.0496519633701,
           467.07857887561505,
           577.1162441889445,
-          623.709338256291
+          623.709338256291,
+          544.1800476954534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2725,6 +2735,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4614,6 +4625,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -4884,7 +4901,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -5158,7 +5176,8 @@ window.BENCHMARK_DATA = {
           97.1309139251709,
           51.157434753576915,
           76.86505236625672,
-          82.9630701939265
+          82.9630701939265,
+          57.811078233378275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5305,6 +5324,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5719,7 +5739,8 @@ window.BENCHMARK_DATA = {
           195.7430439846856,
           113.36640735183444,
           161.94069916407267,
-          212.57035455703735
+          212.57035455703735,
+          127.66003028551738
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5731,6 +5752,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7620,6 +7642,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -7890,7 +7918,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -8164,7 +8193,8 @@ window.BENCHMARK_DATA = {
           1819.8228516211877,
           955.2302670796712,
           1058.467170579093,
-          1132.2871823628743
+          1132.2871823628743,
+          979.7774081911359
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8359,6 +8389,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8725,7 +8756,8 @@ window.BENCHMARK_DATA = {
           1450.6114916483562,
           799.8665278752645,
           971.2413299560546,
-          1030.209217453003
+          1030.209217453003,
+          888.2832282384237
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9004,7 +9036,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1952,
-          1952
+          1952,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10566,6 +10599,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -10826,7 +10865,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -11090,7 +11130,8 @@ window.BENCHMARK_DATA = {
           2758.455668449402,
           1261.3961221059164,
           1642.1485805511475,
-          1718.897915976388
+          1718.897915976388,
+          1483.3434721628826
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11275,6 +11316,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11631,7 +11673,8 @@ window.BENCHMARK_DATA = {
           3711.9943259102956,
           1984.990242276873,
           2476.274577585856,
-          2657.8738121032716
+          2657.8738121032716,
+          2320.450394494193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11900,7 +11943,8 @@ window.BENCHMARK_DATA = {
           3981,
           3981,
           3977,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13462,6 +13506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -13722,7 +13772,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -13986,7 +14037,8 @@ window.BENCHMARK_DATA = {
           372.0374926839556,
           181.0158645947774,
           248.82417233784994,
-          274.4854161189153
+          274.4854161189153,
+          199.42380383809407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14123,6 +14175,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14527,7 +14580,8 @@ window.BENCHMARK_DATA = {
           2181.7985483805337,
           1298.6188613891602,
           1406.8340073994227,
-          1591.5285443623861
+          1591.5285443623861,
+          1379.9629450577957
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14539,6 +14593,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -16358,6 +16413,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
         "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -16618,7 +16679,8 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "e64df614",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -16882,7 +16944,8 @@ window.BENCHMARK_DATA = {
           2912.19902826945,
           1445.9999806540352,
           1650.2680273691813,
-          1696.9582391466413
+          1696.9582391466413,
+          1545.6864036832537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17096,6 +17159,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17423,7 +17487,8 @@ window.BENCHMARK_DATA = {
           277906.8404622396,
           168877.45582682293,
           190686.57060546876,
-          196027.99731445312
+          196027.99731445312,
+          171552.35443987165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17692,7 +17757,8 @@ window.BENCHMARK_DATA = {
           17577,
           17896,
           17528,
-          17528
+          17528,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
