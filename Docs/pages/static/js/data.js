@@ -1926,6 +1926,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -2249,7 +2255,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -2576,7 +2583,8 @@ window.BENCHMARK_DATA = {
           11159.393095652262,
           5327.607521565756,
           7912.359733581543,
-          11306.253354753766
+          11306.253354753766,
+          5878.364207131522
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2812,6 +2820,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3243,7 +3252,8 @@ window.BENCHMARK_DATA = {
           382954.0515299479,
           173607.37599283856,
           269716.0087890625,
-          379308.420703125
+          379308.420703125,
+          233385.05006510418
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3575,7 +3585,8 @@ window.BENCHMARK_DATA = {
           590287,
           590286,
           590287,
-          590287
+          590287,
+          590226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3910,7 +3921,8 @@ window.BENCHMARK_DATA = {
           19679.27750854492,
           9887.898529052734,
           14782.470096842448,
-          20602.93278198242
+          20602.93278198242,
+          13470.800332205636
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3922,6 +3934,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6140,6 +6153,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -6456,7 +6475,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -6776,7 +6796,8 @@ window.BENCHMARK_DATA = {
           225.32622449214642,
           109.69220457871755,
           182.5207050527845,
-          234.0652328014374
+          234.0652328014374,
+          155.98746215502422
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6972,6 +6993,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7429,7 +7451,8 @@ window.BENCHMARK_DATA = {
           495.52643286387126,
           265.8185864130656,
           463.9263107617696,
-          540.8862954653226
+          540.8862954653226,
+          393.8305378595988
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7441,6 +7464,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8082,7 +8106,8 @@ window.BENCHMARK_DATA = {
           389.2575589326712,
           208.86351634774888,
           328.0601052602132,
-          393.4061717033386
+          393.4061717033386,
+          290.3520532290141
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8094,6 +8119,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14925,6 +14951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -16011,7 +16043,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -17101,7 +17134,8 @@ window.BENCHMARK_DATA = {
           100.90850504545065,
           52.136354761464254,
           82.27269735336304,
-          104.86089173952739
+          104.86089173952739,
+          78.79120106697083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18100,6 +18134,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -19294,7 +19329,8 @@ window.BENCHMARK_DATA = {
           244.1098105510076,
           126.8940928141276,
           214.86703944206238,
-          261.9039216041565
+          261.9039216041565,
+          223.59137555758159
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19487,6 +19523,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -20768,7 +20805,8 @@ window.BENCHMARK_DATA = {
           253.52184159415108,
           120.63555461168289,
           183.1511691570282,
-          240.4525557586125
+          240.4525557586125,
+          182.55369941393533
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20780,6 +20818,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -23084,6 +23123,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -23407,7 +23452,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -23734,7 +23780,8 @@ window.BENCHMARK_DATA = {
           199.19366439751215,
           109.32865301200322,
           163.34839738210042,
-          215.24422499338786
+          215.24422499338786,
+          149.31324253763472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23939,6 +23986,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -24401,7 +24449,8 @@ window.BENCHMARK_DATA = {
           516.0541611353557,
           255.97000892957053,
           417.52316406794955,
-          536.3701300938924
+          536.3701300938924,
+          406.0334442456563
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24413,6 +24462,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -25068,7 +25118,8 @@ window.BENCHMARK_DATA = {
           321.05536334855213,
           169.1446282182421,
           260.6083284378052,
-          341.2907940864563
+          341.2907940864563,
+          241.83730493273055
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -25080,6 +25131,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -31918,6 +31970,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -33004,7 +33062,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -34094,7 +34153,8 @@ window.BENCHMARK_DATA = {
           736.0165440014431,
           358.2440893650055,
           539.3883040746053,
-          700.1722852161953
+          700.1722852161953,
+          442.7161796276386
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35081,6 +35141,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -36287,7 +36348,8 @@ window.BENCHMARK_DATA = {
           1384.5867295946393,
           671.9586811065674,
           1124.3930416107178,
-          1389.544506072998
+          1389.544506072998,
+          956.5530928098239
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36480,6 +36542,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37761,7 +37824,8 @@ window.BENCHMARK_DATA = {
           642.5363635381062,
           330.5822463194529,
           494.310609964224,
-          674.7714184443156
+          674.7714184443156,
+          457.6828075726827
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37773,6 +37837,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -44655,6 +44720,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -45741,7 +45812,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -46831,7 +46903,8 @@ window.BENCHMARK_DATA = {
           713.945592880249,
           330.234459400177,
           532.0229375021798,
-          678.5660653795514
+          678.5660653795514,
+          440.3077571551005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47818,6 +47891,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -49024,7 +49098,8 @@ window.BENCHMARK_DATA = {
           27005.504364013672,
           10162.185172526042,
           16363.194700113932,
-          27776.929288736977
+          27776.929288736977,
+          12235.491992405483
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50119,7 +50194,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50498,7 +50574,8 @@ window.BENCHMARK_DATA = {
           795.2182955375084,
           403.1659100850423,
           581.8357556206839,
-          805.5791023890177
+          805.5791023890177,
+          529.5298921721322
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50510,6 +50587,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -53162,6 +53240,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -53543,7 +53627,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -53928,7 +54013,8 @@ window.BENCHMARK_DATA = {
           667.3986263275146,
           363.27176472118924,
           510.8709997177124,
-          655.2239078794207
+          655.2239078794207,
+          481.9670021057129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54222,6 +54308,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -54711,7 +54798,8 @@ window.BENCHMARK_DATA = {
           84489.39781842913,
           29448.5474995931,
           54058.651420084636,
-          84257.39173380534
+          84257.39173380534,
+          28990.791414388023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55101,7 +55189,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57389,6 +57478,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -57770,7 +57865,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -58155,7 +58251,8 @@ window.BENCHMARK_DATA = {
           127.9632510287421,
           71.60060403347015,
           98.14555471677046,
-          139.39516146977743
+          139.39516146977743,
+          100.06475151436669
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58449,6 +58546,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -58938,7 +59036,8 @@ window.BENCHMARK_DATA = {
           32110.488171386718,
           10028.031195068359,
           15297.968354445238,
-          33038.67442626953
+          33038.67442626953,
+          11825.499227905273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59328,6 +59427,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -59707,7 +59807,8 @@ window.BENCHMARK_DATA = {
           256.5008260091146,
           121.96934611456734,
           180.1013883627378,
-          266.6129130363464
+          266.6129130363464,
+          160.7536928653717
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59719,6 +59820,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -62023,6 +62125,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -62346,7 +62454,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -62673,7 +62782,8 @@ window.BENCHMARK_DATA = {
           297.3406247411455,
           150.99524459838867,
           229.14877830232894,
-          301.4948525088174
+          301.4948525088174,
+          211.75785623391468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62878,6 +62988,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -63340,7 +63451,8 @@ window.BENCHMARK_DATA = {
           372.33065799304416,
           210.70658016204834,
           337.1892189979553,
-          386.5095679078783
+          386.5095679078783,
+          386.234850470225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63352,6 +63464,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -64007,7 +64120,8 @@ window.BENCHMARK_DATA = {
           402.158314374777,
           205.90681218306224,
           351.1683532079061,
-          410.299258963267
+          410.299258963267,
+          321.4782765592848
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -64019,6 +64133,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -66279,6 +66394,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -66602,7 +66723,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -66929,7 +67051,8 @@ window.BENCHMARK_DATA = {
           712.9259552637736,
           389.94492977460226,
           567.7180594762166,
-          721.5650561877659
+          721.5650561877659,
+          479.0913805594811
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -67165,6 +67288,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -67596,7 +67720,8 @@ window.BENCHMARK_DATA = {
           1874.3952691396078,
           1050.94957224528,
           1626.8937675476075,
-          1911.5956890399639
+          1911.5956890399639,
+          1342.0712164470128
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67608,6 +67733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -68263,7 +68389,8 @@ window.BENCHMARK_DATA = {
           908.3148356119792,
           486.8568844114031,
           763.8739064534506,
-          917.5401733838595
+          917.5401733838595,
+          639.6428401311239
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -68275,6 +68402,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -70535,6 +70663,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -70858,7 +70992,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -71185,7 +71320,8 @@ window.BENCHMARK_DATA = {
           11977.54753112793,
           6081.086269632975,
           8456.684066772461,
-          12136.76628464919
+          12136.76628464919,
+          7181.275679452078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -71424,6 +71560,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -71852,7 +71989,8 @@ window.BENCHMARK_DATA = {
           40037.93830754207,
           19295.50123341878,
           26794.260591634116,
-          41893.91407877604
+          41893.91407877604,
+          22961.465340750558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -72184,7 +72322,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609
+          18609,
+          18608
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -72519,7 +72658,8 @@ window.BENCHMARK_DATA = {
           10725.92719922747,
           5644.888592646672,
           7903.044449869792,
-          10762.661489214215
+          10762.661489214215,
+          6697.756977335612
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -72531,6 +72671,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -74791,6 +74932,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
@@ -75114,7 +75261,8 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
@@ -75441,7 +75589,8 @@ window.BENCHMARK_DATA = {
           11446.118614196777,
           5649.576088460287,
           7935.492746625628,
-          11459.736498151507
+          11459.736498151507,
+          6831.763464246477
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -75680,6 +75829,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -76108,7 +76258,8 @@ window.BENCHMARK_DATA = {
           58808.310599190845,
           27029.164967854816,
           38595.909408569336,
-          60542.405932617185
+          60542.405932617185,
+          32980.72392490932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -76440,7 +76591,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23554
+          23554,
+          23553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -76775,7 +76927,8 @@ window.BENCHMARK_DATA = {
           21056.293313162667,
           11284.046590169271,
           15520.732907976422,
-          21138.418448311942
+          21138.418448311942,
+          13159.19255472819
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -76787,6 +76940,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -77127,17 +77281,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          204.60556076254164
+          204.60556076254164,
+          146.73539145787558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -77149,6 +77311,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          280,
           280
         ],
         "borderColor": "#63A2AC",
@@ -77164,7 +77327,8 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          217.02640477816263
+          217.02640477816263,
+          220.3538178284963
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -77176,6 +77340,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928
         ],
         "borderColor": "#FF671B",
@@ -77191,7 +77356,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          380.3880449022566
+          380.3880449022566,
+          351.3530807495117
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -77203,6 +77369,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          704,
           704
         ],
         "borderColor": "#1A6029",
@@ -77223,17 +77390,25 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          260.377147769928
+          260.377147769928,
+          179.24158142407734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -77245,6 +77420,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          376,
           376
         ],
         "borderColor": "#63A2AC",
