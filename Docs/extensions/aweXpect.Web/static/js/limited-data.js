@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
-      {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          464.33666948171765,
           506.02792006272534,
           477.592585343581,
           231.86652650151933,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           483.85827364240373,
           231.90289611816405,
           345.13403851645336,
-          450.38630727359225
+          450.38630727359225,
+          452.65447241919384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1115.1153530707727,
           967.7987333933512,
           1120.3237092154366,
           560.943596204122,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1071.9689613069806,
           546.7197245279948,
           798.0688645044962,
-          944.0566668192546
+          944.0566668192546,
+          1036.704139300755
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
-      {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          236.40991017023723,
           236.99189560229962,
           251.82484086354575,
           134.53006947835286,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           248.18091259002685,
           112.15336708839124,
           174.25366619917062,
-          252.46530455809372
+          252.46530455809372,
+          246.19632088343303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          253.14134384791058,
           249.72960913976033,
           278.4219954490662,
           146.39669446945192,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           286.2094169684819,
           123.68750410813551,
           210.39560514229996,
-          245.65508035024007
+          245.65508035024007,
+          277.273606300354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
-      {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          985.2903900146484,
           975.305111249288,
           1025.0751603444417,
           516.8848755909846,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1079.1108530589513,
           512.0405069759914,
           721.0351463726589,
-          962.7182960510254
+          962.7182960510254,
+          878.8918386459351
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          961.5089799245198,
           923.786976369222,
           1047.0305853525797,
           527.0721464157104,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1050.7095422108969,
           504.3938758850098,
           780.8728175799052,
-          928.324449412028
+          928.324449412028,
+          977.0163686752319
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
-      {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1902.9398686545235,
           1959.3320625850133,
           1983.7660639444987,
           1154.0959295126108,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1883.578617640904,
           1087.7869952065605,
           1510.7622977036697,
-          1915.8012301127117
+          1915.8012301127117,
+          1910.1144278390068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22497.319272867837,
           20912.696763258715,
           21855.42422281901,
           10704.838727510893,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           20420.72761317662,
           9629.631102425712,
           14908.456726074219,
-          20922.629355294364
+          20922.629355294364,
+          18000.66671534947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2379,7 +2379,6 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2416,6 +2415,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
       {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          833.7528851191203,
           853.7313683373587,
           821.9027952466693,
           426.9092006342752,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           819.0532059351603,
           369.30539185206095,
           598.3487507956369,
-          743.3466087341309
+          743.3466087341309,
+          728.804657642658
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1386.600918451945,
           1278.105143913856,
           1370.6048352559408,
           723.4741080829075,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1498.5604817708333,
           657.6125920369075,
           1115.3381546020507,
-          1282.0029820760092
+          1282.0029820760092,
+          1479.2665510813395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
-        "message": "refactor!: build the remaining plural expectations of aweXpect.Reflection on the generated collection constraints (#2151)"
-      },
-      {
         "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
-      "583e9cec",
       "29daaf7a",
       "e6330bec",
       "30129fc0",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1380.075529607137,
           1360.5626458485922,
           1360.7830748240153,
           832.5791413625082,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1288.2942237854004,
           735.5206656773885,
           1008.1575095312936,
-          1244.64347114563
+          1244.64347114563,
+          1269.1904664357503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          770.9685313542684,
           802.5459557851156,
           825.9286317825317,
           457.9500850530771,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           879.895429166158,
           393.66712597438266,
           655.9859525044759,
-          744.7509203592937
+          744.7509203592937,
+          798.4264978408813
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
