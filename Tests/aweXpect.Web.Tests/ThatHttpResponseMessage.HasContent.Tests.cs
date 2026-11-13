@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using System.Threading;
+using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -93,6 +95,33 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsDisposed_ShouldFail()
+			{
+				StringContent content = new("some content");
+				content.Dispose();
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasContent("some content");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "some content",
+					             but the string content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard().And
+					.WithInner<ObjectDisposedException>()
+					.Because("an exception from reading the content fails the expectation instead of escaping");
+			}
+
+			[Test]
 			public async Task WhenContentIsNotSet_ShouldFailAgainstEmptyContent()
 			{
 				HttpResponseMessage subject = new();
@@ -140,6 +169,29 @@ public sealed partial class ThatHttpResponseMessage
 					             but it was <null>
 					             """);
 			}
+#if NET8_0_OR_GREATER
+
+			[Test]
+			public async Task WhenTheEvaluationIsCanceledWhileTheContentIsRead_ShouldBeInconclusive()
+			{
+				using CancellationTokenSource cts = new();
+				HttpResponseMessage subject = new()
+				{
+					Content = new PendingContent(cts),
+				};
+
+				async Task Act()
+					=> await That(subject).HasContent("").WithCancellation(cts.Token);
+
+				await That(Act).Throws<TUnit.Core.Exceptions.InconclusiveTestException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "",
+					             but it could not be verified, because the evaluation was already canceled
+					             """)
+					.Because("the cancellation of the evaluation is not an exception from reading the content");
+			}
+#endif
 		}
 
 		public sealed class NegatedTests

@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using System.Threading;
+using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -109,6 +111,33 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsDisposed_ShouldFail()
+			{
+				StringContent content = new("some content");
+				content.Dispose();
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasContent("some content");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "some content",
+					             but the string content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard().And
+					.WithInner<ObjectDisposedException>()
+					.Because("an exception from reading the content fails the expectation instead of escaping");
+			}
+
+			[Test]
 			public async Task WhenContentIsNull_ShouldFail()
 			{
 				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");
@@ -140,6 +169,36 @@ public sealed partial class ThatHttpRequestMessage
 					.Because("HTTP does not distinguish a missing body from an empty one");
 			}
 
+#if NETFRAMEWORK
+			[Test]
+			public async Task WhenContentWasSentByHttpClient_ShouldFail()
+			{
+				HttpRequestMessage subject = new(HttpMethod.Post, "https://awexpect.com")
+				{
+					Content = new StringContent("some content"),
+				};
+				using HttpClient client = new(new StubHandler());
+				(await client.SendAsync(subject)).Dispose();
+
+				async Task Act()
+					=> await That(subject).HasContent("some content");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "some content",
+					             but the string content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Request:
+					               POST https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard()
+					.Because("on .NET Framework the HttpClient disposes the content of the request after sending it");
+			}
+#endif
+
 			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
@@ -155,6 +214,38 @@ public sealed partial class ThatHttpRequestMessage
 					             but it was <null>
 					             """);
 			}
+#if NET8_0_OR_GREATER
+
+			[Test]
+			public async Task WhenTheEvaluationIsCanceledWhileTheContentIsRead_ShouldBeInconclusive()
+			{
+				using CancellationTokenSource cts = new();
+				HttpRequestMessage subject = new()
+				{
+					Content = new PendingContent(cts),
+				};
+
+				async Task Act()
+					=> await That(subject).HasContent("").WithCancellation(cts.Token);
+
+				await That(Act).Throws<TUnit.Core.Exceptions.InconclusiveTestException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a string content equal to "",
+					             but it could not be verified, because the evaluation was already canceled
+					             """)
+					.Because("the cancellation of the evaluation is not an exception from reading the content");
+			}
+#endif
+#if NETFRAMEWORK
+
+			private sealed class StubHandler : HttpMessageHandler
+			{
+				protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+					CancellationToken cancellationToken)
+					=> Task.FromResult(new HttpResponseMessage());
+			}
+#endif
 		}
 
 		public sealed class NegatedTests
