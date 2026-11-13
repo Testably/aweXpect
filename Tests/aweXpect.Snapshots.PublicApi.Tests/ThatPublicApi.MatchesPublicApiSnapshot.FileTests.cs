@@ -35,6 +35,22 @@ public sealed partial class ThatPublicApi
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
 			[Test]
+			public async Task WhenOptionIsInvalid_ShouldThrowWhenTheExpectationIsWritten()
+			{
+				FileInfo subject = new("Library.dll");
+
+				object Act()
+					=> That(subject).MatchesPublicApiSnapshot(o => o.Within.Type("Library.Api+Nested"));
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("fullName").And
+					.WithMessage(
+						"The type 'Library.Api+Nested' is nested, so it is written with its containing type: restrict the public API to the containing type instead.*")
+					.AsWildcard()
+					.Because("an invalid option is reported where it is written, like the other argument checks");
+			}
+
+			[Test]
 			public async Task WhenOptionsAreNull_ShouldUseTheDefaults()
 				=> await That(WriteForwardingLibrary()).MatchesPublicApiSnapshot(null);
 
@@ -125,6 +141,20 @@ public sealed partial class ThatPublicApi
 					             }
 
 					             """).IgnoringNewlineStyle();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_AndOptionIsInvalid_ShouldThrowWhenTheExpectationIsWritten()
+			{
+				FileInfo? subject = null;
+
+				object Act()
+					=> That(subject).MatchesPublicApiSnapshot(o => o.Ignoring.Type(null!));
+
+				await That(Act).ThrowsExactly<ArgumentNullException>()
+					.WithParamName("fullName").And
+					.WithMessage("The 'fullName' cannot be null.*").AsWildcard()
+					.Because("the options are applied even though no public API is generated for a null subject");
 			}
 
 			[Test]

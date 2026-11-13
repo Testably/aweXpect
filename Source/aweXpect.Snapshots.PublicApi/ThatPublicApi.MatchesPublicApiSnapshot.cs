@@ -87,7 +87,9 @@ public static class ThatPublicApi
 	/// <remarks>
 	///     The result stays nullable, unlike the one of the string snapshot, as awaiting it does not return the
 	///     generated public API.<br />
-	///     The options that the public API was generated with are kept for the "Public API options" of a failure.
+	///     The <paramref name="options" /> are applied once when the expectation is written, so that an invalid option
+	///     throws there, also for a <see langword="null" /> subject, and the same options are used for every evaluation
+	///     and for the "Public API options" of a failure.
 	/// </remarks>
 	[SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly",
 		Justification = "The snapshot is named after the test that calls the public API expectation.")]
@@ -99,18 +101,17 @@ public static class ThatPublicApi
 		string callerMemberName)
 		where TSubject : class
 	{
-		PublicApiOptions? usedOptions = null;
+		PublicApiOptions defaults = new();
+		PublicApiOptions usedOptions = options?.Invoke(defaults) ?? defaults;
 		StringSnapshotResult<string?, IThat<string?>>? result = null;
 		subject.Get().ExpectationBuilder
 			.ForMember(MemberAccessor<TSubject?, string?>.FromFuncWithName(
-					value => value is null
-						? null
-						: write(value, defaults => usedOptions = options?.Invoke(defaults) ?? defaults),
+					value => value is null ? null : write(value, _ => usedOptions),
 					"public API"),
 				(_, stringBuilder) => stringBuilder.Append("has a public API which "))
 			.AddExpectations(expectationBuilder =>
 			{
-				expectationBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions?.AddContext(contexts));
+				expectationBuilder.AddSubjectContexts<string>((_, contexts) => usedOptions.AddContext(contexts));
 				result = new ThatSubject<string?>(expectationBuilder).MatchesSnapshot(callerFilePath,
 					callerMemberName).WithExtension(PublicApiExtension)!;
 			});

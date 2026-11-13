@@ -22,6 +22,22 @@ public sealed partial class ThatPublicApi
 					.MatchesPublicApiSnapshot(o => o.Ignoring.ForwardedTypes());
 
 			[Test]
+			public async Task WhenOptionIsInvalid_ShouldThrowWhenTheExpectationIsWritten()
+			{
+				Assembly subject = typeof(Album).Assembly;
+
+				object Act()
+					=> That(subject).MatchesPublicApiSnapshot(o => o.Within.Type<Album.Track>());
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("fullName").And
+					.WithMessage(
+						"The type 'aweXpect.Snapshots.PublicApi.Fixture.Album+Track' is nested, so it is written with its containing type: restrict the public API to the containing type instead.*")
+					.AsWildcard()
+					.Because("an invalid option is reported where it is written, like the other argument checks");
+			}
+
+			[Test]
 			public async Task WhenOptionsAreNull_ShouldUseTheDefaults()
 				=> await That(Assembly.LoadFile(WriteForwardingLibrary().FullName))
 					.MatchesPublicApiSnapshot(null);
@@ -30,6 +46,20 @@ public sealed partial class ThatPublicApi
 			public async Task WhenOptionsArePassedByName_ShouldApplyThem()
 				=> await That(Assembly.LoadFile(WriteForwardingLibrary().FullName))
 					.MatchesPublicApiSnapshot(options: o => o.Ignoring.ForwardedTypes());
+
+			[Test]
+			public async Task WhenSubjectIsNull_AndOptionIsInvalid_ShouldThrowWhenTheExpectationIsWritten()
+			{
+				Assembly? subject = null;
+
+				object Act()
+					=> That(subject).MatchesPublicApiSnapshot(o => o.Ignoring.Type(""));
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("fullName").And
+					.WithMessage("The 'fullName' cannot be empty.*").AsWildcard()
+					.Because("the options are applied even though no public API is generated for a null subject");
+			}
 
 			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
