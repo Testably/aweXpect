@@ -294,9 +294,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -348,9 +346,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -402,9 +398,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -456,9 +450,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -625,9 +617,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -681,9 +671,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -737,9 +725,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -793,9 +779,7 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
-			Outcome = expected.Any(value => CurrentOptions.IsWithinTolerance(actual, value))
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = IsWithinToleranceOfAny(CurrentOptions, actual, expected);
 			return this;
 		}
 
@@ -823,4 +807,76 @@ public static partial class ThatNumber
 		}
 	}
 #endif
+
+	/// <remarks>
+	///     The options are read once and the candidates are checked without a closure, because this runs for every
+	///     item when the expectation is applied to the items of a collection. An array, e.g. from the
+	///     <see langword="params" /> overloads, is iterated directly to avoid allocating an enumerator.
+	/// </remarks>
+	private static Outcome IsWithinToleranceOfAny<TNumber>(NumberTolerance<TNumber> options, TNumber? actual,
+		IEnumerable<TNumber> expected)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		if (expected is TNumber[] array)
+		{
+			// A foreach over the array type compiles to an indexed loop, while one over IEnumerable<T> allocates an enumerator.
+			foreach (TNumber value in array)
+			{
+				if (options.IsWithinTolerance(actual, value))
+				{
+					return Outcome.Success;
+				}
+			}
+
+			return Outcome.Failure;
+		}
+
+		foreach (TNumber value in expected)
+		{
+			if (options.IsWithinTolerance(actual, value))
+			{
+				return Outcome.Success;
+			}
+		}
+
+		return Outcome.Failure;
+	}
+
+	/// <inheritdoc cref="IsWithinToleranceOfAny{TNumber}(NumberTolerance{TNumber}, TNumber?, IEnumerable{TNumber})" />
+	private static Outcome IsWithinToleranceOfAny<TNumber>(NumberTolerance<TNumber> options, TNumber? actual,
+		IEnumerable<TNumber?> expected)
+#if NET8_0_OR_GREATER
+		where TNumber : struct, INumber<TNumber>
+#else
+		where TNumber : struct, IComparable<TNumber>
+#endif
+	{
+		if (expected is TNumber?[] array)
+		{
+			// A foreach over the array type compiles to an indexed loop, while one over IEnumerable<T> allocates an enumerator.
+			foreach (TNumber? value in array)
+			{
+				if (options.IsWithinTolerance(actual, value))
+				{
+					return Outcome.Success;
+				}
+			}
+
+			return Outcome.Failure;
+		}
+
+		foreach (TNumber? value in expected)
+		{
+			if (options.IsWithinTolerance(actual, value))
+			{
+				return Outcome.Success;
+			}
+		}
+
+		return Outcome.Failure;
+	}
 }
