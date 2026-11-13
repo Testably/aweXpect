@@ -1548,6 +1548,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
@@ -1808,7 +1814,8 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
@@ -2072,7 +2079,8 @@ window.BENCHMARK_DATA = {
           870.5031931740897,
           633.1980058670044,
           481.2269781112671,
-          764.6049524715969
+          764.6049524715969,
+          954.75361933027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2253,6 +2261,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2613,7 +2622,8 @@ window.BENCHMARK_DATA = {
           661.6432409286499,
           560.2568008422852,
           378.32481404713224,
-          803.909969329834
+          803.909969329834,
+          680.4944174448649
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2625,6 +2635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4444,6 +4455,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
@@ -4704,7 +4721,8 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
@@ -4968,7 +4986,8 @@ window.BENCHMARK_DATA = {
           4166.357889447893,
           3554.4842018714317,
           2552.696700032552,
-          5092.236778767904
+          5092.236778767904,
+          4527.099325052897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5237,7 +5256,8 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5509,7 +5529,8 @@ window.BENCHMARK_DATA = {
           4883.908458455404,
           4000.1306404700645,
           2822.3510540553502,
-          5916.536860148112
+          5916.536860148112,
+          5261.701634216309
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5521,6 +5542,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7280,6 +7302,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
@@ -7530,7 +7558,8 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
@@ -7784,7 +7813,8 @@ window.BENCHMARK_DATA = {
           2377.205401284354,
           1981.5784276326497,
           1441.5393086751303,
-          2864.1385495322093
+          2864.1385495322093,
+          2600.455914306641
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8042,6 +8072,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654
         ],
@@ -8305,7 +8336,8 @@ window.BENCHMARK_DATA = {
           3305.5031720674956,
           2767.322171020508,
           2089.9985433306015,
-          3856.7706827016978
+          3856.7706827016978,
+          3472.8797670091903
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8317,6 +8349,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10066,6 +10099,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
@@ -10316,7 +10355,8 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
@@ -10570,7 +10610,8 @@ window.BENCHMARK_DATA = {
           13081.795353190104,
           10178.156646728516,
           7572.3518483088565,
-          13901.336149088542
+          13901.336149088542,
+          14272.272519429525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10828,6 +10869,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367
         ],
@@ -11091,7 +11133,8 @@ window.BENCHMARK_DATA = {
           348114.1427734375,
           252240.18254743304,
           180046.09258161273,
-          283104.5428466797
+          283104.5428466797,
+          351763.210164388
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11350,7 +11393,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544246
+          544246,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
