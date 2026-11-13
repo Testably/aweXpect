@@ -31,6 +31,29 @@ public sealed partial class ContentProcessor
 		}
 
 		[Test]
+		public async Task WhenByteArrayContentHasNoContentType_ShouldOmitTheContentType()
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent(new ByteArrayContent([1, 2,]));
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that httpResponse
+				             has status code equal to 202 Accepted,
+				             but it had status code 200 OK
+
+				             HTTP-Response:
+				               200 OK HTTP/1.1
+				                 Content-Length: 2
+				               *Content is binary with length 2*
+				             """)
+				.Because("without a media type there is nothing to show in parentheses");
+		}
+
+		[Test]
 		[Arguments("audio/mp3")]
 		[Arguments("audio/mpeg")]
 		[Arguments("video/mp4")]

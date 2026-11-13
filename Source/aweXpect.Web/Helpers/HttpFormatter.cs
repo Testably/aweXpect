@@ -25,7 +25,7 @@ internal static class HttpFormatter
 		StringBuilder messageBuilder = new();
 
 		messageBuilder.Append(indentation)
-			.Append(request.Method.ToString().ToUpper()).Append(' ').Append(request.RequestUri)
+			.Append(request.Method.Method).Append(' ').Append(request.RequestUri)
 			.Append(" HTTP/").Append(request.Version)
 			.AppendLine();
 

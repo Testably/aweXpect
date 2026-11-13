@@ -49,7 +49,7 @@ internal static class Checks
 					Content = new ByteArrayContent([1, 2, 3,]),
 				};
 				await That(response).HasStatusCode(HttpStatusCode.Accepted);
-			}, "*Content is binary () with length 3*")),
+			}, "*Content is binary with length 3*")),
 		new("a present header with the expected value passes",
 			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, header: "x-track"))
 				.HasHeader("x-track").WithValue("42"))),

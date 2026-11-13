@@ -104,6 +104,28 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenMethodIsLowercase_ShouldShowTheMethodUnchanged()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(new HttpMethod("list"))
+					.WithUri("https://awexpect.com");
+
+				async Task Act()
+					=> await That(subject).HasMethod(HttpMethod.Get);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a GET method,
+					             but it had method list
+
+					             HTTP-Request:
+					               list https://awexpect.com/ HTTP/1.1
+					             """)
+					.Because("HTTP methods are case-sensitive, so the request line must not change the casing");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;
