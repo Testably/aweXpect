@@ -1890,6 +1890,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -2207,7 +2213,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -2528,7 +2535,8 @@ window.BENCHMARK_DATA = {
           10324.620165311373,
           9411.852990722657,
           5471.396844991048,
-          7929.221556527274
+          7929.221556527274,
+          10344.608099365234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2764,6 +2772,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3183,7 +3192,8 @@ window.BENCHMARK_DATA = {
           372448.26618303574,
           355900.15652901784,
           225590.68235677082,
-          255995.20598958334
+          255995.20598958334,
+          367630.1919320914
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3509,7 +3519,8 @@ window.BENCHMARK_DATA = {
           590292,
           590264,
           590226,
-          590288
+          590288,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3838,7 +3849,8 @@ window.BENCHMARK_DATA = {
           19390.189958844865,
           20256.82745768229,
           13498.299107869467,
-          14443.25503845215
+          14443.25503845215,
+          19439.660552978516
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3850,6 +3862,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6026,6 +6039,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -6336,7 +6355,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -6650,7 +6670,8 @@ window.BENCHMARK_DATA = {
           225.3232706955501,
           240.256267674764,
           167.18660343488057,
-          178.38550136884052
+          178.38550136884052,
+          213.4476236786161
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6846,6 +6867,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7291,7 +7313,8 @@ window.BENCHMARK_DATA = {
           491.0050982066563,
           615.5040012995402,
           398.44624948501587,
-          439.35357942581174
+          439.35357942581174,
+          473.0685050328573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7303,6 +7326,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -7932,7 +7956,8 @@ window.BENCHMARK_DATA = {
           407.1001546042306,
           443.7038499514262,
           308.3763705889384,
-          338.2576564470927
+          338.2576564470927,
+          384.23882891337075
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7944,6 +7969,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14733,6 +14759,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -15813,7 +15845,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -16897,7 +16930,8 @@ window.BENCHMARK_DATA = {
           103.01634520689646,
           115.68688986131123,
           68.42543676069805,
-          89.99079710642496
+          89.99079710642496,
+          98.99584872722626
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17896,6 +17930,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -19078,7 +19113,8 @@ window.BENCHMARK_DATA = {
           249.22855555216472,
           350.948255888621,
           201.90679885546368,
-          208.72348313672202
+          208.72348313672202,
+          239.3781899134318
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19271,6 +19307,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -20540,7 +20577,8 @@ window.BENCHMARK_DATA = {
           238.31780757222856,
           279.4643847261156,
           160.25682280744826,
-          190.03250517845154
+          190.03250517845154,
+          229.8786023934682
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20552,6 +20590,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -22814,6 +22853,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -23131,7 +23176,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -23452,7 +23498,8 @@ window.BENCHMARK_DATA = {
           214.43683101336163,
           231.01879466374714,
           147.30771485396795,
-          162.99186657269794
+          162.99186657269794,
+          202.8139075892312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23657,6 +23704,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -24107,7 +24155,8 @@ window.BENCHMARK_DATA = {
           513.051097052438,
           706.196582476298,
           419.9190687179565,
-          432.4836609840393
+          432.4836609840393,
+          492.29652671813966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24119,6 +24168,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -24762,7 +24812,8 @@ window.BENCHMARK_DATA = {
           325.0243142568148,
           379.4575733820597,
           237.3966967900594,
-          281.5226728916168
+          281.5226728916168,
+          328.08294824453503
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24774,6 +24825,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -31570,6 +31622,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -32650,7 +32708,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -33734,7 +33793,8 @@ window.BENCHMARK_DATA = {
           742.2537585038406,
           684.2466976165772,
           424.26969936915805,
-          545.9927869796753
+          545.9927869796753,
+          698.1423758824666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -34721,6 +34781,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -35915,7 +35976,8 @@ window.BENCHMARK_DATA = {
           1458.0858337402344,
           1642.4236544291177,
           1026.6841676076253,
-          1171.913665262858
+          1171.913665262858,
+          1289.3168474833171
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36108,6 +36170,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37377,7 +37440,8 @@ window.BENCHMARK_DATA = {
           639.7099004158607,
           727.1154606892512,
           450.4611103057861,
-          525.2280241648356
+          525.2280241648356,
+          645.8018715198224
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37389,6 +37453,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -44229,6 +44294,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -45309,7 +45380,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -46393,7 +46465,8 @@ window.BENCHMARK_DATA = {
           749.8547190938677,
           693.9397214480808,
           417.6539711634318,
-          534.6230720520019
+          534.6230720520019,
+          684.4740544160207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47380,6 +47453,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -48574,7 +48648,8 @@ window.BENCHMARK_DATA = {
           28555.43290201823,
           25191.925315348308,
           12832.165455118815,
-          16946.477065022787
+          16946.477065022787,
+          27082.139046223958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49663,6 +49738,7 @@ window.BENCHMARK_DATA = {
           33471,
           33468,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -50036,7 +50112,8 @@ window.BENCHMARK_DATA = {
           796.2001352310181,
           855.9780969619751,
           527.2141334669931,
-          616.440713818868
+          616.440713818868,
+          753.5227677663167
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50048,6 +50125,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -52658,6 +52736,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -53033,7 +53117,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -53412,7 +53497,8 @@ window.BENCHMARK_DATA = {
           619.7366902033488,
           715.5960989679609,
           470.54169543584186,
-          536.3168946584066
+          536.3168946584066,
+          607.5240916472214
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53706,6 +53792,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -54183,7 +54270,8 @@ window.BENCHMARK_DATA = {
           82749.80860188803,
           66449.22103678386,
           31913.707206726074,
-          55620.56610514323
+          55620.56610514323,
+          83993.01151529948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54567,7 +54655,8 @@ window.BENCHMARK_DATA = {
           5252,
           5254,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56819,6 +56908,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -57194,7 +57289,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -57573,7 +57669,8 @@ window.BENCHMARK_DATA = {
           135.08836623827617,
           153.01171868642172,
           103.12409113003658,
-          102.23788039173398
+          102.23788039173398,
+          141.83665099143983
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57867,6 +57964,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -58344,7 +58442,8 @@ window.BENCHMARK_DATA = {
           32334.629294259208,
           25782.646911621094,
           13999.887645721436,
-          15372.207255045572
+          15372.207255045572,
+          31686.988403320312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58728,7 +58827,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59101,7 +59201,8 @@ window.BENCHMARK_DATA = {
           239.68668639659882,
           273.46415230433144,
           155.5934145450592,
-          189.42165584564208
+          189.42165584564208,
+          230.79175197283428
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59113,6 +59214,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -61375,6 +61477,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -61692,7 +61800,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -62013,7 +62122,8 @@ window.BENCHMARK_DATA = {
           298.89033695629666,
           319.51642223993935,
           194.09759692351022,
-          240.54465465545655
+          240.54465465545655,
+          327.3800711631775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62218,6 +62328,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -62668,7 +62779,8 @@ window.BENCHMARK_DATA = {
           385.1436039039067,
           508.0063987731934,
           327.6010446548462,
-          323.18351296016147
+          323.18351296016147,
+          373.0938630104065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62680,6 +62792,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -63323,7 +63436,8 @@ window.BENCHMARK_DATA = {
           402.8079974810282,
           426.0336390904018,
           285.30119406382244,
-          343.67725779215493
+          343.67725779215493,
+          395.43032823290145
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -63335,6 +63449,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -65553,6 +65668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -65870,7 +65991,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -66191,7 +66313,8 @@ window.BENCHMARK_DATA = {
           787.058765220642,
           750.7528796513875,
           529.856603304545,
-          563.593007019588
+          563.593007019588,
+          689.0386893590291
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -66427,6 +66550,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -66846,7 +66970,8 @@ window.BENCHMARK_DATA = {
           1915.7268654959541,
           2305.5763595581057,
           1435.3516956056867,
-          1678.0836755116782
+          1678.0836755116782,
+          1816.4360088620867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66858,6 +66983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -67501,7 +67627,8 @@ window.BENCHMARK_DATA = {
           931.0061722437541,
           1016.4511665344238,
           687.7124831517538,
-          805.4340375900268
+          805.4340375900268,
+          903.8903759638469
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67513,6 +67640,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -69731,6 +69859,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -70048,7 +70182,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -70369,7 +70504,8 @@ window.BENCHMARK_DATA = {
           12028.096178327289,
           11488.746537344796,
           6681.139019012451,
-          8490.859822199895
+          8490.859822199895,
+          12037.525657653809
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70608,6 +70744,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -71024,7 +71161,8 @@ window.BENCHMARK_DATA = {
           41628.67854410807,
           36907.5833618164,
           23949.932680257163,
-          27599.30741373698
+          27599.30741373698,
+          39052.04399414062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -71350,6 +71488,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -71679,7 +71818,8 @@ window.BENCHMARK_DATA = {
           10609.001838097205,
           10021.596420288086,
           6293.283908208211,
-          7813.800619942801
+          7813.800619942801,
+          10581.274673461914
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71691,6 +71831,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -73909,6 +74050,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
         "message": "docs: describe aweXpect v4 as the stable release (#2200)"
+      },
+      {
+        "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
+        "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
       }
     ],
     "labels": [
@@ -74226,7 +74373,8 @@ window.BENCHMARK_DATA = {
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
-      "3d57c42d"
+      "3d57c42d",
+      "d12a9246"
     ],
     "datasets": [
       {
@@ -74547,7 +74695,8 @@ window.BENCHMARK_DATA = {
           11592.424573458158,
           11458.685054234096,
           6410.850796290806,
-          7945.730850219727
+          7945.730850219727,
+          11517.648445716271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -74786,6 +74935,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -75202,7 +75352,8 @@ window.BENCHMARK_DATA = {
           58303.15911429269,
           52245.19202129658,
           32075.26972249349,
-          38826.44777832031
+          38826.44777832031,
+          56933.252685546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -75517,6 +75668,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -75857,7 +76009,8 @@ window.BENCHMARK_DATA = {
           20957.26413167318,
           19777.16927693685,
           12925.220237223308,
-          15322.876795842098
+          15322.876795842098,
+          20903.342439778648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -75869,6 +76022,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
