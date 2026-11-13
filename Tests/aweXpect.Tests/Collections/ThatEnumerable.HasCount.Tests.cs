@@ -173,6 +173,44 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenGenericCollectionCountThrows_ShouldFail()
+			{
+				ReadOnlyCollectionOfValues subject = new(new InvalidOperationException("count failed"));
+
+				async Task Act()
+					=> await That(subject).HasCount(3);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly 3 items,
+					             but it did throw an InvalidOperationException:
+					               count failed
+					             """)
+					.Because("the exception of the collection fails the expectation as it is, not wrapped by the count reader");
+			}
+
+			[Test]
+			public async Task WhenReadOnlyCollectionContainsTooManyItems_ShouldFail()
+			{
+				ReadOnlyCollectionOfValues subject = new(null, 1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).HasCount(2);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly 2 items,
+					             but it had 3 items
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("the count of a read-only collection of value types is read without enumerating it");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
@@ -211,6 +249,16 @@ public sealed partial class ThatEnumerable
 					             [1, 2, 3]
 					             """)
 					.Because("a set knows its count, also when it is read as a non-generic enumerable");
+			}
+
+			private sealed class ReadOnlyCollectionOfValues(Exception? countException, params int[] items)
+				: IReadOnlyCollection<int>
+			{
+				public int Count => countException is null ? items.Length : throw countException;
+
+				public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)items).GetEnumerator();
+
+				IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 			}
 		}
 	}
