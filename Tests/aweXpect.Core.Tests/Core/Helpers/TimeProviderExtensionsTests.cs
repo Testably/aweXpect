@@ -135,6 +135,39 @@ public sealed class TimeProviderExtensionsTests
 	}
 
 	[Test]
+	public async Task CreateDelay_OnAnotherProvider_WhenCanceledWhileTheTimerIsCreated_ShouldNotStartTheTimer()
+	{
+		using CancellationTokenSource cts = new();
+		ManualTimeProvider timeProvider = new()
+		{
+			OnCreateTimer = () => cts.Cancel(),
+		};
+
+		Task delay = timeProvider.CreateDelay(10.Seconds(), cts.Token);
+
+		await That(delay.IsCanceled).IsTrue();
+		await That(timeProvider.Timer!.DueTime).IsEqualTo(Timeout.InfiniteTimeSpan)
+			.Because("a virtual clock that moves on its own would otherwise move to the timer, which the cancellation could not release before the delay stored it");
+		await That(timeProvider.Timer.IsDisposed).IsTrue();
+	}
+
+	[Test]
+	public async Task CreateDelay_OnAnotherProvider_WhenCanceledWhileTheTimerIsStarted_ShouldBeCanceled()
+	{
+		using CancellationTokenSource cts = new();
+		ManualTimeProvider timeProvider = new()
+		{
+			OnChangeTimer = () => cts.Cancel(),
+		};
+
+		Task delay = timeProvider.CreateDelay(10.Seconds(), cts.Token);
+
+		await That(delay.IsCanceled).IsTrue()
+			.Because("starting the timer that the cancellation released in the meantime must not throw");
+		await That(timeProvider.Timer!.IsDisposed).IsTrue();
+	}
+
+	[Test]
 	public async Task CreateDelay_OnAnotherProvider_WithInfiniteDelay_ShouldCreateATimer()
 	{
 		ManualTimeProvider timeProvider = new();
@@ -185,24 +218,46 @@ public sealed class TimeProviderExtensionsTests
 
 	private sealed class ManualTimeProvider : TimeProvider
 	{
+		/// <summary>
+		///     Runs before the created timer is returned, like a timer that fires on another thread in the meantime.
+		/// </summary>
+		public Action? OnCreateTimer { get; set; }
+
+		/// <summary>
+		///     Runs before the timer is changed, like a timer that fires on another thread in the meantime.
+		/// </summary>
+		public Action? OnChangeTimer { get; set; }
+
 		public ManualTimer? Timer { get; private set; }
 
 		public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
 		{
-			Timer = new ManualTimer(callback, state, dueTime);
+			Timer = new ManualTimer(callback, state, dueTime, OnChangeTimer);
+			OnCreateTimer?.Invoke();
 			return Timer;
 		}
 	}
 
-	private sealed class ManualTimer(TimerCallback callback, object? state, TimeSpan dueTime) : ITimer
+	private sealed class ManualTimer(TimerCallback callback, object? state, TimeSpan dueTime, Action? onChange)
+		: ITimer
 	{
-		public TimeSpan DueTime { get; } = dueTime;
+		public TimeSpan DueTime { get; private set; } = dueTime;
 
 		public bool IsDisposed { get; private set; }
 
 		public object? State { get; } = state;
 
-		public bool Change(TimeSpan dueTime, TimeSpan period) => false;
+		public bool Change(TimeSpan dueTime, TimeSpan period)
+		{
+			onChange?.Invoke();
+			if (IsDisposed)
+			{
+				throw new ObjectDisposedException(nameof(ManualTimer));
+			}
+
+			DueTime = dueTime;
+			return true;
+		}
 
 		public void Dispose() => IsDisposed = true;
 

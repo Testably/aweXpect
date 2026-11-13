@@ -95,21 +95,35 @@ internal static class TimeProviderExtensions
 	{
 		private readonly CancellationToken _cancellationToken;
 		private readonly CancellationTokenRegistration _registration;
-		private readonly ITimer? _timer;
+		private ITimer? _timer;
 
+		/// <remarks>
+		///     The timer is created stopped and started only once it is stored, so that a cancellation always releases
+		///     it: a virtual clock that moves on its own would otherwise move past a timeout that cancels the token to
+		///     a timer that is not stored yet.
+		/// </remarks>
 		public DelayPromise(TimeProvider timeProvider, TimeSpan delay, CancellationToken cancellationToken)
 			: base(TaskCreationOptions.RunContinuationsAsynchronously)
 		{
 			_cancellationToken = cancellationToken;
-			// The token is registered before the timer exists, as a virtual clock may move on and fire the timer as
-			// soon as it is created, also past a timeout that cancels the token.
 			_registration = cancellationToken.Register(static state => ((DelayPromise)state!).Cancel(), this);
-			_timer = timeProvider.CreateTimer(static state => ((DelayPromise)state!).Complete(), this, delay,
-				Timeout.InfiniteTimeSpan);
-			// The timer or the token can end the delay before the other one is assigned.
+			ITimer timer = timeProvider.CreateTimer(static state => ((DelayPromise)state!).Complete(), this,
+				Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+			// A full fence, so that either the cancellation sees the stored timer or this sees the canceled task.
+			Interlocked.Exchange(ref _timer, timer);
 			if (Task.IsCompleted)
 			{
 				Release();
+				return;
+			}
+
+			try
+			{
+				timer.Change(delay, Timeout.InfiniteTimeSpan);
+			}
+			catch (ObjectDisposedException)
+			{
+				// The cancellation released the timer in the meantime.
 			}
 		}
 
