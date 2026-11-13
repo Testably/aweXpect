@@ -32,15 +32,6 @@ await That(songs).HasCount().NotBetween(5).And(10);
 
 <PropertyComparisons example="HasCount(3)" />
 
-The result keeps the type of the collection, so that you can continue with the expectations of that type, e.g. of a
-dictionary:
-
-```csharp
-Dictionary<string, int> playCounts = new() { ["Come Together"] = 12, ["Something"] = 7 };
-
-await That(playCounts).HasCount(2).And.ContainsKey("Something");
-```
-
 You can also verify that the collection is empty or not:
 
 ```csharp
