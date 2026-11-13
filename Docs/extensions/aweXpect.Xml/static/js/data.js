@@ -1572,6 +1572,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
@@ -1836,7 +1842,8 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
@@ -2104,7 +2111,8 @@ window.BENCHMARK_DATA = {
           954.75361933027,
           640.9134239196777,
           655.6064427693685,
-          802.2014304674589
+          802.2014304674589,
+          967.5760023752848
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2285,6 +2293,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2653,7 +2662,8 @@ window.BENCHMARK_DATA = {
           680.4944174448649,
           558.8499420166015,
           587.2109314600626,
-          759.3522635187421
+          759.3522635187421,
+          836.7437721252442
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2665,6 +2675,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4512,6 +4523,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
@@ -4776,7 +4793,8 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
@@ -5044,7 +5062,8 @@ window.BENCHMARK_DATA = {
           4527.099325052897,
           3697.2026578267414,
           3933.52764638265,
-          5180.677568562825
+          5180.677568562825,
+          4940.203422546387
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5317,7 +5336,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24179,
-          24179
+          24179,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5593,7 +5613,8 @@ window.BENCHMARK_DATA = {
           5261.701634216309,
           4057.39223429362,
           4134.9951075236,
-          5968.839491780599
+          5968.839491780599,
+          5704.58862101237
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5605,6 +5626,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7392,6 +7414,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
@@ -7646,7 +7674,8 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
@@ -7904,7 +7933,8 @@ window.BENCHMARK_DATA = {
           2600.455914306641,
           1953.5931335449218,
           2171.0525629679364,
-          2835.138302612305
+          2835.138302612305,
+          2819.902780151367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8167,6 +8197,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -8433,7 +8464,8 @@ window.BENCHMARK_DATA = {
           3472.8797670091903,
           2782.87506543673,
           2919.240847269694,
-          3758.590329851423
+          3758.590329851423,
+          3820.9017161051434
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8445,6 +8477,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10222,6 +10255,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
@@ -10476,7 +10515,8 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
@@ -10734,7 +10774,8 @@ window.BENCHMARK_DATA = {
           14272.272519429525,
           10470.526762898762,
           11118.229861450196,
-          14225.081232343402
+          14225.081232343402,
+          14688.566879781087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10997,6 +11038,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -11263,7 +11305,8 @@ window.BENCHMARK_DATA = {
           351763.210164388,
           256026.1997721354,
           267237.41380208335,
-          332149.2509440104
+          332149.2509440104,
+          381938.7172200521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11526,7 +11569,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544298
+          544298,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
