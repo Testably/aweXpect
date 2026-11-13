@@ -114,6 +114,41 @@ public static partial class ThatEnumerable
 			subject);
 	}
 
+	/// <summary>
+	///     Verifies that the <paramref name="subject" /> has an item count of…
+	/// </summary>
+	[GuaranteesNotNull]
+	public static CollectionCountResult<AndOrResult<TCollection, IThat<TCollection?>>> HasCount<TCollection>(
+		this IThat<TCollection?> subject)
+		where TCollection : IEnumerable
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new CollectionCountResult<AndOrResult<TCollection, IThat<TCollection?>>>((quantifier, isNegated)
+			=> new AndOrResult<TCollection, IThat<TCollection?>>(
+				expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+					static (state, it, grammars)
+						=> new CollectionCountConstraint<TCollection?, object?>(it, grammars,
+							state.Quantifier).InvertIf(state.IsNegated)),
+				subject));
+	}
+
+	/// <summary>
+	///     Verifies that the <paramref name="subject" /> has exactly <paramref name="expected" /> items.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<TCollection, IThat<TCollection?>> HasCount<TCollection>(
+		this IThat<TCollection?> subject, int? expected)
+		where TCollection : IEnumerable
+	{
+		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
+		return new AndOrResult<TCollection, IThat<TCollection?>>(
+			expectationBuilder.AddConstraint(expected,
+				static (expectedCount, it, grammars)
+					=> new CollectionCountConstraint<TCollection?, object?>(it, grammars,
+						EnumerableQuantifier.Exactly(expectedCount))),
+			subject);
+	}
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Verifies that the <paramref name="subject" /> has an item count of…

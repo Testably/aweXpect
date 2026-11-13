@@ -4515,12 +4515,16 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>> HasCount<TCollection>(this aweXpect.Core.IThat<TCollection?> subject, int? expected) where TCollection : System.Collections.IEnumerable { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>> HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject, int? expected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<TItem>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?>>> HasCount<TItem>(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TItem>?> subject) { }
         [System.Runtime.CompilerServices.OverloadResolutionPriority(-1)]
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionCountResult<aweXpect.Results.AndOrResult<System.Collections.IEnumerable, aweXpect.Core.IThat<System.Collections.IEnumerable?>>> HasCount(this aweXpect.Core.IThat<System.Collections.IEnumerable?> subject) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.CollectionCountResult<aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>>> HasCount<TCollection>(this aweXpect.Core.IThat<TCollection?> subject) where TCollection : System.Collections.IEnumerable { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.CollectionCountResult<aweXpect.Results.AndOrResult<TItem[], aweXpect.Core.IThat<TItem[]?>>> HasCount<TItem>(this aweXpect.Core.IThat<TItem[]?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]

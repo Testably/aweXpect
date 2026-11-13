@@ -69,8 +69,8 @@ A span can't be kept across an `await`, so create it in the statement of the exp
 ### Immutable arrays
 
 :::info[.NET 8 or later]
-Before .NET 8, only `IsEmpty` and `IsNotEmpty` are available for an `ImmutableArray<T>`. Call `.AsEnumerable()` on the
-array to use the other collection expectations.
+Before .NET 8, only `HasCount`, `IsEmpty` and `IsNotEmpty` are available for an `ImmutableArray<T>`. Call
+`.AsEnumerable()` on the array to use the other collection expectations.
 :::
 
 A default `ImmutableArray<T>` is treated like a `null` collection, as the subject and as the expected collection. To

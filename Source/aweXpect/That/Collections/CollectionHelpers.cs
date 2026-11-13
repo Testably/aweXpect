@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,7 +45,7 @@ internal static class CollectionHelpers
 #endif
 	];
 
-	private static readonly ConcurrentDictionary<Type, PropertyInfo?> GenericCountProperties = new();
+	private static readonly ConcurrentDictionary<Type, Func<IEnumerable, int>?> GenericCountReaders = new();
 
 	/// <summary>
 	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
@@ -221,36 +220,47 @@ internal static class CollectionHelpers
 
 #if NET8_0_OR_GREATER
 	[RequiresUnreferencedCode("Reads the count of a generic collection interface, which the trimmer may remove.")]
+	[RequiresDynamicCode("Creates the count reader for the item type of a generic collection.")]
 #endif
 	private static int? ReadGenericCount(IEnumerable value)
 	{
-		PropertyInfo? count = GenericCountProperties.GetOrAdd(value.GetType(), static type => type.GetInterfaces()
-			.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
-			                                 interfaceType.GetGenericTypeDefinition() is var definition &&
-			                                 (definition == typeof(ICollection<>) ||
-			                                  definition == typeof(IReadOnlyCollection<>)))
-			?.GetProperty(nameof(ICollection.Count)));
-		return count is null
+		Func<IEnumerable, int>? readCount =
+			GenericCountReaders.GetOrAdd(value.GetType(), static type => CreateCountReader(type));
+		return readCount is null
 			? null
-			: UserCode.Invoke(static values => ReadCount(values.Count, values.Subject), (Count: count, Subject: value));
+			: UserCode.Invoke(static values => values.ReadCount(values.Subject),
+				(ReadCount: readCount, Subject: value));
 	}
 
 	/// <remarks>
-	///     The reflection wraps an exception of the count, which is unwrapped, so that the exception of the collection
-	///     fails the expectation.
+	///     The count is read by a delegate of the item type, which neither boxes the count nor wraps an exception of the
+	///     collection, unlike reading the property by reflection.
 	/// </remarks>
-	private static int? ReadCount(PropertyInfo count, IEnumerable subject)
+#if NET8_0_OR_GREATER
+	[RequiresUnreferencedCode("Reads the count of a generic collection interface, which the trimmer may remove.")]
+	[RequiresDynamicCode("Creates the count reader for the item type of a generic collection.")]
+#endif
+	private static Func<IEnumerable, int>? CreateCountReader(Type type)
 	{
-		try
+		Type? collectionType = type.GetInterfaces()
+			.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
+			                                 interfaceType.GetGenericTypeDefinition() is var definition &&
+			                                 (definition == typeof(ICollection<>) ||
+			                                  definition == typeof(IReadOnlyCollection<>)));
+		if (collectionType is null)
 		{
-			return (int?)count.GetValue(subject);
+			return null;
 		}
-		catch (TargetInvocationException exception) when (exception.InnerException is not null)
-		{
-			ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
-			throw;
-		}
+
+		MethodInfo readCount = new Func<IEnumerable, int>(ReadCount<object>).Method.GetGenericMethodDefinition()
+			.MakeGenericMethod(collectionType.GetGenericArguments()[0]);
+		return (Func<IEnumerable, int>)readCount.CreateDelegate(typeof(Func<IEnumerable, int>));
 	}
+
+	private static int ReadCount<TItem>(IEnumerable subject)
+		=> subject is ICollection<TItem> collection
+			? collection.Count
+			: ((IReadOnlyCollection<TItem>)subject).Count;
 
 	/// <summary>
 	///     Formats the items that were read from a source that did not reach its end, marked as incomplete.
