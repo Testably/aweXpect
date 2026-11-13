@@ -18,7 +18,9 @@ namespace aweXpect.Snapshots;
 /// </summary>
 /// <remarks>
 ///     The bytes are written and read unchanged, so that a pending file can be renamed to accept it.<br />
-///     The files are accessed synchronously, as netstandard2.0 lacks the asynchronous methods of <see cref="File" />.<br />
+///     The files are accessed synchronously, as a snapshot is small and held in memory as a whole anyway, so that
+///     asynchronous access would only add overhead. A canceled token throws an <see cref="OperationCanceledException" />
+///     before any file is accessed.<br />
 ///     A relative <see cref="SnapshotId.SourceFile" /> is resolved against the recorded source root, see
 ///     <see cref="SourceRoots" />.<br />
 ///     The method name is escaped in the file name, see <see cref="EscapeFileNamePart(string)" />, and a
@@ -52,6 +54,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </remarks>
 	public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		SourceRoots.ThrowIfUnresolvable(id.SourceFile);
 		string snapshotPath = GetSnapshotPath(id);
 		if (!File.Exists(snapshotPath))
@@ -64,6 +67,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 
 	public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		CreateNestedDirectories(id);
 		File.WriteAllBytes(GetPendingPath(id), actual);
 		return default;
@@ -75,6 +79,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </remarks>
 	public override ValueTask AcceptAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		CreateNestedDirectories(id);
 		File.WriteAllBytes(GetSnapshotPath(id), actual);
 		try
@@ -91,6 +96,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 
 	public override ValueTask RecordMatchAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		DeletePending(id);
 		return default;
 	}
@@ -193,6 +199,7 @@ internal sealed class DiskSnapshotStore : SnapshotStore, IFileSnapshotStore
 	/// </remarks>
 	public override ValueTask DeleteAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
+		cancellationToken.ThrowIfCancellationRequested();
 		(string basePath, string extension) = _listed.TryGetValue(id, out (string, string) listed)
 			? listed
 			: (GetBasePath(id), id.Extension);
