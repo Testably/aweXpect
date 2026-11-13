@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10410.803489685059,
           5149.036926269531,
           11538.968469473031,
           5343.579107557024,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7912.359733581543,
           11306.253354753766,
           5878.364207131522,
-          7456.312315877279
+          7456.312315877279,
+          7981.661777202899
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          381564.838936942,
           175238.29954427082,
           374903.69427083334,
           183066.78771033653,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           269716.0087890625,
           379308.420703125,
           233385.05006510418,
-          255862.2713216146
+          255862.2713216146,
+          264246.83346354164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590287,
           590288,
           590292,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590287,
           590287,
           590226,
-          590224
+          590224,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19785.01894124349,
           10127.921915690104,
           19416.102231852212,
           10359.007341512044,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14782.470096842448,
           20602.93278198242,
           13470.800332205636,
-          17030.337181599934
+          17030.337181599934,
+          14799.24998779297
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          240.78325091997783,
           110.37947631733758,
           229.2911872545878,
           113.63853794794817,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           182.5207050527845,
           234.0652328014374,
           155.98746215502422,
-          204.3133932352066
+          204.3133932352066,
+          180.9677861849467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          517.3059544563293,
           253.95966362953186,
           514.787457148234,
           292.8700230802809,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           463.9263107617696,
           540.8862954653226,
           393.8305378595988,
-          532.328997484843
+          532.328997484843,
+          465.33461325509205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          380.8267867748554,
           194.37809727986652,
           405.7353890101115,
           214.1629421869914,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           328.0601052602132,
           393.4061717033386,
           290.3520532290141,
-          358.21649974187216
+          358.21649974187216,
+          324.3894918305533
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          106.45216444333394,
           54.88761092083795,
           104.03254123528798,
           58.10987630060741,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           82.27269735336304,
           104.86089173952739,
           78.79120106697083,
-          94.93383124241463
+          94.93383124241463,
+          80.35894082273755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.6604880264827,
           141.59912860393524,
           253.1370630900065,
           137.93693343230657,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           214.86703944206238,
           261.9039216041565,
           223.59137555758159,
-          266.6789265950521
+          266.6789265950521,
+          217.33962348302205
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          255.03805193534265,
           127.48531299432119,
           252.18819567362468,
           131.93513783386774,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           183.1511691570282,
           240.4525557586125,
           182.55369941393533,
-          202.73154729207357
+          202.73154729207357,
+          185.07698046366374
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          220.8061601775033,
           109.03416334731239,
           213.37237958113352,
           111.72646231834705,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           163.34839738210042,
           215.24422499338786,
           149.31324253763472,
-          204.47791082125443
+          204.47791082125443,
+          170.5813708645957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          529.7611708323161,
           266.5685008934566,
           509.5864671298436,
           275.9655268532889,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           417.52316406794955,
           536.3701300938924,
           406.0334442456563,
-          532.7174266179403
+          532.7174266179403,
+          432.4627686182658
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          331.5262221923241,
           173.75935696760814,
           326.30080391565957,
           184.09796287463263,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           260.6083284378052,
           341.2907940864563,
           241.83730493273055,
-          321.91282738049824
+          321.91282738049824,
+          309.2510368347168
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          706.8870257059733,
           352.2626902898153,
           692.4550758508535,
           368.82112033550555,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           539.3883040746053,
           700.1722852161953,
           442.7161796276386,
-          588.7565804163615
+          588.7565804163615,
+          559.3850697789874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1373.6643508911134,
           678.9502590497335,
           1422.7375358581544,
           761.9817543029785,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1124.3930416107178,
           1389.544506072998,
           956.5530928098239,
-          1273.08829536438
+          1273.08829536438,
+          1201.2313312530518
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          670.8616441999163,
           365.32451541607196,
           666.0932256258451,
           357.53713318506874,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           494.310609964224,
           674.7714184443156,
           457.6828075726827,
-          603.8973785400391
+          603.8973785400391,
+          525.5634821573893
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          705.0602317810059,
           363.1135852018992,
           697.7412642796834,
           342.16278680165607,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           532.0229375021798,
           678.5660653795514,
           440.3077571551005,
-          583.4347963968913
+          583.4347963968913,
+          544.6409590584891
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27667.617517089842,
           10028.400858197894,
           27821.944145789512,
           10911.04660949707,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           16363.194700113932,
           27776.929288736977,
           12235.491992405483,
-          15240.389594444861
+          15240.389594444861,
+          17987.39843280499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4217,7 +4217,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          822.6555899937947,
           407.38949005944386,
           810.3842091242473,
           449.0038031578064,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           581.8357556206839,
           805.5791023890177,
           529.5298921721322,
-          693.019433148702
+          693.019433148702,
+          633.6380581537883
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          632.4685512542725,
           337.46435488973344,
           720.3980135599772,
           360.32411171595254,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           510.8709997177124,
           655.2239078794207,
           481.9670021057129,
-          571.9079141616821
+          571.9079141616821,
+          520.9457881291708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          86580.15513509115,
           28605.99776349749,
           84117.65921223958,
           29925.31552734375,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           54058.651420084636,
           84257.39173380534,
           28990.791414388023,
-          32654.01610921224
+          32654.01610921224,
+          54114.240767415366
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5252,
           5256,
@@ -4991,6 +4990,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5256,
           5256,
           5256
         ],
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
       {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          148.01988948186238,
           71.39842976729075,
           129.19413545926412,
           68.53933349022499,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           98.14555471677046,
           139.39516146977743,
           100.06475151436669,
-          138.86315630163466
+          138.86315630163466,
+          106.40430388280323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32597.551835123697,
           9841.868192545573,
           32477.31923014323,
           10019.365723746163,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           15297.968354445238,
           33038.67442626953,
           11825.499227905273,
-          15970.843546549479
+          15970.843546549479,
+          15741.72490641276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5614,
           5615,
@@ -5598,6 +5597,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614,
           5614,
           5614
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          238.73880250637347,
           121.44600629806519,
           240.00553827285768,
           129.49571807043893,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           180.1013883627378,
           266.6129130363464,
           160.7536928653717,
-          226.1482458750407
+          226.1482458750407,
+          188.8780061562856
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          300.60956042607626,
           150.56580436229706,
           310.80406299004187,
           165.4921919107437,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           229.14877830232894,
           301.4948525088174,
           211.75785623391468,
-          276.43048226038616
+          276.43048226038616,
+          224.45407723585765
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          417.0065587248121,
           201.17154334272658,
           383.69004081090293,
           239.14460962159293,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           337.1892189979553,
           386.5095679078783,
           386.234850470225,
-          386.53217240742276
+          386.53217240742276,
+          316.2734190133902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          410.8941648165385,
           199.94135439395905,
           414.97469459261214,
           230.9634951012475,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           351.1683532079061,
           410.299258963267,
           321.4782765592848,
-          356.6036917368571
+          356.6036917368571,
+          334.33968622343883
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          696.5921274820963,
           353.3331972190312,
           717.2310730616251,
           379.94333670934043,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           567.7180594762166,
           721.5650561877659,
           479.0913805594811,
-          645.0826441691472
+          645.0826441691472,
+          584.5530056586632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1964.7425623575846,
           1017.0782284055438,
           1906.813554763794,
           1165.573017529079,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1626.8937675476075,
           1911.5956890399639,
           1342.0712164470128,
-          2019.9652313232423
+          2019.9652313232423,
+          1720.0565811157226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          933.9227524484907,
           449.89040534836903,
           946.2594980875651,
           496.66925730024064,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           763.8739064534506,
           917.5401733838595,
           639.6428401311239,
-          859.306362915039
+          859.306362915039,
+          799.8009682337444
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11829.19159749349,
           5785.469200679234,
           12014.589167277018,
           5858.163914998372,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8456.684066772461,
           12136.76628464919,
           7181.275679452078,
-          9125.923221842448
+          9125.923221842448,
+          8604.689872154822
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          39386.569697788786,
           18488.172399902345,
           41935.74954223633,
           18245.03299184946,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           26794.260591634116,
           41893.91407877604,
           22961.465340750558,
-          29461.68606363932
+          29461.68606363932,
+          27503.89937180739
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18394,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10472.65894317627,
           5630.022691345215,
           10586.485794067383,
           5474.252757439246,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7903.044449869792,
           10762.661489214215,
           6697.756977335612,
-          8303.39956665039
+          8303.39956665039,
+          7992.479005080003
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
-        "message": "docs: apply the docs style guide (#2156)"
-      },
-      {
         "sha": "99f75dcfd82c91f6c9137f0151973fdcb4d1ba11",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 16:28:45 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
-      "6c756140",
       "99f75dcf",
       "77e01f4b",
       "68753ad6",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11563.506427219936,
           5412.864496671236,
           11467.464492797852,
           5547.161168611967,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           7935.492746625628,
           11459.736498151507,
           6831.763464246477,
-          8280.91525777181
+          8280.91525777181,
+          8004.544108464168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          59397.8152747521,
           25839.313157301684,
           59600.00262858073,
           27428.164180210657,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38595.909408569336,
           60542.405932617185,
           32980.72392490932,
-          43836.15447998047
+          43836.15447998047,
+          39109.316914876305
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8487,7 +8487,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8531,6 +8530,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553
         ],
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20868.050223214286,
           10956.503026326498,
           20937.761352539062,
           11370.710338338216,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15520.732907976422,
           21138.418448311942,
           13159.19255472819,
-          16020.40576171875
+          16020.40576171875,
+          15384.105150495257
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8689,12 +8689,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -8703,7 +8710,8 @@ window.BENCHMARK_DATA = {
         "data": [
           204.60556076254164,
           146.73539145787558,
-          161.93489383061726
+          161.93489383061726,
+          158.60713470899142
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8715,6 +8723,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          280,
           280,
           280,
           280
@@ -8734,7 +8743,8 @@ window.BENCHMARK_DATA = {
         "data": [
           217.02640477816263,
           220.3538178284963,
-          214.46375255925315
+          214.46375255925315,
+          179.0042138814926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8746,6 +8756,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928
@@ -8765,7 +8776,8 @@ window.BENCHMARK_DATA = {
         "data": [
           380.3880449022566,
           351.3530807495117,
-          379.7520181496938
+          379.7520181496938,
+          208.84894388516744
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8777,6 +8789,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          704,
           704,
           704,
           704
@@ -8811,12 +8824,19 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -8825,7 +8845,8 @@ window.BENCHMARK_DATA = {
         "data": [
           260.377147769928,
           179.24158142407734,
-          199.6264110604922
+          199.6264110604922,
+          187.74454577152545
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8837,6 +8858,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          376,
           376,
           376,
           376
