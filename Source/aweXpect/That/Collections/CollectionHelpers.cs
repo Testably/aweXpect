@@ -254,7 +254,11 @@ internal static class CollectionHelpers
 
 		MethodInfo readCount = new Func<IEnumerable, int>(ReadCount<object>).Method.GetGenericMethodDefinition()
 			.MakeGenericMethod(collectionType.GetGenericArguments()[0]);
+#if NET8_0_OR_GREATER
+		return readCount.CreateDelegate<Func<IEnumerable, int>>();
+#else
 		return (Func<IEnumerable, int>)readCount.CreateDelegate(typeof(Func<IEnumerable, int>));
+#endif
 	}
 
 	private static int ReadCount<TItem>(IEnumerable subject)
