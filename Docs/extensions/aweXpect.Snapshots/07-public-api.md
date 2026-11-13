@@ -2,11 +2,16 @@
 description: Verify the public API of an assembly against a reviewed snapshot with the aweXpect.Snapshots.PublicApi package.
 ---
 
+import PackageInstall from '@site/src/components/PackageInstall';
+
 # Public API
 
-The package [aweXpect.Snapshots.PublicApi](https://www.nuget.org/packages/aweXpect.Snapshots.PublicApi) verifies the
-public API of an assembly against a reviewed snapshot, so that every change of the public API shows up in a pull
-request:
+The package aweXpect.Snapshots.PublicApi verifies the public API of an assembly against a reviewed snapshot, so that
+every change of the public API shows up in a pull request. Reference it in the test project:
+
+<PackageInstall package="aweXpect.Snapshots.PublicApi" />
+
+Then verify the public API of an assembly:
 
 ```csharp
 await That(typeof(Album).Assembly).MatchesPublicApiSnapshot()
