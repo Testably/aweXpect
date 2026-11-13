@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
-        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
-      },
-      {
         "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "30129fc0",
       "25a97e74",
       "6c756140",
       "99f75dcf",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          504.7907067812406,
           917.3057902654012,
           861.8566033681234,
           667.2320489149827,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           640.9134239196777,
           655.6064427693685,
           802.2014304674589,
-          967.5760023752848
+          967.5760023752848,
+          477.00063742124115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          377.20840311050415,
           670.1001125063215,
           714.4398557799203,
           572.7906340916951,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           558.8499420166015,
           587.2109314600626,
           759.3522635187421,
-          836.7437721252442
+          836.7437721252442,
+          369.8310210227966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
-        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
-      },
-      {
         "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "30129fc0",
       "25a97e74",
       "6c756140",
       "99f75dcf",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2558.492292022705,
           4631.441408793132,
           4711.3687700907385,
           3689.9089693341934,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3697.2026578267414,
           3933.52764638265,
           5180.677568562825,
-          4940.203422546387
+          4940.203422546387,
+          2648.5821481432235
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1030,7 +1030,6 @@ window.BENCHMARK_DATA = {
         "data": [
           24178,
           24178,
-          24178,
           24179,
           24178,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24172,
           24179,
           24179,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2975.5239603678388,
           5488.802982036884,
           5387.971369607108,
           4330.015371704101,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4057.39223429362,
           4134.9951075236,
           5968.839491780599,
-          5704.58862101237
+          5704.58862101237,
+          2954.5633435930527
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
-        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
-      },
-      {
         "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "30129fc0",
       "25a97e74",
       "6c756140",
       "99f75dcf",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1431.9391370920034,
           2700.985052255484,
           2688.6929582449106,
           2058.9700945536297,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1953.5931335449218,
           2171.0525629679364,
           2835.138302612305,
-          2819.902780151367
+          2819.902780151367,
+          1405.215416208903
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12654,
-          12654
+          12654,
+          12728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1941.0246748606364,
           3614.8289435250417,
           3545.803071158273,
           3137.841963704427,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2782.87506543673,
           2919.240847269694,
           3758.590329851423,
-          3820.9017161051434
+          3820.9017161051434,
+          1926.7078572591147
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
-        "message": "docs: separate the extension READMEs from their docs pages (#2154)"
-      },
-      {
         "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
         "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      },
+      {
+        "sha": "d317d1a78d6c94061540170df8686ee58c877279",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
+        "message": "fix: observe the cancellation before snapshot file access (#2229)"
       }
     ],
     "labels": [
-      "30129fc0",
       "25a97e74",
       "6c756140",
       "99f75dcf",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "70cb5ecf",
       "81a76547",
       "d747c954",
-      "bc7c1f46"
+      "bc7c1f46",
+      "d317d1a7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8019.793644714356,
           14053.747954305012,
           13927.98225402832,
           10995.32057647705,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10470.526762898762,
           11118.229861450196,
           14225.081232343402,
-          14688.566879781087
+          14688.566879781087,
+          7951.472525460379
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25367,
-          25367
+          25367,
+          25440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          177179.9223069411,
           352748.73580729164,
           354714.6819986979,
           268227.60616629466,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           256026.1997721354,
           267237.41380208335,
           332149.2509440104,
-          381938.7172200521
+          381938.7172200521,
+          184182.66858723958
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2387,7 +2387,6 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335,
           544246,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544298,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
