@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1965.3611021775466,
           2065.1286013921103,
           2075.2444002787274,
           2192.5396087646486,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1122.134832127889,
           1678.9768442007212,
           2129.4667589823407,
-          1194.705858484904
+          1194.705858484904,
+          2067.718897306002
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13869.768995012555,
           15624.445813860211,
           15578.620874023438,
           15361.47041015625,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           7173.4124471028645,
           12699.825712076823,
           15921.975731985909,
-          7830.5130747477215
+          7830.5130747477215,
+          15079.702687944684
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1588.0475811277117,
           1676.116421332726,
           1605.3971277872722,
           1631.7784342447917,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           878.1239028930664,
           1296.6597402890523,
           1736.3458400726317,
-          985.4215455736432
+          985.4215455736432,
+          1693.8548767089844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12741.850531944861,
           14219.177317692684,
           14069.216036283053,
           14008.377420043946,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           6617.894493647984,
           11683.72160574106,
           14504.837615966797,
-          7176.986218261719
+          7176.986218261719,
+          13925.927283653846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5123.700912984213,
           5469.225974449744,
           5474.045233590262,
           5019.190342494419,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3071.313995906285,
           4067.095929827009,
           5084.559170859201,
-          3059.9040516444616
+          3059.9040516444616,
+          5371.672003525954
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          39006.80830265926,
           46820.06188964844,
           47098.74820382254,
           43525.04666341146,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           19744.361493791854,
           35384.88063267299,
           42884.22910563151,
-          21083.56871686663
+          21083.56871686663,
+          46417.15956333705
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61932,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61922,
           61932,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
       {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9489.323607381184,
           9311.976847330729,
           9205.418298993793,
           10077.288165501186,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           4969.385693359375,
           8139.288603464763,
           10001.849886067708,
-          5112.013611929758
+          5112.013611929758,
+          9402.793264116559
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          279649.4171424279,
           298635.45564152644,
           300463.3307407924,
           287994.44088309153,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           141389.75288085936,
           250530.09671223958,
           276966.53942871094,
-          144557.9087262835
+          144557.9087262835,
+          287663.3603841146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2371,7 +2371,6 @@ window.BENCHMARK_DATA = {
         "data": [
           521594,
           521594,
-          521594,
           521572,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521573,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
       {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2846.9970087687175,
           2914.5704844156903,
           2878.6052372272197,
           3099.7382496425084,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1646.06242574056,
           2555.314218080961,
           3095.727145385742,
-          1614.6909788676671
+          1614.6909788676671,
+          2832.7039728800455
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1969.9922046661377,
           1919.1779856363933,
           1950.376399721418,
           2124.151010785784,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1074.9519627434868,
           1884.0670110995952,
           2166.556204477946,
-          1080.9426122812124
+          1080.9426122812124,
+          1918.083806101481
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2869.184987386068,
           2959.4431279500327,
           2792.110598930946,
           2716.3262397221156,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1620.6348752339682,
           2224.681781768799,
           2780.402418283316,
-          1610.1062585390532
+          1610.1062585390532,
+          3159.3279291788735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1850.0745999654134,
           1787.9063801084246,
           1719.2250508626303,
           2014.2098871866863,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           914.7035287857055,
           2015.2374945420486,
           2089.890196936471,
-          934.055784372183
+          934.055784372183,
+          1724.9640992482502
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2290.8442298344203,
           2283.2379695347377,
           2311.231927054269,
           2280.1987141200475,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1304.600120984591,
           1953.73911012922,
           2263.1687188829696,
-          1282.1755132039389
+          1282.1755132039389,
+          2513.1958179473877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1201.547229221889,
           1124.9440499623618,
           1082.108006032308,
           1359.7954375403267,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           627.0541207313538,
           1444.8753099441528,
           1386.409543355306,
-          578.7751335302988
+          578.7751335302988,
+          1143.6830198923747
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3062.8265383584157,
           3053.254064687093,
           2894.853836646447,
           3296.162812096732,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1677.7937746047974,
           2620.3591948289136,
           3218.003404744466,
-          1709.7595183054607
+          1709.7595183054607,
+          3039.934378560384
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1370.9829958597818,
           1265.5357028961182,
           1245.5891876220703,
           1583.997863896688,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           685.2547423680624,
           1657.326003881601,
           1592.1906187693278,
-          715.6154645511082
+          715.6154645511082,
+          1282.1076056616646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
-      {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          161759.52080426898,
           166692.91274414063,
           164512.80232121394,
           171224.83426607572,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           95100.83173828125,
           148814.38392052284,
           172212.32374790736,
-          98897.11310221354
+          98897.11310221354,
+          162377.23149762835
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          194766.89252580915,
           188146.6296061198,
           188360.22609165736,
           206078.99529622396,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           104372.73000662668,
           174799.61997767858,
           199605.08736478366,
-          114469.90081380209
+          114469.90081380209,
+          199523.1771484375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5410,7 +5410,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           266951,
-          266951,
           266950,
           266873,
           266951,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266936,
           266882,
           266873,
-          266936
+          266936,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "29daaf7aafd7bdce5a683f50b2c6e14669a78c89",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 07:41:12 2026 \u002B0100",
-        "message": "docs: list aweXpect.Chronology with the extension packages (#2152)"
-      },
       {
         "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
-      "29daaf7a",
       "e6330bec",
       "30129fc0",
       "25a97e74",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2669.203987121582,
           2750.1893700190953,
           2764.563191005162,
           2616.5126658848353,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1438.5879107883998,
           2088.4130126408168,
           2738.9827242533365,
-          1562.0783044179282
+          1562.0783044179282,
+          2755.9718121846518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1893.4705891927083,
           1798.9216139475504,
           1771.29085299174,
           1987.9964866638184,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           993.8161130632673,
           1869.5000382832118,
           2093.1862749735515,
-          1052.74561475118
+          1052.74561475118,
+          1797.8642159870692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
