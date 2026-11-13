@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
-      {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          421.8871417045593,
           464.33666948171765,
           506.02792006272534,
           477.592585343581,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           343.02445414861046,
           483.85827364240373,
           231.90289611816405,
-          345.13403851645336
+          345.13403851645336,
+          450.38630727359225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1114.3946198683518,
           1115.1153530707727,
           967.7987333933512,
           1120.3237092154366,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           763.0067173004151,
           1071.9689613069806,
           546.7197245279948,
-          798.0688645044962
+          798.0688645044962,
+          944.0566668192546
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
-      {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          263.3153391224997,
           236.40991017023723,
           236.99189560229962,
           251.82484086354575,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           177.8838815689087,
           248.18091259002685,
           112.15336708839124,
-          174.25366619917062
+          174.25366619917062,
+          252.46530455809372
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          312.8294974840604,
           253.14134384791058,
           249.72960913976033,
           278.4219954490662,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           211.3728620495115,
           286.2094169684819,
           123.68750410813551,
-          210.39560514229996
+          210.39560514229996,
+          245.65508035024007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
-      {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          946.3711932046073,
           985.2903900146484,
           975.305111249288,
           1025.0751603444417,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           682.8906833648682,
           1079.1108530589513,
           512.0405069759914,
-          721.0351463726589
+          721.0351463726589,
+          962.7182960510254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1086.1869752248128,
           961.5089799245198,
           923.786976369222,
           1047.0305853525797,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           725.2326985041301,
           1050.7095422108969,
           504.3938758850098,
-          780.8728175799052
+          780.8728175799052,
+          928.324449412028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
-      {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1649.7600509936992,
           1902.9398686545235,
           1959.3320625850133,
           1983.7660639444987,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1455.5519714355469,
           1883.578617640904,
           1087.7869952065605,
-          1510.7622977036697
+          1510.7622977036697,
+          1915.8012301127117
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16852.369388834635,
           22497.319272867837,
           20912.696763258715,
           21855.42422281901,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           14327.289330546062,
           20420.72761317662,
           9629.631102425712,
-          14908.456726074219
+          14908.456726074219,
+          20922.629355294364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
       {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          732.8231026331583,
           833.7528851191203,
           853.7313683373587,
           821.9027952466693,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           574.5179826100667,
           819.0532059351603,
           369.30539185206095,
-          598.3487507956369
+          598.3487507956369,
+          743.3466087341309
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1474.845011491042,
           1386.600918451945,
           1278.105143913856,
           1370.6048352559408,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1042.7289300282796,
           1498.5604817708333,
           657.6125920369075,
-          1115.3381546020507
+          1115.3381546020507,
+          1282.0029820760092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
-        "message": "perf: return an already completed result of \u0060SynchronousBoundary.Wait\u0060 without a task (#2149)"
-      },
-      {
         "sha": "583e9cec3158e6700878a4fe4ba50dcd8ab638d5",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:41:02 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
-      "fea53298",
       "583e9cec",
       "29daaf7a",
       "e6330bec",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1133.8865387256328,
           1380.075529607137,
           1360.5626458485922,
           1360.7830748240153,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1006.4451038360596,
           1288.2942237854004,
           735.5206656773885,
-          1008.1575095312936
+          1008.1575095312936,
+          1244.64347114563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          908.6576529184978,
           770.9685313542684,
           802.5459557851156,
           825.9286317825317,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           629.877363204956,
           879.895429166158,
           393.66712597438266,
-          655.9859525044759
+          655.9859525044759,
+          744.7509203592937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
