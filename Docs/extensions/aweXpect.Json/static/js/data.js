@@ -1596,6 +1596,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -1864,7 +1870,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -2136,7 +2143,8 @@ window.BENCHMARK_DATA = {
           2067.718897306002,
           1583.537605558123,
           2022.815449641301,
-          2078.4614716847736
+          2078.4614716847736,
+          2062.1222207205637
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2282,6 +2290,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2693,7 +2702,8 @@ window.BENCHMARK_DATA = {
           15079.702687944684,
           10993.431353055514,
           15486.528180440268,
-          16021.794842529296
+          16021.794842529296,
+          15716.759702555339
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2705,6 +2715,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4580,6 +4591,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -4848,7 +4865,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -5120,7 +5138,8 @@ window.BENCHMARK_DATA = {
           1693.8548767089844,
           1256.993989308675,
           1663.7690794808525,
-          1699.3218809274526
+          1699.3218809274526,
+          1735.5550432938796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5266,6 +5285,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5677,7 +5697,8 @@ window.BENCHMARK_DATA = {
           13925.927283653846,
           10110.198795025166,
           14223.615239461264,
-          14273.030276489259
+          14273.030276489259,
+          14626.793973795573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5689,6 +5710,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -7504,6 +7526,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -7762,7 +7790,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -8024,7 +8053,8 @@ window.BENCHMARK_DATA = {
           5371.672003525954,
           4058.1481346717246,
           5330.970180511475,
-          5434.793293544224
+          5434.793293544224,
+          5617.245136006673
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8207,6 +8237,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -8561,7 +8592,8 @@ window.BENCHMARK_DATA = {
           46417.15956333705,
           31328.526402064734,
           46444.27740948017,
-          47636.80177189754
+          47636.80177189754,
+          47361.70347377232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8827,6 +8859,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61704,
+          61926,
           61926,
           61926
         ],
@@ -10378,6 +10411,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -10636,7 +10675,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -10898,7 +10938,8 @@ window.BENCHMARK_DATA = {
           9402.793264116559,
           7571.430280049642,
           9418.942412240165,
-          9513.688588460287
+          9513.688588460287,
+          9540.484926859537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11034,6 +11075,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -11435,7 +11477,8 @@ window.BENCHMARK_DATA = {
           287663.3603841146,
           229436.04692731585,
           302365.3354980469,
-          309154.384781901
+          309154.384781901,
+          294857.28828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11698,6 +11741,7 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521573,
+          521594,
           521594,
           521594,
           521594,
@@ -13252,6 +13296,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -13510,7 +13560,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -13772,7 +13823,8 @@ window.BENCHMARK_DATA = {
           2832.7039728800455,
           2234.8060449872696,
           2867.2788056593677,
-          2878.200037320455
+          2878.200037320455,
+          2906.133426121303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13958,6 +14010,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -14309,7 +14362,8 @@ window.BENCHMARK_DATA = {
           1918.083806101481,
           1592.9835605621338,
           2016.4243469238281,
-          2020.7538972582136
+          2020.7538972582136,
+          2040.9406108856201
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14321,6 +14375,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -16126,6 +16181,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -16384,7 +16445,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -16646,7 +16708,8 @@ window.BENCHMARK_DATA = {
           3159.3279291788735,
           2283.7065143585205,
           2940.6043330601283,
-          2993.294815572103
+          2993.294815572103,
+          2816.55381665911
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16829,6 +16892,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -17183,7 +17247,8 @@ window.BENCHMARK_DATA = {
           1724.9640992482502,
           1495.3307189941406,
           1790.2166413527268,
-          1838.8751775105795
+          1838.8751775105795,
+          1814.5434783055232
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17195,6 +17260,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -18298,6 +18364,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -18439,7 +18511,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -18584,7 +18657,8 @@ window.BENCHMARK_DATA = {
           2513.1958179473877,
           1856.9550768988472,
           2388.580840184138,
-          2366.6180254618325
+          2366.6180254618325,
+          2254.7731737409317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18650,6 +18724,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -18887,7 +18962,8 @@ window.BENCHMARK_DATA = {
           1143.6830198923747,
           963.6815489451091,
           1126.7908130373273,
-          1152.0173107147216
+          1152.0173107147216,
+          1216.0966526031493
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18899,6 +18975,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -19885,6 +19962,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -20026,7 +20109,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -20171,7 +20255,8 @@ window.BENCHMARK_DATA = {
           3039.934378560384,
           2406.274470109206,
           3042.71732711792,
-          3102.850094350179
+          3102.850094350179,
+          3089.242349243164
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20221,6 +20306,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -20474,7 +20560,8 @@ window.BENCHMARK_DATA = {
           1282.1076056616646,
           1120.6690048853557,
           1309.8862257003784,
-          1488.7028767721993
+          1488.7028767721993,
+          1334.3979859670003
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20486,6 +20573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -21130,6 +21218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -21214,7 +21308,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -21302,7 +21397,8 @@ window.BENCHMARK_DATA = {
           162377.23149762835,
           125691.75037560097,
           167123.55831204928,
-          165275.8981182392
+          165275.8981182392,
+          166398.9605189732
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21314,6 +21410,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -21491,7 +21588,8 @@ window.BENCHMARK_DATA = {
           199523.1771484375,
           156007.24074009486,
           205313.30096028646,
-          203640.6209798177
+          203640.6209798177,
+          192262.08377278646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21583,6 +21681,7 @@ window.BENCHMARK_DATA = {
           266936,
           266951,
           266950,
+          266951,
           266951,
           266951
         ],
@@ -22090,6 +22189,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
+        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
       }
     ],
     "labels": [
@@ -22174,7 +22279,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "e64df614"
     ],
     "datasets": [
       {
@@ -22262,7 +22368,8 @@ window.BENCHMARK_DATA = {
           2755.9718121846518,
           2141.0125601632253,
           2905.2428616115026,
-          2753.367815653483
+          2753.367815653483,
+          2790.9430475870768
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22274,6 +22381,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -22451,7 +22559,8 @@ window.BENCHMARK_DATA = {
           1797.8642159870692,
           1541.74550478799,
           1849.9033578236897,
-          1892.2268178304037
+          1892.2268178304037,
+          1913.6337408338275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22463,6 +22572,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
