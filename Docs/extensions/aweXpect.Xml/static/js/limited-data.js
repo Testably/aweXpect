@@ -296,10 +296,10 @@ window.BENCHMARK_DATA = {
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       },
       {
-        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
         "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
-        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -352,7 +352,7 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -408,7 +408,7 @@ window.BENCHMARK_DATA = {
           967.5760023752848,
           477.00063742124115,
           530.9571448106033,
-          638.7860552242824
+          633.3346729278564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -533,7 +533,7 @@ window.BENCHMARK_DATA = {
           836.7437721252442,
           369.8310210227966,
           510.7890902246748,
-          606.791696034945
+          569.1181070963542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -904,10 +904,10 @@ window.BENCHMARK_DATA = {
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       },
       {
-        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
         "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
-        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -960,7 +960,7 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -1016,7 +1016,7 @@ window.BENCHMARK_DATA = {
           4940.203422546387,
           2648.5821481432235,
           3276.9945368448894,
-          3746.4666726248606
+          3588.919419152396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1141,7 +1141,7 @@ window.BENCHMARK_DATA = {
           5704.58862101237,
           2954.5633435930527,
           3811.858678817749,
-          4336.435329182943
+          4045.5849838256836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1512,10 +1512,10 @@ window.BENCHMARK_DATA = {
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       },
       {
-        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
         "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
-        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -1568,7 +1568,7 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -1624,7 +1624,7 @@ window.BENCHMARK_DATA = {
           2819.902780151367,
           1405.215416208903,
           1754.1339892069498,
-          2031.2444796244304
+          2030.9006503178523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1749,7 +1749,7 @@ window.BENCHMARK_DATA = {
           3820.9017161051434,
           1926.7078572591147,
           2373.5008527119953,
-          2882.400830332438
+          2806.093531799316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2120,10 +2120,10 @@ window.BENCHMARK_DATA = {
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       },
       {
-        "sha": "e64df614a906bf6dffc6d3fc9ec136e8aa23e286",
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
         "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 13 18:35:55 2026 \u002B0100",
-        "message": "fix: start the timer of a delay on a virtual clock only once a cancellation can release it (#2232)"
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -2176,7 +2176,7 @@ window.BENCHMARK_DATA = {
       "bc7c1f46",
       "d317d1a7",
       "f1f1f74b",
-      "e64df614"
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -2232,7 +2232,7 @@ window.BENCHMARK_DATA = {
           14688.566879781087,
           7951.472525460379,
           9647.180901082356,
-          10359.251045735677
+          10336.440931047711
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2357,7 +2357,7 @@ window.BENCHMARK_DATA = {
           381938.7172200521,
           184182.66858723958,
           198438.28966471355,
-          268300.9313151042
+          250794.08865792412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2418,7 +2418,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
-          544329
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
