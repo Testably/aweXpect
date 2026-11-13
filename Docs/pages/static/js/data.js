@@ -1932,6 +1932,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -2256,7 +2262,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -2584,7 +2591,8 @@ window.BENCHMARK_DATA = {
           5327.607521565756,
           7912.359733581543,
           11306.253354753766,
-          5878.364207131522
+          5878.364207131522,
+          7456.312315877279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2820,6 +2828,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3253,7 +3262,8 @@ window.BENCHMARK_DATA = {
           173607.37599283856,
           269716.0087890625,
           379308.420703125,
-          233385.05006510418
+          233385.05006510418,
+          255862.2713216146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3586,7 +3596,8 @@ window.BENCHMARK_DATA = {
           590286,
           590287,
           590287,
-          590226
+          590226,
+          590224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3922,7 +3933,8 @@ window.BENCHMARK_DATA = {
           9887.898529052734,
           14782.470096842448,
           20602.93278198242,
-          13470.800332205636
+          13470.800332205636,
+          17030.337181599934
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3934,6 +3946,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6159,6 +6172,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -6476,7 +6495,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -6797,7 +6817,8 @@ window.BENCHMARK_DATA = {
           109.69220457871755,
           182.5207050527845,
           234.0652328014374,
-          155.98746215502422
+          155.98746215502422,
+          204.3133932352066
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6993,6 +7014,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7452,7 +7474,8 @@ window.BENCHMARK_DATA = {
           265.8185864130656,
           463.9263107617696,
           540.8862954653226,
-          393.8305378595988
+          393.8305378595988,
+          532.328997484843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7464,6 +7487,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8107,7 +8131,8 @@ window.BENCHMARK_DATA = {
           208.86351634774888,
           328.0601052602132,
           393.4061717033386,
-          290.3520532290141
+          290.3520532290141,
+          358.21649974187216
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8119,6 +8144,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -14957,6 +14983,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -16044,7 +16076,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -17135,7 +17168,8 @@ window.BENCHMARK_DATA = {
           52.136354761464254,
           82.27269735336304,
           104.86089173952739,
-          78.79120106697083
+          78.79120106697083,
+          94.93383124241463
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18134,6 +18168,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -19330,7 +19365,8 @@ window.BENCHMARK_DATA = {
           126.8940928141276,
           214.86703944206238,
           261.9039216041565,
-          223.59137555758159
+          223.59137555758159,
+          266.6789265950521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19523,6 +19559,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -20806,7 +20843,8 @@ window.BENCHMARK_DATA = {
           120.63555461168289,
           183.1511691570282,
           240.4525557586125,
-          182.55369941393533
+          182.55369941393533,
+          202.73154729207357
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -20818,6 +20856,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -23129,6 +23168,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -23453,7 +23498,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -23781,7 +23827,8 @@ window.BENCHMARK_DATA = {
           109.32865301200322,
           163.34839738210042,
           215.24422499338786,
-          149.31324253763472
+          149.31324253763472,
+          204.47791082125443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23986,6 +24033,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -24450,7 +24498,8 @@ window.BENCHMARK_DATA = {
           255.97000892957053,
           417.52316406794955,
           536.3701300938924,
-          406.0334442456563
+          406.0334442456563,
+          532.7174266179403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24462,6 +24511,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -25119,7 +25169,8 @@ window.BENCHMARK_DATA = {
           169.1446282182421,
           260.6083284378052,
           341.2907940864563,
-          241.83730493273055
+          241.83730493273055,
+          321.91282738049824
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -25131,6 +25182,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -31976,6 +32028,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -33063,7 +33121,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -34154,7 +34213,8 @@ window.BENCHMARK_DATA = {
           358.2440893650055,
           539.3883040746053,
           700.1722852161953,
-          442.7161796276386
+          442.7161796276386,
+          588.7565804163615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35141,6 +35201,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -36349,7 +36410,8 @@ window.BENCHMARK_DATA = {
           671.9586811065674,
           1124.3930416107178,
           1389.544506072998,
-          956.5530928098239
+          956.5530928098239,
+          1273.08829536438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -36542,6 +36604,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -37825,7 +37888,8 @@ window.BENCHMARK_DATA = {
           330.5822463194529,
           494.310609964224,
           674.7714184443156,
-          457.6828075726827
+          457.6828075726827,
+          603.8973785400391
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -37837,6 +37901,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -44726,6 +44791,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -45813,7 +45884,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -46904,7 +46976,8 @@ window.BENCHMARK_DATA = {
           330.234459400177,
           532.0229375021798,
           678.5660653795514,
-          440.3077571551005
+          440.3077571551005,
+          583.4347963968913
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47891,6 +47964,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -49099,7 +49173,8 @@ window.BENCHMARK_DATA = {
           10162.185172526042,
           16363.194700113932,
           27776.929288736977,
-          12235.491992405483
+          12235.491992405483,
+          15240.389594444861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -50195,6 +50270,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33465,
           33465
         ],
         "borderColor": "#FF671B",
@@ -50575,7 +50651,8 @@ window.BENCHMARK_DATA = {
           403.1659100850423,
           581.8357556206839,
           805.5791023890177,
-          529.5298921721322
+          529.5298921721322,
+          693.019433148702
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -50587,6 +50664,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -53246,6 +53324,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -53628,7 +53712,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -54014,7 +54099,8 @@ window.BENCHMARK_DATA = {
           363.27176472118924,
           510.8709997177124,
           655.2239078794207,
-          481.9670021057129
+          481.9670021057129,
+          571.9079141616821
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54308,6 +54394,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -54799,7 +54886,8 @@ window.BENCHMARK_DATA = {
           29448.5474995931,
           54058.651420084636,
           84257.39173380534,
-          28990.791414388023
+          28990.791414388023,
+          32654.01610921224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55190,6 +55278,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -57484,6 +57573,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -57866,7 +57961,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -58252,7 +58348,8 @@ window.BENCHMARK_DATA = {
           71.60060403347015,
           98.14555471677046,
           139.39516146977743,
-          100.06475151436669
+          100.06475151436669,
+          138.86315630163466
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58546,6 +58643,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -59037,7 +59135,8 @@ window.BENCHMARK_DATA = {
           10028.031195068359,
           15297.968354445238,
           33038.67442626953,
-          11825.499227905273
+          11825.499227905273,
+          15970.843546549479
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59428,6 +59527,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -59808,7 +59908,8 @@ window.BENCHMARK_DATA = {
           121.96934611456734,
           180.1013883627378,
           266.6129130363464,
-          160.7536928653717
+          160.7536928653717,
+          226.1482458750407
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59820,6 +59921,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -62131,6 +62233,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -62455,7 +62563,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -62783,7 +62892,8 @@ window.BENCHMARK_DATA = {
           150.99524459838867,
           229.14877830232894,
           301.4948525088174,
-          211.75785623391468
+          211.75785623391468,
+          276.43048226038616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -62988,6 +63098,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -63452,7 +63563,8 @@ window.BENCHMARK_DATA = {
           210.70658016204834,
           337.1892189979553,
           386.5095679078783,
-          386.234850470225
+          386.234850470225,
+          386.53217240742276
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -63464,6 +63576,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -64121,7 +64234,8 @@ window.BENCHMARK_DATA = {
           205.90681218306224,
           351.1683532079061,
           410.299258963267,
-          321.4782765592848
+          321.4782765592848,
+          356.6036917368571
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -64133,6 +64247,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -66400,6 +66515,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -66724,7 +66845,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -67052,7 +67174,8 @@ window.BENCHMARK_DATA = {
           389.94492977460226,
           567.7180594762166,
           721.5650561877659,
-          479.0913805594811
+          479.0913805594811,
+          645.0826441691472
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -67288,6 +67411,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -67721,7 +67845,8 @@ window.BENCHMARK_DATA = {
           1050.94957224528,
           1626.8937675476075,
           1911.5956890399639,
-          1342.0712164470128
+          1342.0712164470128,
+          2019.9652313232423
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -67733,6 +67858,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -68390,7 +68516,8 @@ window.BENCHMARK_DATA = {
           486.8568844114031,
           763.8739064534506,
           917.5401733838595,
-          639.6428401311239
+          639.6428401311239,
+          859.306362915039
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -68402,6 +68529,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -70669,6 +70797,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -70993,7 +71127,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -71321,7 +71456,8 @@ window.BENCHMARK_DATA = {
           6081.086269632975,
           8456.684066772461,
           12136.76628464919,
-          7181.275679452078
+          7181.275679452078,
+          9125.923221842448
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -71560,6 +71696,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -71990,7 +72127,8 @@ window.BENCHMARK_DATA = {
           19295.50123341878,
           26794.260591634116,
           41893.91407877604,
-          22961.465340750558
+          22961.465340750558,
+          29461.68606363932
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -72323,7 +72461,8 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18608
+          18608,
+          18609
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -72659,7 +72798,8 @@ window.BENCHMARK_DATA = {
           5644.888592646672,
           7903.044449869792,
           10762.661489214215,
-          6697.756977335612
+          6697.756977335612,
+          8303.39956665039
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -72671,6 +72811,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -74938,6 +75079,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
@@ -75262,7 +75409,8 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -75590,7 +75738,8 @@ window.BENCHMARK_DATA = {
           5649.576088460287,
           7935.492746625628,
           11459.736498151507,
-          6831.763464246477
+          6831.763464246477,
+          8280.91525777181
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -75829,6 +75978,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -76259,7 +76409,8 @@ window.BENCHMARK_DATA = {
           27029.164967854816,
           38595.909408569336,
           60542.405932617185,
-          32980.72392490932
+          32980.72392490932,
+          43836.15447998047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -76592,6 +76743,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553
         ],
         "borderColor": "#FF671B",
@@ -76928,7 +77080,8 @@ window.BENCHMARK_DATA = {
           11284.046590169271,
           15520.732907976422,
           21138.418448311942,
-          13159.19255472819
+          13159.19255472819,
+          16020.40576171875
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -76940,6 +77093,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -77287,11 +77441,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -77299,7 +77460,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           204.60556076254164,
-          146.73539145787558
+          146.73539145787558,
+          161.93489383061726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -77311,6 +77473,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          280,
           280,
           280
         ],
@@ -77328,7 +77491,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           217.02640477816263,
-          220.3538178284963
+          220.3538178284963,
+          214.46375255925315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -77340,6 +77504,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928
         ],
@@ -77357,7 +77522,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           380.3880449022566,
-          351.3530807495117
+          351.3530807495117,
+          379.7520181496938
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -77369,6 +77535,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          704,
           704,
           704
         ],
@@ -77396,11 +77563,18 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
@@ -77408,7 +77582,8 @@ window.BENCHMARK_DATA = {
         "unit": "ns",
         "data": [
           260.377147769928,
-          179.24158142407734
+          179.24158142407734,
+          199.6264110604922
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -77420,6 +77595,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          376,
           376,
           376
         ],
