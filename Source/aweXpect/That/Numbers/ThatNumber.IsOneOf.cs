@@ -823,6 +823,7 @@ public static partial class ThatNumber
 	{
 		if (expected is TNumber[] array)
 		{
+			// A foreach over the array type compiles to an indexed loop, while one over IEnumerable<T> allocates an enumerator.
 			foreach (TNumber value in array)
 			{
 				if (options.IsWithinTolerance(actual, value))
@@ -856,6 +857,7 @@ public static partial class ThatNumber
 	{
 		if (expected is TNumber?[] array)
 		{
+			// A foreach over the array type compiles to an indexed loop, while one over IEnumerable<T> allocates an enumerator.
 			foreach (TNumber? value in array)
 			{
 				if (options.IsWithinTolerance(actual, value))
