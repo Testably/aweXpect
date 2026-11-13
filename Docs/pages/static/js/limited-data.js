@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7792.895946248373,
           7746.295250447592,
           10732.186321803501,
           10410.803489685059,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           5435.1893785916845,
           11159.393095652262,
           5327.607521565756,
-          7912.359733581543
+          7912.359733581543,
+          11306.253354753766
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          242683.853515625,
           253226.38051060267,
           372416.033984375,
           381564.838936942,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           183818.54736328125,
           382954.0515299479,
           173607.37599283856,
-          269716.0087890625
+          269716.0087890625,
+          379308.420703125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590288,
           590288,
           590292,
           590287,
@@ -594,6 +593,7 @@ window.BENCHMARK_DATA = {
           590288,
           590287,
           590286,
+          590287,
           590287
         ],
         "borderColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          13916.594227091471,
           14059.997276306152,
           18887.456553867883,
           19785.01894124349,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           10515.034102303642,
           19679.27750854492,
           9887.898529052734,
-          14782.470096842448
+          14782.470096842448,
+          20602.93278198242
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          158.15176687921797,
           172.25003693898518,
           270.4156284650167,
           240.78325091997783,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           112.81035846930284,
           225.32622449214642,
           109.69220457871755,
-          182.5207050527845
+          182.5207050527845,
+          234.0652328014374
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          401.516685295105,
           423.801543542317,
           483.27674531936646,
           517.3059544563293,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           261.6684042930603,
           495.52643286387126,
           265.8185864130656,
-          463.9263107617696
+          463.9263107617696,
+          540.8862954653226
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          281.27173843383787,
           290.286599222819,
           383.1257058143616,
           380.8267867748554,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           200.7757546050208,
           389.2575589326712,
           208.86351634774888,
-          328.0601052602132
+          328.0601052602132,
+          393.4061717033386
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          81.84397058827537,
           82.5737807410104,
           99.23698325157166,
           106.45216444333394,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           58.21771165302822,
           100.90850504545065,
           52.136354761464254,
-          82.27269735336304
+          82.27269735336304,
+          104.86089173952739
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          207.20191332499186,
           215.83065485954285,
           240.18909924825033,
           247.6604880264827,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           134.50633843739828,
           244.1098105510076,
           126.8940928141276,
-          214.86703944206238
+          214.86703944206238,
+          261.9039216041565
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          178.77733268737794,
           177.32208976378809,
           236.2086696074559,
           255.03805193534265,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           133.99169267926897,
           253.52184159415108,
           120.63555461168289,
-          183.1511691570282
+          183.1511691570282,
+          240.4525557586125
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          155.87991331418354,
           162.42622857093812,
           211.6271742661794,
           220.8061601775033,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           114.2574975013733,
           199.19366439751215,
           109.32865301200322,
-          163.34839738210042
+          163.34839738210042,
+          215.24422499338786
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          416.6807599408286,
           425.45404083388195,
           514.1823888778687,
           529.7611708323161,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           275.96882543197046,
           516.0541611353557,
           255.97000892957053,
-          417.52316406794955
+          417.52316406794955,
+          536.3701300938924
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          253.7593638896942,
           265.5035317103068,
           331.01019940009485,
           331.5262221923241,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           175.90167121887208,
           321.05536334855213,
           169.1446282182421,
-          260.6083284378052
+          260.6083284378052,
+          341.2907940864563
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          549.2862714358738,
           535.3281868298849,
           694.3761323782114,
           706.8870257059733,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           375.26354904174804,
           736.0165440014431,
           358.2440893650055,
-          539.3883040746053
+          539.3883040746053,
+          700.1722852161953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1058.6767941792807,
           1120.7412223815918,
           1301.5262464795794,
           1373.6643508911134,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           716.9855049451193,
           1384.5867295946393,
           671.9586811065674,
-          1124.3930416107178
+          1124.3930416107178,
+          1389.544506072998
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          485.9873319038978,
           489.10880692799884,
           648.6662508010864,
           670.8616441999163,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           328.2219113962991,
           642.5363635381062,
           330.5822463194529,
-          494.310609964224
+          494.310609964224,
+          674.7714184443156
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          518.3466808954875,
           542.3782475153605,
           701.6853748730251,
           705.0602317810059,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           365.6751268386841,
           713.945592880249,
           330.234459400177,
-          532.0229375021798
+          532.0229375021798,
+          678.5660653795514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15614.891436767579,
           17127.252251180013,
           27866.81199645996,
           27667.617517089842,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           10932.409341430664,
           27005.504364013672,
           10162.185172526042,
-          16363.194700113932
+          16363.194700113932,
+          27776.929288736977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4220,7 +4220,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4254,6 +4253,7 @@ window.BENCHMARK_DATA = {
           33471,
           33468,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          583.8349296706064,
           599.9787534077963,
           759.5328931808472,
           822.6555899937947,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           430.57213554382326,
           795.2182955375084,
           403.1659100850423,
-          581.8357556206839
+          581.8357556206839,
+          805.5791023890177
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          471.3690437952677,
           477.8968284924825,
           601.7255716323853,
           632.4685512542725,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           367.0174046925136,
           667.3986263275146,
           363.27176472118924,
-          510.8709997177124
+          510.8709997177124,
+          655.2239078794207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          52714.85584716797,
           53165.47087809245,
           83532.0140625,
           86580.15513509115,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           30609.00865275065,
           84489.39781842913,
           29448.5474995931,
-          54058.651420084636
+          54058.651420084636,
+          84257.39173380534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5256,
-          5256,
           5252,
           5252,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
       {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          100.78839023113251,
           103.06335873263222,
           130.00583749158042,
           148.01988948186238,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           66.55400183995565,
           127.9632510287421,
           71.60060403347015,
-          98.14555471677046
+          98.14555471677046,
+          139.39516146977743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14245.668907674153,
           14858.006460571289,
           31920.036385091145,
           32597.551835123697,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           10049.350377400717,
           32110.488171386718,
           10028.031195068359,
-          15297.968354445238
+          15297.968354445238,
+          33038.67442626953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5552,7 +5552,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5615,
-          5615,
           5614,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          178.74025662740073,
           186.07277193436255,
           235.37037101813726,
           238.73880250637347,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           128.7462386449178,
           256.5008260091146,
           121.96934611456734,
-          180.1013883627378
+          180.1013883627378,
+          266.6129130363464
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          219.73756845792136,
           227.1471475283305,
           306.2753792126974,
           300.60956042607626,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           161.77535252571107,
           297.3406247411455,
           150.99524459838867,
-          229.14877830232894
+          229.14877830232894,
+          301.4948525088174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          318.4660445531209,
           354.0890117963155,
           377.20753996188824,
           417.0065587248121,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           219.42328618367512,
           372.33065799304416,
           210.70658016204834,
-          337.1892189979553
+          337.1892189979553,
+          386.5095679078783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          328.7434064791753,
           330.5575217564901,
           400.5150330543518,
           410.8941648165385,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           224.59636181195577,
           402.158314374777,
           205.90681218306224,
-          351.1683532079061
+          351.1683532079061,
+          410.299258963267
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          540.3731121063232,
           561.8741045679365,
           758.6192269643147,
           696.5921274820963,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           354.160320631663,
           712.9259552637736,
           389.94492977460226,
-          567.7180594762166
+          567.7180594762166,
+          721.5650561877659
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1517.6502502441406,
           1550.7657341275897,
           1947.4805119832356,
           1964.7425623575846,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1090.014582570394,
           1874.3952691396078,
           1050.94957224528,
-          1626.8937675476075
+          1626.8937675476075,
+          1911.5956890399639
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          700.7047193527221,
           739.1681212743123,
           948.346277986254,
           933.9227524484907,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           476.4797143936157,
           908.3148356119792,
           486.8568844114031,
-          763.8739064534506
+          763.8739064534506,
+          917.5401733838595
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8480.446803792318,
           8502.96763937814,
           12171.918411254883,
           11829.19159749349,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           6156.62390430157,
           11977.54753112793,
           6081.086269632975,
-          8456.684066772461
+          8456.684066772461,
+          12136.76628464919
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26215.09547860282,
           26117.865958077567,
           39517.44435471755,
           39386.569697788786,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           19780.645289829798,
           40037.93830754207,
           19295.50123341878,
-          26794.260591634116
+          26794.260591634116,
+          41893.91407877604
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18393,
           18394,
           18394,
@@ -7794,6 +7793,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          7841.0861238752095,
           7888.161483764648,
           10724.669611249652,
           10472.65894317627,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           5895.2348638262065,
           10725.92719922747,
           5644.888592646672,
-          7903.044449869792
+          7903.044449869792,
+          10762.661489214215
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "e6330becd917b1e2379c529c3de943ffe46796fc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 08:23:04 2026 \u002B0100",
-        "message": "docs: point out that the documentation describes the v4 pre-release (#2153)"
-      },
-      {
         "sha": "30129fc05ff99cdceff0c8d8640023c5b8b98d03",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 10:48:36 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
         "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
+      },
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
       }
     ],
     "labels": [
-      "e6330bec",
       "30129fc0",
       "25a97e74",
       "6c756140",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "ba5b9124",
       "70cb5ecf",
       "81a76547",
-      "d747c954"
+      "d747c954",
+      "bc7c1f46"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7908.408531697592,
           8042.3528523763025,
           11416.409238688151,
           11563.506427219936,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           5973.107830047607,
           11446.118614196777,
           5649.576088460287,
-          7935.492746625628
+          7935.492746625628,
+          11459.736498151507
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          37283.093882242836,
           38322.63596285306,
           58716.52845865885,
           59397.8152747521,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           27640.911276010367,
           58808.310599190845,
           27029.164967854816,
-          38595.909408569336
+          38595.909408569336,
+          60542.405932617185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8490,7 +8490,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8532,7 +8531,8 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553
+          23553,
+          23554
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          15242.587746756417,
           15419.353343418667,
           21108.66571044922,
           20868.050223214286,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           11832.433224487304,
           21056.293313162667,
           11284.046590169271,
-          15520.732907976422
+          15520.732907976422,
+          21138.418448311942
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8661,6 +8661,144 @@ window.BENCHMARK_DATA = {
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "Int_IsOneOf": {
+    "commits": [
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      }
+    ],
+    "labels": [
+      "bc7c1f46"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          204.60556076254164
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          280
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "FluentAssertions time",
+        "unit": "ns",
+        "data": [
+          217.02640477816263
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "FluentAssertions memory",
+        "unit": "b",
+        "data": [
+          928
+        ],
+        "borderColor": "#FF671B",
+        "backgroundColor": "#FF671B",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      },
+      {
+        "label": "TUnit time",
+        "unit": "ns",
+        "data": [
+          380.3880449022566
+        ],
+        "borderColor": "#1A6029",
+        "backgroundColor": "#1A6029",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "TUnit memory",
+        "unit": "b",
+        "data": [
+          704
+        ],
+        "borderColor": "#1A6029",
+        "backgroundColor": "#1A6029",
+        "yAxisID": "y1",
+        "borderDash": [
+          5,
+          5
+        ],
+        "pointStyle": "triangle"
+      }
+    ]
+  },
+  "Int_IsOneOfWithin": {
+    "commits": [
+      {
+        "sha": "bc7c1f46059312a7732d1073ee092fd675241e9e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:40:10 2026 \u002B0100",
+        "message": "perf: avoid per-evaluation allocations in the number IsOneOf check (#2231)"
+      }
+    ],
+    "labels": [
+      "bc7c1f46"
+    ],
+    "datasets": [
+      {
+        "label": "aweXpect time",
+        "unit": "ns",
+        "data": [
+          260.377147769928
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
+        "yAxisID": "y",
+        "borderDash": [],
+        "pointStyle": "circle"
+      },
+      {
+        "label": "aweXpect memory",
+        "unit": "b",
+        "data": [
+          376
+        ],
+        "borderColor": "#63A2AC",
+        "backgroundColor": "#63A2AC",
         "yAxisID": "y1",
         "borderDash": [
           5,
