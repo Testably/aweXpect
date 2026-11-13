@@ -86,6 +86,10 @@ public static partial class ThatHttpResponseMessage
 		private ProblemDetailsOptions? _evaluationOptions;
 		private StringEqualityOptions? _evaluationTypeOptions;
 		private string? _parseError;
+		private Exception? _readException;
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _readException;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
@@ -93,13 +97,25 @@ public static partial class ThatHttpResponseMessage
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_readException = null;
 			if (actual == null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			string message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
+			string message;
+			try
+			{
+				message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
+			}
+			catch (Exception exception) when (!exception.IsCancellationOf(cancellationToken))
+			{
+				_readException = exception;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			using JsonDocument? problemDetails = ParseObjectOrDefault(message, out _parseError);
 			if (problemDetails is null
 			    || !TryGetString(problemDetails.RootElement, "type", out string? typeMember, out _parseError)
@@ -260,6 +276,12 @@ public static partial class ThatHttpResponseMessage
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_readException is not null)
+			{
+				stringBuilder.AppendDidThrow("the content", _readException, indentation);
+				return;
+			}
+
 			if (_parseError is not null)
 			{
 				AppendParseError(stringBuilder);
@@ -285,6 +307,12 @@ public static partial class ThatHttpResponseMessage
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
+			if (_readException is not null)
+			{
+				stringBuilder.AppendDidThrow("the content", _readException, indentation);
+				return;
+			}
+
 			if (_parseError is not null)
 			{
 				AppendParseError(stringBuilder);

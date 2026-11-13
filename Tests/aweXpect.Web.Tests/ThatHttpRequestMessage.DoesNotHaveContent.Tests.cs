@@ -44,6 +44,32 @@ public sealed partial class ThatHttpRequestMessage
 			}
 
 			[Test]
+			public async Task WhenContentIsDisposed_ShouldFail()
+			{
+				StringContent content = new("some content");
+				content.Dispose();
+				HttpRequestMessage subject = RequestBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveContent("other content");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a string content equal to "other content",
+					             but the string content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard()
+					.Because("a content that cannot be read cannot differ from the unexpected content either");
+			}
+
+			[Test]
 			public async Task WhenContentIsNull_ShouldTreatItAsEmpty()
 			{
 				HttpRequestMessage subject = new(HttpMethod.Get, "https://awexpect.com");

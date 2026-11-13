@@ -91,6 +91,10 @@ public static partial class ThatHttpRequestMessage
 		private StringEqualityOptions? _evaluationOptions;
 		private MatchResult _matchResult;
 		private string? _message;
+		private Exception? _readException;
+
+		/// <inheritdoc />
+		public override Exception? FailureCause => _readException;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpRequestMessage? actual,
@@ -98,13 +102,24 @@ public static partial class ThatHttpRequestMessage
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_readException = null;
 			if (actual == null)
 			{
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
-			_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
+			try
+			{
+				_message = await actual.Content.ReadAsStringOrEmptyAsync(cancellationToken);
+			}
+			catch (Exception exception) when (!exception.IsCancellationOf(cancellationToken))
+			{
+				_readException = exception;
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			_evaluationOptions = CurrentOptions.ForEvaluation(context, cancellationToken);
 			_matchResult = await _evaluationOptions.MatchWithExplanation(_message, expected, parameterName);
 			if (_matchResult.IsMatch)
@@ -126,14 +141,30 @@ public static partial class ThatHttpRequestMessage
 				.Append(CurrentOptions.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "string content",
+		{
+			if (_readException is not null)
+			{
+				stringBuilder.AppendDidThrow("the string content", _readException, indentation);
+				return;
+			}
+
+			stringBuilder.Append((_evaluationOptions ?? CurrentOptions).GetExtendedMemberFailure(It, "string content",
 				Grammars, _message, expected, _matchResult));
+		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(Grammars.Verb("does not have a string content ", "do not have a string content "))
 				.Append(CurrentOptions.GetExpectation(expected, ExpectationGrammars.None));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+		{
+			if (_readException is not null)
+			{
+				stringBuilder.AppendDidThrow("the string content", _readException, indentation);
+				return;
+			}
+
+			stringBuilder.Append(It).Append(" had");
+		}
 	}
 }

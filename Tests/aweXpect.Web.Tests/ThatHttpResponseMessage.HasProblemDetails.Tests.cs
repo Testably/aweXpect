@@ -1,4 +1,6 @@
 ﻿using System.Net.Http;
+using System.Threading;
+using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -116,6 +118,33 @@ public sealed partial class ThatHttpResponseMessage
 
 				await That(Act).DoesNotThrow()
 					.Because("only the expected members of the problem details are compared");
+			}
+
+			[Test]
+			public async Task WhenContentIsDisposed_ShouldFail()
+			{
+				StringContent content = new("{}");
+				content.Dispose();
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but the content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard().And
+					.WithInner<ObjectDisposedException>()
+					.Because("an exception from reading the content fails the expectation instead of escaping");
 			}
 
 			[Test]
@@ -301,6 +330,29 @@ public sealed partial class ThatHttpResponseMessage
 					             but it was <null>
 					             """);
 			}
+#if NET8_0_OR_GREATER
+
+			[Test]
+			public async Task WhenTheEvaluationIsCanceledWhileTheContentIsRead_ShouldBeInconclusive()
+			{
+				using CancellationTokenSource cts = new();
+				HttpResponseMessage subject = new()
+				{
+					Content = new PendingContent(cts),
+				};
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo").WithCancellation(cts.Token);
+
+				await That(Act).Throws<TUnit.Core.Exceptions.InconclusiveTestException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but it could not be verified, because the evaluation was already canceled
+					             """)
+					.Because("the cancellation of the evaluation is not an exception from reading the content");
+			}
+#endif
 
 			[Test]
 			public async Task WhenTypeDiffersInCase_WithIgnoringCase_ShouldSucceed()
@@ -543,6 +595,32 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedTests
 		{
+			[Test]
+			public async Task WhenContentIsDisposed_ShouldFail()
+			{
+				StringContent content = new("{}");
+				content.Dispose();
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type "foo",
+					             but the content did throw an ObjectDisposedException:
+					               *System.Net.Http.StringContent*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					               *Content (text/plain) with unknown length*
+					             """).AsWildcard()
+					.Because("a content that cannot be read fails both ways");
+			}
+
 			[Test]
 			public async Task WhenContentIsEmpty_ShouldFail()
 			{
