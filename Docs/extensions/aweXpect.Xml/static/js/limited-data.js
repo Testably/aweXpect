@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
-        "message": "ci: rebuild the documentation site after a release (#2155)"
-      },
-      {
         "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
-      "25a97e74",
       "6c756140",
       "99f75dcf",
       "77e01f4b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          917.3057902654012,
           861.8566033681234,
           667.2320489149827,
           907.5946220670428,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           655.6064427693685,
           802.2014304674589,
           967.5760023752848,
-          477.00063742124115
+          477.00063742124115,
+          530.9571448106033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          670.1001125063215,
           714.4398557799203,
           572.7906340916951,
           766.6624048233032,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           587.2109314600626,
           759.3522635187421,
           836.7437721252442,
-          369.8310210227966
+          369.8310210227966,
+          510.7890902246748
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
-        "message": "ci: rebuild the documentation site after a release (#2155)"
-      },
-      {
         "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
-      "25a97e74",
       "6c756140",
       "99f75dcf",
       "77e01f4b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4631.441408793132,
           4711.3687700907385,
           3689.9089693341934,
           4835.7995681762695,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3933.52764638265,
           5180.677568562825,
           4940.203422546387,
-          2648.5821481432235
+          2648.5821481432235,
+          3276.9945368448894
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24179,
           24178,
           24178,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24172,
+          24179,
           24179
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5488.802982036884,
           5387.971369607108,
           4330.015371704101,
           5634.666832478842,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4134.9951075236,
           5968.839491780599,
           5704.58862101237,
-          2954.5633435930527
+          2954.5633435930527,
+          3811.858678817749
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
-        "message": "ci: rebuild the documentation site after a release (#2155)"
-      },
-      {
         "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
-      "25a97e74",
       "6c756140",
       "99f75dcf",
       "77e01f4b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2700.985052255484,
           2688.6929582449106,
           2058.9700945536297,
           2758.926366551717,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2171.0525629679364,
           2835.138302612305,
           2819.902780151367,
-          1405.215416208903
+          1405.215416208903,
+          1754.1339892069498
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1637,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           12728,
           12654,
           12654,
-          12728
+          12728,
+          12654
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3614.8289435250417,
           3545.803071158273,
           3137.841963704427,
           3815.3494384765627,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2919.240847269694,
           3758.590329851423,
           3820.9017161051434,
-          1926.7078572591147
+          1926.7078572591147,
+          2373.5008527119953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "25a97e74e525033a2c2b78cf7501bf25c6690f86",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 11:02:56 2026 \u002B0100",
-        "message": "ci: rebuild the documentation site after a release (#2155)"
-      },
-      {
         "sha": "6c7561407c52a32c2c9bac99a75b40c7b7d3f20a",
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 31 13:00:06 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:59:04 2026 \u002B0100",
         "message": "fix: observe the cancellation before snapshot file access (#2229)"
+      },
+      {
+        "sha": "f1f1f74b88fe0a83a54d7ee07db0fa7f29c693c3",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
+        "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
       }
     ],
     "labels": [
-      "25a97e74",
       "6c756140",
       "99f75dcf",
       "77e01f4b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "81a76547",
       "d747c954",
       "bc7c1f46",
-      "d317d1a7"
+      "d317d1a7",
+      "f1f1f74b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14053.747954305012,
           13927.98225402832,
           10995.32057647705,
           14545.04730122884,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           11118.229861450196,
           14225.081232343402,
           14688.566879781087,
-          7951.472525460379
+          7951.472525460379,
+          9647.180901082356
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,7 +2245,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           25440,
           25367,
           25367,
-          25440
+          25440,
+          25367
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          352748.73580729164,
           354714.6819986979,
           268227.60616629466,
           369927.8440755208,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           267237.41380208335,
           332149.2509440104,
           381938.7172200521,
-          184182.66858723958
+          184182.66858723958,
+          198438.28966471355
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2386,7 +2386,6 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335,
           544246,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544298,
           544335,
-          544335
+          544335,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
