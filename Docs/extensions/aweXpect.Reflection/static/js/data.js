@@ -1572,6 +1572,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -1836,7 +1842,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -2104,7 +2111,8 @@ window.BENCHMARK_DATA = {
           819.0581947735378,
           550.5445833887372,
           409.71494477589926,
-          785.1829909006755
+          785.1829909006755,
+          771.074985440572
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2328,6 +2336,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2653,7 +2662,8 @@ window.BENCHMARK_DATA = {
           913.4978887240092,
           709.9797716821943,
           546.544777170817,
-          932.860238483974
+          932.860238483974,
+          977.855491229466
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2665,6 +2675,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4512,6 +4523,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -4776,7 +4793,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -5044,7 +5062,8 @@ window.BENCHMARK_DATA = {
           107.02324020011085,
           78.1756711880366,
           55.564276742083685,
-          100.5363085780825
+          100.5363085780825,
+          110.82126316229503
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5191,6 +5210,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5593,7 +5613,8 @@ window.BENCHMARK_DATA = {
           243.6465947151184,
           170.78239413408133,
           131.59346287591117,
-          220.8172145623427
+          220.8172145623427,
+          224.04359043439229
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5605,6 +5626,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7452,6 +7474,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -7716,7 +7744,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -7984,7 +8013,8 @@ window.BENCHMARK_DATA = {
           1761.7159704844157,
           1460.953926595052,
           1023.691126982371,
-          1953.8863189697265
+          1953.8863189697265,
+          1869.0644475496733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8179,6 +8209,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8533,7 +8564,8 @@ window.BENCHMARK_DATA = {
           1468.0308181762696,
           1133.4429847717286,
           823.9295163154602,
-          1881.8725575764975
+          1881.8725575764975,
+          1464.3388102395195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8805,6 +8837,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1953,
+          1864,
           1864,
           1864
         ],
@@ -10332,6 +10365,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -10586,7 +10625,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -10844,7 +10884,8 @@ window.BENCHMARK_DATA = {
           2578.5432428213267,
           2168.4898564474925,
           1508.2059240976969,
-          2744.8656253814697
+          2744.8656253814697,
+          2957.822365352086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11029,6 +11070,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11373,7 +11415,8 @@ window.BENCHMARK_DATA = {
           3866.8988602956138,
           3024.026349581205,
           2366.7342526572093,
-          4641.003640238444
+          4641.003640238444,
+          3950.9413288661412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11636,6 +11679,7 @@ window.BENCHMARK_DATA = {
           3978,
           3981,
           3981,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -13162,6 +13206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -13416,7 +13466,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -13674,7 +13725,8 @@ window.BENCHMARK_DATA = {
           397.3490235964457,
           293.21854066848755,
           198.53265962600707,
-          487.19959417978924
+          487.19959417978924,
+          394.3606226285299
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13811,6 +13863,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14203,7 +14256,8 @@ window.BENCHMARK_DATA = {
           2400.4618334089005,
           1768.6964252471923,
           1359.945612970988,
-          2274.655546315511
+          2274.655546315511,
+          2307.634102376302
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14215,6 +14269,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -15992,6 +16047,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
         "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
+      },
+      {
+        "sha": "81a765479fa544f43fe32751eae23480fc7ee520",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
+        "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
       }
     ],
     "labels": [
@@ -16246,7 +16307,8 @@ window.BENCHMARK_DATA = {
       "3d57c42d",
       "d12a9246",
       "ba5b9124",
-      "70cb5ecf"
+      "70cb5ecf",
+      "81a76547"
     ],
     "datasets": [
       {
@@ -16504,7 +16566,8 @@ window.BENCHMARK_DATA = {
           2659.704170481364,
           2207.8197675069173,
           1581.9114220937092,
-          2832.789035797119
+          2832.789035797119,
+          2890.3139884948732
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16718,6 +16781,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17033,7 +17097,8 @@ window.BENCHMARK_DATA = {
           278199.04509626114,
           237704.42313058037,
           167131.06827799478,
-          276633.17096354166
+          276633.17096354166,
+          278975.22291666665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17296,6 +17361,7 @@ window.BENCHMARK_DATA = {
           17558,
           17577,
           17576,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
