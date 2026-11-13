@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.Extending;
 using aweXpect.Customization;
 using aweXpect.Web;
 using aweXpect.Web.ContentProcessors;
@@ -64,29 +66,65 @@ internal static class HttpFormatter
 		return messageBuilder.ToString().TrimEnd();
 	}
 
+	/// <remarks>
+	///     A custom processor might not check whether the content is disposed (e.g. request content on .NET Framework after
+	///     sending) or might throw for other reasons. Disposed content therefore skips the processors, and an exception of a
+	///     processor replaces only the content, which keeps the rest of the HTTP section.
+	/// </remarks>
 	private static async Task AppendContent(IReadOnlyList<IContentProcessor> contentProcessors,
 		StringBuilder messageBuilder,
 		HttpContent httpContent,
 		string indentation,
 		CancellationToken cancellationToken)
 	{
+		if (httpContent.IsNullOrDisposed())
+		{
+			AppendFallback(messageBuilder, httpContent, indentation, "");
+			return;
+		}
+
+		int startLength = messageBuilder.Length;
 		for (int i = 0; i < contentProcessors.Count; i++)
 		{
-			if (await contentProcessors[i].AppendContentInfo(messageBuilder, httpContent, indentation, cancellationToken))
+			IContentProcessor contentProcessor = contentProcessors[i];
+			try
 			{
+				if (await contentProcessor.AppendContentInfo(messageBuilder, httpContent, indentation,
+					    cancellationToken))
+				{
+					return;
+				}
+			}
+			catch (Exception exception) when (!IsCancellation(exception, cancellationToken))
+			{
+				messageBuilder.Length = startLength;
+				AppendFallback(messageBuilder, httpContent, indentation,
+					$", but the content processor {Formatter.Format(contentProcessor.GetType())} did throw " +
+					$"{Formatter.Format(exception.GetType()).PrependAOrAn()}: {exception.Message}");
 				return;
 			}
 		}
 
+		AppendFallback(messageBuilder, httpContent, indentation, "");
+	}
+
+	private static void AppendFallback(StringBuilder messageBuilder,
+		HttpContent httpContent,
+		string indentation,
+		string suffix)
+	{
 		httpContent.TryGetMediaType(out string? contentType);
 		string length = httpContent.TryGetContentLength(out long contentLength)
 			? $"with length {contentLength}"
 			: "with unknown length";
 		messageBuilder.Append(indentation)
 			.AppendLine(contentType == null
-				? $"*Content {length}*"
-				: $"*Content ({contentType}) {length}*");
+				? $"*Content {length}{suffix}*"
+				: $"*Content ({contentType}) {length}{suffix}*");
 	}
+
+	private static bool IsCancellation(Exception exception, CancellationToken cancellationToken)
+		=> exception is OperationCanceledException && cancellationToken.IsCancellationRequested;
 
 	/// <remarks>
 	///     Reading the content length adds the computed <c>Content-Length</c> header, and processing the content can buffer
