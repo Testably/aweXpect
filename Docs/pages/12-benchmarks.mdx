@@ -67,6 +67,36 @@ await Assert.That(_intSubject).IsGreaterThan(_intMinimum);
 
 </TabItem>
 
+<TabItem value="Int_IsOneOf" label="One of">
+
+Verifies that an `int` subject is one of four candidates.
+
+<BenchmarkResult name="Int_IsOneOf" />
+
+**Within a tolerance**
+Verifies that an `int` subject is within a tolerance of one of four candidates.
+FluentAssertions and TUnit have no tolerance for this check, so they are not part of this benchmark.
+
+<BenchmarkResult name="Int_IsOneOfWithin" />
+
+```csharp title="aweXpect"
+await That(_intOneOfSubject).IsOneOf(_intOneOfCandidates);
+// Within a tolerance
+await That(_intOneOfWithinSubject).IsOneOf(_intOneOfCandidates).Within(1);
+```
+
+```csharp no-compile title="FluentAssertions"
+_intOneOfSubject.Should().BeOneOf(_intOneOfCandidates);
+```
+
+```csharp no-compile title="TUnit"
+await Assert.That(_intOneOfSubject).IsIn(_intOneOfCandidates);
+```
+
+[View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Int_IsOneOf.cs)
+
+</TabItem>
+
 <TabItem value="Equivalency" label="Equivalency">
 
 Verifies that two albums are structurally equivalent, including their artist and all 17 tracks.
