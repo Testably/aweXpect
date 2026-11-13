@@ -1566,6 +1566,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -1829,7 +1835,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -2096,7 +2103,8 @@ window.BENCHMARK_DATA = {
           343.02445414861046,
           483.85827364240373,
           231.90289611816405,
-          345.13403851645336
+          345.13403851645336,
+          450.38630727359225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2276,6 +2284,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          640,
           640,
           640,
           640,
@@ -2643,7 +2652,8 @@ window.BENCHMARK_DATA = {
           763.0067173004151,
           1071.9689613069806,
           546.7197245279948,
-          798.0688645044962
+          798.0688645044962,
+          944.0566668192546
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2655,6 +2665,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4495,6 +4506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -4758,7 +4775,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -5025,7 +5043,8 @@ window.BENCHMARK_DATA = {
           177.8838815689087,
           248.18091259002685,
           112.15336708839124,
-          174.25366619917062
+          174.25366619917062,
+          252.46530455809372
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5172,6 +5191,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5572,7 +5592,8 @@ window.BENCHMARK_DATA = {
           211.3728620495115,
           286.2094169684819,
           123.68750410813551,
-          210.39560514229996
+          210.39560514229996,
+          245.65508035024007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5584,6 +5605,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7364,6 +7386,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -7617,7 +7645,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -7874,7 +7903,8 @@ window.BENCHMARK_DATA = {
           682.8906833648682,
           1079.1108530589513,
           512.0405069759914,
-          721.0351463726589
+          721.0351463726589,
+          962.7182960510254
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8066,6 +8096,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8401,7 +8432,8 @@ window.BENCHMARK_DATA = {
           725.2326985041301,
           1050.7095422108969,
           504.3938758850098,
-          780.8728175799052
+          780.8728175799052,
+          928.324449412028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8413,6 +8445,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -10183,6 +10216,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -10436,7 +10475,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -10693,7 +10733,8 @@ window.BENCHMARK_DATA = {
           1455.5519714355469,
           1883.578617640904,
           1087.7869952065605,
-          1510.7622977036697
+          1510.7622977036697,
+          1915.8012301127117
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -10832,6 +10873,7 @@ window.BENCHMARK_DATA = {
           1688,
           1760,
           1760,
+          1592,
           1592,
           1592,
           1592,
@@ -11220,7 +11262,8 @@ window.BENCHMARK_DATA = {
           14327.289330546062,
           20420.72761317662,
           9629.631102425712,
-          14908.456726074219
+          14908.456726074219,
+          20922.629355294364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11481,6 +11524,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -13002,6 +13046,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -13255,7 +13305,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -13512,7 +13563,8 @@ window.BENCHMARK_DATA = {
           574.5179826100667,
           819.0532059351603,
           369.30539185206095,
-          598.3487507956369
+          598.3487507956369,
+          743.3466087341309
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13651,6 +13703,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -14039,7 +14092,8 @@ window.BENCHMARK_DATA = {
           1042.7289300282796,
           1498.5604817708333,
           657.6125920369075,
-          1115.3381546020507
+          1115.3381546020507,
+          1282.0029820760092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14051,6 +14105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -15821,6 +15876,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
         "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
+      },
+      {
+        "sha": "70cb5ecf891a4bcd1aa012b758f0686bd903eed2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:05:43 2026 \u002B0100",
+        "message": "fix: show the request method unchanged and omit empty parentheses for binary content in HTTP failure messages (#2225)"
       }
     ],
     "labels": [
@@ -16074,7 +16135,8 @@ window.BENCHMARK_DATA = {
       "991a946f",
       "3d57c42d",
       "d12a9246",
-      "ba5b9124"
+      "ba5b9124",
+      "70cb5ecf"
     ],
     "datasets": [
       {
@@ -16331,7 +16393,8 @@ window.BENCHMARK_DATA = {
           1006.4451038360596,
           1288.2942237854004,
           735.5206656773885,
-          1008.1575095312936
+          1008.1575095312936,
+          1244.64347114563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16501,6 +16564,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -16858,7 +16922,8 @@ window.BENCHMARK_DATA = {
           629.877363204956,
           879.895429166158,
           393.66712597438266,
-          655.9859525044759
+          655.9859525044759,
+          744.7509203592937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16870,6 +16935,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
