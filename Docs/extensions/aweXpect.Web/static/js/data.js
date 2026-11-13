@@ -1578,6 +1578,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -1843,7 +1849,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -2112,7 +2119,8 @@ window.BENCHMARK_DATA = {
           231.90289611816405,
           345.13403851645336,
           450.38630727359225,
-          452.65447241919384
+          452.65447241919384,
+          211.85360264778137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2386,7 +2394,8 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640
+          640,
+          648
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2663,7 +2672,8 @@ window.BENCHMARK_DATA = {
           546.7197245279948,
           798.0688645044962,
           944.0566668192546,
-          1036.704139300755
+          1036.704139300755,
+          473.587214978536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2675,6 +2685,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4529,6 +4540,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -4794,7 +4811,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -5063,7 +5081,8 @@ window.BENCHMARK_DATA = {
           112.15336708839124,
           174.25366619917062,
           252.46530455809372,
-          246.19632088343303
+          246.19632088343303,
+          112.33200831924167
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5210,6 +5229,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5614,7 +5634,8 @@ window.BENCHMARK_DATA = {
           123.68750410813551,
           210.39560514229996,
           245.65508035024007,
-          277.273606300354
+          277.273606300354,
+          122.84909232457478
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5626,6 +5647,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7420,6 +7442,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -7675,7 +7703,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -7934,7 +7963,8 @@ window.BENCHMARK_DATA = {
           512.0405069759914,
           721.0351463726589,
           962.7182960510254,
-          878.8918386459351
+          878.8918386459351,
+          461.05614527066547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8126,6 +8156,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8465,7 +8496,8 @@ window.BENCHMARK_DATA = {
           504.3938758850098,
           780.8728175799052,
           928.324449412028,
-          977.0163686752319
+          977.0163686752319,
+          446.8415773465083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8477,6 +8509,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -10261,6 +10294,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -10516,7 +10555,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -10775,7 +10815,8 @@ window.BENCHMARK_DATA = {
           1087.7869952065605,
           1510.7622977036697,
           1915.8012301127117,
-          1910.1144278390068
+          1910.1144278390068,
+          1013.2297863593468
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11039,7 +11080,8 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592
+          1592,
+          1600
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11306,7 +11348,8 @@ window.BENCHMARK_DATA = {
           9629.631102425712,
           14908.456726074219,
           20922.629355294364,
-          18000.66671534947
+          18000.66671534947,
+          8797.172109331403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11567,6 +11610,7 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -13102,6 +13146,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -13357,7 +13407,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -13616,7 +13667,8 @@ window.BENCHMARK_DATA = {
           369.30539185206095,
           598.3487507956369,
           743.3466087341309,
-          728.804657642658
+          728.804657642658,
+          371.55414333343504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13755,6 +13807,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -14147,7 +14200,8 @@ window.BENCHMARK_DATA = {
           657.6125920369075,
           1115.3381546020507,
           1282.0029820760092,
-          1479.2665510813395
+          1479.2665510813395,
+          625.1660144329071
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14159,6 +14213,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -15943,6 +15998,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 16:13:44 2026 \u002B0100",
         "message": "fix: validate the options of MatchesPublicApiSnapshot when the expectation is written (#2227)"
+      },
+      {
+        "sha": "d747c95487d9ce81e63b5206b885ae7bf21f5b94",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 16:28:44 2026 \u002B0100",
+        "message": "fix: fail instead of throwing when the content of a request or response cannot be read (#2230)"
       }
     ],
     "labels": [
@@ -16198,7 +16259,8 @@ window.BENCHMARK_DATA = {
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
-      "81a76547"
+      "81a76547",
+      "d747c954"
     ],
     "datasets": [
       {
@@ -16457,7 +16519,8 @@ window.BENCHMARK_DATA = {
           735.5206656773885,
           1008.1575095312936,
           1244.64347114563,
-          1269.1904664357503
+          1269.1904664357503,
+          719.1596256664822
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16627,6 +16690,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -16988,7 +17052,8 @@ window.BENCHMARK_DATA = {
           393.66712597438266,
           655.9859525044759,
           744.7509203592937,
-          798.4264978408813
+          798.4264978408813,
+          387.21247598103116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17000,6 +17065,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
