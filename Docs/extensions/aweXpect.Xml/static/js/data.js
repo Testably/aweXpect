@@ -1590,6 +1590,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -1857,7 +1863,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -2128,7 +2135,8 @@ window.BENCHMARK_DATA = {
           802.2014304674589,
           967.5760023752848,
           477.00063742124115,
-          530.9571448106033
+          530.9571448106033,
+          633.3346729278564
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2309,6 +2317,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2683,7 +2692,8 @@ window.BENCHMARK_DATA = {
           759.3522635187421,
           836.7437721252442,
           369.8310210227966,
-          510.7890902246748
+          510.7890902246748,
+          569.1181070963542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2695,6 +2705,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4563,6 +4574,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -4830,7 +4847,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -5101,7 +5119,8 @@ window.BENCHMARK_DATA = {
           5180.677568562825,
           4940.203422546387,
           2648.5821481432235,
-          3276.9945368448894
+          3276.9945368448894,
+          3588.919419152396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5377,7 +5396,8 @@ window.BENCHMARK_DATA = {
           24179,
           24172,
           24179,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5656,7 +5676,8 @@ window.BENCHMARK_DATA = {
           5968.839491780599,
           5704.58862101237,
           2954.5633435930527,
-          3811.858678817749
+          3811.858678817749,
+          4045.5849838256836
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5668,6 +5689,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7476,6 +7498,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -7733,7 +7761,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -7994,7 +8023,8 @@ window.BENCHMARK_DATA = {
           2835.138302612305,
           2819.902780151367,
           1405.215416208903,
-          1754.1339892069498
+          1754.1339892069498,
+          2030.9006503178523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8260,6 +8290,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -8529,7 +8560,8 @@ window.BENCHMARK_DATA = {
           3758.590329851423,
           3820.9017161051434,
           1926.7078572591147,
-          2373.5008527119953
+          2373.5008527119953,
+          2806.093531799316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8541,6 +8573,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10339,6 +10372,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:35:10 2026 \u002B0100",
         "message": "fix: keep the HTTP context when a custom content processor fails (#2228)"
+      },
+      {
+        "sha": "b064da6fb584769f071524fdad4a1fa61dca0805",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
+        "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
       }
     ],
     "labels": [
@@ -10596,7 +10635,8 @@ window.BENCHMARK_DATA = {
       "d747c954",
       "bc7c1f46",
       "d317d1a7",
-      "f1f1f74b"
+      "f1f1f74b",
+      "b064da6f"
     ],
     "datasets": [
       {
@@ -10857,7 +10897,8 @@ window.BENCHMARK_DATA = {
           14225.081232343402,
           14688.566879781087,
           7951.472525460379,
-          9647.180901082356
+          9647.180901082356,
+          10336.440931047711
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11123,6 +11164,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -11392,7 +11434,8 @@ window.BENCHMARK_DATA = {
           332149.2509440104,
           381938.7172200521,
           184182.66858723958,
-          198438.28966471355
+          198438.28966471355,
+          250794.08865792412
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11658,7 +11701,8 @@ window.BENCHMARK_DATA = {
           544298,
           544335,
           544335,
-          544246
+          544246,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
