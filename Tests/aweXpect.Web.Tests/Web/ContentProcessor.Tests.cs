@@ -168,7 +168,11 @@ public sealed partial class ContentProcessor
 			public async Task<bool> AppendContentInfo(StringBuilder messageBuilder, HttpContent httpContent,
 				string indentation, CancellationToken cancellationToken = default)
 			{
+#if NET8_0_OR_GREATER
+				messageBuilder.AppendLine(await httpContent.ReadAsStringAsync(cancellationToken));
+#else
 				messageBuilder.AppendLine(await httpContent.ReadAsStringAsync());
+#endif
 				return true;
 			}
 		}
