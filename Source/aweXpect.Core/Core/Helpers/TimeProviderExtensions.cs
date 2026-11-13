@@ -95,7 +95,7 @@ internal static class TimeProviderExtensions
 	{
 		private readonly CancellationToken _cancellationToken;
 		private readonly CancellationTokenRegistration _registration;
-		private ITimer? _timer;
+		private readonly ITimer? _timer;
 
 		/// <remarks>
 		///     The timer is created stopped and started only once it is stored, so that a cancellation always releases
