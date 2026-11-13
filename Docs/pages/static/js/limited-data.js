@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10589.875941685268,
           5385.861759948731,
           5556.931621006557,
           7840.656914265951,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           9411.852990722657,
           5471.396844991048,
           7929.221556527274,
-          10344.608099365234
+          10344.608099365234,
+          5435.1893785916845
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          389601.72291666665,
           170515.1192626953,
           203918.47284405047,
           249284.22063337054,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           355900.15652901784,
           225590.68235677082,
           255995.20598958334,
-          367630.1919320914
+          367630.1919320914,
+          183818.54736328125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590290,
           590286,
           590286,
           590288,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590264,
           590226,
           590288,
-          590287
+          590287,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20008.134573800224,
           9909.18402644566,
           11158.353366558369,
           14533.45376180013,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           20256.82745768229,
           13498.299107869467,
           14443.25503845215,
-          19439.660552978516
+          19439.660552978516,
+          10515.034102303642
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          226.84819841384888,
           106.81714875881488,
           121.37842227862431,
           170.70007988611857,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           240.256267674764,
           167.18660343488057,
           178.38550136884052,
-          213.4476236786161
+          213.4476236786161,
+          112.81035846930284
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          550.8753157297771,
           252.80720529556274,
           317.75141395841325,
           440.33804856027876,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           615.5040012995402,
           398.44624948501587,
           439.35357942581174,
-          473.0685050328573
+          473.0685050328573,
+          261.6684042930603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          396.67085733413694,
           214.21902128366324,
           236.18016174634297,
           280.00440058341394,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           443.7038499514262,
           308.3763705889384,
           338.2576564470927,
-          384.23882891337075
+          384.23882891337075,
+          200.7757546050208
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          105.763862320355,
           53.83303572450365,
           62.3623041340283,
           83.48156039913495,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           115.68688986131123,
           68.42543676069805,
           89.99079710642496,
-          98.99584872722626
+          98.99584872722626,
+          58.21771165302822
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.4267402013143,
           126.55213869535007,
           155.19019905158453,
           217.3536319221769,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           350.948255888621,
           201.90679885546368,
           208.72348313672202,
-          239.3781899134318
+          239.3781899134318,
+          134.50633843739828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          242.8456468264262,
           143.27149724960327,
           145.6375765459878,
           180.16543951401343,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           279.4643847261156,
           160.25682280744826,
           190.03250517845154,
-          229.8786023934682
+          229.8786023934682,
+          133.99169267926897
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          250.92276039123536,
           107.67919462521871,
           122.38597173350198,
           159.9805916786194,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           231.01879466374714,
           147.30771485396795,
           162.99186657269794,
-          202.8139075892312
+          202.8139075892312,
+          114.2574975013733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          499.01196212768554,
           257.55376930236815,
           323.8567324002584,
           428.84946782248363,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           706.196582476298,
           419.9190687179565,
           432.4836609840393,
-          492.29652671813966
+          492.29652671813966,
+          275.96882543197046
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          342.95263522466024,
           169.95549449125926,
           211.81245609692164,
           243.46161444981894,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           379.4575733820597,
           237.3966967900594,
           281.5226728916168,
-          328.08294824453503
+          328.08294824453503,
+          175.90167121887208
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          771.7847251158494,
           358.68162396748863,
           401.1575985295432,
           533.8204708735149,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           684.2466976165772,
           424.26969936915805,
           545.9927869796753,
-          698.1423758824666
+          698.1423758824666,
+          375.26354904174804
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1380.48026234763,
           665.8561670939127,
           816.9697813987732,
           1142.8698770082915,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1642.4236544291177,
           1026.6841676076253,
           1171.913665262858,
-          1289.3168474833171
+          1289.3168474833171,
+          716.9855049451193
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          643.1840513774326,
           342.74049861090526,
           385.2696544940655,
           504.5119174957275,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           727.1154606892512,
           450.4611103057861,
           525.2280241648356,
-          645.8018715198224
+          645.8018715198224,
+          328.2219113962991
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          749.7133970896404,
           358.9887865702311,
           379.8827574253082,
           523.9964491526285,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           693.9397214480808,
           417.6539711634318,
           534.6230720520019,
-          684.4740544160207
+          684.4740544160207,
+          365.6751268386841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27540.29751993815,
           10216.688505045573,
           11731.408316476005,
           16125.190391031902,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           25191.925315348308,
           12832.165455118815,
           16946.477065022787,
-          27082.139046223958
+          27082.139046223958,
+          10932.409341430664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4224,7 +4224,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33471,
@@ -4258,6 +4257,7 @@ window.BENCHMARK_DATA = {
           33471,
           33468,
           33465,
+          33471,
           33471,
           33471
         ],
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          775.6324958067673,
           396.0129610379537,
           481.646594115666,
           602.2088720457895,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           855.9780969619751,
           527.2141334669931,
           616.440713818868,
-          753.5227677663167
+          753.5227677663167,
+          430.57213554382326
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          604.8630334854126,
           347.7302479426066,
           378.5848835536412,
           484.4098543167114,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           715.5960989679609,
           470.54169543584186,
           536.3168946584066,
-          607.5240916472214
+          607.5240916472214,
+          367.0174046925136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          82665.2973820613,
           28786.679571533205,
           31211.983699253626,
           53737.66074625651,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           66449.22103678386,
           31913.707206726074,
           55620.56610514323,
-          83993.01151529948
+          83993.01151529948,
+          30609.00865275065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5256,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5254,
           5256,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
       {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          141.10035929313074,
           66.79863777330944,
           79.40106116731961,
           107.36692995684487,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           153.01171868642172,
           103.12409113003658,
           102.23788039173398,
-          141.83665099143983
+          141.83665099143983,
+          66.55400183995565
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31217.448868815103,
           10107.244443766276,
           11348.048008845402,
           14231.312007904053,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           25782.646911621094,
           13999.887645721436,
           15372.207255045572,
-          31686.988403320312
+          31686.988403320312,
+          10049.350377400717
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5615,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          249.28146114349366,
           144.0631048520406,
           138.72063249349594,
           180.5015841263991,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           273.46415230433144,
           155.5934145450592,
           189.42165584564208,
-          230.79175197283428
+          230.79175197283428,
+          128.7462386449178
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          304.0690089293889,
           153.8033134619395,
           163.96783537864684,
           224.64086581979478,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           319.51642223993935,
           194.09759692351022,
           240.54465465545655,
-          327.3800711631775
+          327.3800711631775,
+          161.77535252571107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          429.79711192448934,
           200.58027631895882,
           228.7293223698934,
           335.60468965310315,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           508.0063987731934,
           327.6010446548462,
           323.18351296016147,
-          373.0938630104065
+          373.0938630104065,
+          219.42328618367512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          429.43838361593396,
           209.07589503924052,
           237.839621254376,
           322.6976748613211,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           426.0336390904018,
           285.30119406382244,
           343.67725779215493,
-          395.43032823290145
+          395.43032823290145,
+          224.59636181195577
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          734.4905691146851,
           378.08545897557184,
           411.7222890853882,
           544.8435170491537,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           750.7528796513875,
           529.856603304545,
           563.593007019588,
-          689.0386893590291
+          689.0386893590291,
+          354.160320631663
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2002.3889350891113,
           1051.457833971296,
           1233.4982303891863,
           1615.866192626953,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           2305.5763595581057,
           1435.3516956056867,
           1678.0836755116782,
-          1816.4360088620867
+          1816.4360088620867,
+          1090.014582570394
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          914.4230873107911,
           474.2732627732413,
           543.7832605044047,
           699.1768730603732,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           1016.4511665344238,
           687.7124831517538,
           805.4340375900268,
-          903.8903759638469
+          903.8903759638469,
+          476.4797143936157
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11859.722075326103,
           6061.851165771484,
           6226.858968462263,
           8485.680783589682,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11488.746537344796,
           6681.139019012451,
           8490.859822199895,
-          12037.525657653809
+          12037.525657653809,
+          6156.62390430157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          41166.91346435547,
           18359.720076497397,
           19647.40958077567,
           26716.285962785994,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           36907.5833618164,
           23949.932680257163,
           27599.30741373698,
-          39052.04399414062
+          39052.04399414062,
+          19780.645289829798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7754,7 +7754,6 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
-          18609,
           18393,
           18394,
           18394,
@@ -7798,6 +7797,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609
         ],
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10522.22234395345,
           5851.215214538574,
           5826.57158442906,
           7855.93178994315,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10021.596420288086,
           6293.283908208211,
           7813.800619942801,
-          10581.274673461914
+          10581.274673461914,
+          5895.2348638262065
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "f256c5caa19b57f3eae9cf26957c86ea90cf5f2e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Oct 28 21:59:59 2026 \u002B0100",
-        "message": "refactor: explain the empty result texts of the collection member constraint (#2150)"
-      },
-      {
         "sha": "fea532987f5ff65c36e36a5022ccc68563759fa4",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 29 09:14:27 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
         "message": "docs: install aweXpect.Snapshots.PublicApi with the PackageInstall component (#2201)"
+      },
+      {
+        "sha": "ba5b91245cfffaccb54e33711fdbaeac396ff791",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 13 15:52:01 2026 \u002B0100",
+        "message": "refactor: move DoesNotHaveInner into the file of HasInner (#2226)"
       }
     ],
     "labels": [
-      "f256c5ca",
       "fea53298",
       "583e9cec",
       "29daaf7a",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "688a3ba2",
       "991a946f",
       "3d57c42d",
-      "d12a9246"
+      "d12a9246",
+      "ba5b9124"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11410.785150800433,
           5861.235228474935,
           5775.821892293295,
           7948.5414764404295,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11458.685054234096,
           6410.850796290806,
           7945.730850219727,
-          11517.648445716271
+          11517.648445716271,
+          5973.107830047607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          57984.35543353741,
           26989.25471801758,
           28517.433465140206,
           38078.94241536458,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           52245.19202129658,
           32075.26972249349,
           38826.44777832031,
-          56933.252685546875
+          56933.252685546875,
+          27640.911276010367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8494,7 +8494,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8520,6 +8519,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          20798.536024827223,
           11251.699289594379,
           11352.702514648438,
           15243.434232439313,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           19777.16927693685,
           12925.220237223308,
           15322.876795842098,
-          20903.342439778648
+          20903.342439778648,
+          11832.433224487304
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
