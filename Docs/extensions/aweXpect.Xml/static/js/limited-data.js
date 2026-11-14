@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          917.2621431350708,
           708.7523752848307,
           950.122648747762,
           831.7835444722857,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           633.3346729278564,
           908.2368611653645,
           887.3447880427043,
-          511.2003538267953
+          511.2003538267953,
+          1000.5146808624268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          700.7130733217512,
           545.6979237238567,
           740.2080995014736,
           659.0514264424642,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           569.1181070963542,
           730.5053480148315,
           724.2631935392108,
-          401.624060122172
+          401.624060122172,
+          748.040504528926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4299.0927658081055,
           3242.395983182467,
           4446.792977905274,
           4715.589695739746,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3588.919419152396,
           4451.461680603027,
           4686.7826873779295,
-          2763.4258951822917
+          2763.4258951822917,
+          4293.4506419255185
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24179,
           24178,
           24178,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24172,
+          24178,
           24178
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5150.179296875,
           3869.7824244181315,
           5569.987691061838,
           5438.369637122521,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4045.5849838256836,
           4952.378232683454,
           5391.660554504395,
-          3212.5386339823403
+          3212.5386339823403,
+          5133.991272989909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2440.7474212646484,
           1950.7548316955567,
           2873.1982205708823,
           2536.9480549738955,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2030.9006503178523,
           2553.6687305995397,
           2615.5584694998606,
-          1541.9341078538162
+          1541.9341078538162,
+          2469.821453348796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12654,
           12728,
           12654,
           12654,
@@ -1681,6 +1680,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3491.930657900297,
           2661.4688350132533,
           3930.9599619547525,
           3488.1278749193466,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2806.093531799316,
           3472.826214345296,
           3598.386396789551,
-          2206.659462483724
+          2206.659462483724,
+          3382.002095903669
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13549.065313720703,
           10211.725556437175,
           14037.944535827637,
           13677.216838582357,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10336.440931047711,
           13965.269527689616,
           14296.458186558315,
-          8225.015609741211
+          8225.015609741211,
+          13412.121715291341
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25367,
           25440,
           25367,
           25367,
@@ -2289,6 +2288,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          360239.97013972356,
           249345.4634765625,
           367345.75895182294,
           369817.56136067706,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           250794.08865792412,
           365589.0106445312,
           356211.57170758926,
-          182162.43017578125
+          182162.43017578125,
+          358470.5582682292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2381,7 +2381,6 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335,
           544246,
           544335,
           544335,
@@ -2415,6 +2414,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335,
