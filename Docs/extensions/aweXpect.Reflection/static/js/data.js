@@ -1620,6 +1620,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -1892,7 +1898,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -2168,7 +2175,8 @@ window.BENCHMARK_DATA = {
           560.1607680638631,
           593.7585604985555,
           374.60401463508606,
-          569.9576317469279
+          569.9576317469279,
+          773.3925064722697
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2392,6 +2400,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2733,7 +2742,8 @@ window.BENCHMARK_DATA = {
           577.1162441889445,
           623.709338256291,
           544.1800476954534,
-          594.1241771697999
+          594.1241771697999,
+          931.9162985483805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2745,6 +2755,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4648,6 +4659,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -4920,7 +4937,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -5196,7 +5214,8 @@ window.BENCHMARK_DATA = {
           76.86505236625672,
           82.9630701939265,
           57.811078233378275,
-          78.08544704119365
+          78.08544704119365,
+          113.9825434409655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5343,6 +5362,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5761,7 +5781,8 @@ window.BENCHMARK_DATA = {
           161.94069916407267,
           212.57035455703735,
           127.66003028551738,
-          169.2193554242452
+          169.2193554242452,
+          215.56731219291686
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5773,6 +5794,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7676,6 +7698,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -7948,7 +7976,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -8224,7 +8253,8 @@ window.BENCHMARK_DATA = {
           1058.467170579093,
           1132.2871823628743,
           979.7774081911359,
-          1064.2950644175212
+          1064.2950644175212,
+          1944.6441911061604
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8419,6 +8449,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8789,7 +8820,8 @@ window.BENCHMARK_DATA = {
           971.2413299560546,
           1030.209217453003,
           888.2832282384237,
-          970.651065826416
+          970.651065826416,
+          1476.6886912027994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9070,6 +9102,7 @@ window.BENCHMARK_DATA = {
           1952,
           1952,
           1953,
+          1864,
           1864
         ],
         "borderColor": "#FF671B",
@@ -10644,6 +10677,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -10906,7 +10945,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -11172,7 +11212,8 @@ window.BENCHMARK_DATA = {
           1642.1485805511475,
           1718.897915976388,
           1483.3434721628826,
-          1650.4411677042642
+          1650.4411677042642,
+          2830.166139057704
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11357,6 +11398,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11717,7 +11759,8 @@ window.BENCHMARK_DATA = {
           2476.274577585856,
           2657.8738121032716,
           2320.450394494193,
-          2597.0137135823566
+          2597.0137135823566,
+          3864.7411962655874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11988,7 +12031,8 @@ window.BENCHMARK_DATA = {
           3977,
           3977,
           3980,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13562,6 +13606,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -13824,7 +13874,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -14090,7 +14141,8 @@ window.BENCHMARK_DATA = {
           248.82417233784994,
           274.4854161189153,
           199.42380383809407,
-          265.0044240315755
+          265.0044240315755,
+          420.4692688306173
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14227,6 +14279,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14635,7 +14688,8 @@ window.BENCHMARK_DATA = {
           1406.8340073994227,
           1591.5285443623861,
           1379.9629450577957,
-          1524.740849049886
+          1524.740849049886,
+          2335.81439944676
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14647,6 +14701,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -16480,6 +16535,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
         "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
+      },
+      {
+        "sha": "0e33e256082f50f3ddb9999c2de20047c844d292",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
+        "message": "docs: shorten long examples and document the nesting rules (#2236)"
       }
     ],
     "labels": [
@@ -16742,7 +16803,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "e64df614",
       "b064da6f",
-      "fdd52f8b"
+      "fdd52f8b",
+      "0e33e256"
     ],
     "datasets": [
       {
@@ -17008,7 +17070,8 @@ window.BENCHMARK_DATA = {
           1650.2680273691813,
           1696.9582391466413,
           1545.6864036832537,
-          1635.3922801971435
+          1635.3922801971435,
+          2904.6009494236537
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17222,6 +17285,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17553,7 +17617,8 @@ window.BENCHMARK_DATA = {
           190686.57060546876,
           196027.99731445312,
           171552.35443987165,
-          187335.1835186298
+          187335.1835186298,
+          281669.4416341146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17824,7 +17889,8 @@ window.BENCHMARK_DATA = {
           17528,
           17528,
           17576,
-          17528
+          17528,
+          17727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
