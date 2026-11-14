@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2327.36997956496,
           1093.9544451577324,
           2165.328074391683,
           1705.1943064371744,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1547.8788608823504,
           2058.8478884015763,
           1570.2913469587054,
-          1147.9334779103597
+          1147.9334779103597,
+          1558.9935485839844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15810.854405329777,
           6733.829573567708,
           16515.620943196616,
           12779.113838704427,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10427.812101510855,
           15816.16332397461,
           10612.792774454752,
-          7420.806349618094
+          7420.806349618094,
+          11256.454472859701
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1832.9114817210607,
           883.9927490098136,
           1635.2055356343587,
           1341.197128736056,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1195.4679783185322,
           1676.4170036315918,
           1238.1155279795328,
-          899.6161713233361
+          899.6161713233361,
+          1234.330842238206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14528.411424763997,
           6179.116808573405,
           15028.990254720053,
           11934.798460896809,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9617.50678507487,
           14567.960927690778,
           10309.240846761068,
-          6374.6357518514
+          6374.6357518514,
+          10079.915719604493
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5954.238044151893,
           2916.1666494516226,
           5106.846667363094,
           4240.115000406901,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3874.765739440918,
           5598.200395711263,
           3977.255155436198,
-          3082.023422241211
+          3082.023422241211,
+          3930.1094044276647
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          44004.17788461538,
           19012.7451558431,
           45096.640154157365,
           35640.3424235026,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           30274.072342936197,
           47013.649282602164,
           28852.307739257812,
-          20037.015616280692
+          20037.015616280692,
+          29306.658829752603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61925,
           61932,
           61922,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
       {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10976.570321219308,
           5027.303805033366,
           9970.317708696637,
           8329.673396519252,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7428.931614176432,
           9486.64380645752,
           7342.673422749837,
-          5257.23058013916
+          5257.23058013916,
+          7429.273041945237
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          312579.469796317,
           147840.39098307292,
           300739.67073567706,
           249282.25711495537,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           216237.08975655693,
           305783.7684570312,
           203509.84056803386,
-          149832.75021972656
+          149832.75021972656,
+          209714.65994466146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521572,
           521541,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
       {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3320.156034787496,
           1574.574594791119,
           3063.677879333496,
           2781.7165949503583,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2189.9198064168295,
           2818.816363408015,
           2225.2072611490885,
-          1618.5895068828877
+          1618.5895068828877,
+          2240.683801269531
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2282.658669535319,
           1086.1176075568567,
           2190.0012318929034,
           1899.0788837160383,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1494.011566289266,
           1924.7826216561455,
           1456.7714762006487,
-          1102.2807806559972
+          1102.2807806559972,
+          1480.386786680955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3237.674137369792,
           1564.858817236764,
           2846.876872507731,
           2332.02166219858,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2255.367013658796,
           2885.0640572139196,
           2195.7234739576065,
-          1590.5607888148381
+          1590.5607888148381,
+          2188.2631207784016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2051.811639404297,
           936.8663914998373,
           2170.85327351888,
           2051.926731872559,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1330.2340366656963,
           1726.8410040991646,
           1371.4680249140813,
-          976.8218225751605
+          976.8218225751605,
+          1427.9515432993571
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2644.4899899800616,
           1361.567852783203,
           2399.2063821645884,
           1958.5298075358073,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1764.273678779602,
           2309.646298272269,
           1727.4072344853328,
-          1406.6673278808594
+          1406.6673278808594,
+          1785.3433166231428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1389.530007680257,
           584.2865153092605,
           1456.3226468404134,
           1462.9452022552491,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           922.9132956096104,
           1113.685952259944,
           912.6859992980957,
-          636.4568579355875
+          636.4568579355875,
+          983.1928201039632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3499.2907973698207,
           1623.2859290929941,
           3423.917410714286,
           2669.336932881673,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2375.5507098606654,
           3028.885240827288,
           2308.417560831706,
-          1672.5219985521758
+          1672.5219985521758,
+          2279.2019411722817
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1571.4886444091796,
           636.0551618167332,
           1659.771271387736,
           1648.022687094552,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1050.7050490061442,
           1287.3439084370932,
           1044.5883081876314,
-          692.1783562440139
+          692.1783562440139,
+          1091.299385770162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
-      {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 18:03:49 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          191829.36059570312,
           90834.91662597656,
           171891.1247370793,
           164245.17657001203,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           126989.78932542067,
           165714.77732496994,
           128654.12287248884,
-          95319.93937988281
+          95319.93937988281,
+          127915.18600027902
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          220557.52906901043,
           101241.02096557617,
           200667.78737095423,
           175550.27532552084,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           151905.2896484375,
           189596.19259440104,
           153259.51948242186,
-          107020.64623151507
+          107020.64623151507,
+          151017.21895345053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266950,
           266936,
           266873,
           266883,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
-          266936
+          266936,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
-        "message": "test: expect the case-insensitive host comparison in the Web which-wrapper grammar test (#2164)"
-      },
       {
         "sha": "c2bac0d47570e2e32ffc4a6502f42f5fe45233cc",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
       "3903c857",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3080.4039154052734,
           1364.026911799113,
           2739.301248005458,
           2076.707926236666,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2086.764587674822,
           2623.2672211783274,
           2116.6854934692383,
-          1427.6305626460485
+          1427.6305626460485,
+          2089.269470469157
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2112.898602294922,
           986.3024147578648,
           2086.8178520202637,
           1903.0670051574707,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1402.1590134938558,
           1777.9219988505045,
           1504.9581300099692,
-          1020.6364558293269
+          1020.6364558293269,
+          1479.5422579901558
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
