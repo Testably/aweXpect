@@ -1,5 +1,5 @@
 ---
-description: How the filters and expectations of aweXpect.Reflection pair up, how to combine them and how to use custom predicates and quantifiers.
+description: How the filters and expectations of aweXpect.Reflection pair up, how to combine them and how to use custom predicates, custom filters and quantifiers.
 ---
 
 # Filters and expectations
@@ -34,6 +34,7 @@ that has none. An empty cell means that there is no such form, e.g. no negation.
 | [Events](./05-properties-fields-and-events.md#events)                          | events                        | `WhichAreOfType<T>` / `IsOfType<T>`, `WhichAreStatic` / `IsStatic`, `WhichAreNullable` / `IsNullable`                |
 | [Combining filters](#combining-filters)                                        | filters and expectations      | `OrWith<TAttribute>` / `OrHas<TAttribute>`, `OrReturn<T>`, `OrOfType<T>`                                             |
 | [Custom predicates](#custom-predicates)                                        | types, members and assemblies | `Which` / `Satisfies`, `Except`                                                                                      |
+| [Custom filters](#custom-filters)                                              | types, members and assemblies | `Which(IFilter<T>)`                                                                                                  |
 | [Collections and quantifiers](#collections-and-quantifiers)                    | all subjects                  | `Satisfies`, `All().Satisfy`, `Any().Satisfy`                                                                        |
 
 ## Combining filters
@@ -84,6 +85,73 @@ In.AllLoadedAssemblies().Methods()
 
 // All types of the album assembly, except one legacy type
 In.AssemblyContaining<Album>().Types().Except<LegacyImportService>()
+```
+
+## Custom filters
+
+A filter you need in many places, or one for an extension package, can implement `IFilter<T>` from the namespace
+`aweXpect.Reflection.Collections` and be passed to `.Which(IFilter<T>)` on any selection. Wrap it in an extension
+method so that it reads like the built-in filters:
+
+```csharp
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Reflection.Collections;
+using Microsoft.Extensions.DependencyInjection;
+
+public static class ServiceCollectionFilters
+{
+    public static Filtered.Types WhichAreRegisteredIn(this Filtered.Types types, IServiceCollection services)
+        => types.Which(new RegisteredInFilter(services));
+
+    private sealed class RegisteredInFilter(IServiceCollection services) : IFilter<Type>
+    {
+        private readonly HashSet<Type> _serviceTypes = new(services.Select(descriptor => descriptor.ServiceType));
+
+        public ValueTask<bool> Applies(Type value, CancellationToken cancellationToken)
+            => new(_serviceTypes.Contains(value));
+
+        public string Describes(string text)
+            => text + "which are registered in the service collection ";
+    }
+}
+
+// All registered services of the album assembly are interfaces
+await That(In.AssemblyContaining<Album>().Types().WhichAreRegisteredIn(services))
+    .AreInterfaces();
+```
+
+`Describes` receives the description of the selection so far, e.g. `types `, and returns it with the filter added. The
+failure message of the example then reads `types which are registered in the service collection in assembly …`. The
+built-in filters follow one of two forms, and both end with a space that separates them from the next part:
+
+- A **suffix** filter appends a clause: `text + "which are registered in the service collection "`, like
+  `WhichAreClasses()` (`types which are classes `).
+- A **prefix** filter puts an adjective in front: `"obsolete " + text`, like `WhichAreObsolete()`
+  (`obsolete methods `).
+
+`Applies` receives the cancellation token of the enumeration. A check that awaits something slow, e.g. a file or a
+database, should pass the token on so that a cancelled or timed-out expectation stops early.
+
+A filter that reflects over the members of its subject, e.g. with `GetMethods()` or `GetNestedTypes()`, can miss
+members when the tests are published with trimming or Native AOT, as the trimmer removes the members nobody references
+statically. Guard such a check with `ReflectionFallback.IsSupported` from the namespace `aweXpect.Core.Extending`, and
+throw the exception of `ReflectionFallback.NotSupported(…)` otherwise, so that the filter fails with a clear message
+instead of silently matching too few items:
+
+```csharp
+public ValueTask<bool> Applies(Type value, CancellationToken cancellationToken)
+{
+    if (!ReflectionFallback.IsSupported)
+    {
+        throw ReflectionFallback.NotSupported($"The methods of {value.Name}");
+    }
+
+    return new(value.GetMethods().Any(method => method.ReturnType == typeof(Task)));
+}
 ```
 
 ## Collections and quantifiers
