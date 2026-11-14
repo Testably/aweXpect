@@ -5,11 +5,12 @@ using aweXpect.Customization;
 namespace aweXpect.Snapshots.DiffEngine.Tests.TestHelpers;
 
 /// <summary>
-///     A temporary directory that stands in for the directory of a test file, with the environment variables of build
-///     servers cleared, as the reporters are never called on a build server.
+///     A temporary directory that stands in for the directory of a test file, and the temporary files of its snapshot.
 /// </summary>
 /// <remarks>
-///     The environment is shared by the whole process, so the tests do not run in parallel.
+///     With a diff runner, the reporter is set for the expectations and the environment variables of build servers are
+///     cleared, as the reporters are never called on a build server. The environment is shared by the whole process, so
+///     these tests must not run in parallel.
 /// </remarks>
 internal sealed class TestScope : IDisposable
 {
@@ -18,9 +19,15 @@ internal sealed class TestScope : IDisposable
 	private static readonly string[] BuildServerVariables = ["CI", "TF_BUILD", "JENKINS_URL", "TEAMCITY_VERSION",];
 
 	private readonly Dictionary<string, string?> _originalValues = new();
-	private readonly CustomizationLifetime _reporters;
+	private readonly CustomizationLifetime? _reporters;
 
-	public TestScope(RecordingDiffRunner diffRunner)
+	public TestScope()
+	{
+		Directory.CreateDirectory(Path);
+		(TemporaryReceivedFile, TemporarySnapshotFile) = DiffEngineReporter.GetTemporaryFiles(Id);
+	}
+
+	public TestScope(RecordingDiffRunner diffRunner) : this()
 	{
 		foreach (string variable in BuildServerVariables)
 		{
@@ -28,9 +35,7 @@ internal sealed class TestScope : IDisposable
 			Environment.SetEnvironmentVariable(variable, null);
 		}
 
-		Directory.CreateDirectory(Path);
 		_reporters = Customize.aweXpect.Snapshots().Reporters.Set([new DiffEngineReporter(diffRunner),]);
-		(TemporaryReceivedFile, TemporarySnapshotFile) = DiffEngineReporter.GetTemporaryFiles(Id);
 	}
 
 	public SnapshotId Id => new(TestFilePath, MemberName);
@@ -44,7 +49,7 @@ internal sealed class TestScope : IDisposable
 
 	public void Dispose()
 	{
-		_reporters.Dispose();
+		_reporters?.Dispose();
 		Directory.Delete(Path, true);
 		// File.Delete throws when the directory is missing, which only a mismatch outside of the file store creates.
 		if (Directory.Exists(DiffEngineReporter.TemporaryDirectory))

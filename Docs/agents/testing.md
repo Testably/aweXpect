@@ -105,8 +105,10 @@ The slow tests of `aweXpect.Docs.Tests`:
 - Snapshot tests:
   - `aweXpect.Snapshots.Tests` covers the expectations, rules, stores, comparers, reporters and acceptance. Its tests use
     a temporary `SnapshotDirectory` or the `InMemorySnapshotStore` instead of writing next to the project.
-  - `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` change process-wide state or read the whole project
-    directory, so they are separate projects that run one test at a time (`[assembly: NotInParallel]`).
+  - `.SourceRoots.Tests` and `.Orphans.Tests` change process-wide state or read the whole project directory, so they
+    are separate projects that run one test at a time (`[assembly: NotInParallel]`). `.DiffEngine.Tests` tests the
+    reporter directly; only its tests through `MatchesSnapshot()` clear the build server variables and are
+    `[NotInParallel]`.
   - `.PublicApi.Tests` checks `PublicApiDeclarations` against `PublicApi.Fixture` (a library covering the language
     features) and `PublicApi.PackageFixture` (whose package dependency is not in its build output).
   - `aweXpect.Snapshots.Tests`, `.SourceRoots.Tests`, `.Orphans.Tests` and `.DiffEngine.Tests` set the acceptance to

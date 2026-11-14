@@ -59,3 +59,20 @@ An exception of a reporter is written to the trace writer of `Customize.aweXpect
 ignored.
 
 </details>
+
+## Testing a reporter
+
+`SnapshotMismatch` and `SnapshotMatch` can be created directly, so that a reporter can be tested on its own:
+
+```csharp
+SnapshotMismatch mismatch = new(new SnapshotId("AlbumTests.cs", "Describes"),
+    Customize.aweXpect.Snapshots().Store.Get(),
+    SnapshotContent.FromText("Abbey Road"), SnapshotContent.FromText("Let It Be"));
+
+ChangedSnapshotsReporter reporter = new();
+await reporter.OnMismatchAsync(mismatch, CancellationToken.None);
+
+await That(reporter.Changed).Contains(mismatch.Id);
+```
+
+The snapshot is `null` when it did not exist.
