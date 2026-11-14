@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          950.122648747762,
           831.7835444722857,
           496.971353494204,
           430.56206862131756,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           887.3447880427043,
           511.2003538267953,
           1000.5146808624268,
-          646.170018641154
+          646.170018641154,
+          752.7962532777053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          740.2080995014736,
           659.0514264424642,
           361.4854098047529,
           329.02975153923035,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           724.2631935392108,
           401.624060122172,
           748.040504528926,
-          596.6469285147531
+          596.6469285147531,
+          813.8868272145589
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4446.792977905274,
           4715.589695739746,
           2583.7243846013,
           2348.130291748047,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4686.7826873779295,
           2763.4258951822917,
           4293.4506419255185,
-          3401.1106572469075
+          3401.1106572469075,
+          5076.69371693929
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24172,
           24172,
           24178,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24172,
           24178,
           24178,
+          24179,
           24179
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5569.987691061838,
           5438.369637122521,
           2937.8366455078126,
           2554.760531792274,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5391.660554504395,
           3212.5386339823403,
           5133.991272989909,
-          4029.8369710286456
+          4029.8369710286456,
+          5970.327434285482
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2873.1982205708823,
           2536.9480549738955,
           1382.392755126953,
           1294.5423451741538,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2615.5584694998606,
           1541.9341078538162,
           2469.821453348796,
-          1892.0608515058245
+          1892.0608515058245,
+          2808.840386904203
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1656,7 +1656,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1679,6 +1678,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3930.9599619547525,
           3488.1278749193466,
           2014.8995383126396,
           1867.573366546631,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3598.386396789551,
           2206.659462483724,
           3382.002095903669,
-          2643.6571708092324
+          2643.6571708092324,
+          3832.8056579589843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          14037.944535827637,
           13677.216838582357,
           7804.821449279785,
           6798.191546848842,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14296.458186558315,
           8225.015609741211,
           13412.121715291341,
-          10889.912614186605
+          10889.912614186605,
+          14056.498024495442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2264,7 +2264,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2287,6 +2286,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          367345.75895182294,
           369817.56136067706,
           180672.2262311663,
           156931.56604817708,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           356211.57170758926,
           182162.43017578125,
           358470.5582682292,
-          221374.94620186943
+          221374.94620186943,
+          289444.7764718192
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2379,7 +2379,6 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335,
           544246,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544245
+          544245,
+          544246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
