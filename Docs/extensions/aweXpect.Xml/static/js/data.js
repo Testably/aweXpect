@@ -1608,6 +1608,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
@@ -1878,7 +1884,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
@@ -2152,7 +2159,8 @@ window.BENCHMARK_DATA = {
           530.9571448106033,
           633.3346729278564,
           908.2368611653645,
-          887.3447880427043
+          887.3447880427043,
+          511.2003538267953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2333,6 +2341,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2713,7 +2722,8 @@ window.BENCHMARK_DATA = {
           510.7890902246748,
           569.1181070963542,
           730.5053480148315,
-          724.2631935392108
+          724.2631935392108,
+          401.624060122172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2725,6 +2735,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4614,6 +4625,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
@@ -4884,7 +4901,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
@@ -5158,7 +5176,8 @@ window.BENCHMARK_DATA = {
           3276.9945368448894,
           3588.919419152396,
           4451.461680603027,
-          4686.7826873779295
+          4686.7826873779295,
+          2763.4258951822917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5437,7 +5456,8 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24178,
-          24172
+          24172,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5719,7 +5739,8 @@ window.BENCHMARK_DATA = {
           3811.858678817749,
           4045.5849838256836,
           4952.378232683454,
-          5391.660554504395
+          5391.660554504395,
+          3212.5386339823403
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5731,6 +5752,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7560,6 +7582,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
@@ -7820,7 +7848,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
@@ -8084,7 +8113,8 @@ window.BENCHMARK_DATA = {
           1754.1339892069498,
           2030.9006503178523,
           2553.6687305995397,
-          2615.5584694998606
+          2615.5584694998606,
+          1541.9341078538162
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8350,6 +8380,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -8625,7 +8656,8 @@ window.BENCHMARK_DATA = {
           2373.5008527119953,
           2806.093531799316,
           3472.826214345296,
-          3598.386396789551
+          3598.386396789551,
+          2206.659462483724
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8637,6 +8669,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10456,6 +10489,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
@@ -10716,7 +10755,8 @@ window.BENCHMARK_DATA = {
       "f1f1f74b",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
@@ -10980,7 +11020,8 @@ window.BENCHMARK_DATA = {
           9647.180901082356,
           10336.440931047711,
           13965.269527689616,
-          14296.458186558315
+          14296.458186558315,
+          8225.015609741211
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11246,6 +11287,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -11521,7 +11563,8 @@ window.BENCHMARK_DATA = {
           198438.28966471355,
           250794.08865792412,
           365589.0106445312,
-          356211.57170758926
+          356211.57170758926,
+          182162.43017578125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11788,6 +11831,7 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544246,
+          544335,
           544335,
           544335,
           544335
