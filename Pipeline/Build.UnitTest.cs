@@ -61,6 +61,7 @@ partial class Build
 	[
 		Solution.Tests.aweXpect_Core_Tests,
 		Solution.Tests.aweXpect_Analyzers_Tests,
+		Solution.Tests.aweXpect_Architecture_Tests,
 		Solution.Tests.aweXpect_Generators_Tests,
 		Solution.Tests.aweXpect_Tests,
 		Solution.Tests.aweXpect_Internal_Tests,
