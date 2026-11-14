@@ -118,6 +118,7 @@ namespace aweXpect.Snapshots
     }
     public sealed class SnapshotMatch
     {
+        public SnapshotMatch(aweXpect.Snapshots.SnapshotId id, aweXpect.Snapshots.SnapshotStore store) { }
         public aweXpect.Snapshots.SnapshotId Id { get; }
         public aweXpect.Snapshots.SnapshotStore Store { get; }
     }
@@ -147,6 +148,7 @@ namespace aweXpect.Snapshots
     }
     public sealed class SnapshotMismatch
     {
+        public SnapshotMismatch(aweXpect.Snapshots.SnapshotId id, aweXpect.Snapshots.SnapshotStore store, aweXpect.Snapshots.SnapshotContent? snapshot, aweXpect.Snapshots.SnapshotContent actual) { }
         public aweXpect.Snapshots.SnapshotContent Actual { get; }
         public aweXpect.Snapshots.SnapshotId Id { get; }
         public aweXpect.Snapshots.SnapshotContent? Snapshot { get; }

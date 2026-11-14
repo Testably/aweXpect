@@ -6,12 +6,17 @@ namespace aweXpect.Snapshots;
 /// </summary>
 public sealed class SnapshotMismatch
 {
-	internal SnapshotMismatch(SnapshotId id, SnapshotStore store, SnapshotContent? snapshot, SnapshotContent actual)
+	/// <summary>
+	///     Initializes the mismatch of the <paramref name="actual" /> value with the <paramref name="snapshot" />, which is
+	///     <see langword="null" /> when it did not exist, e.g. to test a <see cref="SnapshotReporter" /> with contents from
+	///     <see cref="SnapshotContent.FromText" /> or <see cref="SnapshotContent.FromBytes" />.
+	/// </summary>
+	public SnapshotMismatch(SnapshotId id, SnapshotStore store, SnapshotContent? snapshot, SnapshotContent actual)
 	{
-		Id = id;
-		Store = store;
+		Id = RuleArguments.ThrowIfNull(id, nameof(id));
+		Store = RuleArguments.ThrowIfNull(store, nameof(store));
 		Snapshot = snapshot;
-		Actual = actual;
+		Actual = RuleArguments.ThrowIfNull(actual, nameof(actual));
 	}
 
 	/// <summary>

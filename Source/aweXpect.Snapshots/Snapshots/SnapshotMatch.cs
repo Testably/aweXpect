@@ -5,10 +5,14 @@ namespace aweXpect.Snapshots;
 /// </summary>
 public sealed class SnapshotMatch
 {
-	internal SnapshotMatch(SnapshotId id, SnapshotStore store)
+	/// <summary>
+	///     Initializes the match of the snapshot with the <paramref name="id" /> in the <paramref name="store" />, e.g. to
+	///     test a <see cref="SnapshotReporter" /> on its own.
+	/// </summary>
+	public SnapshotMatch(SnapshotId id, SnapshotStore store)
 	{
-		Id = id;
-		Store = store;
+		Id = RuleArguments.ThrowIfNull(id, nameof(id));
+		Store = RuleArguments.ThrowIfNull(store, nameof(store));
 	}
 
 	/// <summary>

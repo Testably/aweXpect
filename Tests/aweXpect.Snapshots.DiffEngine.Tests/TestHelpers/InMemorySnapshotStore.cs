@@ -10,19 +10,15 @@ internal sealed class InMemorySnapshotStore : SnapshotStore
 {
 	public Dictionary<SnapshotId, byte[]> Mismatches { get; } = new();
 	public Dictionary<SnapshotId, byte[]> Snapshots { get; } = new();
-	public Action? OnRead { get; set; }
-	public Action? OnRecordMismatch { get; set; }
 
 	public override ValueTask<byte[]?> ReadAsync(SnapshotId id, CancellationToken cancellationToken)
 	{
-		OnRead?.Invoke();
 		return new ValueTask<byte[]?>(Snapshots.TryGetValue(id, out byte[]? snapshot) ? snapshot : null);
 	}
 
 	public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
 	{
 		Mismatches[id] = actual;
-		OnRecordMismatch?.Invoke();
 		return default;
 	}
 
