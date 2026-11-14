@@ -1650,6 +1650,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -1927,7 +1933,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -2208,7 +2215,8 @@ window.BENCHMARK_DATA = {
           462.3440942764282,
           454.6804469994136,
           478.4688217980521,
-          259.8590409415109
+          259.8590409415109,
+          443.15780694144115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2483,6 +2491,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -2783,7 +2792,8 @@ window.BENCHMARK_DATA = {
           1138.531684728769,
           1024.375743132371,
           1036.5065071923393,
-          570.5758566538493
+          570.5758566538493,
+          947.0944427343516
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2795,6 +2805,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4733,6 +4744,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -5010,7 +5027,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -5291,7 +5309,8 @@ window.BENCHMARK_DATA = {
           246.48609336217245,
           253.89326289494832,
           287.32062063217165,
-          133.4971878358296
+          133.4971878358296,
+          243.16033162389482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5438,6 +5457,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5866,7 +5886,8 @@ window.BENCHMARK_DATA = {
           259.97975594202677,
           249.86531734466553,
           259.4875532150269,
-          135.37719937960307
+          135.37719937960307,
+          249.5268021583557
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5878,6 +5899,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7756,6 +7778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -8023,7 +8051,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -8294,7 +8323,8 @@ window.BENCHMARK_DATA = {
           1028.0884641011555,
           1039.3457700184413,
           1051.5912532806396,
-          565.1819468816121
+          565.1819468816121,
+          1034.287418952355
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8486,6 +8516,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8849,7 +8880,8 @@ window.BENCHMARK_DATA = {
           1049.2287543370173,
           940.373102982839,
           1076.7059329106257,
-          552.1339081355503
+          552.1339081355503,
+          913.8340173721314
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8861,6 +8893,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -10729,6 +10762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -10996,7 +11035,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -11267,7 +11307,8 @@ window.BENCHMARK_DATA = {
           1929.689744567871,
           1921.6734360914963,
           2008.4007131136382,
-          1172.6532446997505
+          1172.6532446997505,
+          1844.847546032497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11532,6 +11573,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -11822,7 +11864,8 @@ window.BENCHMARK_DATA = {
           22305.589117867607,
           21598.70477294922,
           22617.931099446614,
-          10820.529170696553
+          10820.529170696553,
+          20183.834061686197
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12095,6 +12138,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -13702,6 +13746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -13969,7 +14019,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -14240,7 +14291,8 @@ window.BENCHMARK_DATA = {
           769.4332710412832,
           752.3122759546552,
           784.7278814996992,
-          416.3058612530048
+          416.3058612530048,
+          744.2893003736224
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14379,6 +14431,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -14795,7 +14848,8 @@ window.BENCHMARK_DATA = {
           1376.347441736857,
           1310.5273795809064,
           1448.4601662953694,
-          751.9316567693438
+          751.9316567693438,
+          1323.9517800649007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14807,6 +14861,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -16675,6 +16730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
         "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
+      },
+      {
+        "sha": "fc5718b5269b22db01e97e3cbe3538e3d0e89639",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
+        "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
       }
     ],
     "labels": [
@@ -16942,7 +17003,8 @@ window.BENCHMARK_DATA = {
       "2a62ad86",
       "168708ba",
       "165d849c",
-      "8d553589"
+      "8d553589",
+      "fc5718b5"
     ],
     "datasets": [
       {
@@ -17213,7 +17275,8 @@ window.BENCHMARK_DATA = {
           1320.7541573842366,
           1320.1648106208215,
           1353.7195482987624,
-          771.4838317235311
+          771.4838317235311,
+          1380.9216418947492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17383,6 +17446,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -17768,7 +17832,8 @@ window.BENCHMARK_DATA = {
           797.1925653457641,
           749.7061886106219,
           846.4234142303467,
-          444.8477056821187
+          444.8477056821187,
+          730.1758700052898
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17780,6 +17845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
