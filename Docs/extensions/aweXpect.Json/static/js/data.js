@@ -1650,6 +1650,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -1927,7 +1933,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -2208,7 +2215,8 @@ window.BENCHMARK_DATA = {
           1570.2913469587054,
           1147.9334779103597,
           1558.9935485839844,
-          2044.222337849935
+          2044.222337849935,
+          1134.3165335337321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2354,6 +2362,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2783,7 +2792,8 @@ window.BENCHMARK_DATA = {
           10612.792774454752,
           7420.806349618094,
           11256.454472859701,
-          16293.80202331543
+          16293.80202331543,
+          7451.430527823312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2795,6 +2805,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4733,6 +4744,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -5010,7 +5027,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -5291,7 +5309,8 @@ window.BENCHMARK_DATA = {
           1238.1155279795328,
           899.6161713233361,
           1234.330842238206,
-          1692.2565250396729
+          1692.2565250396729,
+          954.521265574864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5437,6 +5456,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -5866,7 +5886,8 @@ window.BENCHMARK_DATA = {
           10309.240846761068,
           6374.6357518514,
           10079.915719604493,
-          14653.554254150391
+          14653.554254150391,
+          6543.303045145671
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5878,6 +5899,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -7756,6 +7778,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -8023,7 +8051,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -8294,7 +8323,8 @@ window.BENCHMARK_DATA = {
           3977.255155436198,
           3082.023422241211,
           3930.1094044276647,
-          5290.362225850423
+          5290.362225850423,
+          2938.488005418044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8477,6 +8507,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -8849,7 +8880,8 @@ window.BENCHMARK_DATA = {
           28852.307739257812,
           20037.015616280692,
           29306.658829752603,
-          47537.67222377232
+          47537.67222377232,
+          19194.416257731118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9125,6 +9157,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -10729,6 +10762,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -10996,7 +11035,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -11267,7 +11307,8 @@ window.BENCHMARK_DATA = {
           7342.673422749837,
           5257.23058013916,
           7429.273041945237,
-          9510.399306233723
+          9510.399306233723,
+          5034.290286254883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11403,6 +11444,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -11822,7 +11864,8 @@ window.BENCHMARK_DATA = {
           203509.84056803386,
           149832.75021972656,
           209714.65994466146,
-          302312.2728841146
+          302312.2728841146,
+          136210.05950055804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12085,6 +12128,7 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521573,
+          521594,
           521594,
           521594,
           521594,
@@ -13702,6 +13746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -13969,7 +14019,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -14240,7 +14291,8 @@ window.BENCHMARK_DATA = {
           2225.2072611490885,
           1618.5895068828877,
           2240.683801269531,
-          2856.5434496743337
+          2856.5434496743337,
+          1595.8993740081787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14426,6 +14478,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -14795,7 +14848,8 @@ window.BENCHMARK_DATA = {
           1456.7714762006487,
           1102.2807806559972,
           1480.386786680955,
-          2028.0453326885518
+          2028.0453326885518,
+          1047.1374631609235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14807,6 +14861,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -16675,6 +16730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -16942,7 +17003,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -17213,7 +17275,8 @@ window.BENCHMARK_DATA = {
           2195.7234739576065,
           1590.5607888148381,
           2188.2631207784016,
-          2985.4228525797525
+          2985.4228525797525,
+          1510.9683960505895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17396,6 +17459,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -17768,7 +17832,8 @@ window.BENCHMARK_DATA = {
           1371.4680249140813,
           976.8218225751605,
           1427.9515432993571,
-          1846.5335781097413
+          1846.5335781097413,
+          931.0047501155308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17780,6 +17845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -18946,6 +19012,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -19096,7 +19168,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -19250,7 +19323,8 @@ window.BENCHMARK_DATA = {
           1727.4072344853328,
           1406.6673278808594,
           1785.3433166231428,
-          2270.614687992976
+          2270.614687992976,
+          1241.0851143428258
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19316,6 +19390,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -19571,7 +19646,8 @@ window.BENCHMARK_DATA = {
           912.6859992980957,
           636.4568579355875,
           983.1928201039632,
-          1152.8600208282471
+          1152.8600208282471,
+          566.6257741791861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19583,6 +19659,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -20632,6 +20709,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -20782,7 +20865,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -20936,7 +21020,8 @@ window.BENCHMARK_DATA = {
           2308.417560831706,
           1672.5219985521758,
           2279.2019411722817,
-          3170.7550375802175
+          3170.7550375802175,
+          1722.6863220759801
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20986,6 +21071,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -21257,7 +21343,8 @@ window.BENCHMARK_DATA = {
           1044.5883081876314,
           692.1783562440139,
           1091.299385770162,
-          1327.740975443522
+          1327.740975443522,
+          715.7243613515582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21269,6 +21356,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -21976,6 +22064,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -22069,7 +22163,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -22166,7 +22261,8 @@ window.BENCHMARK_DATA = {
           128654.12287248884,
           95319.93937988281,
           127915.18600027902,
-          162025.28230794272
+          162025.28230794272,
+          97980.57821219308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22178,6 +22274,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -22373,7 +22470,8 @@ window.BENCHMARK_DATA = {
           153259.51948242186,
           107020.64623151507,
           151017.21895345053,
-          196843.08372395832
+          196843.08372395832,
+          109231.77488490513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22475,7 +22573,8 @@ window.BENCHMARK_DATA = {
           266950,
           266936,
           266950,
-          266950
+          266950,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23035,6 +23134,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
@@ -23128,7 +23233,8 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
@@ -23225,7 +23331,8 @@ window.BENCHMARK_DATA = {
           2116.6854934692383,
           1427.6305626460485,
           2089.269470469157,
-          2808.259702242338
+          2808.259702242338,
+          1416.9800286974225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23237,6 +23344,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -23432,7 +23540,8 @@ window.BENCHMARK_DATA = {
           1504.9581300099692,
           1020.6364558293269,
           1479.5422579901558,
-          1858.6468039921351
+          1858.6468039921351,
+          1003.5764211018881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23444,6 +23553,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
