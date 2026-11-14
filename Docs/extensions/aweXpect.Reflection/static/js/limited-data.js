@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          440.08081589426314,
           367.9654962833111,
           789.3136967250279,
           740.8520370483399,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           569.9576317469279,
           773.3925064722697,
           763.731309445699,
-          399.85945279781635
+          399.85945279781635,
+          723.69710790194
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          549.0138045719692,
           488.2764450953557,
           766.8016492979867,
           884.9982870737712,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           594.1241771697999,
           931.9162985483805,
           795.3068776811872,
-          465.143413734436
+          465.143413734436,
+          906.3112679799398
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          63.46543858846029,
           54.331290061984745,
           100.78213461807796,
           118.15572428703308,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           78.08544704119365,
           113.9825434409655,
           114.49424308935801,
-          50.21888511975606
+          50.21888511975606,
+          100.90533879170052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          136.06614362398784,
           119.07295257704598,
           223.265803082784,
           200.56299683025904,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           169.2193554242452,
           215.56731219291686,
           238.16324259440105,
-          109.9498834212621
+          109.9498834212621,
+          220.5630968729655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1001.8455847331455,
           912.5701546986897,
           1401.115849685669,
           1879.6018085479736,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1064.2950644175212,
           1944.6441911061604,
           1428.819529056549,
-          863.3431650161743
+          863.3431650161743,
+          1874.1453161875406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          893.5853110722134,
           794.5334840502057,
           1288.7274579366049,
           1420.8492529551188,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           970.651065826416,
           1476.6886912027994,
           1354.9304846354894,
-          745.4747371037801
+          745.4747371037801,
+          1618.4894975026448
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1952,
           1864,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1952,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
       {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1457.2568909962972,
           1409.3922992706298,
           2106.1402339935303,
           2811.9830202375138,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1650.4411677042642,
           2830.166139057704,
           2177.4503362019855,
-          1284.0865934916906
+          1284.0865934916906,
+          2833.2230796813965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2342.1386190141952,
           2124.65303700765,
           3256.571998009315,
           3849.1429868425644,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2597.0137135823566,
           3864.7411962655874,
           3456.384186063494,
-          1969.9750873859111
+          1969.9750873859111,
+          3923.067861557007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3980,
           3981,
           3977,
           3980,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           3977,
           3980,
           3977,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
       {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          205.00731192032495,
           181.75381722817053,
           340.88693211873374,
           387.34843565622964,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           265.0044240315755,
           420.4692688306173,
           348.8687169710795,
-          164.98405090400152
+          164.98405090400152,
+          396.78811791737877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1433.0439879099529,
           1257.7810283660888,
           1943.3084506988525,
           2295.225505320231,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1524.740849049886,
           2335.81439944676,
           2007.7145393371582,
-          1171.7686840057372
+          1171.7686840057372,
+          2237.748608525594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
-        "message": "docs: lead the v3 migration with Native AOT and complete the v4 changelog (#2162)"
-      },
-      {
         "sha": "9c72fda89e2f7b4c6f6eb5101a9d4656d6a6d2c6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 17:23:32 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
       "b53d74cc",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1610.8632598876952,
           1398.0628689357213,
           2142.81512260437,
           2866.4763259887695,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1635.3922801971435,
           2904.6009494236537,
           2243.4693682352704,
-          1343.5030736923218
+          1343.5030736923218,
+          2855.3971405029297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          180359.81563626803,
           168473.62384033203,
           247157.41311848958,
           278892.3260323661,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           187335.1835186298,
           281669.4416341146,
           257262.45834585337,
-          167144.44462890626
+          167144.44462890626,
+          302272.15218098956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17574,
           17528,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17528,
           17727,
           17528,
-          17574
+          17574,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
