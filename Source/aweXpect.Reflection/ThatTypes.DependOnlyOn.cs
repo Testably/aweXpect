@@ -183,7 +183,12 @@ public static partial class ThatTypes
 	/// <param name="isMetWithViolations">
 	///     Whether a type with dependencies outside the allowed set meets the expectation, instead of one without.
 	/// </param>
-	private abstract class DependencyViolationsExpectation(bool isMetWithViolations) : ItemExpectation<Type>
+	/// <param name="relation">
+	///     The text between a listed type and its violations.
+	/// </param>
+	private abstract class DependencyViolationsExpectation(
+		bool isMetWithViolations,
+		string relation = " depends on ") : ItemExpectation<Type>
 	{
 		private readonly Dictionary<Type, IReadOnlyList<string>> _violations = new();
 
@@ -206,7 +211,7 @@ public static partial class ThatTypes
 
 		public override string FormatItems(IEnumerable<Type?> items, FormattingOptions options)
 			=> DependencyViolationRenderer.FormatItemsWithDisallowedDependencies(items.ToList(), _violations,
-				options.TotalItemCount);
+				options.TotalItemCount, relation);
 	}
 
 	private sealed class DependOnlyOnExpectation(IReadOnlyOptionsHolder<NamespaceDependencyOptions> options)

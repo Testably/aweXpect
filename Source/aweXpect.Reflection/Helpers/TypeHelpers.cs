@@ -1201,10 +1201,20 @@ internal static class TypeHelpers
 	/// </remarks>
 	internal static IReadOnlyList<string> GetDependencyTypeSetViolations(
 		this Type type, ResolvedTypeSet allowed)
+		=> FormatTypeNames(type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
+			=> IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes)));
+
+	/// <summary>
+	///     Formats the distinct <paramref name="types" /> as a sorted list of names.
+	/// </summary>
+	/// <remarks>
+	///     Distinct types sharing a formatted name (the same simple name in different namespaces) are qualified by
+	///     their namespace, so they do not collapse into one indistinguishable entry.
+	/// </remarks>
+	internal static IReadOnlyList<string> FormatTypeNames(IEnumerable<Type> types)
 	{
 		List<string> violations = [];
-		foreach (IGrouping<string, Type> sameName in type.GetDependencyViolations((dependency, ownNamespace, excludedPrefixes)
-				         => IsDependencyTypeSetViolation(dependency, ownNamespace, allowed, excludedPrefixes))
+		foreach (IGrouping<string, Type> sameName in types
 			         .GroupBy(dependency => Formatter.Format(dependency), StringComparer.Ordinal))
 		{
 			Type[] violators = sameName.ToArray();

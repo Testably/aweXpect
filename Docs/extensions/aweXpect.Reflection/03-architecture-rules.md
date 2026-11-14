@@ -6,7 +6,7 @@ description: Restrict the dependencies between types and namespaces, detect depe
 
 An architecture rule restricts which other types a type may reference: its *dependencies*.
 [Type dependencies](#type-dependencies) introduces the dependency filters and expectations (including
-[dependency cycles](#dependency-cycles)), and [Layers as type selections](#layers-as-type-selections) shows
+[dependency cycles](#dependency-cycles) and [allowed users](#allowed-users)), and [Layers as type selections](#layers-as-type-selections) shows
 how to combine them into a full architecture test suite. The examples use a music store application with the layers
 `MusicStore.Api`, `MusicStore.Application`, `MusicStore.Domain`, `MusicStore.Data` and `MusicStore.Infrastructure`.
 
@@ -22,6 +22,7 @@ The dependency filters and expectations follow the familiar filter/expect pairin
 | does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`           | `.DoNotDependOn<T>()`              |
 | depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`          | `.DependOnlyOn("x", …)`            |
 | has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
+| is only used by set          |                                         | `.IsOnlyUsedBy(set, …).Within(…)` | `.AreOnlyUsedBy(set, …).Within(…)` |
 
 ```csharp
 // The API layer must not reference the data layer
@@ -219,6 +220,35 @@ sharpens cycle detection: body-level references it surfaces can complete a cycle
 cannot see.
 
 </details>
+
+### Allowed users
+
+The rules above restrict what a type uses. To restrict which types may use a type instead, pass the allowed users and, with `Within(…)`, the types that are searched for users:
+
+```csharp
+// Only the infrastructure layer may use the SqlTrackStore
+await That(typeof(SqlTrackStore))
+    .IsOnlyUsedBy(Types.InNamespace("MusicStore.Infrastructure"))
+    .Within(In.AssemblyContaining<SqlTrackStore>().Types());
+
+// Only the application layer may use the data layer, whose types may use each other
+await That(Types.InNamespace("MusicStore.Data"))
+    .AreOnlyUsedBy(Types.InNamespace("MusicStore.Application"), Types.InNamespace("MusicStore.Data"))
+    .Within(In.AssemblyContaining<SqlTrackStore>().Types());
+```
+
+The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type is checked on its own, so add the collection to the allowed users when its types may use each other.
+
+```text title="Failure message"
+Expected that typeof(SqlTrackStore)
+is only used by types within namespace "MusicStore.Infrastructure" in all loaded assemblies within types in assembly containing type SqlTrackStore,
+but it had disallowed users
+
+Disallowed users:
+[
+  "PlaylistService"
+]
+```
 
 ## Layers as type selections
 
