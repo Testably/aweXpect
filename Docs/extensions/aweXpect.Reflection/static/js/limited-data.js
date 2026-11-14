@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
-      {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          778.6741639545986,
           768.4333534921918,
           750.1937887191773,
           750.2949500450721,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           379.0568346977234,
           560.1607680638631,
           593.7585604985555,
-          374.60401463508606
+          374.60401463508606,
+          569.9576317469279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          893.2202642304557,
           922.8794352849325,
           926.1448739596775,
           940.5592269897461,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           467.07857887561505,
           577.1162441889445,
           623.709338256291,
-          544.1800476954534
+          544.1800476954534,
+          594.1241771697999
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
-      {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          109.15568711076465,
           106.37647270239316,
           107.44632012844086,
           102.15994429588318,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           51.157434753576915,
           76.86505236625672,
           82.9630701939265,
-          57.811078233378275
+          57.811078233378275,
+          78.08544704119365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          206.3067994594574,
           223.69465797742208,
           211.23951989809672,
           214.79105628331502,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           113.36640735183444,
           161.94069916407267,
           212.57035455703735,
-          127.66003028551738
+          127.66003028551738,
+          169.2193554242452
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
-      {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1876.4075479507446,
           1963.3264427185059,
           1930.8018651326497,
           1951.7897117614746,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           955.2302670796712,
           1058.467170579093,
           1132.2871823628743,
-          979.7774081911359
+          979.7774081911359,
+          1064.2950644175212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1411.9139096577962,
           1473.4784450531006,
           1478.3664371783916,
           1477.729181425912,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           799.8665278752645,
           971.2413299560546,
           1030.209217453003,
-          888.2832282384237
+          888.2832282384237,
+          970.651065826416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1763,7 +1763,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1953,
           1953,
-          1953,
           1864,
           1864,
           1953,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1864,
           1952,
           1952,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
       {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2778.2774145943777,
           2766.95658047994,
           2827.3336130777993,
           2815.7325673421224,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1261.3961221059164,
           1642.1485805511475,
           1718.897915976388,
-          1483.3434721628826
+          1483.3434721628826,
+          1650.4411677042642
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3791.1025649479457,
           3884.545775277274,
           3894.122015146109,
           3887.8210225786484,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           1984.990242276873,
           2476.274577585856,
           2657.8738121032716,
-          2320.450394494193
+          2320.450394494193,
+          2597.0137135823566
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3980,
           3980,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3977,
           3977,
-          3980
+          3980,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
       {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          371.64741965702603,
           393.74826570919583,
           389.73816193853105,
           374.5209349314372,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           181.0158645947774,
           248.82417233784994,
           274.4854161189153,
-          199.42380383809407
+          199.42380383809407,
+          265.0044240315755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2254.7178391047887,
           2351.851838684082,
           2388.0531916300456,
           2290.0378039042157,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1298.6188613891602,
           1406.8340073994227,
           1591.5285443623861,
-          1379.9629450577957
+          1379.9629450577957,
+          1524.740849049886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "77e01f4be5fa0241c893a7dc47a134573bf43e61",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sat Oct 31 17:47:24 2026 \u002B0100",
-        "message": "docs: add a troubleshooting page (#2158)"
-      },
-      {
         "sha": "68753ad619945bec43232cb9c94b7061e9ce6ee6",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 12:24:05 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 18:54:20 2026 \u002B0100",
         "message": "feat: keep the concrete collection type after \u0060HasCount\u0060 (#2233)"
+      },
+      {
+        "sha": "fdd52f8b55e25444b8794550ad7a51cd14d9a30d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 09:07:12 2026 \u002B0100",
+        "message": "chore: remove the aweXpect-only IsOneOf within tolerance benchmark (#2234)"
       }
     ],
     "labels": [
-      "77e01f4b",
       "68753ad6",
       "7c05d459",
       "3f5cc07d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "d317d1a7",
       "f1f1f74b",
       "e64df614",
-      "b064da6f"
+      "b064da6f",
+      "fdd52f8b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2826.5323273794993,
           3028.263121287028,
           2990.0413884480795,
           3195.6755187988283,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1445.9999806540352,
           1650.2680273691813,
           1696.9582391466413,
-          1545.6864036832537
+          1545.6864036832537,
+          1635.3922801971435
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          281988.1807617188,
           281483.5877779447,
           279352.5719075521,
           281659.9239257813,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           168877.45582682293,
           190686.57060546876,
           196027.99731445312,
-          171552.35443987165
+          171552.35443987165,
+          187335.1835186298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17577,
           17835,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17896,
           17528,
           17528,
-          17576
+          17576,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
