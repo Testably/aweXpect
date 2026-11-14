@@ -109,7 +109,7 @@ public static class ServiceCollectionFilters
 
     private sealed class RegisteredInFilter(IServiceCollection services) : IFilter<Type>
     {
-        private readonly HashSet<Type> _serviceTypes = new(services.Select(descriptor => descriptor.ServiceType));
+        private readonly HashSet<Type> _serviceTypes = new(services.Select(s => s.ServiceType));
 
         public ValueTask<bool> Applies(Type value, CancellationToken cancellationToken)
             => new(_serviceTypes.Contains(value));
