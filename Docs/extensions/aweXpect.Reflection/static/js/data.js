@@ -1638,6 +1638,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -1913,7 +1919,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -2192,7 +2199,8 @@ window.BENCHMARK_DATA = {
           569.9576317469279,
           773.3925064722697,
           763.731309445699,
-          399.85945279781635
+          399.85945279781635,
+          723.69710790194
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2416,6 +2424,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2763,7 +2772,8 @@ window.BENCHMARK_DATA = {
           594.1241771697999,
           931.9162985483805,
           795.3068776811872,
-          465.143413734436
+          465.143413734436,
+          906.3112679799398
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2775,6 +2785,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4699,6 +4710,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -4974,7 +4991,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -5253,7 +5271,8 @@ window.BENCHMARK_DATA = {
           78.08544704119365,
           113.9825434409655,
           114.49424308935801,
-          50.21888511975606
+          50.21888511975606,
+          100.90533879170052
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5400,6 +5419,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5824,7 +5844,8 @@ window.BENCHMARK_DATA = {
           169.2193554242452,
           215.56731219291686,
           238.16324259440105,
-          109.9498834212621
+          109.9498834212621,
+          220.5630968729655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5836,6 +5857,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7760,6 +7782,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -8035,7 +8063,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -8314,7 +8343,8 @@ window.BENCHMARK_DATA = {
           1064.2950644175212,
           1944.6441911061604,
           1428.819529056549,
-          863.3431650161743
+          863.3431650161743,
+          1874.1453161875406
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8509,6 +8539,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8885,7 +8916,8 @@ window.BENCHMARK_DATA = {
           970.651065826416,
           1476.6886912027994,
           1354.9304846354894,
-          745.4747371037801
+          745.4747371037801,
+          1618.4894975026448
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9169,6 +9201,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1952,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -10761,6 +10794,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -11026,7 +11065,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -11295,7 +11335,8 @@ window.BENCHMARK_DATA = {
           1650.4411677042642,
           2830.166139057704,
           2177.4503362019855,
-          1284.0865934916906
+          1284.0865934916906,
+          2833.2230796813965
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11480,6 +11521,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11846,7 +11888,8 @@ window.BENCHMARK_DATA = {
           2597.0137135823566,
           3864.7411962655874,
           3456.384186063494,
-          1969.9750873859111
+          1969.9750873859111,
+          3923.067861557007
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12120,6 +12163,7 @@ window.BENCHMARK_DATA = {
           3977,
           3980,
           3977,
+          3980,
           3980
         ],
         "borderColor": "#FF671B",
@@ -13712,6 +13756,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -13977,7 +14027,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -14246,7 +14297,8 @@ window.BENCHMARK_DATA = {
           265.0044240315755,
           420.4692688306173,
           348.8687169710795,
-          164.98405090400152
+          164.98405090400152,
+          396.78811791737877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14383,6 +14435,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14797,7 +14850,8 @@ window.BENCHMARK_DATA = {
           1524.740849049886,
           2335.81439944676,
           2007.7145393371582,
-          1171.7686840057372
+          1171.7686840057372,
+          2237.748608525594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14809,6 +14863,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -16663,6 +16718,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
@@ -16928,7 +16989,8 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
@@ -17197,7 +17259,8 @@ window.BENCHMARK_DATA = {
           1635.3922801971435,
           2904.6009494236537,
           2243.4693682352704,
-          1343.5030736923218
+          1343.5030736923218,
+          2855.3971405029297
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17411,6 +17474,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17748,7 +17812,8 @@ window.BENCHMARK_DATA = {
           187335.1835186298,
           281669.4416341146,
           257262.45834585337,
-          167144.44462890626
+          167144.44462890626,
+          302272.15218098956
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18022,7 +18087,8 @@ window.BENCHMARK_DATA = {
           17528,
           17727,
           17528,
-          17574
+          17574,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
