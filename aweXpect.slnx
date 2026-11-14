@@ -14,6 +14,7 @@
   <Folder Name="/Tests/">
     <Project Path="Tests/aweXpect.Analyzers.Tests/aweXpect.Analyzers.Tests.csproj" />
     <Project Path="Tests/aweXpect.Api.Tests/aweXpect.Api.Tests.csproj" />
+    <Project Path="Tests/aweXpect.Architecture.Tests/aweXpect.Architecture.Tests.csproj" />
     <Project Path="Tests/aweXpect.Core.Tests/aweXpect.Core.Tests.csproj" />
     <Project Path="Tests/aweXpect.Docs.Tests/aweXpect.Docs.Tests.csproj" />
     <Project Path="Tests/aweXpect.Generators.Tests/aweXpect.Generators.Tests.csproj" />

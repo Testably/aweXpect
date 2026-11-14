@@ -11,6 +11,7 @@
 | `Tests/aweXpect.Analyzers.Tests` | TUnit, `dotnet run` | `net8.0` | Analyzers, code fixers and the `IsNotNullSuppressor` |
 | `Tests/aweXpect.Docs.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Compiles the code blocks in `Docs/pages`, checks that the API is documented |
 | `Tests/aweXpect.Api.Tests` | TUnit, `dotnet run` | `net8.0` | Public API snapshots of all packages per target framework |
+| `Tests/aweXpect.Architecture.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Rules for the public API of all packages, checked with aweXpect.Reflection on each of their builds |
 | `Tests/aweXpect.<Extension>.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | The expectations of an extension package; some have an `.Internal.Tests` project as well |
 | `Tests/aweXpect.Snapshots.*.Tests` | TUnit, `dotnet run` | `net48;net8.0;net10.0` | Areas of the snapshot packages that need a test project of their own; the `*.Fixture` projects are libraries they read |
 | `Tests/Frameworks/*` | per framework | `net10.0` (NUnit: `net8.0`) | Integration with MSTest, NUnit, xUnit, TUnit and the fallback without a framework |
@@ -26,7 +27,7 @@
 - `[GuaranteesNotNull]` markings: `aweXpect.Analyzers.Tests` (`IsNotNullSuppressorTests` asserts which expectations
   suppress CS8602) and `GuaranteesNotNullTests` in `aweXpect.Tests`.
 - Generators: `aweXpect.Generators.Tests`.
-- Public API: `aweXpect.Api.Tests`.
+- Public API: `aweXpect.Api.Tests` and `aweXpect.Architecture.Tests`.
 - Reflection, metadata registration or trimming: `./build.ps1 AotSmokeTests`.
 - `Docs/**`: the slow tests of `aweXpect.Docs.Tests`.
 
