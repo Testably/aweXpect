@@ -63,7 +63,8 @@ private sealed class HasTitleConstraint(
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("has title ").Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
+        => stringBuilder.Append("has title ")
+            .Append(options.Value.GetExpectation(expected, ExpectationGrammars.None));
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
@@ -186,7 +187,8 @@ private sealed class IsTitledConstraint(string it, ExpectationGrammars grammars,
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is titled ").Append(Options.GetExpectation(expected, ExpectationGrammars.None));
+        => stringBuilder.Append("is titled ")
+            .Append(Options.GetExpectation(expected, ExpectationGrammars.None));
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
     {
@@ -195,7 +197,8 @@ private sealed class IsTitledConstraint(string it, ExpectationGrammars grammars,
     }
 
     protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-        => stringBuilder.Append("is not titled ").Append(Options.GetExpectation(expected, ExpectationGrammars.None));
+        => stringBuilder.Append("is not titled ")
+            .Append(Options.GetExpectation(expected, ExpectationGrammars.None));
 }
 ```
 

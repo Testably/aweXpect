@@ -18,6 +18,16 @@ internal sealed record CodeBlock(string Page, int Line, string Code)
 	///     except the ones marked with <see cref="NoCompile" />.
 	/// </summary>
 	public static List<CodeBlock> Extract(string page, string[] lines)
+		=> Extract(page, lines, false);
+
+	/// <summary>
+	///     Extracts all <c>```csharp</c> blocks from the <paramref name="lines" /> of the <paramref name="page" />,
+	///     including the ones marked with <see cref="NoCompile" />.
+	/// </summary>
+	public static List<CodeBlock> ExtractAll(string page, string[] lines)
+		=> Extract(page, lines, true);
+
+	private static List<CodeBlock> Extract(string page, string[] lines, bool includeNoCompile)
 	{
 		List<CodeBlock> blocks = [];
 		for (int i = 0; i < lines.Length; i++)
@@ -35,7 +45,7 @@ internal sealed record CodeBlock(string Page, int Line, string Code)
 				i++;
 			} while (i < lines.Length && lines[i].Trim() != "```");
 
-			if (info[0] == "csharp" && !info.Contains(NoCompile))
+			if (info[0] == "csharp" && (includeNoCompile || !info.Contains(NoCompile)))
 			{
 				blocks.Add(new CodeBlock(page, start + 1, string.Join("\n", lines, start, i - start)));
 			}

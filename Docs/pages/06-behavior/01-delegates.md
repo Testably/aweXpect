@@ -333,7 +333,7 @@ ArgumentException argumentException = new ArgumentNullException("album");
 await That(exception).HasMessage("Yesterday");
 await That(exception).HasHResult().GreaterThan(12340);
 await That(exception).HasInner<CustomException>(inner => inner.HasMessage("Let It Be"));
-await That(exception).HasRecursiveInnerExceptions(innerExceptions => innerExceptions.All().Are<CustomException>());
+await That(exception).HasRecursiveInnerExceptions(exceptions => exceptions.All().Are<CustomException>());
 await That(argumentException).HasParamName("album");
 ```
 

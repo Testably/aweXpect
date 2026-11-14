@@ -30,7 +30,8 @@ await That(xml).IsValidXml();
 await That(xml).IsEqualTo("""<track artist="The Beatles" title="Let It Be"></track>""").AsXml();
 
 // verify that an XElement or XDocument contains the expected XML, ignoring additional nodes
-XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
+XElement track = XElement.Parse(
+    """<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
 await That(track).Matches("""<track title="Let It Be"><genre>rock</genre></track>""");
 
 // verify single attributes, child elements and their values

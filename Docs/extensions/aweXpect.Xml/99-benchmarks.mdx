@@ -75,7 +75,8 @@ await That(_order).MatchesExactly(_reversedOrder, o => o.IgnoringElementOrder())
 
 ```csharp title="FluentAssertions"
 _order.Elements("item").Select(item => item.Attribute("sku")!.Value).Should()
-    .BeEquivalentTo(XElement.Parse(_reversedOrder).Elements("item").Select(item => item.Attribute("sku")!.Value));
+    .BeEquivalentTo(XElement.Parse(_reversedOrder).Elements("item")
+        .Select(item => item.Attribute("sku")!.Value));
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.ElementOrder.cs)

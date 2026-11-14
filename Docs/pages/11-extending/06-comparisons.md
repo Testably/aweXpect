@@ -81,7 +81,10 @@ private sealed class ByTitleMatchType<TElement>() : ObjectMatchType<TElement>("B
 
         public override string GetFailure(string it, ExpectationGrammars grammars, TElement? actual,
             Track expected, MatchResult result, string? indentation)
-            => $"{it}{grammars.SubjectVerb(it, " was", " were")} titled {Formatter.Format((actual as Track)?.Title)}";
+        {
+            string? title = (actual as Track)?.Title;
+            return $"{it}{grammars.SubjectVerb(it, " was", " were")} titled {Formatter.Format(title)}";
+        }
     }
 }
 ```
@@ -261,8 +264,9 @@ public class TitleResult(IThat<Track?> subject)
     Action<string?, string>? IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Validation
         => null;
 
-    StringEqualityResult<Track, IThat<Track?>> IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Compare(
-        StringPropertyComparison comparison)
+    StringEqualityResult<Track, IThat<Track?>>
+        IStringAffixPropertyResult<StringEqualityResult<Track, IThat<Track?>>>.Compare(
+            StringPropertyComparison comparison)
         => new(subject.Get().ExpectationBuilder.AddConstraint(comparison,
                 static (c, it, grammars) => new HasTitleConstraint(it, grammars, c)),
             subject,

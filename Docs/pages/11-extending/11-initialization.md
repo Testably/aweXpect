@@ -76,8 +76,9 @@ namespace MyTests
             MyTestContext? context = MyTestContext.Current;
             currentTest = context is null
                 ? null
-                : new RunningTest(new TestIdentity(context.ClassName, context.ClassArguments, context.MethodName,
-                    context.Arguments),
+                : new RunningTest(
+                    new TestIdentity(context.ClassName, context.ClassArguments,
+                        context.MethodName, context.Arguments),
                     context.Id, context.DisplayName, context.RetryCount);
             return currentTest is not null;
         }

@@ -347,14 +347,16 @@ private sealed class HasTitlesConstraint(
         }
 
         IEnumerable<string?> titles = context.UseMaterializedEnumerable(actual).Select(track => track.Title);
+        StringEqualityOptions itemOptions = options.Value.ForEvaluation(context, cancellationToken);
         (Outcome, _failure) = await matchOptions.Value.GetCollectionMatcher<string?, string?>(expected)
-            .VerifyItems(It, titles, options.Value.ForEvaluation(context, cancellationToken), cancellationToken);
+            .VerifyItems(It, titles, itemOptions, cancellationToken);
         return this;
     }
 
     protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append("has titles that ").Append(matchOptions.Value.GetExpectation(
-            Formatter.Format(expected, FormattingOptions.SingleLine) + options.Value, ExpectationGrammars.Plural));
+            Formatter.Format(expected, FormattingOptions.SingleLine) + options.Value,
+            ExpectationGrammars.Plural));
 
     protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
         => stringBuilder.Append(_failure);

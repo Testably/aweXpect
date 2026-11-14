@@ -16,7 +16,8 @@ public sealed class FolderSnapshotStore(string root) : SnapshotStore
         return new ValueTask<byte[]?>(File.Exists(path) ? File.ReadAllBytes(path) : null);
     }
 
-    public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual, CancellationToken cancellationToken)
+    public override ValueTask RecordMismatchAsync(SnapshotId id, byte[] actual,
+        CancellationToken cancellationToken)
     {
         string path = GetPath(id, "pending");
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);

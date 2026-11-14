@@ -11,8 +11,10 @@ public sealed class DocsPagesTests
 {
 	private static readonly string ProjectDirectory = GetProjectDirectory();
 
-	private static readonly string PagesDirectory =
-		Path.GetFullPath(Path.Combine(ProjectDirectory, "..", "..", "Docs", "pages"));
+	private static readonly string DocsDirectory =
+		Path.GetFullPath(Path.Combine(ProjectDirectory, "..", "..", "Docs"));
+
+	private static readonly string PagesDirectory = Path.Combine(DocsDirectory, "pages");
 
 	private static readonly string ScaffoldDirectory = Path.Combine(ProjectDirectory, "Scaffold");
 
@@ -27,6 +29,23 @@ public sealed class DocsPagesTests
 #else
 		return AllPages();
 #endif
+	}
+
+	[Test]
+	public void CodeBlockLines_ShouldNotBeLongerThan110Characters()
+	{
+		List<string> longLines = new[] { "pages", "extensions", }
+			.SelectMany(folder => MarkdownFiles(Path.Combine(DocsDirectory, folder))
+				.SelectMany(file => CodeBlock.ExtractAll($"Docs/{folder}/{file}",
+					File.ReadAllLines(Path.Combine(DocsDirectory, folder, file)))))
+			.SelectMany(block => block.Code.Split('\n')
+				.Select((line, index) => (block.Page, Line: block.Line + index, line.Length)))
+			.Where(line => line.Length > 110)
+			.Select(line => $"{line.Page}:{line.Line} has {line.Length} characters")
+			.ToList();
+
+		Fail.Unless(longLines.Count == 0, "The following lines of csharp code blocks are longer than 110 characters:" +
+		                                  Environment.NewLine + string.Join(Environment.NewLine, longLines));
 	}
 
 	[Test]
@@ -123,16 +142,19 @@ public sealed class DocsPagesTests
 	}
 
 	private static IEnumerable<string> AllPages()
-		=> Directory.EnumerateFiles(PagesDirectory, "*.*", SearchOption.AllDirectories)
-			.Where(path => path.EndsWith(".md") || path.EndsWith(".mdx"))
-			.Select(path => path.Substring(PagesDirectory.Length + 1).Replace('\\', '/'))
-			.OrderBy(page => page, StringComparer.Ordinal);
+		=> MarkdownFiles(PagesDirectory);
 
 	private static List<CodeBlock> ExtractCodeBlocks(string page)
 		=> CodeBlock.Extract($"Docs/pages/{page}", File.ReadAllLines(Path.Combine(PagesDirectory, page)));
 
 	private static string GetProjectDirectory([CallerFilePath] string path = "")
 		=> Path.GetDirectoryName(path)!;
+
+	private static IEnumerable<string> MarkdownFiles(string directory)
+		=> Directory.EnumerateFiles(directory, "*.*", SearchOption.AllDirectories)
+			.Where(path => path.EndsWith(".md") || path.EndsWith(".mdx"))
+			.Select(path => path.Substring(directory.Length + 1).Replace('\\', '/'))
+			.OrderBy(file => file, StringComparer.Ordinal);
 
 	private static IEnumerable<string> ScaffoldFiles(string page)
 	{

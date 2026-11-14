@@ -18,7 +18,8 @@ You can verify that an [`XElement`](https://learn.microsoft.com/en-us/dotnet/api
 expected XML:
 
 ```csharp
-XElement track = XElement.Parse("""<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
+XElement track = XElement.Parse(
+    """<track title="Let It Be" artist="The Beatles"><genre>rock</genre></track>""");
 
 await That(track).Matches("""<track title="Let It Be" />""");
 await That(track).MatchesExactly("""
