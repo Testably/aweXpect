@@ -25,8 +25,8 @@ public sealed class OnlyUsedByItemsResult<TType, TValue>
 	///     Also allows the items of the collection to use each other.
 	/// </summary>
 	/// <remarks>
-	///     All items of the collection are read before the first one is checked, so that a quantifier cannot complete
-	///     early.
+	///     The collection is read to its end before its first item is checked, also when a quantifier needs fewer
+	///     items, so an endless collection never completes and an exception of the collection fails the expectation.
 	/// </remarks>
 	public OnlyUsedByItemsResult<TType, TValue> OrByEachOther()
 	{

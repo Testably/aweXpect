@@ -18,6 +18,29 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Store
 	{
 		public CacheStore<int>? Root { get; set; }
 	}
+
+	public class NestingStore
+	{
+		public Entry? First { get; set; }
+
+		public class Entry
+		{
+			public NestingStore? Owner { get; set; }
+
+			public class Detail
+			{
+				public NestingStore? Root { get; set; }
+				public LinkTarget? Target { get; set; }
+			}
+		}
+	}
+
+	public class LinkStore<T>
+	{
+		public LinkTarget? Target { get; set; }
+	}
+
+	public class LinkTarget;
 }
 
 namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Infrastructure

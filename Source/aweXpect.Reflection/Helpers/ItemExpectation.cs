@@ -28,17 +28,19 @@ internal abstract class ItemExpectation<TItem>
 
 	/// <summary>
 	///     Whether <see cref="IsMatch" /> needs all items of the collection, which <see cref="OnAllItems" /> receives
-	///     before the first item is checked.
+	///     before the first item that is not <see langword="null" /> is checked.
 	/// </summary>
 	/// <remarks>
 	///     The items are read from the sequence that the evaluation shares, so the collection is still read only once,
-	///     but to its end, also when a quantifier could complete early.
+	///     but to its end: an endless collection never completes and an exception of the collection fails the
+	///     expectation, also when a quantifier would have completed before. The value is read once per evaluation,
+	///     after <see cref="OnEvaluating" />.
 	/// </remarks>
 	public virtual bool NeedsAllItems => false;
 
 	/// <summary>
-	///     Receives the items of the collection that are not <see langword="null" />, before the first item is checked,
-	///     when <see cref="NeedsAllItems" /> is set.
+	///     Receives the items of the collection that are not <see langword="null" />, before the first of them is
+	///     checked, when <see cref="NeedsAllItems" /> is set.
 	/// </summary>
 	public virtual void OnAllItems(IReadOnlyCollection<TItem> items)
 	{

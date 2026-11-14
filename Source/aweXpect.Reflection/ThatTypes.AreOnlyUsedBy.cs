@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ public static partial class ThatTypes
 	///     union of the allowed collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it) must not depend on an item. A generic type definition as item
 	///     is also used by a dependency on any construction of it, and any construction of the same generic type
-	///     definition counts as the item itself. Each item may only use itself, unless
+	///     definition and any type nested in the item counts as the item itself. Each item may only use itself, unless
 	///     <see cref="OnlyUsedByItemsResult{TType, TValue}.OrByEachOther" /> also allows the items to use each other.
 	///     Unlike <c>DependOnlyOn</c>, neither the own namespace nor framework types are allowed implicitly.
 	/// </remarks>
@@ -98,7 +97,7 @@ public static partial class ThatTypes
 		}
 
 		public override void OnAllItems(IReadOnlyCollection<Type> items)
-			=> _items = [.. items.Select(TypeHelpers.StripElementTypes),];
+			=> _items = ResolvedTypeUsages.CreateAlsoAllowed(items);
 
 		protected override async ValueTask<IReadOnlyList<string>> GetViolations(Type item,
 			CancellationToken cancellationToken)

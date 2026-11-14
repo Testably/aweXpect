@@ -26,7 +26,7 @@ public static partial class ThatType
 	///     union of the allowed collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it) must not depend on the type. A generic type definition as
 	///     subject is also used by a dependency on any construction of it, and any construction of the same generic
-	///     type definition counts as the type itself. Unlike <c>DependsOnlyOn</c>, neither the
+	///     type definition and any type nested in the subject counts as the type itself. Unlike <c>DependsOnlyOn</c>, neither the
 	///     own namespace nor framework types are allowed implicitly.
 	/// </remarks>
 	[GuaranteesNotNull]

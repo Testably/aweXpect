@@ -238,7 +238,7 @@ await That(Types.InNamespace("MusicStore.Data"))
     .OrByEachOther();
 ```
 
-The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
+The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type or through a type nested in it, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
 
 ```text title="Failure message"
 Expected that typeof(SqlTrackStore)

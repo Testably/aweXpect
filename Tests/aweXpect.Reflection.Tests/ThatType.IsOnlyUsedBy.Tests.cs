@@ -299,6 +299,46 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenTypeIsUsedByTheTypeItIsNestedIn_ShouldFail()
+			{
+				Type subject = typeof(NestingStore.Entry);
+
+				async Task Act()
+				{
+					await That(subject).IsOnlyUsedBy(Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is only used by types within namespace "{JobsNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but it had disallowed users
+
+					              Disallowed users:
+					              [
+					                "NestingStore"
+					              ]
+					              """)
+					.Because("only the types nested in the subject count as the subject itself");
+			}
+
+			[Test]
+			public async Task WhenTypeIsUsedByTypesNestedInIt_ShouldSucceed()
+			{
+				Type subject = typeof(NestingStore);
+
+				async Task Act()
+				{
+					await That(subject).IsOnlyUsedBy(Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the nested types Entry and Entry.Detail are part of the type itself");
+			}
+
+			[Test]
 			public async Task WhenTypeUsesAnotherConstructionOfItself_ShouldSucceed()
 			{
 				Type subject = typeof(CacheStore<int>);

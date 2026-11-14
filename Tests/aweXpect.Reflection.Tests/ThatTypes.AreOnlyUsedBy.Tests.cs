@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Infrastructure;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Store;
+using TUnit.Core.Exceptions;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 using aweXpect.Reflection.Tests.TestHelpers;
@@ -66,6 +68,50 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenCanceledWhileReadingTheItems_ShouldNotBeVerified()
+			{
+				using CancellationTokenSource cts = new();
+				int read = 0;
+
+				IEnumerable<Type?> Subject()
+				{
+					yield return typeof(TrackStore);
+					while (read < 1000)
+					{
+						read++;
+						cts.Cancel();
+						yield return typeof(UnusedStore);
+					}
+				}
+
+				IEnumerable<Type?> subject = Subject();
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther()
+						.WithCancellation(cts.Token);
+				}
+
+				await That(Act).Throws<InconclusiveTestException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or by each other, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but it could not be verified, because the evaluation was already canceled
+
+					              Collection:
+					              [
+					                TrackStore,
+					                UnusedStore,
+					                (… and maybe more)
+					              ]
+					              """);
+				await That(read).IsLessThan(10)
+					.Because("the cancellation is checked while the items are read");
+			}
+
+			[Test]
 			public async Task WhenCollectionContainsNull_ShouldFail()
 			{
 				IEnumerable<Type?> subject = [typeof(UnusedStore), null,];
@@ -86,6 +132,33 @@ public sealed partial class ThatTypes
 					              [
 					                UnusedStore,
 					                <null>
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenFirstItemIsNullAndItemsMayUseEachOther_ShouldFail()
+			{
+				IEnumerable<Type?> subject = [null, typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or types within namespace "{JobsNamespace}" in all loaded assemblies or by each other, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but for the item at index 0, it was <null>
+
+					              Collection:
+					              [
+					                <null>,
+					                TrackStore,
+					                StoreAdapter
 					              ]
 					              """);
 			}
@@ -169,6 +242,38 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemsMayUseEachOtherThroughANestedType_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [typeof(NestingStore.Entry), typeof(LinkTarget),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(In.Types(typeof(NestingStore.Entry.Detail)))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the user Entry.Detail is nested in the item Entry");
+			}
+
+			[Test]
+			public async Task WhenItemsMayUseEachOtherThroughTheirGenericTypeDefinition_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [typeof(LinkStore<int>), typeof(LinkTarget),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(In.Types(typeof(LinkStore<>)))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the user LinkStore<> is the generic type definition of the item LinkStore<int>");
+			}
+
+			[Test]
 			public async Task WhenSomeItemIsUsedByDisallowedTypes_ShouldFail()
 			{
 				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(UnusedStore),];
@@ -196,6 +301,53 @@ public sealed partial class ThatTypes
 					                UnusedStore
 					              ]
 					              """);
+			}
+		}
+
+		public sealed class NegatedTests
+		{
+			[Test]
+			public async Task WhenItemsMayUseEachOtherAndAreOnlyUsedByAllowedTypes_ShouldFail()
+			{
+				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther());
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              not all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or types within namespace "{JobsNamespace}" in all loaded assemblies or by each other, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but all 2 did
+
+					              Collection:
+					              [
+					                TrackStore,
+					                StoreAdapter
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenItemsMayUseEachOtherButAreUsedByDisallowedTypes_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(they => they
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther());
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("TrackStore is used by SyncJob");
 			}
 		}
 
@@ -325,6 +477,26 @@ public sealed partial class ThatTypes
 
 		public sealed class AsyncEnumerableTests
 		{
+			[Test]
+			public async Task All_WhenItemsMayUseEachOther_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(TrackStore), typeof(StoreAdapter),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).All()
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("StoreAdapter is an item of the collection");
+			}
+
 			[Test]
 			public async Task Exactly_WhenOneItemIsOnlyUsedByTheAllowedTypes_ShouldSucceed()
 			{

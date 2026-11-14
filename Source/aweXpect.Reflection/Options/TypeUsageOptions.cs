@@ -142,13 +142,19 @@ internal sealed class ResolvedTypeUsages
 	}
 
 	/// <summary>
+	///     Returns the types that <see cref="GetDisallowedUsers" /> also allows, from the <paramref name="types" />.
+	/// </summary>
+	public static HashSet<Type> CreateAlsoAllowed(IEnumerable<Type> types)
+		=> [.. types.Select(type => GetDefinition(TypeHelpers.StripElementTypes(type))),];
+
+	/// <summary>
 	///     Returns the names of the disallowed users of the <paramref name="type" />, except the type itself.
 	/// </summary>
 	/// <remarks>
 	///     The dependencies are stored without array, by-ref and pointer wrappers, so the <paramref name="type" /> is
-	///     unwrapped symmetrically. Any construction of the same generic type definition counts as the type itself.
-	///     A user in <paramref name="alsoAllowed" /> is allowed as well, also when it is a construction of a generic
-	///     type definition in it.
+	///     unwrapped symmetrically. Any construction of the same generic type definition and any type nested in it
+	///     counts as the type itself. The same applies to the types in <paramref name="alsoAllowed" />, created by
+	///     <see cref="CreateAlsoAllowed" />.
 	/// </remarks>
 	public IReadOnlyList<string> GetDisallowedUsers(Type type, HashSet<Type>? alsoAllowed = null)
 	{
@@ -160,14 +166,27 @@ internal sealed class ResolvedTypeUsages
 
 		Type usedDefinition = GetDefinition(used);
 		return TypeHelpers.FormatTypeNames(users
-			.Where(user => GetDefinition(user) != usedDefinition && !IsMember(user, alsoAllowed))
+			.Where(user => !IsPartOf(user, usedDefinition, alsoAllowed))
 			.Distinct());
 	}
 
-	private static bool IsMember(Type user, HashSet<Type>? types)
-		=> types is not null &&
-		   (types.Contains(user) ||
-		    (user.GetGenericTypeDefinitionOfConstruction() is { } definition && types.Contains(definition)));
+	/// <summary>
+	///     Whether the <paramref name="user" /> or a type it is nested in is the <paramref name="usedDefinition" /> or
+	///     one of the <paramref name="alsoAllowed" /> types, compared by their generic type definitions.
+	/// </summary>
+	private static bool IsPartOf(Type user, Type usedDefinition, HashSet<Type>? alsoAllowed)
+	{
+		for (Type? type = user; type is not null; type = type.DeclaringType)
+		{
+			Type definition = GetDefinition(type);
+			if (definition == usedDefinition || alsoAllowed?.Contains(definition) == true)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	private static Type GetDefinition(Type type)
 		=> type.GetGenericTypeDefinitionOfConstruction() ?? type;

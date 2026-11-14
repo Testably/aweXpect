@@ -91,6 +91,15 @@ internal static class ItemExpectationConstraints
 				state.Quantifier, false, state.expectation));
 #endif
 
+	private static void AddIfNotNull<TItem>(List<TItem> items, TItem? item)
+		where TItem : class
+	{
+		if (item is not null)
+		{
+			items.Add(item);
+		}
+	}
+
 	private sealed class ItemsConstraint<TCollection, TItem>(
 		string it,
 		ExpectationGrammars grammars,
@@ -102,15 +111,15 @@ internal static class ItemExpectationConstraints
 		where TItem : class
 	{
 		private IEvaluationContext? _context;
-		private bool _hasPassedAllItems;
+		private bool _needsAllItems;
 
 		protected override string Verb => expectation.Verb;
 
 		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
 		{
 			_context = context;
-			_hasPassedAllItems = false;
 			expectation.OnEvaluating(context, cancellationToken);
+			_needsAllItems = expectation.NeedsAllItems;
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
@@ -126,16 +135,14 @@ internal static class ItemExpectationConstraints
 				return new ValueTask<PredicateResult>(ItemResults.Null);
 			}
 
-			if (!_hasPassedAllItems && expectation.NeedsAllItems)
+			if (_needsAllItems)
 			{
-				_hasPassedAllItems = true;
+				_needsAllItems = false;
 				List<TItem> items = [];
 				foreach (TItem? other in _context!.UseMaterializedEnumerable((IEnumerable<TItem?>)Actual!))
 				{
-					if (other is not null)
-					{
-						items.Add(other);
-					}
+					cancellationToken.ThrowIfCancellationRequested();
+					AddIfNotNull(items, other);
 				}
 
 				expectation.OnAllItems(items);
@@ -163,15 +170,15 @@ internal static class ItemExpectationConstraints
 		where TItem : class
 	{
 		private IEvaluationContext? _context;
-		private bool _hasPassedAllItems;
+		private bool _needsAllItems;
 
 		protected override string Verb => expectation.Verb;
 
 		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
 		{
 			_context = context;
-			_hasPassedAllItems = false;
 			expectation.OnEvaluating(context, cancellationToken);
+			_needsAllItems = expectation.NeedsAllItems;
 		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
@@ -187,7 +194,7 @@ internal static class ItemExpectationConstraints
 				return new ValueTask<PredicateResult>(ItemResults.Null);
 			}
 
-			if (!_hasPassedAllItems && expectation.NeedsAllItems)
+			if (_needsAllItems)
 			{
 				return PassAllItemsAndMatch(item, cancellationToken);
 			}
@@ -197,14 +204,11 @@ internal static class ItemExpectationConstraints
 
 		private async ValueTask<PredicateResult> PassAllItemsAndMatch(TItem item, CancellationToken cancellationToken)
 		{
-			_hasPassedAllItems = true;
+			_needsAllItems = false;
 			List<TItem> items = [];
 			await foreach (TItem? other in _context!.UseMaterializedAsyncEnumerable(Actual!, cancellationToken))
 			{
-				if (other is not null)
-				{
-					items.Add(other);
-				}
+				AddIfNotNull(items, other);
 			}
 
 			expectation.OnAllItems(items);
