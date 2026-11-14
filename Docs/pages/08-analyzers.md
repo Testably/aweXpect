@@ -203,7 +203,7 @@ OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 
 quantifier.Value.AtLeast(2);                       // reported: the quantifier stays unchanged
 quantifier.Value = quantifier.Value.AtLeast(2);    // fixed: the holder gets the new quantifier
-quantifier.AtLeast(2);                             // fixed: the option method of the holder replaces its value
+quantifier.AtLeast(2);                             // fixed: the holder's option method replaces its value
 ```
 
 The options are immutable values, so an option method returns new options and leaves the ones it is called on

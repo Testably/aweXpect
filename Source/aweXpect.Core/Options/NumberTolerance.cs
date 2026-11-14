@@ -15,6 +15,10 @@ namespace aweXpect.Options;
 /// <remarks>
 ///     An immutable value: the option methods return a new tolerance. The <see langword="default" /> value has no
 ///     difference function, so it only considers equal numbers to be within any tolerance.
+///     <para />
+///     The constraint on <typeparamref name="TNumber" /> depends on the target framework: <c>IComparable&lt;T&gt;</c>
+///     on netstandard2.0 and <c>INumber&lt;T&gt;</c> on net8.0 and later, so a library built only for netstandard2.0
+///     with a <typeparamref name="TNumber" /> that is not an <c>INumber&lt;T&gt;</c> fails to load on net8.0 and later.
 /// </remarks>
 [ImmutableOptions]
 public readonly struct NumberTolerance<TNumber>

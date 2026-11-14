@@ -91,6 +91,8 @@ Hand out a new subject as `IThatSubject<T>`, both in an `Action<IThatSubject<T>>
 which returns an `IThatSubject<T>`, `That(bool)` returns a `ThatBoolSubject` that is only an `IThat<bool>`,
 because a type check cannot narrow a `bool`, so write expectations on booleans for `IThat<bool>`.
 
+A nested expectation on the items of a collection, like in [nested expectations on items](./07-collections.md#nested-expectations-on-items), hands out the inferred `TItem`, e.g. `Action<IThatSubject<TItem>>`, so that the nullability of the items flows from the collection type like in a `foreach`. Use `T?` only where the expectation itself can yield `null`, e.g. a member of a `null` parent, like the title in `HasTitle` above, or the `InnerException` of an exception.
+
 ## Members that need the evaluation
 
 A member that is read asynchronously, e.g. from a stream or a service, should stop when the evaluation is canceled or
@@ -112,7 +114,7 @@ public static AndOrResult<Track, IThat<Track?>> HasLyrics(
     => new(subject.Get().ExpectationBuilder
             .ForAsyncMember(
                 MemberAccessor<Track, Task<string?>>.FromFuncWithName(
-                    (track, context, cancellationToken) => LoadLyrics(source, track, context, cancellationToken),
+                    (track, context, token) => LoadLyrics(source, track, context, token),
                     "lyrics "),
                 (member, stringBuilder) => stringBuilder.Append("has ").Append(member).Append("that "))
             .AddExpectations(expectations, grammars => grammars | ExpectationGrammars.Nested),

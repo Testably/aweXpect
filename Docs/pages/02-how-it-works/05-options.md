@@ -108,7 +108,7 @@ that is used when a `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `Tim
 using aweXpect.Chronology; // from the aweXpect.Chronology package
 using aweXpect.Customization;
 
-using IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+using IDisposable scope = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```
 
 It also applies to the items of a collection of these types. An explicit `Within` always replaces the default

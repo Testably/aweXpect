@@ -109,7 +109,8 @@ using (Customize.aweXpect.Reflection().DependencyResolver
 }
 
 // Or augment instead of replace: compose on the current default
-ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver = Customize.aweXpect.Reflection().DependencyResolver;
+ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver =
+    Customize.aweXpect.Reflection().DependencyResolver;
 Func<Type, IEnumerable<Type>> builtin = resolver.Get()!;
 using (resolver.Set(type => builtin(type).Concat(CecilDependencyResolver.GetUsedTypes(type))))
 {
