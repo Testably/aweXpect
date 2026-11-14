@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          369.3130831082662,
           228.74589053789774,
           435.1065190179007,
           454.5234998975481,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           322.8097006479899,
           517.0757453782218,
           437.3508473909818,
-          455.20010570379407
+          455.20010570379407,
+          462.3440942764282
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -461,7 +461,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          810.129448890686,
           549.5627836227417,
           1024.498185602824,
           962.0600023905437,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           775.0426009496053,
           1023.6763417380197,
           1109.6727924346924,
-          1159.5077466964722
+          1159.5077466964722,
+          1138.531684728769
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          182.3486209233602,
           132.5479962642376,
           244.69765538435715,
           239.1405565738678,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           191.27159740130108,
           265.40309974125455,
           261.4811875138964,
-          259.1669735174913
+          259.1669735174913,
+          246.48609336217245
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          211.66320983001165,
           146.80514289651597,
           279.4395910331181,
           251.6416536649068,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           234.43126460484095,
           273.7211383672861,
           311.9154626982553,
-          318.8561890675471
+          318.8561890675471,
+          259.97975594202677
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          735.0279777233417,
           544.0216925938925,
           915.0510061264038,
           1014.7478587286813,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           699.7381516774495,
           1014.6244319915771,
           926.5320099512736,
-          979.5546503067017
+          979.5546503067017,
+          1028.0884641011555
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          779.2889129638672,
           533.6910495758057,
           995.6242108662923,
           961.496369770595,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           730.4502226965768,
           991.7179220835368,
           1069.379982130868,
-          1115.9431325276694
+          1115.9431325276694,
+          1049.2287543370173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1500.763552393232,
           1161.6051745096843,
           1639.1612518310546,
           1878.6429068247478,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1228.9448950449625,
           1950.9227373758952,
           1642.974104807927,
-          1696.5584613482158
+          1696.5584613482158,
+          1929.689744567871
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2285,7 +2285,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14938.777777608235,
           10622.285263061523,
           15796.528108869281,
           21027.903159005302,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           12919.455490112305,
           21438.512998140774,
           16805.591070556642,
-          17388.839400071363
+          17388.839400071363,
+          22305.589117867607
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           34713,
-          34713,
           34712,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
       {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          573.0018540700277,
           399.9726088523865,
           725.4629685084025,
           770.298097201756,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           548.475828742981,
           817.7940253575642,
           720.1493725776672,
-          750.2420880794525
+          750.2420880794525,
+          769.4332710412832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1067.1857963289533,
           761.9303963343302,
           1333.5948487599692,
           1311.5071291242327,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1090.335373433431,
           1350.5237522125244,
           1432.4226112365723,
-          1483.5430296579996
+          1483.5430296579996,
+          1376.347441736857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "7c05d4594643db36d59ef971c99739a42fc2b43d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 12:46:14 2026 \u002B0100",
-        "message": "fix: compare the host and scheme of a URI ignoring case by default (#2160)"
-      },
-      {
         "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:25:55 2026 \u002B0100",
         "message": "docs: shorten long examples and document the nesting rules (#2236)"
+      },
+      {
+        "sha": "2a62ad8674b05c417ac1706648ae97ddb626a7a7",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
+        "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
       }
     ],
     "labels": [
-      "7c05d459",
       "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "e64df614",
       "b064da6f",
       "fdd52f8b",
-      "0e33e256"
+      "0e33e256",
+      "2a62ad86"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1037.7501219235933,
           798.6245455375084,
           1102.595392363412,
           1268.6659764607748,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           859.7912738800048,
           1336.8647300402324,
           1110.7660333193267,
-          1159.6062160219465
+          1159.6062160219465,
+          1320.7541573842366
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          644.9650718053182,
           431.4190220514933,
           813.2444582621257,
           754.167457989284,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           705.1083148956299,
           809.0224470774333,
           889.7762633005779,
-          921.9958868707929
+          921.9958868707929,
+          797.1925653457641
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
