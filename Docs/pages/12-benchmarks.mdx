@@ -73,16 +73,8 @@ Verifies that an `int` subject is one of four candidates.
 
 <BenchmarkResult name="Int_IsOneOf" />
 
-**Within a tolerance**
-Verifies that an `int` subject is within a tolerance of one of four candidates.
-FluentAssertions and TUnit have no tolerance for this check, so they are not part of this benchmark.
-
-<BenchmarkResult name="Int_IsOneOfWithin" />
-
 ```csharp title="aweXpect"
 await That(_intOneOfSubject).IsOneOf(_intOneOfCandidates);
-// Within a tolerance
-await That(_intOneOfWithinSubject).IsOneOf(_intOneOfCandidates).Within(1);
 ```
 
 ```csharp no-compile title="FluentAssertions"

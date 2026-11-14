@@ -10,7 +10,6 @@ internal static class Prelude
 	public static int _intMinimum = 1;
 	public static int[] _intOneOfCandidates = [7, 13, 21, 42,];
 	public static int _intOneOfSubject = 42;
-	public static int _intOneOfWithinSubject = 43;
 	public static BenchmarkAlbum _albumSubject = new();
 	public static BenchmarkAlbum _albumExpectation = new();
 	public static int[] _enumerableSubject = Enumerable.Range(1, 1000).ToArray();
