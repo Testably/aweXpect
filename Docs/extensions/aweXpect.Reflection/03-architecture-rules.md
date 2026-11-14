@@ -233,15 +233,16 @@ await That(typeof(SqlTrackStore))
 
 // Only the application layer may use the data layer, whose types may use each other
 await That(Types.InNamespace("MusicStore.Data"))
-    .AreOnlyUsedBy(Types.InNamespace("MusicStore.Application"), Types.InNamespace("MusicStore.Data"))
-    .Within(In.AssemblyContaining<SqlTrackStore>().Types());
+    .AreOnlyUsedBy(Types.InNamespace("MusicStore.Application"))
+    .Within(In.AssemblyContaining<SqlTrackStore>().Types())
+    .OrByEachOther();
 ```
 
-The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type is checked on its own, so add the collection to the allowed users when its types may use each other.
+The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
 
 ```text title="Failure message"
 Expected that typeof(SqlTrackStore)
-is only used by types within namespace "MusicStore.Infrastructure" in all loaded assemblies within types in assembly containing type SqlTrackStore,
+is only used by types within namespace "MusicStore.Infrastructure" in all loaded assemblies, searched in types in assembly containing type SqlTrackStore,
 but it had disallowed users
 
 Disallowed users:

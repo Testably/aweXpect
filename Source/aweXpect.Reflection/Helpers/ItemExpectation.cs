@@ -27,6 +27,24 @@ internal abstract class ItemExpectation<TItem>
 	public virtual string Verb => "did";
 
 	/// <summary>
+	///     Whether <see cref="IsMatch" /> needs all items of the collection, which <see cref="OnAllItems" /> receives
+	///     before the first item is checked.
+	/// </summary>
+	/// <remarks>
+	///     The items are read from the sequence that the evaluation shares, so the collection is still read only once,
+	///     but to its end, also when a quantifier could complete early.
+	/// </remarks>
+	public virtual bool NeedsAllItems => false;
+
+	/// <summary>
+	///     Receives the items of the collection that are not <see langword="null" />, before the first item is checked,
+	///     when <see cref="NeedsAllItems" /> is set.
+	/// </summary>
+	public virtual void OnAllItems(IReadOnlyCollection<TItem> items)
+	{
+	}
+
+	/// <summary>
 	///     Whether the <paramref name="item" /> matches the expectation.
 	/// </summary>
 	public abstract ValueTask<PredicateResult> IsMatch(TItem item, CancellationToken cancellationToken);

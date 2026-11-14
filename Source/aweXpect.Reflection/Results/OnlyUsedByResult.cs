@@ -1,4 +1,5 @@
 ﻿using System;
+using aweXpect.Core;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -11,6 +12,7 @@ namespace aweXpect.Reflection.Results;
 public sealed class OnlyUsedByResult<TResult>
 {
 	private readonly Func<Filtered.Types, TResult> _callback;
+	private bool _hasScope;
 
 	internal OnlyUsedByResult(Func<Filtered.Types, TResult> callback)
 	{
@@ -24,11 +26,18 @@ public sealed class OnlyUsedByResult<TResult>
 	/// <remarks>
 	///     Only the types in this collection are searched for users, so it should contain every type that could use
 	///     the subject, e.g. <c>In.AssemblyContaining&lt;T&gt;().Types()</c>. The cost of the assertion grows with
-	///     its size.
+	///     its size. It can only be called once, as each call adds the expectation.
 	/// </remarks>
 	public TResult Within(Filtered.Types types)
 	{
 		ThrowHelper.ThrowIfNull(types, nameof(types));
+		if (_hasScope)
+		{
+			throw Tracing.WriteException(new InvalidOperationException(
+				$"The scope cannot be set again: '{nameof(Within)}' can only be called once."));
+		}
+
+		_hasScope = true;
 		return _callback(types);
 	}
 }

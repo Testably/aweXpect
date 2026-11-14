@@ -48,7 +48,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or types within namespace "{JobsNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or types within namespace "{JobsNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
 					              but only 1 of 2 did
 
 					              Not matching items:
@@ -79,7 +79,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
 					              but for the item at index 1, it was <null>
 
 					              Collection:
@@ -106,6 +106,69 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemsMayUseEachOther_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("StoreAdapter is an item of the collection");
+			}
+
+			[Test]
+			public async Task WhenItemsMayUseEachOtherButAreUsedByDisallowedTypes_ShouldFail()
+			{
+				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all are only used by types within namespace "{ApiNamespace}" in all loaded assemblies or by each other, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but only 1 of 2 did
+
+					              Not matching items:
+					              [
+					                TrackStore is used by ["SyncJob"]
+					              ]
+
+					              Collection:
+					              [
+					                TrackStore is used by ["SyncJob"],
+					                StoreAdapter
+					              ]
+					              """);
+			}
+
+			[Test]
+			public async Task WhenItemsMayUseEachOtherThroughAConstruction_ShouldSucceed()
+			{
+				IEnumerable<Type?> subject = [typeof(CacheStore<int>), typeof(StoreCache<>),];
+
+				async Task Act()
+				{
+					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
+						.Within(In.Types(typeof(StoreCache<int>)))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("the user StoreCache<int> is a construction of the item StoreCache<>");
+			}
+
+			[Test]
 			public async Task WhenSomeItemIsUsedByDisallowedTypes_ShouldFail()
 			{
 				IEnumerable<Type?> subject = [typeof(TrackStore), typeof(UnusedStore),];
@@ -119,7 +182,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
 					              but only 1 of 2 did
 
 					              Not matching items:
@@ -138,6 +201,32 @@ public sealed partial class ThatTypes
 
 		public sealed class QuantifierTests
 		{
+			[Test]
+			public async Task All_WhenALaterItemUsesAnEarlierOne_ShouldSucceed()
+			{
+				int enumerations = 0;
+
+				IEnumerable<Type?> Subject()
+				{
+					enumerations++;
+					yield return typeof(TrackStore);
+					yield return typeof(StoreAdapter);
+				}
+
+				async Task Act()
+				{
+					await That(Subject()).All()
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("StoreAdapter is read before TrackStore is checked");
+				await That(enumerations).IsEqualTo(1)
+					.Because("the items are read from the sequence that the evaluation shares");
+			}
+
 			[Test]
 			public async Task Exactly_WhenOneItemIsOnlyUsedByTheAllowedTypes_ShouldSucceed()
 			{
@@ -166,7 +255,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies for no items,
+					              is only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies for no items,
 					              but 1 of 2 did
 
 					              Matching items:
@@ -187,6 +276,23 @@ public sealed partial class ThatTypes
 		public sealed class StructCollectionTests
 		{
 			[Test]
+			public async Task All_WhenItemsMayUseEachOther_ShouldSucceed()
+			{
+				ImmutableArray<Type?> subject = [typeof(TrackStore), typeof(StoreAdapter),];
+
+				async Task Act()
+				{
+					await That(subject).All()
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("StoreAdapter is an item of the collection");
+			}
+
+			[Test]
 			public async Task AtLeast_WhenTooFewItemsAreOnlyUsedByTheAllowedTypes_ShouldFail()
 			{
 				ImmutableArray<Type?> subject = [typeof(TrackStore), typeof(UnusedStore),];
@@ -200,7 +306,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies for at least 2 items,
+					              is only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies for at least 2 items,
 					              but only 1 of 2 did
 
 					              Not matching items:
@@ -237,6 +343,26 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenItemsMayUseEachOther_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(TrackStore), typeof(StoreAdapter),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject)
+						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
+						.Within(Types.InNamespace(UsageNamespace))
+						.OrByEachOther();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("StoreAdapter is an item of the collection");
+			}
+
+			[Test]
 			public async Task WhenSomeItemIsUsedByDisallowedTypes_ShouldFail()
 			{
 				IAsyncEnumerable<Type?> subject = new[]
@@ -253,7 +379,7 @@ public sealed partial class ThatTypes
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies within types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
 					              but only 1 of 2 did
 
 					              Not matching items:

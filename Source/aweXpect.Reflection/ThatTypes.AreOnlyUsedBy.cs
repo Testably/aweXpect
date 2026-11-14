@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
-using aweXpect.Results;
 
 namespace aweXpect;
 
@@ -24,19 +25,16 @@ public static partial class ThatTypes
 	///     The collections are resolved once per assertion; every type within the scope that is not a member of the
 	///     union of the allowed collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it) must not depend on an item. A generic type definition as item
-	///     is also used by a dependency on any construction of it. Each item may only use itself: to allow the items
-	///     to use each other, add their collection to the allowed ones. Unlike <c>DependOnlyOn</c>, neither the own
-	///     namespace nor framework types are allowed implicitly.
+	///     is also used by a dependency on any construction of it, and any construction of the same generic type
+	///     definition counts as the item itself. Each item may only use itself, unless
+	///     <see cref="OnlyUsedByItemsResult{TType, TValue}.OrByEachOther" /> also allows the items to use each other.
+	///     Unlike <c>DependOnlyOn</c>, neither the own namespace nor framework types are allowed implicitly.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static OnlyUsedByResult<AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>> AreOnlyUsedBy(
+	public static OnlyUsedByResult<OnlyUsedByItemsResult<IEnumerable<Type?>, IEnumerable<Type?>?>> AreOnlyUsedBy(
 		this IThat<IEnumerable<Type?>?> subject, Filtered.Types users, params Filtered.Types[] additional)
-	{
-		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
-		return new OnlyUsedByResult<AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>>(within
-			=> new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(
-				subject.ExpectAll(new AreOnlyUsedByExpectation(new TypeUsageOptions(allowed, within))), subject));
-	}
+		=> OnlyUsedBy<IEnumerable<Type?>, IEnumerable<Type?>?>(users, additional, subject,
+			expectation => subject.ExpectAll(expectation));
 
 	/// <summary>
 	///     …are only used (referenced in their signature) by types in the filtered collections of types
@@ -44,64 +42,70 @@ public static partial class ThatTypes
 	///     <see cref="OnlyUsedByResult{TResult}.Within" />.
 	/// </summary>
 	/// <inheritdoc cref="AreOnlyUsedBy(IThat{IEnumerable{Type?}}, Filtered.Types, Filtered.Types[])" path="/remarks" />
-	public static OnlyUsedByResult<AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>> AreOnlyUsedBy(
+	public static OnlyUsedByResult<OnlyUsedByItemsResult<IEnumerable<Type?>, IEnumerable<Type?>?>> AreOnlyUsedBy(
 		this IEnumerableItems<Type?> items, Filtered.Types users, params Filtered.Types[] additional)
-	{
-		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
-		return new OnlyUsedByResult<AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>>(within
-			=> new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(
-				items.ExpectItems(new AreOnlyUsedByExpectation(new TypeUsageOptions(allowed, within))),
-				items.Subject));
-	}
+		=> OnlyUsedBy<IEnumerable<Type?>, IEnumerable<Type?>?>(users, additional, items.Subject,
+			items.ExpectItems);
 
 	/// <inheritdoc cref="AreOnlyUsedBy(IEnumerableItems{Type?}, Filtered.Types, Filtered.Types[])" />
-	public static OnlyUsedByResult<AndOrResult<TCollection, IThat<TCollection>>> AreOnlyUsedBy<TCollection>(
+	public static OnlyUsedByResult<OnlyUsedByItemsResult<TCollection, TCollection>> AreOnlyUsedBy<TCollection>(
 		this IStructEnumerableItems<TCollection, Type?> items, Filtered.Types users,
 		params Filtered.Types[] additional)
 		where TCollection : struct, IEnumerable<Type?>
-	{
-		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
-		return new OnlyUsedByResult<AndOrResult<TCollection, IThat<TCollection>>>(within
-			=> new AndOrResult<TCollection, IThat<TCollection>>(
-				items.ExpectItems(new AreOnlyUsedByExpectation(new TypeUsageOptions(allowed, within))),
-				items.Subject));
-	}
+		=> OnlyUsedBy<TCollection, TCollection>(users, additional, items.Subject, items.ExpectItems);
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="AreOnlyUsedBy(IThat{IEnumerable{Type?}}, Filtered.Types, Filtered.Types[])" />
 	[GuaranteesNotNull]
-	public static OnlyUsedByResult<AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>>
+	public static OnlyUsedByResult<OnlyUsedByItemsResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>>
 		AreOnlyUsedBy(
 			this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types users, params Filtered.Types[] additional)
-	{
-		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
-		return new OnlyUsedByResult<AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>>(within
-			=> new AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(
-				subject.ExpectAll(new AreOnlyUsedByExpectation(new TypeUsageOptions(allowed, within))), subject));
-	}
+		=> OnlyUsedBy<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(users, additional, subject,
+			expectation => subject.ExpectAll(expectation));
 
 	/// <inheritdoc cref="AreOnlyUsedBy(IEnumerableItems{Type?}, Filtered.Types, Filtered.Types[])" />
-	public static OnlyUsedByResult<AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>>
+	public static OnlyUsedByResult<OnlyUsedByItemsResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>>
 		AreOnlyUsedBy(
 			this IAsyncEnumerableItems<Type?> items, Filtered.Types users, params Filtered.Types[] additional)
-	{
-		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
-		return new OnlyUsedByResult<AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>>(within
-			=> new AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(
-				items.ExpectItems(new AreOnlyUsedByExpectation(new TypeUsageOptions(allowed, within))),
-				items.Subject));
-	}
+		=> OnlyUsedBy<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(users, additional, items.Subject,
+			items.ExpectItems);
 #endif
 
-	private sealed class AreOnlyUsedByExpectation(TypeUsageOptions options)
+	private static OnlyUsedByResult<OnlyUsedByItemsResult<TType, TValue>> OnlyUsedBy<TType, TValue>(
+		Filtered.Types users, Filtered.Types[] additional, IThat<TValue> subject,
+		Func<ItemExpectation<Type>, ExpectationBuilder> expect)
+	{
+		TypeSetDependencyOptions allowed = TypeUsageOptions.CreateAllowed(users, additional);
+		return new OnlyUsedByResult<OnlyUsedByItemsResult<TType, TValue>>(within =>
+		{
+			OptionsHolder<TypeUsageOptions> options = new(new TypeUsageOptions(allowed, within));
+			return new OnlyUsedByItemsResult<TType, TValue>(expect(new AreOnlyUsedByExpectation(options)), subject,
+				options);
+		});
+	}
+
+	private sealed class AreOnlyUsedByExpectation(IReadOnlyOptionsHolder<TypeUsageOptions> options)
 		: DependencyViolationsExpectation(false, " is used by ")
 	{
+		private HashSet<Type>? _items;
+
+		public override bool NeedsAllItems => options.Value.ByEachOther;
+
+		public override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
+		{
+			base.OnEvaluating(context, cancellationToken);
+			_items = null;
+		}
+
+		public override void OnAllItems(IReadOnlyCollection<Type> items)
+			=> _items = [.. items.Select(TypeHelpers.StripElementTypes),];
+
 		protected override async ValueTask<IReadOnlyList<string>> GetViolations(Type item,
 			CancellationToken cancellationToken)
-			=> (await options.Resolve(cancellationToken)).GetDisallowedUsers(item);
+			=> (await options.Value.Resolve(cancellationToken)).GetDisallowedUsers(item, _items);
 
 		public override void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
 			=> stringBuilder.Append(grammars.IsPlural() ? "are only used by " : "is only used by ")
-				.Append(options.Describe());
+				.Append(options.Value.Describe());
 	}
 }

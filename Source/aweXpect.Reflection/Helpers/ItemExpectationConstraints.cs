@@ -101,10 +101,17 @@ internal static class ItemExpectationConstraints
 		where TCollection : IEnumerable<TItem?>?
 		where TItem : class
 	{
+		private IEvaluationContext? _context;
+		private bool _hasPassedAllItems;
+
 		protected override string Verb => expectation.Verb;
 
 		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
-			=> expectation.OnEvaluating(context, cancellationToken);
+		{
+			_context = context;
+			_hasPassedAllItems = false;
+			expectation.OnEvaluating(context, cancellationToken);
+		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
@@ -113,9 +120,29 @@ internal static class ItemExpectationConstraints
 		}
 
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
-			=> item is null
-				? new ValueTask<PredicateResult>(ItemResults.Null)
-				: expectation.IsMatch(item, cancellationToken);
+		{
+			if (item is null)
+			{
+				return new ValueTask<PredicateResult>(ItemResults.Null);
+			}
+
+			if (!_hasPassedAllItems && expectation.NeedsAllItems)
+			{
+				_hasPassedAllItems = true;
+				List<TItem> items = [];
+				foreach (TItem? other in _context!.UseMaterializedEnumerable((IEnumerable<TItem?>)Actual!))
+				{
+					if (other is not null)
+					{
+						items.Add(other);
+					}
+				}
+
+				expectation.OnAllItems(items);
+			}
+
+			return expectation.IsMatch(item, cancellationToken);
+		}
 
 		protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 			string? indentation)
@@ -135,10 +162,17 @@ internal static class ItemExpectationConstraints
 		: GeneratedAsyncCollectionConstraint<TItem?>(it, grammars, quantifier, isOnCollection)
 		where TItem : class
 	{
+		private IEvaluationContext? _context;
+		private bool _hasPassedAllItems;
+
 		protected override string Verb => expectation.Verb;
 
 		protected override void OnEvaluating(IEvaluationContext context, CancellationToken cancellationToken)
-			=> expectation.OnEvaluating(context, cancellationToken);
+		{
+			_context = context;
+			_hasPassedAllItems = false;
+			expectation.OnEvaluating(context, cancellationToken);
+		}
 
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
@@ -147,9 +181,35 @@ internal static class ItemExpectationConstraints
 		}
 
 		protected override ValueTask<PredicateResult> IsMatch(TItem? item, CancellationToken cancellationToken)
-			=> item is null
-				? new ValueTask<PredicateResult>(ItemResults.Null)
-				: expectation.IsMatch(item, cancellationToken);
+		{
+			if (item is null)
+			{
+				return new ValueTask<PredicateResult>(ItemResults.Null);
+			}
+
+			if (!_hasPassedAllItems && expectation.NeedsAllItems)
+			{
+				return PassAllItemsAndMatch(item, cancellationToken);
+			}
+
+			return expectation.IsMatch(item, cancellationToken);
+		}
+
+		private async ValueTask<PredicateResult> PassAllItemsAndMatch(TItem item, CancellationToken cancellationToken)
+		{
+			_hasPassedAllItems = true;
+			List<TItem> items = [];
+			await foreach (TItem? other in _context!.UseMaterializedAsyncEnumerable(Actual!, cancellationToken))
+			{
+				if (other is not null)
+				{
+					items.Add(other);
+				}
+			}
+
+			expectation.OnAllItems(items);
+			return await expectation.IsMatch(item, cancellationToken);
+		}
 
 		protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 			string? indentation)

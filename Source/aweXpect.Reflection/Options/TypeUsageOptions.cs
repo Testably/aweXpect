@@ -30,10 +30,27 @@ internal sealed class TypeUsageOptions
 	private ResolvedTypeUsages? _resolved;
 
 	public TypeUsageOptions(TypeSetDependencyOptions allowed, Filtered.Types within)
+		: this(allowed, within, false)
+	{
+	}
+
+	private TypeUsageOptions(TypeSetDependencyOptions allowed, Filtered.Types within, bool byEachOther)
 	{
 		_allowed = allowed;
 		_within = within;
+		ByEachOther = byEachOther;
 	}
+
+	/// <summary>
+	///     Indicates whether the items of the subject collection may use each other.
+	/// </summary>
+	public bool ByEachOther { get; }
+
+	/// <summary>
+	///     Returns options that also allow the items of the subject collection to use each other.
+	/// </summary>
+	public TypeUsageOptions OrByEachOther()
+		=> new(_allowed, _within, true);
 
 	/// <summary>
 	///     Validates the allowed <paramref name="users" /> and <paramref name="additional" /> collections eagerly,
@@ -79,7 +96,9 @@ internal sealed class TypeUsageOptions
 	///     Describes the allowed collections and the scope for an expectation message.
 	/// </summary>
 	public string Describe()
-		=> $"{_allowed.Describe()} within {_within.GetDescription().TrimEnd()}";
+		=> ByEachOther
+			? $"{_allowed.Describe()} or by each other, searched in {_within.GetDescription().TrimEnd()}"
+			: $"{_allowed.Describe()}, searched in {_within.GetDescription().TrimEnd()}";
 
 	/// <summary>
 	///     Registers the <paramref name="user" /> under each of its dependencies, and under the generic type
@@ -127,9 +146,11 @@ internal sealed class ResolvedTypeUsages
 	/// </summary>
 	/// <remarks>
 	///     The dependencies are stored without array, by-ref and pointer wrappers, so the <paramref name="type" /> is
-	///     unwrapped symmetrically.
+	///     unwrapped symmetrically. Any construction of the same generic type definition counts as the type itself.
+	///     A user in <paramref name="alsoAllowed" /> is allowed as well, also when it is a construction of a generic
+	///     type definition in it.
 	/// </remarks>
-	public IReadOnlyList<string> GetDisallowedUsers(Type type)
+	public IReadOnlyList<string> GetDisallowedUsers(Type type, HashSet<Type>? alsoAllowed = null)
 	{
 		Type used = TypeHelpers.StripElementTypes(type);
 		if (!_usersByDependency.TryGetValue(used, out List<Type>? users))
@@ -137,6 +158,17 @@ internal sealed class ResolvedTypeUsages
 			return [];
 		}
 
-		return TypeHelpers.FormatTypeNames(users.Where(user => user != used).Distinct());
+		Type usedDefinition = GetDefinition(used);
+		return TypeHelpers.FormatTypeNames(users
+			.Where(user => GetDefinition(user) != usedDefinition && !IsMember(user, alsoAllowed))
+			.Distinct());
 	}
+
+	private static bool IsMember(Type user, HashSet<Type>? types)
+		=> types is not null &&
+		   (types.Contains(user) ||
+		    (user.GetGenericTypeDefinitionOfConstruction() is { } definition && types.Contains(definition)));
+
+	private static Type GetDefinition(Type type)
+		=> type.GetGenericTypeDefinitionOfConstruction() ?? type;
 }

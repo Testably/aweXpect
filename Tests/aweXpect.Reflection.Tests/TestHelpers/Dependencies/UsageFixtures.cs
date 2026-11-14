@@ -13,6 +13,11 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Store
 	}
 
 	public class UnusedStore;
+
+	public class CacheStore<T>
+	{
+		public CacheStore<int>? Root { get; set; }
+	}
 }
 
 namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Infrastructure
@@ -21,6 +26,11 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Infrastructur
 	{
 		public GenericStore<int>? Generic { get; set; }
 		public TrackStore? Store { get; set; }
+	}
+
+	public class StoreCache<T>
+	{
+		public CacheStore<T>? Store { get; set; }
 	}
 }
 
@@ -43,5 +53,11 @@ namespace aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Jobs
 	public class BodyOnlyJob
 	{
 		public static object Run() => new UnusedStore();
+	}
+
+	public class CacheJob
+	{
+		public CacheStore<int>? Numbers { get; set; }
+		public CacheStore<string>? Texts { get; set; }
 	}
 }
