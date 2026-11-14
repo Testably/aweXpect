@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          228.74589053789774,
           435.1065190179007,
           454.5234998975481,
           346.25337082999096,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           517.0757453782218,
           437.3508473909818,
           455.20010570379407,
-          462.3440942764282
+          462.3440942764282,
+          454.6804469994136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -460,7 +460,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          549.5627836227417,
           1024.498185602824,
           962.0600023905437,
           817.7492109298706,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1023.6763417380197,
           1109.6727924346924,
           1159.5077466964722,
-          1138.531684728769
+          1138.531684728769,
+          1024.375743132371
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          132.5479962642376,
           244.69765538435715,
           239.1405565738678,
           174.51684842790877,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           265.40309974125455,
           261.4811875138964,
           259.1669735174913,
-          246.48609336217245
+          246.48609336217245,
+          253.89326289494832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          146.80514289651597,
           279.4395910331181,
           251.6416536649068,
           210.8067468802134,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           273.7211383672861,
           311.9154626982553,
           318.8561890675471,
-          259.97975594202677
+          259.97975594202677,
+          249.86531734466553
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          544.0216925938925,
           915.0510061264038,
           1014.7478587286813,
           709.499430179596,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1014.6244319915771,
           926.5320099512736,
           979.5546503067017,
-          1028.0884641011555
+          1028.0884641011555,
+          1039.3457700184413
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          533.6910495758057,
           995.6242108662923,
           961.496369770595,
           778.1785479863485,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           991.7179220835368,
           1069.379982130868,
           1115.9431325276694,
-          1049.2287543370173
+          1049.2287543370173,
+          940.373102982839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1161.6051745096843,
           1639.1612518310546,
           1878.6429068247478,
           1480.159550857544,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1950.9227373758952,
           1642.974104807927,
           1696.5584613482158,
-          1929.689744567871
+          1929.689744567871,
+          1921.6734360914963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2284,7 +2284,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10622.285263061523,
           15796.528108869281,
           21027.903159005302,
           14207.212479654949,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21438.512998140774,
           16805.591070556642,
           17388.839400071363,
-          22305.589117867607
+          22305.589117867607,
+          21598.70477294922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34713,
           34712,
           34713,
           34713,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
       {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          399.9726088523865,
           725.4629685084025,
           770.298097201756,
           568.1776371002197,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           817.7940253575642,
           720.1493725776672,
           750.2420880794525,
-          769.4332710412832
+          769.4332710412832,
+          752.3122759546552
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          761.9303963343302,
           1333.5948487599692,
           1311.5071291242327,
           1010.3324523925781,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1350.5237522125244,
           1432.4226112365723,
           1483.5430296579996,
-          1376.347441736857
+          1376.347441736857,
+          1310.5273795809064
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          798.6245455375084,
           1102.595392363412,
           1268.6659764607748,
           968.3800178255353,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1336.8647300402324,
           1110.7660333193267,
           1159.6062160219465,
-          1320.7541573842366
+          1320.7541573842366,
+          1320.1648106208215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          431.4190220514933,
           813.2444582621257,
           754.167457989284,
           605.4867894990103,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           809.0224470774333,
           889.7762633005779,
           921.9958868707929,
-          797.1925653457641
+          797.1925653457641,
+          749.7061886106219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
