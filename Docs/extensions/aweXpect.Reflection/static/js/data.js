@@ -1632,6 +1632,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -1906,7 +1912,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -2184,7 +2191,8 @@ window.BENCHMARK_DATA = {
           374.60401463508606,
           569.9576317469279,
           773.3925064722697,
-          763.731309445699
+          763.731309445699,
+          399.85945279781635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2408,6 +2416,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2753,7 +2762,8 @@ window.BENCHMARK_DATA = {
           544.1800476954534,
           594.1241771697999,
           931.9162985483805,
-          795.3068776811872
+          795.3068776811872,
+          465.143413734436
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2765,6 +2775,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4682,6 +4693,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -4956,7 +4973,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -5234,7 +5252,8 @@ window.BENCHMARK_DATA = {
           57.811078233378275,
           78.08544704119365,
           113.9825434409655,
-          114.49424308935801
+          114.49424308935801,
+          50.21888511975606
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5381,6 +5400,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5803,7 +5823,8 @@ window.BENCHMARK_DATA = {
           127.66003028551738,
           169.2193554242452,
           215.56731219291686,
-          238.16324259440105
+          238.16324259440105,
+          109.9498834212621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5815,6 +5836,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7732,6 +7754,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -8006,7 +8034,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -8284,7 +8313,8 @@ window.BENCHMARK_DATA = {
           979.7774081911359,
           1064.2950644175212,
           1944.6441911061604,
-          1428.819529056549
+          1428.819529056549,
+          863.3431650161743
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8479,6 +8509,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8853,7 +8884,8 @@ window.BENCHMARK_DATA = {
           888.2832282384237,
           970.651065826416,
           1476.6886912027994,
-          1354.9304846354894
+          1354.9304846354894,
+          745.4747371037801
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9136,7 +9168,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1952
+          1952,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10722,6 +10755,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -10986,7 +11025,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -11254,7 +11294,8 @@ window.BENCHMARK_DATA = {
           1483.3434721628826,
           1650.4411677042642,
           2830.166139057704,
-          2177.4503362019855
+          2177.4503362019855,
+          1284.0865934916906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11439,6 +11480,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11803,7 +11845,8 @@ window.BENCHMARK_DATA = {
           2320.450394494193,
           2597.0137135823566,
           3864.7411962655874,
-          3456.384186063494
+          3456.384186063494,
+          1969.9750873859111
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12076,7 +12119,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3980,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13662,6 +13706,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -13926,7 +13976,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -14194,7 +14245,8 @@ window.BENCHMARK_DATA = {
           199.42380383809407,
           265.0044240315755,
           420.4692688306173,
-          348.8687169710795
+          348.8687169710795,
+          164.98405090400152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14331,6 +14383,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14743,7 +14796,8 @@ window.BENCHMARK_DATA = {
           1379.9629450577957,
           1524.740849049886,
           2335.81439944676,
-          2007.7145393371582
+          2007.7145393371582,
+          1171.7686840057372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14755,6 +14809,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -16602,6 +16657,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 16:45:19 2026 \u002B0100",
         "message": "docs: document custom reflection filters with IFilter\u003CT\u003E (#2235)"
+      },
+      {
+        "sha": "168708bae1f674de51bd473bfa633251ee2fa589",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
+        "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
       }
     ],
     "labels": [
@@ -16866,7 +16927,8 @@ window.BENCHMARK_DATA = {
       "b064da6f",
       "fdd52f8b",
       "0e33e256",
-      "2a62ad86"
+      "2a62ad86",
+      "168708ba"
     ],
     "datasets": [
       {
@@ -17134,7 +17196,8 @@ window.BENCHMARK_DATA = {
           1545.6864036832537,
           1635.3922801971435,
           2904.6009494236537,
-          2243.4693682352704
+          2243.4693682352704,
+          1343.5030736923218
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17348,6 +17411,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17683,7 +17747,8 @@ window.BENCHMARK_DATA = {
           171552.35443987165,
           187335.1835186298,
           281669.4416341146,
-          257262.45834585337
+          257262.45834585337,
+          167144.44462890626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -17956,7 +18021,8 @@ window.BENCHMARK_DATA = {
           17576,
           17528,
           17727,
-          17528
+          17528,
+          17574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
