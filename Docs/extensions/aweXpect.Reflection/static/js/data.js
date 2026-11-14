@@ -1644,6 +1644,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -1920,7 +1926,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -2200,7 +2207,8 @@ window.BENCHMARK_DATA = {
           773.3925064722697,
           763.731309445699,
           399.85945279781635,
-          723.69710790194
+          723.69710790194,
+          573.8681906920212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2424,6 +2432,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2773,7 +2782,8 @@ window.BENCHMARK_DATA = {
           931.9162985483805,
           795.3068776811872,
           465.143413734436,
-          906.3112679799398
+          906.3112679799398,
+          614.8792165347508
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2785,6 +2795,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4716,6 +4727,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -4992,7 +5009,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -5272,7 +5290,8 @@ window.BENCHMARK_DATA = {
           113.9825434409655,
           114.49424308935801,
           50.21888511975606,
-          100.90533879170052
+          100.90533879170052,
+          84.19659837086995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5419,6 +5438,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5845,7 +5865,8 @@ window.BENCHMARK_DATA = {
           215.56731219291686,
           238.16324259440105,
           109.9498834212621,
-          220.5630968729655
+          220.5630968729655,
+          199.92055597305298
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5857,6 +5878,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7788,6 +7810,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -8064,7 +8092,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -8344,7 +8373,8 @@ window.BENCHMARK_DATA = {
           1944.6441911061604,
           1428.819529056549,
           863.3431650161743,
-          1874.1453161875406
+          1874.1453161875406,
+          1125.719590886434
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8539,6 +8569,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -8917,7 +8948,8 @@ window.BENCHMARK_DATA = {
           1476.6886912027994,
           1354.9304846354894,
           745.4747371037801,
-          1618.4894975026448
+          1618.4894975026448,
+          1003.8068701426188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9202,7 +9234,8 @@ window.BENCHMARK_DATA = {
           1864,
           1952,
           1953,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10800,6 +10833,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -11066,7 +11105,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -11336,7 +11376,8 @@ window.BENCHMARK_DATA = {
           2830.166139057704,
           2177.4503362019855,
           1284.0865934916906,
-          2833.2230796813965
+          2833.2230796813965,
+          1735.664470799764
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11521,6 +11562,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -11889,7 +11931,8 @@ window.BENCHMARK_DATA = {
           3864.7411962655874,
           3456.384186063494,
           1969.9750873859111,
-          3923.067861557007
+          3923.067861557007,
+          2632.2565089634486
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12164,7 +12207,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3980,
-          3980
+          3980,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13762,6 +13806,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -14028,7 +14078,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -14298,7 +14349,8 @@ window.BENCHMARK_DATA = {
           420.4692688306173,
           348.8687169710795,
           164.98405090400152,
-          396.78811791737877
+          396.78811791737877,
+          272.1361211630014
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14435,6 +14487,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -14851,7 +14904,8 @@ window.BENCHMARK_DATA = {
           2335.81439944676,
           2007.7145393371582,
           1171.7686840057372,
-          2237.748608525594
+          2237.748608525594,
+          1557.843075434367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14863,6 +14917,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -16724,6 +16779,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
         "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
+      },
+      {
+        "sha": "8d553589c74e106134d670fed039c90b982d9a2d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:34:56 2026 \u002B0100",
+        "message": "docs: shorten the long line in the custom Reflection filter example (#2240)"
       }
     ],
     "labels": [
@@ -16990,7 +17051,8 @@ window.BENCHMARK_DATA = {
       "0e33e256",
       "2a62ad86",
       "168708ba",
-      "165d849c"
+      "165d849c",
+      "8d553589"
     ],
     "datasets": [
       {
@@ -17260,7 +17322,8 @@ window.BENCHMARK_DATA = {
           2904.6009494236537,
           2243.4693682352704,
           1343.5030736923218,
-          2855.3971405029297
+          2855.3971405029297,
+          1688.1252978188652
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17474,6 +17537,7 @@ window.BENCHMARK_DATA = {
           3264,
           3264,
           3264,
+          2752,
           2752,
           2752,
           2752,
@@ -17813,7 +17877,8 @@ window.BENCHMARK_DATA = {
           281669.4416341146,
           257262.45834585337,
           167144.44462890626,
-          302272.15218098956
+          302272.15218098956,
+          189631.54771205358
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18088,7 +18153,8 @@ window.BENCHMARK_DATA = {
           17727,
           17528,
           17574,
-          17577
+          17577,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
