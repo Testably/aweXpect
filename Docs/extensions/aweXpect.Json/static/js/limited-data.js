@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2165.328074391683,
           1705.1943064371744,
           1212.3053038279215,
           1626.3912916819254,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1570.2913469587054,
           1147.9334779103597,
           1558.9935485839844,
-          2044.222337849935
+          2044.222337849935,
+          1134.3165335337321
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16515.620943196616,
           12779.113838704427,
           8507.85911015102,
           10348.936384073893,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10612.792774454752,
           7420.806349618094,
           11256.454472859701,
-          16293.80202331543
+          16293.80202331543,
+          7451.430527823312
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1635.2055356343587,
           1341.197128736056,
           934.6724309187668,
           1281.544203077044,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1238.1155279795328,
           899.6161713233361,
           1234.330842238206,
-          1692.2565250396729
+          1692.2565250396729,
+          954.521265574864
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15028.990254720053,
           11934.798460896809,
           7878.525045776367,
           10342.192407880511,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10309.240846761068,
           6374.6357518514,
           10079.915719604493,
-          14653.554254150391
+          14653.554254150391,
+          6543.303045145671
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5106.846667363094,
           4240.115000406901,
           2957.540263366699,
           4086.5129917689733,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3977.255155436198,
           3082.023422241211,
           3930.1094044276647,
-          5290.362225850423
+          5290.362225850423,
+          2938.488005418044
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          45096.640154157365,
           35640.3424235026,
           25878.10732421875,
           31198.96466471354,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           28852.307739257812,
           20037.015616280692,
           29306.658829752603,
-          47537.67222377232
+          47537.67222377232,
+          19194.416257731118
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61932,
           61922,
           61925,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
       {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9970.317708696637,
           8329.673396519252,
           6170.694909159342,
           7535.867262776693,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7342.673422749837,
           5257.23058013916,
           7429.273041945237,
-          9510.399306233723
+          9510.399306233723,
+          5034.290286254883
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          300739.67073567706,
           249282.25711495537,
           184079.01243489582,
           220723.9708658854,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           203509.84056803386,
           149832.75021972656,
           209714.65994466146,
-          302312.2728841146
+          302312.2728841146,
+          136210.05950055804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521572,
           521541,
           521542,
           521594,
@@ -2405,6 +2404,7 @@ window.BENCHMARK_DATA = {
           521594,
           521541,
           521573,
+          521594,
           521594,
           521594,
           521594,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
       {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3063.677879333496,
           2781.7165949503583,
           1896.571408589681,
           2276.4951788095327,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2225.2072611490885,
           1618.5895068828877,
           2240.683801269531,
-          2856.5434496743337
+          2856.5434496743337,
+          1595.8993740081787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2190.0012318929034,
           1899.0788837160383,
           1331.9040073667254,
           1536.7581681569418,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1456.7714762006487,
           1102.2807806559972,
           1480.386786680955,
-          2028.0453326885518
+          2028.0453326885518,
+          1047.1374631609235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2846.876872507731,
           2332.02166219858,
           1576.255221303304,
           2249.440579986572,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2195.7234739576065,
           1590.5607888148381,
           2188.2631207784016,
-          2985.4228525797525
+          2985.4228525797525,
+          1510.9683960505895
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2170.85327351888,
           2051.926731872559,
           1257.4670873006185,
           1359.9467283884685,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1371.4680249140813,
           976.8218225751605,
           1427.9515432993571,
-          1846.5335781097413
+          1846.5335781097413,
+          931.0047501155308
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2399.2063821645884,
           1958.5298075358073,
           1342.7527589162191,
           1803.5024322782244,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1727.4072344853328,
           1406.6673278808594,
           1785.3433166231428,
-          2270.614687992976
+          2270.614687992976,
+          1241.0851143428258
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1456.3226468404134,
           1462.9452022552491,
           890.4904669443766,
           930.5134508768717,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           912.6859992980957,
           636.4568579355875,
           983.1928201039632,
-          1152.8600208282471
+          1152.8600208282471,
+          566.6257741791861
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3423.917410714286,
           2669.336932881673,
           1818.0616537240835,
           2349.2733978271485,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2308.417560831706,
           1672.5219985521758,
           2279.2019411722817,
-          3170.7550375802175
+          3170.7550375802175,
+          1722.6863220759801
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1659.771271387736,
           1648.022687094552,
           1000.7598846435546,
           1057.2626123428345,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1044.5883081876314,
           692.1783562440139,
           1091.299385770162,
-          1327.740975443522
+          1327.740975443522,
+          715.7243613515582
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          171891.1247370793,
           164245.17657001203,
           104919.72157389323,
           131221.11300223213,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           128654.12287248884,
           95319.93937988281,
           127915.18600027902,
-          162025.28230794272
+          162025.28230794272,
+          97980.57821219308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          200667.78737095423,
           175550.27532552084,
           118838.09289550781,
           155892.25165666852,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           153259.51948242186,
           107020.64623151507,
           151017.21895345053,
-          196843.08372395832
+          196843.08372395832,
+          109231.77488490513
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266873,
           266883,
           266882,
           266950,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266936,
           266950,
-          266950
+          266950,
+          266936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
       {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:05:44 2026 \u002B0100",
         "message": "test: guard the namespaces, nested subjects, result constructors and dependencies of the packages (#2239)"
+      },
+      {
+        "sha": "5d0d05daad23f202ed1f187f8f73d73ab9e24b3e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
+        "message": "docs: list the extensions in alphabetical order (#2241)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "168708ba",
       "165d849c",
       "8d553589",
-      "fc5718b5"
+      "fc5718b5",
+      "5d0d05da"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2739.301248005458,
           2076.707926236666,
           1471.865952428182,
           2116.239531962077,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2116.6854934692383,
           1427.6305626460485,
           2089.269470469157,
-          2808.259702242338
+          2808.259702242338,
+          1416.9800286974225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2086.8178520202637,
           1903.0670051574707,
           1218.214353970119,
           1441.46942431132,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1504.9581300099692,
           1020.6364558293269,
           1479.5422579901558,
-          1858.6468039921351
+          1858.6468039921351,
+          1003.5764211018881
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
