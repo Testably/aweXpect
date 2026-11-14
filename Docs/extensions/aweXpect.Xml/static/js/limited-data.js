@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          708.7523752848307,
           950.122648747762,
           831.7835444722857,
           496.971353494204,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           908.2368611653645,
           887.3447880427043,
           511.2003538267953,
-          1000.5146808624268
+          1000.5146808624268,
+          646.170018641154
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          545.6979237238567,
           740.2080995014736,
           659.0514264424642,
           361.4854098047529,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           730.5053480148315,
           724.2631935392108,
           401.624060122172,
-          748.040504528926
+          748.040504528926,
+          596.6469285147531
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3242.395983182467,
           4446.792977905274,
           4715.589695739746,
           2583.7243846013,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4451.461680603027,
           4686.7826873779295,
           2763.4258951822917,
-          4293.4506419255185
+          4293.4506419255185,
+          3401.1106572469075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24179,
           24178,
           24178,
           24172,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24172,
           24178,
-          24178
+          24178,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3869.7824244181315,
           5569.987691061838,
           5438.369637122521,
           2937.8366455078126,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4952.378232683454,
           5391.660554504395,
           3212.5386339823403,
-          5133.991272989909
+          5133.991272989909,
+          4029.8369710286456
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1950.7548316955567,
           2873.1982205708823,
           2536.9480549738955,
           1382.392755126953,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2553.6687305995397,
           2615.5584694998606,
           1541.9341078538162,
-          2469.821453348796
+          2469.821453348796,
+          1892.0608515058245
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12728,
           12654,
           12654,
           12654,
@@ -1680,6 +1679,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2661.4688350132533,
           3930.9599619547525,
           3488.1278749193466,
           2014.8995383126396,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3472.826214345296,
           3598.386396789551,
           2206.659462483724,
-          3382.002095903669
+          3382.002095903669,
+          2643.6571708092324
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "3f5cc07dfe6a9745cad35fa2eb238f3f9aa2c576",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 1 13:14:54 2026 \u002B0100",
-        "message": "fix: keep the inner grammar of the Web \u0022which\u0022 wrappers singular and reject blank header names (#2161)"
-      },
-      {
         "sha": "3f6a8fdf8908f9959d2a45373d35967a032e7f12",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 1 13:15:30 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 17:17:41 2026 \u002B0100",
         "message": "test: guard that public APIs take params arrays instead of params collections (#2238)"
+      },
+      {
+        "sha": "165d849cf549f5e635f95ce866cffacc10b9a4f2",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 14 17:17:50 2026 \u002B0100",
+        "message": "feat: make the constructors of \u0060SnapshotMatch\u0060 and \u0060SnapshotMismatch\u0060 public (#2237)"
       }
     ],
     "labels": [
-      "3f5cc07d",
       "3f6a8fdf",
       "9c72fda8",
       "c2bac0d4",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "fdd52f8b",
       "0e33e256",
       "2a62ad86",
-      "168708ba"
+      "168708ba",
+      "165d849c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10211.725556437175,
           14037.944535827637,
           13677.216838582357,
           7804.821449279785,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13965.269527689616,
           14296.458186558315,
           8225.015609741211,
-          13412.121715291341
+          13412.121715291341,
+          10889.912614186605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25440,
           25367,
           25367,
           25367,
@@ -2288,6 +2287,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249345.4634765625,
           367345.75895182294,
           369817.56136067706,
           180672.2262311663,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           365589.0106445312,
           356211.57170758926,
           182162.43017578125,
-          358470.5582682292
+          358470.5582682292,
+          221374.94620186943
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2380,7 +2380,6 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335,
           544246,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544335,
           544335,
-          544335
+          544335,
+          544245
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
