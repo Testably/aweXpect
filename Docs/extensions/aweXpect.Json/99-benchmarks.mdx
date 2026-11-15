@@ -6,23 +6,10 @@ description: Benchmarks of passing aweXpect.Json expectations compared with the 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import BenchmarkResult from '@site/src/components/BenchmarkResult';
-import BenchmarkSummary from '@site/src/components/BenchmarkSummary';
 
 These benchmarks compare the happy-path overhead of aweXpect.Json (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
 
-:::note[Methodology]
-
-- **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Json.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
-- **Job**: `MediumRun` with the in-process toolchain.
-- **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
-- FluentAssertions has expectations on `JsonNode`, but not on JSON strings or `JsonElement`. Where it lacks an expectation, its benchmark does what a FluentAssertions user writes instead, e.g. parse the string into a `JsonNode`.
-- Each tab shows the latest measured time and allocated memory; bars are scaled within the row so length corresponds to magnitude. **Lower is better.**
-
-:::
-
-<BenchmarkSummary package="aweXpect.Json" />
-
-<Tabs groupId="aweXpectJsonBenchmark">
+<Tabs groupId="aweXpectJsonBenchmark" className="benchmark-tabs">
 
 <TabItem value="JsonString" label="JSON string" default>
 
@@ -236,3 +223,15 @@ _titlesNode.Should().BeEquivalentTo(_reversedTitles);
 </TabItem>
 
 </Tabs>
+
+<details>
+<summary>How these numbers are measured</summary>
+
+- **Suite**: [`HappyCaseBenchmarks`](https://github.com/Testably/aweXpect/tree/main/Benchmarks/aweXpect.Json.Benchmarks) driven by [BenchmarkDotNet](https://benchmarkdotnet.org/).
+- **Job**: `MediumRun` with the in-process toolchain.
+- **Runner**: `ubuntu-latest` GitHub Actions agent, refreshed on every push to `main`.
+- FluentAssertions has expectations on `JsonNode`, but not on JSON strings or `JsonElement`. Where it lacks an expectation, its benchmark does what a FluentAssertions user writes instead, e.g. parse the string into a `JsonNode`.
+- **Charts**: every multiple is relative to aweXpect, and bars longer than four times the fastest library are cut so the others stay comparable. Lower is better.
+- **Trend**: the recent runs compare each library with aweXpect in the same run, so the line does not depend on the speed of the runner. The dashed line marks equal time.
+
+</details>
