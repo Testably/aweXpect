@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
-      {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          385.9212603569031,
           459.1086759567261,
           708.7601682799203,
           379.2913550376892,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           573.8681906920212,
           571.6124097188314,
           613.8106923103333,
-          411.0158950169881
+          411.0158950169881,
+          582.6049766540527
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          490.1170269648234,
           553.4845267704555,
           887.1014983495077,
           517.6340182849339,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           614.8792165347508,
           708.2926327387491,
           618.6364737290603,
-          521.2452648707798
+          521.2452648707798,
+          618.18845094045
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
-      {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          55.89443415403366,
           55.58727538585663,
           96.6071758031845,
           50.2643816113472,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           84.19659837086995,
           106.8634962950434,
           84.1467264175415,
-          58.168544896443684
+          58.168544896443684,
+          84.67608000437419
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          117.27972888946533,
           122.6556202854429,
           204.05013230641683,
           113.2635425879405,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           199.92055597305298,
           171.23878921781267,
           208.69916723569233,
-          128.417256630384
+          128.417256630384,
+          185.17469364802042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
-      {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          894.5126304626465,
           972.0079828409048,
           1885.9938074747722,
           871.4064660753522,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1125.719590886434,
           1357.2476061503091,
           1127.7611651102702,
-          995.9249263176551
+          995.9249263176551,
+          1138.1626993815105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          780.6438542774746,
           841.9449628194174,
           1448.4920652934484,
           734.3787422180176,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1003.8068701426188,
           1088.0934505462646,
           1036.6949776240758,
-          888.0772321065267
+          888.0772321065267,
+          1022.3263879503522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1762,7 +1762,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1864,
-          1864,
           1953,
           1953,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1864,
           1953,
           1952,
-          1953
+          1953,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
       {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1347.8279290880475,
           1341.5427888234456,
           2735.3398178645543,
           1292.8137963158745,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1735.664470799764,
           2041.4147120157877,
           1708.1423016956874,
-          1532.8788752922644
+          1532.8788752922644,
+          1698.0370689119611
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2041.0639602116175,
           2147.5286610921225,
           3739.5812858581544,
           2013.6190861293248,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2632.2565089634486,
           2910.6271767249473,
           2685.678467341832,
-          2294.05210849217
+          2294.05210849217,
+          2632.019598388672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3980,
           3981,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3977,
           3980,
           3977,
-          3980
+          3980,
+          3977
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
       {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          186.3508026088987,
           197.48735839525858,
           370.8365421295166,
           177.69185491970606,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           272.1361211630014,
           342.1413635889689,
           274.5618874004909,
-          215.26145442894526
+          215.26145442894526,
+          272.89529422613293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1245.6105895409216,
           1324.8484360621526,
           2308.5755109151205,
           1173.4271015167237,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1557.843075434367,
           1790.6894397735596,
           1579.6092923482258,
-          1342.662471516927
+          1342.662471516927,
+          1583.7494107655116
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
-        "message": "chore: Bump the mstest group with 2 updates (#2167)"
-      },
-      {
         "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
         "message": "docs: show a single version badge in the README (#2243)"
+      },
+      {
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
-      "c1f4f866",
       "36493d03",
       "a5ae13eb",
       "5d53b9d1",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "44f2de51",
+      "3db03066"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1445.005968775068,
           1485.918890762329,
           2894.1452036539713,
           1325.901752090454,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1688.1252978188652,
           2023.6311663114107,
           1682.5715887705485,
-          1531.1214680989583
+          1531.1214680989583,
+          1695.5673219045004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          160636.9008585612,
           165299.01372419085,
           277232.72412109375,
           163231.82013346354,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           189631.54771205358,
           240067.87388392858,
           191539.4991280692,
-          176183.31126185827
+          176183.31126185827,
+          191592.01967075892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17576,
           17573,
           17577,
           17574,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17528,
-          17576
+          17576,
+          17528
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
