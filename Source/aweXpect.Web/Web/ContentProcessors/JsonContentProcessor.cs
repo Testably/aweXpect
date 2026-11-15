@@ -72,5 +72,5 @@ public sealed class JsonContentProcessor : IContentProcessor
 
 	private static bool IsSupportedMediaType(string mediaType)
 		=> mediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase) ||
-		   mediaType.Equals("application/problem+json", StringComparison.OrdinalIgnoreCase);
+		   mediaType.EndsWith("+json", StringComparison.OrdinalIgnoreCase);
 }

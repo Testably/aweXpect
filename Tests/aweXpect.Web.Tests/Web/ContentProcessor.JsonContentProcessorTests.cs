@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Text;
 using aweXpect.Web.Tests.TestHelpers;
 
 namespace aweXpect.Tests.Web.ContentProcessors;
@@ -11,6 +12,7 @@ public sealed partial class ContentProcessor
 		[Test]
 		[Arguments("application/json")]
 		[Arguments("application/problem+json")]
+		[Arguments("application/vnd.api+json")]
 		public async Task JsonContent_WithInvalidJson_ShouldIncludeRawTextInFailureMessage(
 			string contentType)
 		{
@@ -37,8 +39,64 @@ public sealed partial class ContentProcessor
 		}
 
 		[Test]
+		public async Task JsonContent_WithMediaTypeParameters_ShouldIncludePrettifiedJsonInFailureMessage()
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent(new StringContent("{\"my-content\":1,}", Encoding.UTF8, "application/hal+json"));
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that httpResponse
+				             has status code equal to 202 Accepted,
+				             but it had status code 200 OK
+
+				             HTTP-Response:
+				               200 OK HTTP/1.1
+				                 Content-Type: application/hal+json; charset=utf-8
+				                 Content-Length: 17
+				               {
+				                 "my-content": 1
+				               }
+				             """);
+		}
+
+		[Test]
+		[Arguments("application/json-seq")]
+		[Arguments("application/vnd.api+jsonx")]
+		[Arguments("text/plain")]
+		public async Task JsonContent_WithOtherMediaType_ShouldIncludeRawTextInFailureMessage(
+			string contentType)
+		{
+			HttpResponseMessage httpResponse = new HttpResponseBuilder()
+				.WithContent("{\"my-content\":1,}")
+				.WithContentType(contentType);
+
+			async Task Act()
+				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code equal to 202 Accepted,
+				               but it had status code 200 OK
+
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: {{contentType}}
+				                   Content-Length: 17
+				                 {"my-content":1,}
+				               """);
+		}
+
+		[Test]
 		[Arguments("application/json")]
 		[Arguments("application/problem+json")]
+		[Arguments("application/hal+json")]
+		[Arguments("application/vnd.api+json")]
+		[Arguments("APPLICATION/VND.API+JSON")]
 		public async Task JsonContent_WithValidJson_ShouldIncludePrettifiedJsonInFailureMessage(
 			string contentType)
 		{
