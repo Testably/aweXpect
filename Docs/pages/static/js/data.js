@@ -1998,6 +1998,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -2333,7 +2339,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -2672,7 +2679,8 @@ window.BENCHMARK_DATA = {
           7949.799075535366,
           7830.966396331787,
           10633.126249186198,
-          7768.232638041179
+          7768.232638041179,
+          10856.61633682251
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2908,6 +2916,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3363,7 +3372,8 @@ window.BENCHMARK_DATA = {
           265575.398046875,
           244878.39864676338,
           361098.26697716344,
-          303736.4637276786
+          303736.4637276786,
+          372644.7303710937
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3707,7 +3717,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590292,
-          590225
+          590225,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4054,7 +4065,8 @@ window.BENCHMARK_DATA = {
           15007.95586688702,
           14238.259073529925,
           19097.568115234375,
-          18655.462235514322
+          18655.462235514322,
+          21344.525778634208
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4066,6 +4078,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6368,6 +6381,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -6696,7 +6715,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -7028,7 +7048,8 @@ window.BENCHMARK_DATA = {
           189.70466118592483,
           166.09747333186013,
           237.91877476374307,
-          230.2076685110728
+          230.2076685110728,
+          222.12835003779486
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7224,6 +7245,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7705,7 +7727,8 @@ window.BENCHMARK_DATA = {
           460.9266829150064,
           417.5048568725586,
           484.31048787434895,
-          610.9409197489421
+          610.9409197489421,
+          487.392486000061
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7717,6 +7740,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8382,7 +8406,8 @@ window.BENCHMARK_DATA = {
           320.59276760541474,
           288.2002443586077,
           383.554069348744,
-          423.663578637441
+          423.663578637441,
+          390.39304631551107
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8394,6 +8419,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -15309,6 +15335,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -16407,7 +16439,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -17509,7 +17542,8 @@ window.BENCHMARK_DATA = {
           82.86189344951084,
           78.20753261676201,
           102.74703580538431,
-          115.60123830636343
+          115.60123830636343,
+          104.27089088757833
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18508,6 +18542,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -19726,7 +19761,8 @@ window.BENCHMARK_DATA = {
           219.02584975560507,
           217.95888996124268,
           245.7939353942871,
-          331.20588995860174
+          331.20588995860174,
+          257.53864806493124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19919,6 +19955,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -21224,7 +21261,8 @@ window.BENCHMARK_DATA = {
           190.34811617646898,
           177.48384172575814,
           243.07255210876465,
-          244.45999595097132
+          244.45999595097132,
+          240.44174977711268
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21236,6 +21274,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -23624,6 +23663,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -23959,7 +24004,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -24298,7 +24344,8 @@ window.BENCHMARK_DATA = {
           161.36965928758895,
           154.83073816299438,
           211.73437932332357,
-          223.50048015798842
+          223.50048015798842,
+          203.25231526448175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24503,6 +24550,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -24989,7 +25037,8 @@ window.BENCHMARK_DATA = {
           410.35730501810707,
           467.92838665644325,
           521.3686641965594,
-          673.5340828895569
+          673.5340828895569,
+          515.7143688201904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25001,6 +25050,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -25680,7 +25730,8 @@ window.BENCHMARK_DATA = {
           269.0766309738159,
           258.38218644460045,
           331.10951509475706,
-          364.4551952044169
+          364.4551952044169,
+          332.71985448201497
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -25692,6 +25743,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -32614,6 +32666,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -33712,7 +33770,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -34814,7 +34873,8 @@ window.BENCHMARK_DATA = {
           538.0478655270168,
           545.3338222503662,
           670.4948704583304,
-          618.6277911322458
+          618.6277911322458,
+          692.9678882452158
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -35801,6 +35861,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -37031,7 +37092,8 @@ window.BENCHMARK_DATA = {
           1226.677515188853,
           1097.4881504603795,
           1376.4364950815836,
-          1562.8043523515973
+          1562.8043523515973,
+          1389.144139099121
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37224,6 +37286,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -38529,7 +38592,8 @@ window.BENCHMARK_DATA = {
           529.1641847610474,
           506.0906497515165,
           659.2574994405111,
-          656.404544321696
+          656.404544321696,
+          650.4655185699463
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38541,6 +38605,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -45507,6 +45572,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -46605,7 +46676,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -47707,7 +47779,8 @@ window.BENCHMARK_DATA = {
           534.9859033993313,
           529.0537820962759,
           687.7317752838135,
-          618.2105898062388
+          618.2105898062388,
+          701.5077167510987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48694,6 +48767,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -49924,7 +49998,8 @@ window.BENCHMARK_DATA = {
           17323.365248460035,
           16082.659358433315,
           27671.873057774133,
-          18608.991748046876
+          18608.991748046876,
+          28365.378462727866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51031,7 +51106,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51422,7 +51498,8 @@ window.BENCHMARK_DATA = {
           625.5653310139974,
           582.9362727483114,
           803.3584749221802,
-          775.7248630523682
+          775.7248630523682,
+          760.7109170277913
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51434,6 +51511,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -54170,6 +54248,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -54563,7 +54647,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -54960,7 +55045,8 @@ window.BENCHMARK_DATA = {
           546.039963722229,
           484.199450747172,
           620.2569805781046,
-          663.988965288798
+          663.988965288798,
+          704.2853281157358
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55254,6 +55340,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -55767,7 +55854,8 @@ window.BENCHMARK_DATA = {
           54482.69392496745,
           53768.278332519534,
           81508.27015032087,
-          34438.818224225724
+          34438.818224225724,
+          82719.94690813337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56169,7 +56257,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58529,6 +58618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -58922,7 +59017,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -59319,7 +59415,8 @@ window.BENCHMARK_DATA = {
           107.66631851593654,
           101.51103993256886,
           134.59817992846172,
-          149.97930342810494
+          149.97930342810494,
+          133.36669388839178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59613,6 +59710,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -60126,7 +60224,8 @@ window.BENCHMARK_DATA = {
           15268.314872154822,
           14739.810590616862,
           31934.54444986979,
-          17452.798018391928
+          17452.798018391928,
+          31952.862052408855
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60528,6 +60627,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -60919,7 +61019,8 @@ window.BENCHMARK_DATA = {
           198.76855874061584,
           208.8742332458496,
           253.94946537017822,
-          249.7488902727763
+          249.7488902727763,
+          239.0233778476715
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -60931,6 +61032,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -63319,6 +63421,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -63654,7 +63762,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -63993,7 +64102,8 @@ window.BENCHMARK_DATA = {
           224.71923804283142,
           222.65109925270082,
           293.33762140274047,
-          296.751551764352
+          296.751551764352,
+          292.7221946080526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64198,6 +64308,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -64684,7 +64795,8 @@ window.BENCHMARK_DATA = {
           319.38892415591647,
           324.1372973918915,
           371.25234508514404,
-          487.57166978291104
+          487.57166978291104,
+          389.1210116068522
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -64696,6 +64808,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -65375,7 +65488,8 @@ window.BENCHMARK_DATA = {
           342.45184902044446,
           326.0887085278829,
           401.6576150258382,
-          413.9621101697286
+          413.9621101697286,
+          410.6923982938131
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -65387,6 +65501,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -67731,6 +67846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -68066,7 +68187,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -68405,7 +68527,8 @@ window.BENCHMARK_DATA = {
           583.6723002751668,
           547.4330874760946,
           701.3682331720988,
-          717.4172122137887
+          717.4172122137887,
+          700.7948681286404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -68641,6 +68764,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -69096,7 +69220,8 @@ window.BENCHMARK_DATA = {
           1718.7582945142474,
           1555.8541250864664,
           1901.912673441569,
-          2265.3447957720077
+          2265.3447957720077,
+          1961.9426709493002
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -69108,6 +69233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -69787,7 +69913,8 @@ window.BENCHMARK_DATA = {
           800.5185159683227,
           734.7084689507118,
           946.2210564613342,
-          943.2532997131348
+          943.2532997131348,
+          925.2712348057673
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -69799,6 +69926,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -72143,6 +72271,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -72478,7 +72612,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -72817,7 +72952,8 @@ window.BENCHMARK_DATA = {
           8502.57512488732,
           8614.82735661098,
           12017.357461547852,
-          9782.361690814678
+          9782.361690814678,
+          12052.945398183969
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -73056,6 +73192,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -73508,7 +73645,8 @@ window.BENCHMARK_DATA = {
           27533.482964148887,
           26774.382198079427,
           40502.32631138393,
-          32348.508178710938
+          32348.508178710938,
+          41491.857059733076
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -73845,6 +73983,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -74199,7 +74338,8 @@ window.BENCHMARK_DATA = {
           7866.24141031901,
           7905.390431330754,
           10543.55624272273,
-          9187.403282674153
+          9187.403282674153,
+          10687.58905843099
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -74211,6 +74351,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -76555,6 +76696,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -76890,7 +77037,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -77229,7 +77377,8 @@ window.BENCHMARK_DATA = {
           8020.890808105469,
           8017.670467122396,
           11728.92519938151,
-          9283.171654256184
+          9283.171654256184,
+          11715.073784964425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -77468,6 +77617,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -77920,7 +78070,8 @@ window.BENCHMARK_DATA = {
           39676.181775774276,
           38496.279724121094,
           59198.1485548753,
-          46337.556941105766
+          46337.556941105766,
+          59397.68129882812
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -78253,6 +78404,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -78611,7 +78763,8 @@ window.BENCHMARK_DATA = {
           15443.624426705497,
           15409.902357991536,
           21101.968636067708,
-          18015.422840663367
+          18015.422840663367,
+          20819.696911151594
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -78623,6 +78776,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -79047,6 +79201,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
@@ -79062,7 +79222,8 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
@@ -79081,7 +79242,8 @@ window.BENCHMARK_DATA = {
           167.59432038894067,
           157.91960486998926,
           225.28913097381593,
-          174.5009091751916
+          174.5009091751916,
+          206.22479999860127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -79093,6 +79255,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          280,
           280,
           280,
           280,
@@ -79132,7 +79295,8 @@ window.BENCHMARK_DATA = {
           181.75326970418294,
           271.7870063100542,
           219.43180143038433,
-          281.57810799280804
+          281.57810799280804,
+          204.94760135503915
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -79144,6 +79308,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -79183,7 +79348,8 @@ window.BENCHMARK_DATA = {
           210.47505342043362,
           201.09679990155357,
           394.6308954556783,
-          420.72115582686206
+          420.72115582686206,
+          377.4182909329732
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -79195,6 +79361,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          704,
           704,
           704,
           704,
