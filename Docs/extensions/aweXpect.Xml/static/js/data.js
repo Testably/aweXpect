@@ -1674,6 +1674,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
@@ -1955,7 +1961,8 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
@@ -2240,7 +2247,8 @@ window.BENCHMARK_DATA = {
           633.8864799817403,
           750.9823728970119,
           759.7740166187286,
-          467.53906697493335
+          467.53906697493335,
+          638.3073506673177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2421,6 +2429,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2823,7 +2832,8 @@ window.BENCHMARK_DATA = {
           538.4036912236895,
           624.5452000935873,
           826.5953498567853,
-          369.0392594178518
+          369.0392594178518,
+          568.7751359303792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2835,6 +2845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4801,6 +4812,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
@@ -5082,7 +5099,8 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
@@ -5367,7 +5385,8 @@ window.BENCHMARK_DATA = {
           3240.6863000052317,
           3816.741600581578,
           5059.452820841471,
-          2421.369259425572
+          2421.369259425572,
+          3386.37841796875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5657,7 +5676,8 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24172,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5950,7 +5970,8 @@ window.BENCHMARK_DATA = {
           3769.455213001796,
           4482.773561604818,
           5951.589480082194,
-          2765.0292478288925
+          2765.0292478288925,
+          4046.9874567304337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5962,6 +5983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7868,6 +7890,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
@@ -8139,7 +8167,8 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
@@ -8414,7 +8443,8 @@ window.BENCHMARK_DATA = {
           1860.0127792358398,
           2027.1988156636555,
           2866.5415210723877,
-          1376.6617533365886
+          1376.6617533365886,
+          1988.0905772617884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8680,6 +8710,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -8977,7 +9008,8 @@ window.BENCHMARK_DATA = {
           2622.4513268103965,
           2912.4821985880535,
           3845.4788513183594,
-          1923.7551305135091
+          1923.7551305135091,
+          2692.6176315307616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8989,6 +9021,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10885,6 +10918,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
@@ -11156,7 +11195,8 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
@@ -11431,7 +11471,8 @@ window.BENCHMARK_DATA = {
           9968.521857706706,
           10884.380028860909,
           14089.25101361956,
-          7206.849414280483
+          7206.849414280483,
+          10282.91986670861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11697,6 +11738,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -11994,7 +12036,8 @@ window.BENCHMARK_DATA = {
           239287.15946451822,
           222568.27013346355,
           290191.95133463544,
-          167338.28160807292
+          167338.28160807292,
+          244411.30546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12274,7 +12317,8 @@ window.BENCHMARK_DATA = {
           544335,
           544246,
           544246,
-          544335
+          544335,
+          546620
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
