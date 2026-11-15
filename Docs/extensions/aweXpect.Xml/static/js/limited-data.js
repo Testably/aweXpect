@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          875.3374515533447,
           940.159942150116,
           961.2702892303466,
           787.1732439994812,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           633.8864799817403,
           750.9823728970119,
           759.7740166187286,
-          467.53906697493335
+          467.53906697493335,
+          638.3073506673177
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          753.4910699208577,
           690.986235109965,
           720.9330297470093,
           799.3850512186687,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           538.4036912236895,
           624.5452000935873,
           826.5953498567853,
-          369.0392594178518
+          369.0392594178518,
+          568.7751359303792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4835.385817936489,
           4450.473106384277,
           4559.5549715482275,
           4431.633692814754,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3240.6863000052317,
           3816.741600581578,
           5059.452820841471,
-          2421.369259425572
+          2421.369259425572,
+          3386.37841796875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24172,
           24179,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24172,
-          24178
+          24178,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5585.841941324869,
           5113.37202351888,
           5297.50129699707,
           5153.6997647966655,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3769.455213001796,
           4482.773561604818,
           5951.589480082194,
-          2765.0292478288925
+          2765.0292478288925,
+          4046.9874567304337
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2724.7676582336426,
           2536.9251907348635,
           2706.9839029947916,
           2495.7636557987757,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1860.0127792358398,
           2027.1988156636555,
           2866.5415210723877,
-          1376.6617533365886
+          1376.6617533365886,
+          1988.0905772617884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1648,7 +1648,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1671,6 +1670,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3706.12823232015,
           3488.767860119159,
           3549.006671651204,
           3516.617214457194,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2622.4513268103965,
           2912.4821985880535,
           3845.4788513183594,
-          1923.7551305135091
+          1923.7551305135091,
+          2692.6176315307616
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
         "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
+      },
+      {
+        "sha": "2ad6489b85b79a8a00577498cdb2fee06d33c531",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
+        "message": "refactor: use the music theme in all benchmarks (#2248)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "055703d4",
       "c9f9d7b3",
       "8fdcab14",
-      "4300826c"
+      "4300826c",
+      "2ad6489b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          15546.908922467914,
           13446.001353672573,
           13898.258018493652,
           14268.596590314593,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9968.521857706706,
           10884.380028860909,
           14089.25101361956,
-          7206.849414280483
+          7206.849414280483,
+          10282.91986670861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2256,7 +2256,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2279,6 +2278,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          372392.89957682294,
           349453.7430338542,
           354092.89107840403,
           284892.31666666665,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           239287.15946451822,
           222568.27013346355,
           290191.95133463544,
-          167338.28160807292
+          167338.28160807292,
+          244411.30546875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544246,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544335,
           544246,
           544246,
-          544335
+          544335,
+          546620
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
