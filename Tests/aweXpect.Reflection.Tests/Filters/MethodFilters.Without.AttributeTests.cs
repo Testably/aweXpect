@@ -67,6 +67,36 @@ public sealed partial class MethodFilters
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeMethod(int value)
+			{
+				Filtered.Methods methods = In.Type<Dummy>().Methods()
+					.Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Methods notMatchingMethods = In.Type<Dummy>().Methods()
+					.Without<MultiAttribute>(multi => multi.Value == 3);
+
+				await That(methods).DoesNotContain(typeof(Dummy).GetMethod(nameof(Dummy.MultiMethod)))
+					.Because("every attribute of the method counts, not only the first one");
+				await That(notMatchingMethods).Contains(typeof(Dummy).GetMethod(nameof(Dummy.MultiMethod)))
+					.Because("a method whose attributes all do not match the predicate is kept");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenOnlyOverriddenMethodHasMatchingAttribute_ShouldExcludeOverrideUnlessDirectly()
+			{
+				Filtered.Methods methods = In.Type<DummyChild>().Methods()
+					.Without<MultiAttribute>(multi => multi.Value == 1);
+				Filtered.Methods directMethods = In.Type<DummyChild>().Methods()
+					.Without<MultiAttribute>(multi => multi.Value == 1).Directly();
+
+				await That(methods).DoesNotContain(typeof(DummyChild).GetMethod(nameof(DummyChild.MyMultiMethod)))
+					.Because("the attribute of the overridden base method is inherited");
+				await That(directMethods).Contains(typeof(DummyChild).GetMethod(nameof(DummyChild.MyMultiMethod)))
+					.Because("with Directly only the attribute declared on the overriding method counts");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Methods methods = In.Type<Dummy>().Methods()
@@ -94,10 +124,27 @@ public sealed partial class MethodFilters
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			private class Dummy
 			{
 				[Bar(Value = 2)]
 				public virtual void MyBarMethod()
+				{
+				}
+
+				[Multi(Value = 1)]
+				public virtual void MyMultiMethod()
+				{
+				}
+
+				[Multi(Value = 1)]
+				[Multi(Value = 2)]
+				public static void MultiMethod()
 				{
 				}
 
@@ -114,6 +161,11 @@ public sealed partial class MethodFilters
 			private class DummyChild : Dummy
 			{
 				public override void MyBarMethod()
+				{
+				}
+
+				[Multi(Value = 2)]
+				public override void MyMultiMethod()
 				{
 				}
 			}

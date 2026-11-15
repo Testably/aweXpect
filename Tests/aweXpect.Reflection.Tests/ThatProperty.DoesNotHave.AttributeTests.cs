@@ -73,6 +73,27 @@ public sealed partial class ThatProperty
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(int value)
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.MultiProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatProperty.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in public string ThatProperty.DoesNotHave.AttributeTests.TestClass.MultiProperty { get; set; }
+					             """)
+					.Because("every attribute of the property counts, not only the first one");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.TestProperty))!;
@@ -103,6 +124,24 @@ public sealed partial class ThatProperty
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPropertyHasMatchingAttribute_Directly_ShouldFail()
+			{
+				PropertyInfo subject = typeof(TestClass).GetProperty(nameof(TestClass.TestProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no direct ThatProperty.DoesNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did in public string ThatProperty.DoesNotHave.AttributeTests.TestClass.TestProperty { get; set; }
+					             """);
 			}
 
 			[Test]
@@ -195,11 +234,19 @@ public sealed partial class ThatProperty
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			private class TestClass
 			{
 				[Foo(Value = 2)] public string TestProperty { get; set; } = "";
 
 				public string NoAttributeProperty { get; set; } = "";
+
+				[Multi(Value = 1)] [Multi(Value = 2)] public string MultiProperty { get; set; } = "";
 			}
 
 			private class BaseClass

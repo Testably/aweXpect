@@ -37,6 +37,22 @@ public sealed partial class FieldFilters
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeField(int value)
+			{
+				Filtered.Fields fields = In.Type<Dummy>().Fields()
+					.Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Fields notMatchingFields = In.Type<Dummy>().Fields()
+					.Without<MultiAttribute>(multi => multi.Value == 3);
+
+				await That(fields).DoesNotContain(typeof(Dummy).GetField(nameof(Dummy.MultiField)))
+					.Because("every attribute of the field counts, not only the first one");
+				await That(notMatchingFields).Contains(typeof(Dummy).GetField(nameof(Dummy.MultiField)))
+					.Because("a field whose attributes all do not match the predicate is kept");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Fields fields = In.Type<Dummy>().Fields()
@@ -64,10 +80,18 @@ public sealed partial class FieldFilters
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 #pragma warning disable CS0649 // Field is never assigned to
 			private class Dummy
 			{
 				[Bar(Value = 2)] public string? MyBarField;
+
+				[Multi(Value = 1)] [Multi(Value = 2)] public string? MultiField;
 
 				[Bar(Value = 3)] public string? OtherBarField;
 

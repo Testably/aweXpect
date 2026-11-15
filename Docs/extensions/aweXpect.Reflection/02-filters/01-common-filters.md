@@ -73,7 +73,7 @@ considered as well; append `.Directly()` to only consider the attributes declare
 `.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](./03-types.md#inheritance)). Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
 must have none of them).
 
-The negations with a predicate mean that no attribute matches: an item without the attribute passes as well, unlike with `.Has<TAttribute>(a => !…)`, which also requires the attribute.
+The negations with a predicate mean that no attribute matches: an item without the attribute passes as well, unlike with `.Has<TAttribute>(a => !…)`, which also requires the attribute. For an attribute with `AllowMultiple = true`, `.Has<TAttribute>(a => !…)` passes as long as one attribute does not match, even if another one matches.
 
 ```csharp
 await That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");

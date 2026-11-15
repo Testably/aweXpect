@@ -67,6 +67,22 @@ public sealed partial class PropertyFilters
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeProperty(int value)
+			{
+				Filtered.Properties properties = In.Type<Dummy>().Properties()
+					.Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Properties notMatchingProperties = In.Type<Dummy>().Properties()
+					.Without<MultiAttribute>(multi => multi.Value == 3);
+
+				await That(properties).DoesNotContain(typeof(Dummy).GetProperty(nameof(Dummy.MultiProperty)))
+					.Because("every attribute of the property counts, not only the first one");
+				await That(notMatchingProperties).Contains(typeof(Dummy).GetProperty(nameof(Dummy.MultiProperty)))
+					.Because("a property whose attributes all do not match the predicate is kept");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Properties properties = In.Type<Dummy>().Properties()
@@ -94,9 +110,17 @@ public sealed partial class PropertyFilters
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			private class Dummy
 			{
 				[Bar(Value = 2)] public virtual int MyBarProperty { get; set; }
+
+				[Multi(Value = 1)] [Multi(Value = 2)] public int MultiProperty { get; set; }
 
 				[Bar(Value = 3)] public int OtherBarProperty { get; set; }
 

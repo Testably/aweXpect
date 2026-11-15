@@ -203,6 +203,19 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WithPredicate_WhenCollectionIsEmpty_ShouldSucceed()
+			{
+				List<Type?> subjects = [];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenNoTypeHasMatchingAttribute_ShouldSucceed()
 			{
 				List<Type?> subjects = [typeof(BarClass), typeof(FooClass2),];
@@ -239,6 +252,24 @@ public sealed partial class ThatTypes
 					             ]
 					             """)
 					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenSubjectIsNull_ShouldFail()
+			{
+				IEnumerable<Type?>? subjects = null;
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it was <null>
+					             """);
 			}
 
 			[AttributeUsage(AttributeTargets.Class)]

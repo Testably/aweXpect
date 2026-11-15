@@ -67,6 +67,22 @@ public sealed partial class EventFilters
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeEvent(int value)
+			{
+				Filtered.Events events = In.Type<Dummy>().Events()
+					.Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Events notMatchingEvents = In.Type<Dummy>().Events()
+					.Without<MultiAttribute>(multi => multi.Value == 3);
+
+				await That(events).DoesNotContain(typeof(Dummy).GetEvent(nameof(Dummy.MultiEvent)))
+					.Because("every attribute of the event counts, not only the first one");
+				await That(notMatchingEvents).Contains(typeof(Dummy).GetEvent(nameof(Dummy.MultiEvent)))
+					.Because("an event whose attributes all do not match the predicate is kept");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Events events = In.Type<Dummy>().Events()
@@ -94,10 +110,18 @@ public sealed partial class EventFilters
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Event, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 #pragma warning disable CS0067 // Event is never used
 			private class Dummy
 			{
 				[Bar(Value = 2)] public virtual event Action? MyBarEvent;
+
+				[Multi(Value = 1)] [Multi(Value = 2)] public event Action? MultiEvent;
 
 				[Bar(Value = 3)] public event Action? OtherBarEvent;
 

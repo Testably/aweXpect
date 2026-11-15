@@ -123,6 +123,24 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WithPredicate_WhenTypeHasMatchingAttribute_Directly_ShouldFail()
+			{
+				Type subject = typeof(FooClass2);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no direct ThatType.DoesNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did in ThatType.DoesNotHave.AttributeTests.FooClass2
+					             """);
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenTypeHasMatchingAttribute_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);

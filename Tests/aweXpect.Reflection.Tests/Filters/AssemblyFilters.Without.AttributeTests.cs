@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
 using aweXpect.Reflection.Collections;
 
+[assembly: AssemblyMetadata("AssemblyFilters.Without.Multi", "1")]
+[assembly: AssemblyMetadata("AssemblyFilters.Without.Multi", "2")]
+
 namespace aweXpect.Reflection.Tests.Filters;
 
 public sealed partial class AssemblyFilters
@@ -45,6 +48,24 @@ public sealed partial class AssemblyFilters
 				await That(assemblies.GetDescription())
 					.IsEqualTo(
 						"in all loaded assemblies without AssemblyTitleAttribute matching attribute => attribute.Title == \"aweXpect.Reflection.Tests\"");
+			}
+
+			[Test]
+			[Arguments("1")]
+			[Arguments("2")]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeAssembly(string value)
+			{
+				Filtered.Assemblies assemblies = In.AssemblyContaining<AssemblyFilters>()
+					.Without<AssemblyMetadataAttribute>(
+						attribute => attribute.Key == "AssemblyFilters.Without.Multi" && attribute.Value == value);
+				Filtered.Assemblies notMatchingAssemblies = In.AssemblyContaining<AssemblyFilters>()
+					.Without<AssemblyMetadataAttribute>(
+						attribute => attribute.Key == "AssemblyFilters.Without.Multi" && attribute.Value == "3");
+
+				await That(assemblies).DoesNotContain(typeof(AssemblyFilters).Assembly)
+					.Because("every attribute of the assembly counts, not only the first one");
+				await That(notMatchingAssemblies).Contains(typeof(AssemblyFilters).Assembly)
+					.Because("an assembly whose attributes all do not match the predicate is kept");
 			}
 
 			[Test]

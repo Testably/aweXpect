@@ -86,6 +86,24 @@ public sealed partial class ThatEvent
 			}
 
 			[Test]
+			public async Task WithPredicate_WhenEventHasMatchingAttribute_Directly_ShouldFail()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no direct ThatEvent.DoesNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.TestClass.TestEvent
+					             """);
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenEventHasMatchingAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
@@ -150,6 +168,27 @@ public sealed partial class ThatEvent
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(int value)
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.MultiEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.TestClass.MultiEvent
+					             """)
+					.Because("every attribute of the event counts, not only the first one");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
@@ -195,12 +234,20 @@ public sealed partial class ThatEvent
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Event, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
 				[Foo(Value = 2)] public event Action? TestEvent;
 
 				public event Action? NoAttributeEvent;
+
+				[Multi(Value = 1)] [Multi(Value = 2)] public event Action? MultiEvent;
 			}
 
 			private class BaseClass

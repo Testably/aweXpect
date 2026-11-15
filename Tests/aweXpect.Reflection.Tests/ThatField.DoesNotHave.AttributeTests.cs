@@ -85,6 +85,27 @@ public sealed partial class ThatField
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(int value)
+			{
+				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.MultiField))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatField.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in string ThatField.DoesNotHave.AttributeTests.TestClass.MultiField
+					             """)
+					.Because("every attribute of the field counts, not only the first one");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				FieldInfo subject = typeof(TestClass).GetField(nameof(TestClass.TestField))!;
@@ -130,11 +151,18 @@ public sealed partial class ThatField
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 			private class TestClass
 			{
 				public string NoAttributeField = "";
 				[Foo(Value = 2)] public string TestField = "";
+				[Multi(Value = 1)] [Multi(Value = 2)] public string MultiField = "";
 			}
 #pragma warning restore CS0414
 		}

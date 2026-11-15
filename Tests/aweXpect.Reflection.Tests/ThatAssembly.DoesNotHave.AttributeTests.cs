@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
 
+[assembly: AssemblyMetadata("ThatAssembly.DoesNotHave.Multi", "1")]
+[assembly: AssemblyMetadata("ThatAssembly.DoesNotHave.Multi", "2")]
+
 namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssembly
@@ -82,6 +85,28 @@ public sealed partial class ThatAssembly
 
 				await That(Act).DoesNotThrow()
 					.Because("an attribute that does not match the predicate does not count");
+			}
+
+			[Test]
+			[Arguments("1")]
+			[Arguments("2")]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(string value)
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<AssemblyMetadataAttribute>(
+						attr => attr.Key == "ThatAssembly.DoesNotHave.Multi" && attr.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no AssemblyMetadataAttribute matching attr => attr.Key == "ThatAssembly.DoesNotHave.Multi" && attr.Value == value,
+					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             """).AsWildcard()
+					.Because("every attribute of the assembly counts, not only the first one");
 			}
 
 			[Test]

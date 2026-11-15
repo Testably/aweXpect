@@ -85,6 +85,27 @@ public sealed partial class ThatConstructor
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(int value)
+			{
+				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(int),])!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatConstructor.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in ThatConstructor.DoesNotHave.AttributeTests.TestClass(int value)
+					             """)
+					.Because("every attribute of the constructor counts, not only the first one");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				ConstructorInfo subject = typeof(TestClass).GetConstructor([typeof(string),])!;
@@ -130,6 +151,12 @@ public sealed partial class ThatConstructor
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Constructor, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			// ReSharper disable UnusedMember.Local
 			private class TestClass
 			{
@@ -140,6 +167,13 @@ public sealed partial class ThatConstructor
 				[Foo(Value = 2)]
 				// ReSharper disable once UnusedParameter.Local
 				public TestClass(string value)
+				{
+				}
+
+				[Multi(Value = 1)]
+				[Multi(Value = 2)]
+				// ReSharper disable once UnusedParameter.Local
+				public TestClass(int value)
 				{
 				}
 			}

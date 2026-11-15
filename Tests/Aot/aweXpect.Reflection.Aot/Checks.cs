@@ -157,6 +157,10 @@ internal static class Checks
 		new("none of the named types has an attribute matching the predicate",
 			() => ShouldPass(async ()
 				=> await That(In.Types<Order, Customer>()).DoNotHave<ObsoleteAttribute>(attribute => attribute.IsError))),
+		new("the named types filtered without an attribute matching the predicate contain the order type",
+			() => ShouldPass(async ()
+				=> await That(In.Types<Order, Customer>().Without<ObsoleteAttribute>(attribute => attribute.IsError))
+					.Contains(typeof(Order)))),
 	];
 
 	private static Filtered.Types DomainTypes()

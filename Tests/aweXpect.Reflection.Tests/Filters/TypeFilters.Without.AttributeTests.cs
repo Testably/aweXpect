@@ -66,9 +66,13 @@ public sealed partial class TypeFilters
 			{
 				Filtered.Types types = In.AssemblyContaining<AssemblyFilters>()
 					.Types().Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Types notMatchingTypes = In.AssemblyContaining<AssemblyFilters>()
+					.Types().Without<MultiAttribute>(multi => multi.Value == 3);
 
 				await That(types).DoesNotContain(typeof(MultiClass))
 					.Because("every attribute of the type counts, not only the first one");
+				await That(notMatchingTypes).Contains(typeof(MultiClass))
+					.Because("a type whose attributes all do not match the predicate is kept");
 			}
 
 			[Test]

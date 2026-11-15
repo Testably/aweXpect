@@ -117,6 +117,81 @@ public sealed partial class ThatMethod
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(int value)
+			{
+				MethodInfo subject = typeof(TestClass).GetMethod(nameof(TestClass.MultiMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatMethod.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in void ThatMethod.DoesNotHave.AttributeTests.TestClass.MultiMethod()
+					             """)
+					.Because("every attribute of the method counts, not only the first one");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenOverrideAndBaseMethodHaveSeveralAttributes_Directly_ShouldFail()
+			{
+				MethodInfo subject = typeof(DerivedClass).GetMethod(nameof(DerivedClass.MultiMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == 2).Directly();
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no direct ThatMethod.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == 2,
+					             but it did in void ThatMethod.DoesNotHave.AttributeTests.DerivedClass.MultiMethod()
+					             """)
+					.Because("the attribute declared on the overriding method still counts with Directly");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenOverrideAndBaseMethodHaveSeveralAttributes_Directly_ShouldSucceed()
+			{
+				MethodInfo subject = typeof(DerivedClass).GetMethod(nameof(DerivedClass.MultiMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == 1).Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly the attribute of the overridden base method is hidden");
+			}
+
+			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOverrideAndBaseMethodHaveSeveralAttributes_ShouldFail(int value)
+			{
+				MethodInfo subject = typeof(DerivedClass).GetMethod(nameof(DerivedClass.MultiMethod))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatMethod.DoesNotHave.AttributeTests.MultiAttribute matching multi => multi.Value == value,
+					             but it did in void ThatMethod.DoesNotHave.AttributeTests.DerivedClass.MultiMethod()
+					             """)
+					.Because("the attributes of the overriding and of the overridden base method count");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				MethodInfo subject = typeof(TestClass).GetMethod(nameof(TestClass.TestMethod))!;
@@ -162,6 +237,12 @@ public sealed partial class ThatMethod
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			private class TestClass
 			{
 				[Foo(Value = 2)]
@@ -172,6 +253,12 @@ public sealed partial class ThatMethod
 				public static void NoAttributeMethod()
 				{
 				}
+
+				[Multi(Value = 1)]
+				[Multi(Value = 2)]
+				public static void MultiMethod()
+				{
+				}
 			}
 
 			private class BaseClass
@@ -180,11 +267,21 @@ public sealed partial class ThatMethod
 				public virtual void InheritedMethod()
 				{
 				}
+
+				[Multi(Value = 1)]
+				public virtual void MultiMethod()
+				{
+				}
 			}
 
 			private class DerivedClass : BaseClass
 			{
 				public override void InheritedMethod()
+				{
+				}
+
+				[Multi(Value = 2)]
+				public override void MultiMethod()
 				{
 				}
 			}

@@ -38,6 +38,22 @@ public sealed partial class ConstructorFilters
 			}
 
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldExcludeConstructor(int value)
+			{
+				Filtered.Constructors constructors = In.Type<Dummy>().Constructors()
+					.Without<MultiAttribute>(multi => multi.Value == value);
+				Filtered.Constructors notMatchingConstructors = In.Type<Dummy>().Constructors()
+					.Without<MultiAttribute>(multi => multi.Value == 3);
+
+				await That(constructors).DoesNotContain(typeof(Dummy).GetConstructor([typeof(bool),]))
+					.Because("every attribute of the constructor counts, not only the first one");
+				await That(notMatchingConstructors).Contains(typeof(Dummy).GetConstructor([typeof(bool),]))
+					.Because("a constructor whose attributes all do not match the predicate is kept");
+			}
+
+			[Test]
 			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
 			{
 				Filtered.Constructors constructors = In.Type<Dummy>().Constructors()
@@ -65,6 +81,12 @@ public sealed partial class ConstructorFilters
 				public int Value { get; set; }
 			}
 
+			[AttributeUsage(AttributeTargets.Constructor, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
 			// ReSharper disable UnusedMember.Local
 			private class Dummy
 			{
@@ -81,6 +103,13 @@ public sealed partial class ConstructorFilters
 				[Bar(Value = 3)]
 				// ReSharper disable once UnusedParameter.Local
 				public Dummy(int value)
+				{
+				}
+
+				[Multi(Value = 1)]
+				[Multi(Value = 2)]
+				// ReSharper disable once UnusedParameter.Local
+				public Dummy(bool value)
 				{
 				}
 			}
