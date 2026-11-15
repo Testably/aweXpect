@@ -2610,6 +2610,8 @@ namespace aweXpect
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type?>> IsNotWithinNamespace(this aweXpect.Core.IThat<System.Type?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type?>>> IsOnlyUsedBy(this aweXpect.Core.IThat<System.Type?> subject, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type?>> IsReadOnly(this aweXpect.Core.IThat<System.Type?> subject) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Type, aweXpect.Core.IThat<System.Type?>> IsSealed(this aweXpect.Core.IThat<System.Type?> subject) { }
@@ -2819,6 +2821,13 @@ namespace aweXpect
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?>> AreNotWithinNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject, string unexpected) { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?>> AreNotWithinNamespace(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, string unexpected) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Reflection.Results.OnlyUsedByItemsResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?>> AreOnlyUsedBy(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Reflection.Results.OnlyUsedByItemsResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, System.Collections.Generic.IAsyncEnumerable<System.Type?>?>> AreOnlyUsedBy(this aweXpect.IAsyncEnumerableItems<System.Type?> items, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Reflection.Results.OnlyUsedByItemsResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?>> AreOnlyUsedBy(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.Type?>?> subject, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Reflection.Results.OnlyUsedByItemsResult<System.Collections.Generic.IEnumerable<System.Type?>, System.Collections.Generic.IEnumerable<System.Type?>?>> AreOnlyUsedBy(this aweXpect.IEnumerableItems<System.Type?> items, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) { }
+        public static aweXpect.Reflection.Results.OnlyUsedByResult<aweXpect.Reflection.Results.OnlyUsedByItemsResult<TCollection, TCollection>> AreOnlyUsedBy<TCollection>(this aweXpect.IStructEnumerableItems<TCollection, System.Type?> items, aweXpect.Reflection.Collections.Filtered.Types users, params aweXpect.Reflection.Collections.Filtered.Types[] additional) where TCollection : struct, System.Collections.Generic.IEnumerable<System.Type?> { }
         [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?>> AreReadOnly(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?> subject) { }
         public static aweXpect.Results.AndOrResult<System.Collections.Generic.IAsyncEnumerable<System.Type?>, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<System.Type?>?>> AreReadOnly(this aweXpect.IAsyncEnumerableItems<System.Type?> items) { }
@@ -4308,6 +4317,14 @@ namespace aweXpect.Reflection.Results
         public aweXpect.Reflection.Results.OfTypeResult<TType> OrOfExactType<T>() { }
         public aweXpect.Reflection.Results.OfTypeResult<TType> OrOfType(System.Type type) { }
         public aweXpect.Reflection.Results.OfTypeResult<TType> OrOfType<T>() { }
+    }
+    public sealed class OnlyUsedByItemsResult<TType, TValue> : aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>, aweXpect.Reflection.Results.OnlyUsedByItemsResult<TType, TValue>>
+    {
+        public aweXpect.Reflection.Results.OnlyUsedByItemsResult<TType, TValue> OrByEachOther() { }
+    }
+    public sealed class OnlyUsedByResult<TResult>
+    {
+        public TResult SearchedIn(aweXpect.Reflection.Collections.Filtered.Types types) { }
     }
     public sealed class ParameterCollectionResult<TType, TValue, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter, aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter>>
     {

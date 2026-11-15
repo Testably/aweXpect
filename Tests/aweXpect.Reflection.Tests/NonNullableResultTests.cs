@@ -734,11 +734,33 @@ public sealed class NonNullableResultTests
 	}
 
 	[Test]
+	public async Task TypeIsOnlyUsedBy_ShouldReturnNonNullableType()
+	{
+		Type? subject = typeof(OnlyLayer1);
+
+		Type result = await That(subject).IsOnlyUsedBy(Types.InNamespace(Layer1Namespace))
+			.SearchedIn(Types.InNamespace(Layer1Namespace));
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
 	public async Task TypesAreGeneric_ShouldReturnNonNullableCollection()
 	{
 		IEnumerable<Type?> subject = [typeof(List<Uri>),];
 
 		IEnumerable<Type?> result = await That(subject).AreGeneric();
+
+		await That(result).IsSameAs(subject).Because(Reason);
+	}
+
+	[Test]
+	public async Task TypesAreOnlyUsedBy_ShouldReturnNonNullableCollection()
+	{
+		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
+
+		IEnumerable<Type?> result = await That(subject).AreOnlyUsedBy(Types.InNamespace(Layer1Namespace))
+			.SearchedIn(Types.InNamespace(Layer1Namespace));
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}

@@ -105,6 +105,14 @@ internal static class Checks
 		new("the infrastructure fails when no type has to depend on the order type",
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(InfrastructureTypes()).None().DependOn(typeof(Order)), "depends on type Order for no items")),
+		new("the order type is only used by the infrastructure",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(typeof(Order)).IsOnlyUsedBy(InfrastructureTypes())
+					.SearchedIn(In.AssemblyContaining<Order>().Types()))),
+		new("the customer type fails to be only used by the infrastructure",
+			() => ShouldFailOrFailLoudly(async ()
+				=> await That(In.Type<Customer>()).AreOnlyUsedBy(InfrastructureTypes())
+					.SearchedIn(In.AssemblyContaining<Order>().Types()), "Customer is used by [\"Order\"]")),
 		new("the infrastructure types filtered by their dependency on the order type contain the repository",
 			() => ShouldPassOrFailLoudly(async ()
 				=> await That(InfrastructureTypes().WhichDependOn<Order>()).Contains(typeof(Repository)))),

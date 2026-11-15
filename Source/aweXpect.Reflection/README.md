@@ -132,7 +132,7 @@ but
 ]
 ```
 
-The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`), dependency cycle detection
+The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside` / `AreOnlyUsedBy`), dependency cycle detection
 (`HaveNoDependencyCycles`) and exemptions (`Except`) are documented in
 [Architecture rules](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/architecture-rules).
 
@@ -148,7 +148,7 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 | [Types and inheritance](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters/types)                               | kinds of types, base classes, interfaces and contained members, and how inherited members count | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`                            |
 | [Methods, operators and constructors](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters/methods)               | return types and parameters                                                                     | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>` |
 | [Properties, fields and events](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters/properties-fields-and-events) | member types, nullability and accessors                                                         | `WhichAreOfType<T>` / `IsOfType<T>`, `WhichAreRequired` / `IsRequired`                               |
-| [Architecture rules](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/architecture-rules)                             | type dependencies, dependency cycles and layers as type selections                              | `DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`, `HaveNoDependencyCycles`                    |
+| [Architecture rules](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/architecture-rules)                             | type dependencies, allowed users, dependency cycles and layers as type selections               | `DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`, `AreOnlyUsedBy`, `HaveNoDependencyCycles`   |
 
 The [overview](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters#overview) lists all topics,
 including combined filters, custom predicates (`Which` / `Satisfies`, `Except`) and quantifiers.
@@ -192,7 +192,7 @@ The full documentation is available at
 - [Filters and expectations](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/filters): the complete
   reference for all subject kinds, string matching options and quantifiers
 - [Architecture rules](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/architecture-rules): type
-  dependencies, dependency cycles and layers as type selections
+  dependencies, allowed users, dependency cycles and layers as type selections
 - [Customization](https://docs.testably.org/aweXpect/extensions/aweXpect.Reflection/customization): assembly
   exclusions, compiler-generated members and the dependency resolver
 - Comparisons: feature maps against

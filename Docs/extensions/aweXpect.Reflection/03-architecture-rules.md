@@ -6,7 +6,7 @@ description: Restrict the dependencies between types and namespaces, detect depe
 
 An architecture rule restricts which other types a type may reference: its *dependencies*.
 [Type dependencies](#type-dependencies) introduces the dependency filters and expectations (including
-[dependency cycles](#dependency-cycles)), and [Layers as type selections](#layers-as-type-selections) shows
+[dependency cycles](#dependency-cycles) and [allowed users](#allowed-users)), and [Layers as type selections](#layers-as-type-selections) shows
 how to combine them into a full architecture test suite. The examples use a music store application with the layers
 `MusicStore.Api`, `MusicStore.Application`, `MusicStore.Domain`, `MusicStore.Data` and `MusicStore.Infrastructure`.
 
@@ -14,14 +14,14 @@ how to combine them into a full architecture test suite. The examples use a musi
 
 The dependency filters and expectations follow the familiar filter/expect pairing:
 
-|                              | Filter                                  | Expect (single)                   | Expect (many)                      |
-|------------------------------|-----------------------------------------|-----------------------------------|------------------------------------|
-| depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`              | `.DependOn("x", …)`                |
-| does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`        | `.DoNotDependOn("x", …)`           |
-| depends on type              | `.WhichDependOn<T>()`                   | `.DependsOn<T>()`                 | `.DependOn<T>()`                   |
-| does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`           | `.DoNotDependOn<T>()`              |
-| depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`          | `.DependOnlyOn("x", …)`            |
-| has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
+|                              | Filter                                  | Expect (single)                       | Expect (many)                          |
+|------------------------------|-----------------------------------------|---------------------------------------|----------------------------------------|
+| depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`                  | `.DependOn("x", …)`                    |
+| does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`            | `.DoNotDependOn("x", …)`               |
+| depends on type              | `.WhichDependOn<T>()`                   | `.DependsOn<T>()`                     | `.DependOn<T>()`                       |
+| does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`               | `.DoNotDependOn<T>()`                  |
+| depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`              | `.DependOnlyOn("x", …)`                |
+| has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)`     | `.HaveDependenciesOutside("x", …)`     |
 
 ```csharp
 // The API layer must not reference the data layer
@@ -219,6 +219,36 @@ sharpens cycle detection: body-level references it surfaces can complete a cycle
 cannot see.
 
 </details>
+
+### Allowed users
+
+The rules above restrict what a type uses. To restrict which types may use a type instead, pass the allowed users and, with `SearchedIn(…)`, the types that are searched for users:
+
+```csharp
+// Only the infrastructure layer may use the SqlTrackStore
+await That(typeof(SqlTrackStore))
+    .IsOnlyUsedBy(Types.InNamespace("MusicStore.Infrastructure"))
+    .SearchedIn(In.AssemblyContaining<SqlTrackStore>().Types());
+
+// Only the application layer may use the data layer, whose types may use each other
+await That(Types.InNamespace("MusicStore.Data"))
+    .AreOnlyUsedBy(Types.InNamespace("MusicStore.Application"))
+    .SearchedIn(In.AssemblyContaining<SqlTrackStore>().Types())
+    .OrByEachOther();
+```
+
+The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type or through a type nested in it, and a type nested in an allowed user is allowed as well, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
+
+```text title="Failure message"
+Expected that typeof(SqlTrackStore)
+is only used by types within namespace "MusicStore.Infrastructure" in all loaded assemblies, searched in types in assembly containing type SqlTrackStore,
+but it had disallowed users
+
+Disallowed users:
+[
+  "PlaylistService"
+]
+```
 
 ## Layers as type selections
 

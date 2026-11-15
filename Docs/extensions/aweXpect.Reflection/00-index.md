@@ -133,7 +133,7 @@ but
 ]
 ```
 
-The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`), dependency cycle detection
+The dependency rules (`DependOn` / `DependOnlyOn` / `HaveDependenciesOutside` / `AreOnlyUsedBy`), dependency cycle detection
 (`HaveNoDependencyCycles`) and exemptions (`Except`) are documented in
 [Architecture rules](./03-architecture-rules.md).
 
@@ -149,7 +149,7 @@ Each filter narrows a selection and its expectation counterpart verifies it, e.g
 | [Types and inheritance](./02-filters/03-types.md)                                  | kinds of types, base classes, interfaces and contained members, and how inherited members count | `WhichAreClasses` / `IsAClass`, `WhichInheritFrom<T>` / `InheritsFrom<T>`      |
 | [Methods, operators and constructors](./02-filters/04-methods.md)                  | return types and parameters                                                                  | `WhichAreAsync` / `IsAsync`, `WhichReturn<T>` / `Returns<T>`, `WithParameter<T>` / `HasParameter<T>` |
 | [Properties, fields and events](./02-filters/05-properties-fields-and-events.md)   | member types, nullability and accessors                                                      | `WhichAreOfType<T>` / `IsOfType<T>`, `WhichAreRequired` / `IsRequired`            |
-| [Architecture rules](./03-architecture-rules.md)                                   | type dependencies, dependency cycles and layers as type selections                           | `DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`, `HaveNoDependencyCycles` |
+| [Architecture rules](./03-architecture-rules.md)                                   | type dependencies, allowed users, dependency cycles and layers as type selections            | `DependOn` / `DependOnlyOn` / `HaveDependenciesOutside`, `AreOnlyUsedBy`, `HaveNoDependencyCycles` |
 
 The [overview](./02-filters/00-index.md#overview) lists all topics,
 including combined filters, custom predicates (`Which` / `Satisfies`, `Except`) and quantifiers.
@@ -186,7 +186,7 @@ Set a value under `Customize.aweXpect.Reflection()` for the current
   between assemblies, types and members
 - [Filters and expectations](./02-filters/00-index.md): the complete reference for all subject kinds, string matching
   options and quantifiers
-- [Architecture rules](./03-architecture-rules.md): type dependencies, dependency cycles and
+- [Architecture rules](./03-architecture-rules.md): type dependencies, allowed users, dependency cycles and
   layers as type selections
 - [Customization](./04-customization.md): assembly exclusions, compiler-generated members and
   the dependency resolver

@@ -28,8 +28,8 @@ internal static class DependencyViolationRenderer
 	}
 
 	/// <summary>
-	///     Formats the <paramref name="items" /> as a list with one line per item (appending
-	///     <c> depends on […]</c> when <paramref name="violations" /> has an entry for it).
+	///     Formats the <paramref name="items" /> as a list with one line per item (appending the
+	///     <paramref name="relation" /> and <c>[…]</c> when <paramref name="violations" /> has an entry for it).
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> item has no violations to list; it fails because it cannot satisfy the
@@ -40,7 +40,8 @@ internal static class DependencyViolationRenderer
 	public static string FormatItemsWithDisallowedDependencies<TItem, TViolations>(
 		IReadOnlyList<TItem?> items,
 		IReadOnlyDictionary<TItem, TViolations> violations,
-		int? totalCount)
+		int? totalCount,
+		string relation = " depends on ")
 		where TItem : class
 		where TViolations : IEnumerable<string?>
 		=> ItemListRenderer.Format(items, totalCount, (stringBuilder, item) =>
@@ -48,7 +49,7 @@ internal static class DependencyViolationRenderer
 			stringBuilder.Append(Formatter.Format(item));
 			if (item is not null && violations.TryGetValue(item, out TViolations? value))
 			{
-				stringBuilder.Append(" depends on ").Append(Formatter.Format(value));
+				stringBuilder.Append(relation).Append(Formatter.Format(value));
 			}
 		});
 }
