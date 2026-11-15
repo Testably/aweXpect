@@ -1,7 +1,6 @@
 # aweXpect
 
-[![Nuget](https://img.shields.io/nuget/v/aweXpect?label=aweXpect)](https://www.nuget.org/packages/aweXpect)
-[![Nuget](https://img.shields.io/nuget/v/aweXpect.Core?label=Core)](https://www.nuget.org/packages/aweXpect.Core)
+[![Nuget](https://img.shields.io/nuget/v/aweXpect)](https://www.nuget.org/packages/aweXpect)
 [![Build](https://github.com/Testably/aweXpect/actions/workflows/build.yml/badge.svg)](https://github.com/Testably/aweXpect/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Testably_aweXpect)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Testably_aweXpect&metric=coverage)](https://sonarcloud.io/summary/overall?id=Testably_aweXpect)
