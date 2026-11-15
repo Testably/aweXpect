@@ -41,6 +41,54 @@ public sealed partial class ThatMethods
 					             ]
 					             """);
 			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenAMethodHasMatchingAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.TestMethod)),
+				}.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatMethods.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenNoMethodHasMatchingAttribute_ShouldSucceed()
+			{
+				IAsyncEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)),
+					typeof(TestClass).GetMethod(nameof(TestClass.TestMethod)),
+				}.ToTestAsyncEnumerable<MethodInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 #endif
 
 			[Test]
@@ -157,19 +205,162 @@ public sealed partial class ThatMethods
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WithPredicate_WhenAMethodHasMatchingAttribute_ShouldFail()
+			{
+				IEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)),
+					typeof(TestClass).GetMethod(nameof(TestClass.TestMethod)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatMethods.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 2 did
+
+					             Matching items:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.NoAttributeMethod(),
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenMethodInheritsMatchingAttribute_Directly_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetMethod(nameof(DerivedClass.InheritedMethod)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the attributes declared on the overriding method count");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenMethodInheritsMatchingAttribute_ShouldFail()
+			{
+				IEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(DerivedClass).GetMethod(nameof(DerivedClass.InheritedMethod)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatMethods.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.DerivedClass.InheritedMethod()
+					             ]
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.DerivedClass.InheritedMethod()
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenNoMethodHasMatchingAttribute_ShouldSucceed()
+			{
+				IEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.NoAttributeMethod)),
+					typeof(TestClass).GetMethod(nameof(TestClass.TestMethod)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("neither a missing attribute nor one that does not match the predicate counts");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				IEnumerable<MethodInfo?> subject = new[]
+				{
+					typeof(TestClass).GetMethod(nameof(TestClass.TestMethod)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatMethods.DoNotHave.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+
+					             Collection:
+					             [
+					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
+					             ]
+					             """)
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
+			}
+
 			[AttributeUsage(AttributeTargets.Method)]
 			private class FooAttribute : Attribute
 			{
+				public int Value { get; set; }
 			}
 
 			private class TestClass
 			{
-				[Foo]
+				[Foo(Value = 2)]
 				public static void TestMethod()
 				{
 				}
 
 				public static void NoAttributeMethod()
+				{
+				}
+			}
+
+			private class BaseClass
+			{
+				[Foo(Value = 2)]
+				public virtual void InheritedMethod()
+				{
+				}
+			}
+
+			private class DerivedClass : BaseClass
+			{
+				public override void InheritedMethod()
 				{
 				}
 			}

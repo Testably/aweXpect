@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -33,6 +34,23 @@ public static partial class ThatConstructors
 		return new(subject.ExpectNone(expectation), subject);
 	}
 
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="ConstructorInfo" /> have
+	///     attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<ConstructorInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new(subject.ExpectNone(expectation), subject);
+	}
+
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{ConstructorInfo}})" />
 	[GuaranteesNotNull]
@@ -48,6 +66,20 @@ public static partial class ThatConstructors
 		Type attributeType)
 	{
 		HaveAttributeExpectation<ConstructorInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject);
+	}
+
+	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{ConstructorInfo}}, Func{TAttribute, bool}, string)" />
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<ConstructorInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new(subject.ExpectNone(expectation), subject);
 	}
 #endif

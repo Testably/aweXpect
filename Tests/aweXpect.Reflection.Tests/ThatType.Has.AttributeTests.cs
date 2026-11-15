@@ -7,6 +7,22 @@ public sealed partial class ThatType
 		public sealed class AttributeTests
 		{
 			[Test]
+			[Arguments(1)]
+			[Arguments(2)]
+			public async Task WhenOneOfSeveralAttributesMatches_ShouldSucceed(int value)
+			{
+				Type subject = typeof(MultiClass);
+
+				async Task Act()
+				{
+					await That(subject).Has<MultiAttribute>(multi => multi.Value == value);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("every attribute of the type counts, not only the first one");
+			}
+
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFail()
 			{
 				Type subject = typeof(FooClass2);
@@ -195,6 +211,18 @@ public sealed partial class ThatType
 			}
 
 			private class FooChildClass2 : FooClass2
+			{
+			}
+
+			[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+			private class MultiAttribute : Attribute
+			{
+				public int Value { get; set; }
+			}
+
+			[Multi(Value = 1)]
+			[Multi(Value = 2)]
+			private class MultiClass
 			{
 			}
 		}

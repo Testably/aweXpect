@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Results;
@@ -41,6 +42,27 @@ public static partial class ThatMethods
 		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
 	}
 
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="MethodInfo" /> have
+	///     attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	/// <remarks>
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static InheritanceScopeResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<MethodInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
+	}
+
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{MethodInfo}})" />
 	[GuaranteesNotNull]
@@ -56,6 +78,20 @@ public static partial class ThatMethods
 		Type attributeType)
 	{
 		HaveAttributeExpectation<MethodInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
+	}
+
+	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{MethodInfo}}, Func{TAttribute, bool}, string)" />
+	[GuaranteesNotNull]
+	public static InheritanceScopeResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<MethodInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new(subject.ExpectNone(expectation), subject, expectation.Filter.Scope);
 	}
 #endif

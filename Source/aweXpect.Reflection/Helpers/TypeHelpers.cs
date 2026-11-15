@@ -654,14 +654,9 @@ internal static class TypeHelpers
 			return type?.IsDefined(typeof(TAttribute), inherit) == true;
 		}
 
-		object? attribute = type?.GetCustomAttributes(typeof(TAttribute), inherit)
-			.FirstOrDefault();
-		if (attribute is TAttribute attributeValue)
-		{
-			return UserCode.Invoke(predicate, attributeValue, "the predicate");
-		}
-
-		return false;
+		return type?.GetCustomAttributes(typeof(TAttribute), inherit)
+			.OfType<TAttribute>()
+			.Any(attribute => UserCode.Invoke(predicate, attribute, "the predicate")) == true;
 	}
 
 	/// <summary>
@@ -690,14 +685,9 @@ internal static class TypeHelpers
 			return type?.IsDefined(attributeType, inherit) == true;
 		}
 
-		object? attribute = type?.GetCustomAttributes(attributeType, inherit)
-			.FirstOrDefault();
-		if (attribute is Attribute attributeValue)
-		{
-			return predicate(attributeValue);
-		}
-
-		return false;
+		return type?.GetCustomAttributes(attributeType, inherit)
+			.OfType<Attribute>()
+			.Any(predicate) == true;
 	}
 
 	/// <summary>

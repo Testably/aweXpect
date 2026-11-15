@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -33,6 +34,23 @@ public static partial class ThatFields
 		return new(subject.ExpectNone(expectation), subject);
 	}
 
+	/// <summary>
+	///     Verifies that none of the items in the filtered collection of <see cref="FieldInfo" /> have
+	///     attribute of type <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<FieldInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<FieldInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
+		return new(subject.ExpectNone(expectation), subject);
+	}
+
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{FieldInfo}})" />
 	[GuaranteesNotNull]
@@ -48,6 +66,20 @@ public static partial class ThatFields
 		Type attributeType)
 	{
 		HaveAttributeExpectation<FieldInfo> expectation = new(AttributeOptions().WithAttribute(attributeType));
+		return new(subject.ExpectNone(expectation), subject);
+	}
+
+	/// <inheritdoc cref="DoNotHave{TAttribute}(IThat{IEnumerable{FieldInfo}}, Func{TAttribute, bool}, string)" />
+	[GuaranteesNotNull]
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		HaveAttributeExpectation<FieldInfo> expectation = new(
+			AttributeOptions().WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new(subject.ExpectNone(expectation), subject);
 	}
 #endif

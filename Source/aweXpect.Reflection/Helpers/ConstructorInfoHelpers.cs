@@ -89,14 +89,9 @@ internal static class ConstructorInfoHelpers
 			return constructorInfo.IsDefined(typeof(TAttribute), inherit);
 		}
 
-		object? attribute = constructorInfo.GetCustomAttributes(typeof(TAttribute), inherit)
-			.FirstOrDefault();
-		if (attribute is TAttribute castedAttribute)
-		{
-			return UserCode.Invoke(predicate, castedAttribute, "the predicate");
-		}
-
-		return false;
+		return constructorInfo.GetCustomAttributes(typeof(TAttribute), inherit)
+			.OfType<TAttribute>()
+			.Any(attribute => UserCode.Invoke(predicate, attribute, "the predicate"));
 	}
 
 	/// <summary>
@@ -126,13 +121,8 @@ internal static class ConstructorInfoHelpers
 			return constructorInfo?.IsDefined(attributeType, inherit) == true;
 		}
 
-		object? attribute = constructorInfo?.GetCustomAttributes(attributeType, inherit)
-			.FirstOrDefault();
-		if (attribute is Attribute attributeValue)
-		{
-			return predicate(attributeValue);
-		}
-
-		return false;
+		return constructorInfo?.GetCustomAttributes(attributeType, inherit)
+			.OfType<Attribute>()
+			.Any(predicate) == true;
 	}
 }

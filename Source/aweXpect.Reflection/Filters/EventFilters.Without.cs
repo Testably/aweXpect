@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 
@@ -19,4 +20,21 @@ public static partial class EventFilters
 		=> new(@this, new AttributeFilter<EventInfo>(
 			(eventInfo, inherit) => !eventInfo.HasAttribute<TAttribute>(inherit: inherit),
 			directly => $"without {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} "));
+
+	/// <summary>
+	///     Filter for events without attribute of type <typeparamref name="TAttribute" /> that
+	///     matches the <paramref name="predicate" />.
+	/// </summary>
+	/// <remarks>
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the filter to the
+	///     attributes declared directly on the event with <see cref="InheritanceScopeResult.Directly" />.
+	/// </remarks>
+	public static InheritanceScopeResult Without<TAttribute>(this Filtered.Events @this,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+		=> new(@this, new AttributeFilter<EventInfo>(
+			(eventInfo, inherit) => !eventInfo.HasAttribute(predicate, inherit),
+			directly => $"without {(directly ? DirectText : "")}{Formatter.Format(typeof(TAttribute))} matching {doNotPopulateThisValue.TrimExpression()} "));
 }

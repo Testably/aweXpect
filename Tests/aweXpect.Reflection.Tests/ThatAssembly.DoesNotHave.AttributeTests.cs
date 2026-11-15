@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
 
+[assembly: AssemblyMetadata("ThatAssembly.DoesNotHave.Multi", "1")]
+[assembly: AssemblyMetadata("ThatAssembly.DoesNotHave.Multi", "2")]
+
 namespace aweXpect.Reflection.Tests;
 
 public sealed partial class ThatAssembly
@@ -37,6 +40,93 @@ public sealed partial class ThatAssembly
 					             has no AssemblyTitleAttribute,
 					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenAssemblyDoesNotHaveAttribute_ShouldSucceed()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<MarkerAttribute>(_ => true);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenAssemblyHasMatchingAttribute_ShouldFail()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no AssemblyTitleAttribute matching attr => attr.Title.Contains("Reflection"),
+					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenAssemblyHasNotMatchingAttribute_ShouldSucceed()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("an attribute that does not match the predicate does not count");
+			}
+
+			[Test]
+			[Arguments("1")]
+			[Arguments("2")]
+			public async Task WithPredicate_WhenOneOfSeveralAttributesMatches_ShouldFail(string value)
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<AssemblyMetadataAttribute>(
+						attr => attr.Key == "ThatAssembly.DoesNotHave.Multi" && attr.Value == value);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no AssemblyMetadataAttribute matching attr => attr.Key == "ThatAssembly.DoesNotHave.Multi" && attr.Value == value,
+					             but it did in aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             """).AsWildcard()
+					.Because("every attribute of the assembly counts, not only the first one");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				Assembly subject = Assembly.GetExecutingAssembly();
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<AssemblyTitleAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no AssemblyTitleAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
 			}
 
 			[Test]

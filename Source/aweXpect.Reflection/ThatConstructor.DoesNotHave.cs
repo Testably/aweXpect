@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
@@ -34,6 +35,27 @@ public static partial class ThatConstructor
 		AttributeFilter<ConstructorInfo?> attributeFilter = new(
 			new AttributeFilterOptions<ConstructorInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
 				.WithAttribute(attributeType));
+		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
+			subject);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="ConstructorInfo" /> does not have attribute of type
+	///     <typeparamref name="TAttribute" /> that matches the <paramref name="predicate" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> DoesNotHave<TAttribute>(
+		this IThat<ConstructorInfo?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		AttributeFilter<ConstructorInfo?> attributeFilter = new(
+			new AttributeFilterOptions<ConstructorInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),

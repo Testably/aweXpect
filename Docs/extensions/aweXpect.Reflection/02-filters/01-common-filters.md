@@ -61,21 +61,24 @@ await That(methods).AreNot(AccessModifiers.Private | AccessModifiers.PrivateProt
 
 Shared by all types, members, and assemblies.
 
-|                                    | Filter                      | Expect (single)            | Expect (many)               | Negated                                                                   |
-|------------------------------------|-----------------------------|----------------------------|-----------------------------|---------------------------------------------------------------------------|
-| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>` |
-| has attribute of a given type      |                             | `.Has(attributeType)`      | `.Have(attributeType)`      | `DoesNotHave(attributeType)`, `DoNotHave(attributeType)`                  |
-| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` |                                                                           |
-| any of several attributes          | `.With<T1>().OrWith<T2>()`  | `.Has<T1>().OrHas<T2>()`   | `.Have<T1>().OrHave<T2>()`  |                                                                           |
+|                                    | Filter                      | Expect (single)            | Expect (many)               | Negated                                                                                           |
+|------------------------------------|-----------------------------|----------------------------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| has attribute                      | `.With<TAttribute>()`       | `.Has<TAttribute>()`       | `.Have<TAttribute>()`       | `Without<TAttribute>`, `DoesNotHave<TAttribute>`, `DoNotHave<TAttribute>`                         |
+| has attribute of a given type      |                             | `.Has(attributeType)`      | `.Have(attributeType)`      | `DoesNotHave(attributeType)`, `DoNotHave(attributeType)`                                          |
+| has attribute matching a predicate | `.With<TAttribute>(a => …)` | `.Has<TAttribute>(a => …)` | `.Have<TAttribute>(a => …)` | `Without<TAttribute>(a => …)`, `DoesNotHave<TAttribute>(a => …)`, `DoNotHave<TAttribute>(a => …)` |
+| any of several attributes          | `.With<T1>().OrWith<T2>()`  | `.Has<T1>().OrHas<T2>()`   | `.Have<T1>().OrHave<T2>()`  |                                                                                                   |
 
 For types, methods, properties and events, attributes inherited from a base type or an overridden member are
 considered as well; append `.Directly()` to only consider the attributes declared on the item itself, e.g.
 `.With<TAttribute>().Directly()` or `.Has<TAttribute>().Directly()` (see [Inheritance](./03-types.md#inheritance)). Chain multiple `.Without<TAttribute>()` calls to exclude several attributes (an item
 must have none of them).
 
+The negations with a predicate mean that no attribute matches: an item without the attribute passes as well, unlike with `.Has<TAttribute>(a => !…)`, which also requires the attribute. For an attribute with `AllowMultiple = true`, `.Has<TAttribute>(a => !…)` passes as long as one attribute does not match, even if another one matches.
+
 ```csharp
 await That(type).Has<ObsoleteAttribute>(a => a.Message == "Use NewClass instead");
 await That(methods).Have<FactAttribute>();
+await That(types).DoNotHave<ObsoleteAttribute>(a => a.Message == null);
 ```
 
 ### Obsolete

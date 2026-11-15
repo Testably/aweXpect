@@ -41,6 +41,53 @@ public sealed partial class ThatAssemblies
 					             ]
 					             """).AsWildcard();
 			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenAnAssemblyHasMatchingAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				}.ToTestAsyncEnumerable<Assembly?>();
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have AssemblyTitleAttribute matching attr => attr.Title.Contains("Reflection"),
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenNoAssemblyHasMatchingAttribute_ShouldSucceed()
+			{
+				IAsyncEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				}.ToTestAsyncEnumerable<Assembly?>();
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 #endif
 
 			[Test]
@@ -155,6 +202,82 @@ public sealed partial class ThatAssemblies
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenAnAssemblyHasMatchingAttribute_ShouldFail()
+			{
+				IEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>(attr => attr.Title.Contains("Reflection"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have AssemblyTitleAttribute matching attr => attr.Title.Contains("Reflection"),
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenNoAssemblyHasMatchingAttribute_ShouldSucceed()
+			{
+				IEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>(attr => attr.Title == "NonExistentTitle");
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("an attribute that does not match the predicate does not count");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				IEnumerable<Assembly?> subjects = new[]
+				{
+					Assembly.GetExecutingAssembly(),
+				};
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<AssemblyTitleAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have AssemblyTitleAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+
+					             Collection:
+					             [
+					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
+					             ]
+					             """).AsWildcard()
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
 			}
 
 			[AttributeUsage(AttributeTargets.Assembly)]
