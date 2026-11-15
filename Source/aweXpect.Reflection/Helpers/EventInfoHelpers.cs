@@ -50,14 +50,9 @@ internal static class EventInfoHelpers
 			return Attribute.IsDefined(eventInfo, typeof(TAttribute), inherit);
 		}
 
-		object? attribute = Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
-			.FirstOrDefault();
-		if (attribute is TAttribute castedAttribute)
-		{
-			return UserCode.Invoke(predicate, castedAttribute, "the predicate");
-		}
-
-		return false;
+		return Attribute.GetCustomAttributes(eventInfo, typeof(TAttribute), inherit)
+			.OfType<TAttribute>()
+			.Any(attribute => UserCode.Invoke(predicate, attribute, "the predicate"));
 	}
 
 	/// <summary>
@@ -91,14 +86,8 @@ internal static class EventInfoHelpers
 			return Attribute.IsDefined(eventInfo, attributeType, inherit);
 		}
 
-		object? attribute = Attribute.GetCustomAttributes(eventInfo, attributeType, inherit)
-			.FirstOrDefault();
-		if (attribute is Attribute attributeValue)
-		{
-			return predicate(attributeValue);
-		}
-
-		return false;
+		return Attribute.GetCustomAttributes(eventInfo, attributeType, inherit)
+			.Any(predicate);
 	}
 
 	/// <summary>

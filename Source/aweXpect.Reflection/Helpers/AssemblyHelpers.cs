@@ -42,14 +42,9 @@ internal static class AssemblyHelpers
 			return Attribute.IsDefined(assembly, typeof(TAttribute), inherit);
 		}
 
-		object? attribute = Attribute.GetCustomAttributes(assembly, typeof(TAttribute), inherit)
-			.FirstOrDefault();
-		if (attribute is TAttribute castedAttribute)
-		{
-			return UserCode.Invoke(predicate, castedAttribute, "the predicate");
-		}
-
-		return false;
+		return Attribute.GetCustomAttributes(assembly, typeof(TAttribute), inherit)
+			.OfType<TAttribute>()
+			.Any(attribute => UserCode.Invoke(predicate, attribute, "the predicate"));
 	}
 
 	/// <summary>
@@ -78,14 +73,9 @@ internal static class AssemblyHelpers
 			return assembly?.IsDefined(attributeType, inherit) == true;
 		}
 
-		object? attribute = assembly?.GetCustomAttributes(attributeType, inherit)
-			.FirstOrDefault();
-		if (attribute is Attribute attributeValue)
-		{
-			return predicate(attributeValue);
-		}
-
-		return false;
+		return assembly?.GetCustomAttributes(attributeType, inherit)
+			.OfType<Attribute>()
+			.Any(predicate) == true;
 	}
 
 	/// <summary>

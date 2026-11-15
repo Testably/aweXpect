@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
@@ -40,6 +41,32 @@ public static partial class ThatEvent
 		AttributeFilter<EventInfo?> attributeFilter = new(
 			new AttributeFilterOptions<EventInfo?>((a, type, p, i) => a.HasAttribute(type, p, i))
 				.WithAttribute(attributeType));
+		return new InheritanceScopeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
+			subject,
+			attributeFilter.Scope);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="EventInfo" /> does not have attribute of type <typeparamref name="TAttribute" />
+	///     that matches the <paramref name="predicate" />.
+	/// </summary>
+	/// <remarks>
+	///     Attributes inherited from a base type or an overridden member are considered as well; restrict the check
+	///     to the attributes declared directly on the member with <see cref="InheritanceScopeResult{TType, TValue}.Directly" />.
+	/// </remarks>
+	[GuaranteesNotNull]
+	public static InheritanceScopeResult<EventInfo, EventInfo?> DoesNotHave<TAttribute>(
+		this IThat<EventInfo?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		AttributeFilter<EventInfo?> attributeFilter = new(
+			new AttributeFilterOptions<EventInfo?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new InheritanceScopeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),

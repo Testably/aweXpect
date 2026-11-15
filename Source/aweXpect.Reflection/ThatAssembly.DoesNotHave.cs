@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
@@ -32,6 +33,27 @@ public static partial class ThatAssembly
 		AttributeFilter<Assembly?> attributeFilter = new(
 			new AttributeFilterOptions<Assembly?>((a, type, p, i) => a.HasAttribute(type, p, i))
 				.WithAttribute(attributeType));
+		return new AndOrResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
+				static (attributeFilter, it, grammars)
+				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),
+			subject);
+	}
+
+	/// <summary>
+	///     Verifies that the <see cref="Assembly" /> does not have attribute of type <typeparamref name="TAttribute" />
+	///     that matches the <paramref name="predicate" />.
+	/// </summary>
+	[GuaranteesNotNull]
+	public static AndOrResult<Assembly, IThat<Assembly?>> DoesNotHave<TAttribute>(
+		this IThat<Assembly?> subject,
+		Func<TAttribute, bool> predicate,
+		[CallerArgumentExpression("predicate")]
+		string doNotPopulateThisValue = "")
+		where TAttribute : Attribute
+	{
+		AttributeFilter<Assembly?> attributeFilter = new(
+			new AttributeFilterOptions<Assembly?>((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i))
+				.WithAttribute(predicate, doNotPopulateThisValue.TrimExpression()));
 		return new AndOrResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder.AddConstraint(attributeFilter,
 				static (attributeFilter, it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilter).Invert()),

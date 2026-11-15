@@ -73,6 +73,103 @@ public sealed partial class ThatEvent
 			}
 
 			[Test]
+			public async Task WithPredicate_WhenEventDoesNotHaveAttribute_ShouldSucceed()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.NoAttributeEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(_ => true);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenEventHasMatchingAttribute_ShouldFail()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.TestClass.TestEvent
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenEventHasNotMatchingAttribute_ShouldSucceed()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("an attribute that does not match the predicate does not count");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenEventInheritsMatchingAttribute_Directly_ShouldSucceed()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("with Directly only the attributes declared on the overriding event count");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenEventInheritsMatchingAttribute_ShouldFail()
+			{
+				EventInfo subject = typeof(DerivedClass).GetEvent(nameof(DerivedClass.InheritedEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but it did in event Action ThatEvent.DoesNotHave.AttributeTests.DerivedClass.InheritedEvent
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
+
+				async Task Act()
+				{
+					await That(subject).DoesNotHave<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has no ThatEvent.DoesNotHave.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+					             """)
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
+			}
+
+			[Test]
 			public async Task WithType_WhenEventHasAttribute_ShouldFail()
 			{
 				EventInfo subject = typeof(TestClass).GetEvent(nameof(TestClass.TestEvent))!;
@@ -95,19 +192,20 @@ public sealed partial class ThatEvent
 			[AttributeUsage(AttributeTargets.Event)]
 			private class FooAttribute : Attribute
 			{
+				public int Value { get; set; }
 			}
 
 #pragma warning disable CS0067 // Event is never used
 			private class TestClass
 			{
-				[Foo] public event Action? TestEvent;
+				[Foo(Value = 2)] public event Action? TestEvent;
 
 				public event Action? NoAttributeEvent;
 			}
 
 			private class BaseClass
 			{
-				[Foo] public virtual event Action? InheritedEvent;
+				[Foo(Value = 2)] public virtual event Action? InheritedEvent;
 			}
 
 			private class DerivedClass : BaseClass

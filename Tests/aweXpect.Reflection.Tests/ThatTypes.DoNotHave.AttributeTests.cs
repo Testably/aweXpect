@@ -132,6 +132,115 @@ public sealed partial class ThatTypes
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WithPredicate_WhenATypeHasMatchingAttribute_ShouldFail()
+			{
+				List<Type?> subjects = [typeof(BarClass), typeof(FooClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 2 did
+
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.BarClass,
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenATypeHasMatchingAttributeIndirectly_Directly_ShouldSucceed()
+			{
+				List<Type?> subjects = [typeof(FooChildClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 2).Directly();
+				}
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenATypeHasMatchingAttributeIndirectly_ShouldFail()
+			{
+				List<Type?> subjects = [typeof(FooChildClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenNoTypeHasMatchingAttribute_ShouldSucceed()
+			{
+				List<Type?> subjects = [typeof(BarClass), typeof(FooClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("neither a missing attribute nor one that does not match the predicate counts");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				List<Type?> subjects = [typeof(FooClass2),];
+
+				async Task Act()
+				{
+					await That(subjects).DoNotHave<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subjects
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+					             """)
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
+			}
+
 			[AttributeUsage(AttributeTargets.Class)]
 			private class FooAttribute : Attribute
 			{
@@ -197,6 +306,54 @@ public sealed partial class ThatTypes
 					               ThatTypes.DoNotHave.AttributeTests.FooClass2
 					             ]
 					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenATypeHasMatchingAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(BarClass), typeof(FooClass2),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatTypes.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 2 did
+
+					             Matching items:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+
+					             Collection:
+					             [
+					               ThatTypes.DoNotHave.AttributeTests.BarClass,
+					               ThatTypes.DoNotHave.AttributeTests.FooClass2
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenNoTypeHasMatchingAttribute_ShouldSucceed()
+			{
+				IAsyncEnumerable<Type?> subject = new[]
+				{
+					typeof(BarClass), typeof(FooClass2),
+				}.ToTestAsyncEnumerable<Type?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow();
 			}
 #endif
 		}

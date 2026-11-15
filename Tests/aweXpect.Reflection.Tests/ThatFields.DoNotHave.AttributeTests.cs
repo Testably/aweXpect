@@ -41,6 +41,54 @@ public sealed partial class ThatFields
 					             ]
 					             """);
 			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenAFieldHasMatchingAttribute_ShouldFail()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.TestField)),
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatFields.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 1 did
+
+					             Matching items:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.TestField
+					             ]
+
+					             Collection:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.TestField
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task AsyncEnumerable_WithPredicate_WhenNoFieldHasMatchingAttribute_ShouldSucceed()
+			{
+				IAsyncEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)),
+					typeof(TestClass).GetField(nameof(TestClass.TestField)),
+				}.ToTestAsyncEnumerable<FieldInfo?>();
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow();
+			}
 #endif
 
 			[Test]
@@ -157,16 +205,96 @@ public sealed partial class ThatFields
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WithPredicate_WhenAFieldHasMatchingAttribute_ShouldFail()
+			{
+				IEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)),
+					typeof(TestClass).GetField(nameof(TestClass.TestField)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 2);
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatFields.DoNotHave.AttributeTests.FooAttribute matching foo => foo.Value == 2,
+					             but 1 of 2 did
+
+					             Matching items:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.TestField
+					             ]
+
+					             Collection:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.NoAttributeField,
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.TestField
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenNoFieldHasMatchingAttribute_ShouldSucceed()
+			{
+				IEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.NoAttributeField)),
+					typeof(TestClass).GetField(nameof(TestClass.TestField)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(foo => foo.Value == 3);
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("neither a missing attribute nor one that does not match the predicate counts");
+			}
+
+			[Test]
+			public async Task WithPredicate_WhenPredicateThrows_ShouldFail()
+			{
+				IEnumerable<FieldInfo?> subject = new[]
+				{
+					typeof(TestClass).GetField(nameof(TestClass.TestField)),
+				};
+
+				async Task Act()
+				{
+					await That(subject).DoNotHave<FooAttribute>(_ => throw new InvalidOperationException("boom"));
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             none have ThatFields.DoNotHave.AttributeTests.FooAttribute matching _ => throw new InvalidOperationException("boom"),
+					             but the predicate did throw an InvalidOperationException:
+					               boom
+
+					             Collection:
+					             [
+					               string ThatFields.DoNotHave.AttributeTests.TestClass.TestField
+					             ]
+					             """)
+					.Because("an exception of the predicate must fail the negated expectation as well instead of passing");
+			}
+
 			[AttributeUsage(AttributeTargets.Field)]
 			private class FooAttribute : Attribute
 			{
+				public int Value { get; set; }
 			}
 
 #pragma warning disable CS0414 // Field is assigned but its value is never used
 			private class TestClass
 			{
 				public string NoAttributeField = "";
-				[Foo] public string TestField = "";
+				[Foo(Value = 2)] public string TestField = "";
 			}
 #pragma warning restore CS0414
 		}
