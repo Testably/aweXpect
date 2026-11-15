@@ -1686,6 +1686,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -1969,7 +1975,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -2256,7 +2263,8 @@ window.BENCHMARK_DATA = {
           411.0158950169881,
           582.6049766540527,
           778.2744434901646,
-          557.8256750106812
+          557.8256750106812,
+          419.15643412272135
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2480,6 +2488,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2843,7 +2852,8 @@ window.BENCHMARK_DATA = {
           521.2452648707798,
           618.18845094045,
           814.6001623017447,
-          549.2007471720377
+          549.2007471720377,
+          506.33874664306643
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2855,6 +2865,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4835,6 +4846,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -5118,7 +5135,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -5405,7 +5423,8 @@ window.BENCHMARK_DATA = {
           58.168544896443684,
           84.67608000437419,
           110.32922866344452,
-          78.58869384867805
+          78.58869384867805,
+          61.75955239931742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5552,6 +5571,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5992,7 +6012,8 @@ window.BENCHMARK_DATA = {
           128.417256630384,
           185.17469364802042,
           256.6315572102865,
-          155.89514209429424
+          155.89514209429424,
+          117.46518940585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6004,6 +6025,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7984,6 +8006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -8267,7 +8295,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -8554,7 +8583,8 @@ window.BENCHMARK_DATA = {
           995.9249263176551,
           1138.1626993815105,
           1487.7353777204241,
-          1038.7164287567139
+          1038.7164287567139,
+          997.1902973468488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8749,6 +8779,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -9141,7 +9172,8 @@ window.BENCHMARK_DATA = {
           888.0772321065267,
           1022.3263879503522,
           1372.1895190874736,
-          972.89669411523
+          972.89669411523,
+          846.7699742998395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9433,7 +9465,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1952
+          1952,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11073,6 +11106,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -11346,7 +11385,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -11623,7 +11663,8 @@ window.BENCHMARK_DATA = {
           1532.8788752922644,
           1698.0370689119611,
           2259.3742637634277,
-          1649.7513519287108
+          1649.7513519287108,
+          1431.8194337209065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11808,6 +11849,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -12190,7 +12232,8 @@ window.BENCHMARK_DATA = {
           2294.05210849217,
           2632.019598388672,
           3514.12398147583,
-          2467.584039815267
+          2467.584039815267,
+          2258.96197949923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12472,7 +12515,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3977,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14112,6 +14156,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -14385,7 +14435,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -14662,7 +14713,8 @@ window.BENCHMARK_DATA = {
           215.26145442894526,
           272.89529422613293,
           367.4448758193425,
-          252.03960065841676
+          252.03960065841676,
+          187.48620700836182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14799,6 +14851,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -15229,7 +15282,8 @@ window.BENCHMARK_DATA = {
           1342.662471516927,
           1583.7494107655116,
           2058.7274044581823,
-          1420.2243019104003
+          1420.2243019104003,
+          1283.767880121867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15241,6 +15295,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -17151,6 +17206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
@@ -17424,7 +17485,8 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
@@ -17701,7 +17763,8 @@ window.BENCHMARK_DATA = {
           1531.1214680989583,
           1695.5673219045004,
           2215.3724733080185,
-          1622.435470036098
+          1622.435470036098,
+          1495.5318497877854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17982,6 +18045,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          2760,
           2760,
           2760
         ],
@@ -18268,7 +18332,8 @@ window.BENCHMARK_DATA = {
           176183.31126185827,
           191592.01967075892,
           271710.0355794271,
-          187917.28690011162
+          187917.28690011162,
+          179382.56126185827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18550,7 +18615,8 @@ window.BENCHMARK_DATA = {
           17576,
           17528,
           17658,
-          17658
+          17658,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
