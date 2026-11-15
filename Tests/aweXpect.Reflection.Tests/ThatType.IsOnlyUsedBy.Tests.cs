@@ -33,7 +33,7 @@ public sealed partial class ThatType
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace),
 							Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -48,7 +48,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace), additional)
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<ArgumentException>()
@@ -65,7 +65,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace), additional)
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
@@ -81,7 +81,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(In.Types(typeof(StoreCache<>)))
-						.Within(In.Types(typeof(StoreCache<int>)));
+						.SearchedIn(In.Types(typeof(StoreCache<int>)));
 				}
 
 				await That(Act).DoesNotThrow()
@@ -102,7 +102,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace).Which(cancel))
+						.SearchedIn(Types.InNamespace(UsageNamespace).Which(cancel))
 						.WithCancellation(cts.Token);
 				}
 
@@ -130,7 +130,7 @@ public sealed partial class ThatType
 						       : builtin(type)))
 					{
 						await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-							.Within(Types.InNamespace(UsageNamespace));
+							.SearchedIn(Types.InNamespace(UsageNamespace));
 					}
 				}
 
@@ -159,7 +159,7 @@ public sealed partial class ThatType
 						       .Set(_ => throw new InvalidOperationException("boom")))
 					{
 						await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-							.Within(Types.InNamespace(UsageNamespace));
+							.SearchedIn(Types.InNamespace(UsageNamespace));
 					}
 				}
 
@@ -174,6 +174,42 @@ public sealed partial class ThatType
 			}
 
 			[Test]
+			public async Task WhenEvaluatedAgain_ShouldSearchTheUsersAgain()
+			{
+				Type subject = typeof(UnusedStore);
+				ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver =
+					Customize.aweXpect.Reflection().DependencyResolver;
+				Func<Type, IEnumerable<Type>> builtin = resolver.Get()!;
+				AndOrResult<Type, IThat<Type?>> result = That(subject)
+					.IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
+					.SearchedIn(Types.InNamespace(UsageNamespace));
+				await result;
+
+				async Task Act()
+				{
+					using (resolver.Set(type => type == typeof(BodyOnlyJob)
+						       ? builtin(type).Concat([typeof(UnusedStore),])
+						       : builtin(type)))
+					{
+						await result;
+					}
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but it had disallowed users
+
+					              Disallowed users:
+					              [
+					                "BodyOnlyJob"
+					              ]
+					              """)
+					.Because("the users of a previous evaluation must not be reused");
+			}
+
+			[Test]
 			public async Task WhenGenericTypeDefinitionIsUsedThroughAConstruction_ShouldFail()
 			{
 				Type subject = typeof(GenericStore<>);
@@ -181,7 +217,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -206,7 +242,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -231,11 +267,44 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(InfrastructureNamespace));
+						.SearchedIn(Types.InNamespace(InfrastructureNamespace));
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("only the types within the scope are searched for users");
+			}
+
+			[Test]
+			public async Task WhenSearchedInIsCalledTwice_ShouldThrowInvalidOperationException()
+			{
+				Type subject = typeof(TrackStore);
+				OnlyUsedByResult<AndOrResult<Type, IThat<Type?>>> result =
+					That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace));
+				_ = result.SearchedIn(Types.InNamespace(InfrastructureNamespace));
+
+				void Act()
+				{
+					_ = result.SearchedIn(Types.InNamespace(UsageNamespace));
+				}
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("The scope cannot be set again: 'SearchedIn' can only be called once.");
+			}
+
+			[Test]
+			public async Task WhenSearchedInIsNull_ShouldThrowArgumentNullException()
+			{
+				Type subject = typeof(TrackStore);
+				Filtered.Types scope = null!;
+
+				async Task Act()
+				{
+					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace)).SearchedIn(scope);
+				}
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("types").And
+					.WithMessage("The 'types' cannot be null.*").AsWildcard();
 			}
 
 			[Test]
@@ -246,7 +315,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow()
@@ -262,7 +331,7 @@ public sealed partial class ThatType
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace),
 							Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -287,7 +356,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -306,7 +375,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -331,7 +400,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow()
@@ -346,7 +415,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow()
@@ -362,11 +431,26 @@ public sealed partial class ThatType
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace),
 							Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow()
 					.Because("a type may always use itself, also through a construction of itself");
+			}
+
+			[Test]
+			public async Task WhenUsedByATypeNestedInAnAllowedType_ShouldSucceed()
+			{
+				Type subject = typeof(LinkTarget);
+
+				async Task Act()
+				{
+					await That(subject).IsOnlyUsedBy(In.Types(typeof(NestingStore), typeof(LinkStore<>)))
+						.SearchedIn(Types.InNamespace(UsageNamespace));
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("NestingStore.Entry.Detail is nested in the allowed type NestingStore");
 			}
 
 			[Test]
@@ -377,7 +461,7 @@ public sealed partial class ThatType
 				async Task Act()
 				{
 					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -402,45 +486,12 @@ public sealed partial class ThatType
 
 				async Task Act()
 				{
-					await That(subject).IsOnlyUsedBy(users).Within(Types.InNamespace(UsageNamespace));
+					await That(subject).IsOnlyUsedBy(users).SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("users").And
 					.WithMessage("The 'users' cannot be null.*").AsWildcard();
-			}
-
-			[Test]
-			public async Task WhenWithinIsCalledTwice_ShouldThrowInvalidOperationException()
-			{
-				Type subject = typeof(TrackStore);
-				OnlyUsedByResult<AndOrResult<Type, IThat<Type?>>> result =
-					That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace));
-				_ = result.Within(Types.InNamespace(InfrastructureNamespace));
-
-				void Act()
-				{
-					_ = result.Within(Types.InNamespace(UsageNamespace));
-				}
-
-				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("The scope cannot be set again: 'Within' can only be called once.");
-			}
-
-			[Test]
-			public async Task WhenWithinIsNull_ShouldThrowArgumentNullException()
-			{
-				Type subject = typeof(TrackStore);
-				Filtered.Types within = null!;
-
-				async Task Act()
-				{
-					await That(subject).IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace)).Within(within);
-				}
-
-				await That(Act).Throws<ArgumentNullException>()
-					.WithParamName("types").And
-					.WithMessage("The 'types' cannot be null.*").AsWildcard();
 			}
 		}
 
@@ -456,7 +507,7 @@ public sealed partial class ThatType
 					await That(subject).DoesNotComplyWith(it => it
 						.IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace), Types.InNamespace(ApiNamespace),
 							Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace)));
+						.SearchedIn(Types.InNamespace(UsageNamespace)));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -476,7 +527,7 @@ public sealed partial class ThatType
 				{
 					await That(subject).DoesNotComplyWith(it => it
 						.IsOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace)));
+						.SearchedIn(Types.InNamespace(UsageNamespace)));
 				}
 
 				await That(Act).DoesNotThrow();

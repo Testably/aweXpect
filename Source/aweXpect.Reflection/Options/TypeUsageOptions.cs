@@ -13,21 +13,13 @@ namespace aweXpect.Reflection.Options;
 ///     filtered collection of types within which the users are searched.
 /// </summary>
 /// <remarks>
-///     The collections are resolved once per assertion via <see cref="Resolve" />, which reads the dependencies of
+///     The collections are resolved once per evaluation via <see cref="Resolve" />, which reads the dependencies of
 ///     every type within the scope that is not allowed, so that each subject is only a lookup.
 /// </remarks>
 internal sealed class TypeUsageOptions
 {
 	private readonly TypeSetDependencyOptions _allowed;
 	private readonly Filtered.Types _within;
-
-	/// <summary>
-	///     The disallowed users, resolved when first needed.
-	/// </summary>
-	/// <remarks>
-	///     A cache of these options, which never change, so a race only resolves the users twice.
-	/// </remarks>
-	private ResolvedTypeUsages? _resolved;
 
 	public TypeUsageOptions(TypeSetDependencyOptions allowed, Filtered.Types within)
 		: this(allowed, within, false)
@@ -63,16 +55,14 @@ internal sealed class TypeUsageOptions
 	}
 
 	/// <summary>
-	///     Resolves the allowed collections and the types within the scope once into the disallowed users of each
+	///     Resolves the allowed collections and the types within the scope into the disallowed users of each
 	///     dependency.
 	/// </summary>
+	/// <remarks>
+	///     Not cached, as the scope and the customized dependency resolution can differ between evaluations.
+	/// </remarks>
 	public async ValueTask<ResolvedTypeUsages> Resolve(CancellationToken cancellationToken = default)
 	{
-		if (_resolved is not null)
-		{
-			return _resolved;
-		}
-
 		ResolvedTypeSet allowed = await _allowed.Resolve(cancellationToken);
 		Dictionary<Type, List<Type>> usersByDependency = new();
 #if NET8_0_OR_GREATER
@@ -82,14 +72,13 @@ internal sealed class TypeUsageOptions
 #endif
 		{
 			cancellationToken.ThrowIfCancellationRequested();
-			if (!allowed.Matches(type))
+			if (!IsAllowed(allowed, type))
 			{
 				AddUser(usersByDependency, type);
 			}
 		}
 
-		_resolved = new ResolvedTypeUsages(usersByDependency);
-		return _resolved;
+		return new ResolvedTypeUsages(usersByDependency);
 	}
 
 	/// <summary>
@@ -99,6 +88,23 @@ internal sealed class TypeUsageOptions
 		=> ByEachOther
 			? $"{_allowed.Describe()} or by each other, searched in {_within.GetDescription().TrimEnd()}"
 			: $"{_allowed.Describe()}, searched in {_within.GetDescription().TrimEnd()}";
+
+	/// <summary>
+	///     Whether the <paramref name="type" /> or a type it is nested in is allowed, so that a type and its nested
+	///     types are one unit for the allowed users as well as for the subject.
+	/// </summary>
+	private static bool IsAllowed(ResolvedTypeSet allowed, Type type)
+	{
+		for (Type? current = type; current is not null; current = current.DeclaringType)
+		{
+			if (allowed.Matches(current))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/// <summary>
 	///     Registers the <paramref name="user" /> under each of its dependencies, and under the generic type

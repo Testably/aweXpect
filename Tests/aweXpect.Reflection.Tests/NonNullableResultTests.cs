@@ -739,7 +739,7 @@ public sealed class NonNullableResultTests
 		Type? subject = typeof(OnlyLayer1);
 
 		Type result = await That(subject).IsOnlyUsedBy(Types.InNamespace(Layer1Namespace))
-			.Within(Types.InNamespace(Layer1Namespace));
+			.SearchedIn(Types.InNamespace(Layer1Namespace));
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}
@@ -760,7 +760,7 @@ public sealed class NonNullableResultTests
 		IEnumerable<Type?> subject = [typeof(OnlyLayer1),];
 
 		IEnumerable<Type?> result = await That(subject).AreOnlyUsedBy(Types.InNamespace(Layer1Namespace))
-			.Within(Types.InNamespace(Layer1Namespace));
+			.SearchedIn(Types.InNamespace(Layer1Namespace));
 
 		await That(result).IsSameAs(subject).Because(Reason);
 	}

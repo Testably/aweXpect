@@ -3244,7 +3244,7 @@ namespace aweXpect.Reflection.Results
     }
     public sealed class OnlyUsedByResult<TResult>
     {
-        public TResult Within(aweXpect.Reflection.Collections.Filtered.Types types) { }
+        public TResult SearchedIn(aweXpect.Reflection.Collections.Filtered.Types types) { }
     }
     public sealed class ParameterCollectionResult<TType, TValue, TParameter> : aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter, aweXpect.Reflection.Results.ParameterCollectionResult<TType, TValue, TParameter>>
     {

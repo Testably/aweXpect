@@ -18,12 +18,13 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are only used (referenced in their
 	///     signature) by types in the filtered collections of types <paramref name="users" /> or
 	///     <paramref name="additional" />, or by themselves, within the types passed to
-	///     <see cref="OnlyUsedByResult{TResult}.Within" />.
+	///     <see cref="OnlyUsedByResult{TResult}.SearchedIn" />.
 	/// </summary>
 	/// <remarks>
-	///     The collections are resolved once per assertion; every type within the scope that is not a member of the
+	///     The collections are resolved once per evaluation; every type within the scope that is not a member of the
 	///     union of the allowed collections (by <see cref="Type" /> identity; a generic type definition in a
-	///     collection matches any construction of it) must not depend on an item. A generic type definition as item
+	///     collection matches any construction of it and a type nested in an allowed type is allowed as well) must
+	///     not depend on an item. A generic type definition as item
 	///     is also used by a dependency on any construction of it, and any construction of the same generic type
 	///     definition and any type nested in the item counts as the item itself. Each item may only use itself, unless
 	///     <see cref="OnlyUsedByItemsResult{TType, TValue}.OrByEachOther" /> also allows the items to use each other.
@@ -38,7 +39,7 @@ public static partial class ThatTypes
 	/// <summary>
 	///     …are only used (referenced in their signature) by types in the filtered collections of types
 	///     <paramref name="users" /> or <paramref name="additional" />, or by themselves, within the types passed to
-	///     <see cref="OnlyUsedByResult{TResult}.Within" />.
+	///     <see cref="OnlyUsedByResult{TResult}.SearchedIn" />.
 	/// </summary>
 	/// <inheritdoc cref="AreOnlyUsedBy(IThat{IEnumerable{Type?}}, Filtered.Types, Filtered.Types[])" path="/remarks" />
 	public static OnlyUsedByResult<OnlyUsedByItemsResult<IEnumerable<Type?>, IEnumerable<Type?>?>> AreOnlyUsedBy(
@@ -87,6 +88,7 @@ public static partial class ThatTypes
 		: DependencyViolationsExpectation(false, " is used by ")
 	{
 		private HashSet<Type>? _items;
+		private ResolvedTypeUsages? _usages;
 
 		public override bool NeedsAllItems => options.Value.ByEachOther;
 
@@ -94,6 +96,7 @@ public static partial class ThatTypes
 		{
 			base.OnEvaluating(context, cancellationToken);
 			_items = null;
+			_usages = null;
 		}
 
 		public override void OnAllItems(IReadOnlyCollection<Type> items)
@@ -101,7 +104,10 @@ public static partial class ThatTypes
 
 		protected override async ValueTask<IReadOnlyList<string>> GetViolations(Type item,
 			CancellationToken cancellationToken)
-			=> (await options.Value.Resolve(cancellationToken)).GetDisallowedUsers(item, _items);
+		{
+			_usages ??= await options.Value.Resolve(cancellationToken);
+			return _usages.GetDisallowedUsers(item, _items);
+		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars)
 			=> stringBuilder.Append(grammars.IsPlural() ? "are only used by " : "is only used by ")

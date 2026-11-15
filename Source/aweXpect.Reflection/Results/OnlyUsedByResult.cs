@@ -20,7 +20,7 @@ public sealed class OnlyUsedByResult<TResult>
 	}
 
 	/// <summary>
-	///     …within the filtered collection of <paramref name="types" />, whose dependencies are read to find the
+	///     …searched in the filtered collection of <paramref name="types" />, whose dependencies are read to find the
 	///     users.
 	/// </summary>
 	/// <remarks>
@@ -28,13 +28,13 @@ public sealed class OnlyUsedByResult<TResult>
 	///     the subject, e.g. <c>In.AssemblyContaining&lt;T&gt;().Types()</c>. The cost of the assertion grows with
 	///     its size. It can only be called once, as each call adds the expectation.
 	/// </remarks>
-	public TResult Within(Filtered.Types types)
+	public TResult SearchedIn(Filtered.Types types)
 	{
 		ThrowHelper.ThrowIfNull(types, nameof(types));
 		if (_hasScope)
 		{
 			throw Tracing.WriteException(new InvalidOperationException(
-				$"The scope cannot be set again: '{nameof(Within)}' can only be called once."));
+				$"The scope cannot be set again: '{nameof(SearchedIn)}' can only be called once."));
 		}
 
 		_hasScope = true;

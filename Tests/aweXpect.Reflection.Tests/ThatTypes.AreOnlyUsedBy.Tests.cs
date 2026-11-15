@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using aweXpect.Customization;
+using aweXpect.Reflection.Results;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Infrastructure;
+using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Jobs;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Usage.Store;
 using TUnit.Core.Exceptions;
 #if NET8_0_OR_GREATER
@@ -30,7 +34,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace),
 							Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -44,7 +48,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -89,7 +93,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther()
 						.WithCancellation(cts.Token);
 				}
@@ -119,7 +123,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -137,6 +141,47 @@ public sealed partial class ThatTypes
 			}
 
 			[Test]
+			public async Task WhenEvaluatedAgain_ShouldSearchTheUsersAgain()
+			{
+				IEnumerable<Type?> subject = [typeof(UnusedStore),];
+				ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver =
+					Customize.aweXpect.Reflection().DependencyResolver;
+				Func<Type, IEnumerable<Type>> builtin = resolver.Get()!;
+				OnlyUsedByItemsResult<IEnumerable<Type?>, IEnumerable<Type?>?> result = That(subject)
+					.AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
+					.SearchedIn(Types.InNamespace(UsageNamespace));
+				await result;
+
+				async Task Act()
+				{
+					using (resolver.Set(type => type == typeof(BodyOnlyJob)
+						       ? builtin(type).Concat([typeof(UnusedStore),])
+						       : builtin(type)))
+					{
+						await result;
+					}
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              all are only used by types within namespace "{InfrastructureNamespace}" in all loaded assemblies, searched in types within namespace "{UsageNamespace}" in all loaded assemblies,
+					              but none of 1 did
+
+					              Not matching items:
+					              [
+					                UnusedStore is used by ["BodyOnlyJob"]
+					              ]
+
+					              Collection:
+					              [
+					                UnusedStore is used by ["BodyOnlyJob"]
+					              ]
+					              """)
+					.Because("the users of a previous evaluation must not be reused");
+			}
+
+			[Test]
 			public async Task WhenFirstItemIsNullAndItemsMayUseEachOther_ShouldFail()
 			{
 				IEnumerable<Type?> subject = [null, typeof(TrackStore), typeof(StoreAdapter),];
@@ -144,7 +189,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -172,7 +217,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace),
 							In.Types<TrackStore, StoreAdapter>())
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -186,7 +231,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -202,7 +247,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -233,7 +278,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(In.Types(typeof(StoreCache<int>)))
+						.SearchedIn(In.Types(typeof(StoreCache<int>)))
 						.OrByEachOther();
 				}
 
@@ -249,7 +294,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(In.Types(typeof(NestingStore.Entry.Detail)))
+						.SearchedIn(In.Types(typeof(NestingStore.Entry.Detail)))
 						.OrByEachOther();
 				}
 
@@ -265,7 +310,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(In.Types(typeof(LinkStore<>)))
+						.SearchedIn(In.Types(typeof(LinkStore<>)))
 						.OrByEachOther();
 				}
 
@@ -281,7 +326,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -315,7 +360,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).DoesNotComplyWith(they => they
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther());
 				}
 
@@ -342,7 +387,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).DoesNotComplyWith(they => they
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther());
 				}
 
@@ -369,7 +414,7 @@ public sealed partial class ThatTypes
 				{
 					await That(Subject()).All()
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -387,7 +432,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).Exactly(1).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -401,7 +446,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).None().AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -436,7 +481,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).All()
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -452,7 +497,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AtLeast(2).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()
@@ -489,7 +534,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject).All()
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -508,7 +553,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).Exactly(1).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).DoesNotThrow();
@@ -526,7 +571,7 @@ public sealed partial class ThatTypes
 				{
 					await That(subject)
 						.AreOnlyUsedBy(Types.InNamespace(ApiNamespace), Types.InNamespace(JobsNamespace))
-						.Within(Types.InNamespace(UsageNamespace))
+						.SearchedIn(Types.InNamespace(UsageNamespace))
 						.OrByEachOther();
 				}
 
@@ -545,7 +590,7 @@ public sealed partial class ThatTypes
 				async Task Act()
 				{
 					await That(subject).AreOnlyUsedBy(Types.InNamespace(InfrastructureNamespace))
-						.Within(Types.InNamespace(UsageNamespace));
+						.SearchedIn(Types.InNamespace(UsageNamespace));
 				}
 
 				await That(Act).Throws<FailException>()

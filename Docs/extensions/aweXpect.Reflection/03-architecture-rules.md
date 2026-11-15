@@ -14,15 +14,15 @@ how to combine them into a full architecture test suite. The examples use a musi
 
 The dependency filters and expectations follow the familiar filter/expect pairing:
 
-|                              | Filter                                  | Expect (single)                   | Expect (many)                      |
-|------------------------------|-----------------------------------------|-----------------------------------|------------------------------------|
-| depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`              | `.DependOn("x", …)`                |
-| does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`        | `.DoNotDependOn("x", …)`           |
-| depends on type              | `.WhichDependOn<T>()`                   | `.DependsOn<T>()`                 | `.DependOn<T>()`                   |
-| does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`           | `.DoNotDependOn<T>()`              |
-| depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`          | `.DependOnlyOn("x", …)`            |
-| has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)` | `.HaveDependenciesOutside("x", …)` |
-| is only used by set          |                                         | `.IsOnlyUsedBy(set, …).Within(…)` | `.AreOnlyUsedBy(set, …).Within(…)` |
+|                              | Filter                                  | Expect (single)                       | Expect (many)                          |
+|------------------------------|-----------------------------------------|---------------------------------------|----------------------------------------|
+| depends on namespace         | `.WhichDependOn("x", …)`                | `.DependsOn("x", …)`                  | `.DependOn("x", …)`                    |
+| does not depend on           | `.WhichDoNotDependOn("x", …)`           | `.DoesNotDependOn("x", …)`            | `.DoNotDependOn("x", …)`               |
+| depends on type              | `.WhichDependOn<T>()`                   | `.DependsOn<T>()`                     | `.DependOn<T>()`                       |
+| does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`               | `.DoNotDependOn<T>()`                  |
+| depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`              | `.DependOnlyOn("x", …)`                |
+| has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)`     | `.HaveDependenciesOutside("x", …)`     |
+| is only used by set          |                                         | `.IsOnlyUsedBy(set, …).SearchedIn(…)` | `.AreOnlyUsedBy(set, …).SearchedIn(…)` |
 
 ```csharp
 // The API layer must not reference the data layer
@@ -223,22 +223,22 @@ cannot see.
 
 ### Allowed users
 
-The rules above restrict what a type uses. To restrict which types may use a type instead, pass the allowed users and, with `Within(…)`, the types that are searched for users:
+The rules above restrict what a type uses. To restrict which types may use a type instead, pass the allowed users and, with `SearchedIn(…)`, the types that are searched for users:
 
 ```csharp
 // Only the infrastructure layer may use the SqlTrackStore
 await That(typeof(SqlTrackStore))
     .IsOnlyUsedBy(Types.InNamespace("MusicStore.Infrastructure"))
-    .Within(In.AssemblyContaining<SqlTrackStore>().Types());
+    .SearchedIn(In.AssemblyContaining<SqlTrackStore>().Types());
 
 // Only the application layer may use the data layer, whose types may use each other
 await That(Types.InNamespace("MusicStore.Data"))
     .AreOnlyUsedBy(Types.InNamespace("MusicStore.Application"))
-    .Within(In.AssemblyContaining<SqlTrackStore>().Types())
+    .SearchedIn(In.AssemblyContaining<SqlTrackStore>().Types())
     .OrByEachOther();
 ```
 
-The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type or through a type nested in it, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
+The dependencies of every type within the scope that is not an allowed user are read, so the scope decides both what is found and how long the expectation takes: pick one that contains every possible user, like the assemblies of your application, instead of all loaded assemblies. A type may always use itself, also through another construction of its generic type or through a type nested in it, and a type nested in an allowed user is allowed as well, but unlike `DependOnlyOn` neither its own namespace nor framework types are allowed implicitly. On a collection each type may only use itself, unless `OrByEachOther()` also allows the types of the collection to use each other.
 
 ```text title="Failure message"
 Expected that typeof(SqlTrackStore)

@@ -19,12 +19,13 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is only used (referenced in their signature) by types in the filtered
 	///     collections of types <paramref name="users" /> or <paramref name="additional" />, or by itself, within the
-	///     types passed to <see cref="OnlyUsedByResult{TResult}.Within" />.
+	///     types passed to <see cref="OnlyUsedByResult{TResult}.SearchedIn" />.
 	/// </summary>
 	/// <remarks>
-	///     The collections are resolved once per assertion; every type within the scope that is not a member of the
+	///     The collections are resolved once per evaluation; every type within the scope that is not a member of the
 	///     union of the allowed collections (by <see cref="Type" /> identity; a generic type definition in a
-	///     collection matches any construction of it) must not depend on the type. A generic type definition as
+	///     collection matches any construction of it and a type nested in an allowed type is allowed as well) must
+	///     not depend on the type. A generic type definition as
 	///     subject is also used by a dependency on any construction of it, and any construction of the same generic
 	///     type definition and any type nested in the subject counts as the type itself. Unlike <c>DependsOnlyOn</c>, neither the
 	///     own namespace nor framework types are allowed implicitly.
