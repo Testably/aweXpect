@@ -9,18 +9,18 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly int[] _intOneOfCandidates = [7, 13, 21, 42,];
-	private readonly int _intOneOfSubject = 42;
+	private readonly int _beatsPerBar = 6;
+	private readonly int[] _commonBeatsPerBar = [2, 3, 4, 6,];
 
 	[Benchmark]
 	public async Task<int> Int_IsOneOf_aweXpect()
-		=> await Expect.That(_intOneOfSubject).IsOneOf(_intOneOfCandidates);
+		=> await Expect.That(_beatsPerBar).IsOneOf(_commonBeatsPerBar);
 
 	[Benchmark]
 	public AndConstraint<NumericAssertions<int>> Int_IsOneOf_FluentAssertions()
-		=> _intOneOfSubject.Should().BeOneOf(_intOneOfCandidates);
+		=> _beatsPerBar.Should().BeOneOf(_commonBeatsPerBar);
 
 	[Benchmark]
 	public async Task<int> Int_IsOneOf_TUnit()
-		=> await Assert.That(_intOneOfSubject).IsIn(_intOneOfCandidates);
+		=> await Assert.That(_beatsPerBar).IsIn(_commonBeatsPerBar);
 }

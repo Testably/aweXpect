@@ -4,27 +4,27 @@ namespace Snippets;
 
 internal static class Prelude
 {
-	public static string _stringSubject = "foo";
-	public static string _stringExpectation = "FOO";
-	public static int _intSubject = 2;
-	public static int _intMinimum = 1;
-	public static int[] _intOneOfCandidates = [7, 13, 21, 42,];
-	public static int _intOneOfSubject = 42;
+	public static string _upperCaseTitle = "HELP!";
+	public static string _title = "Help!";
+	public static int _tempo = 128;
+	public static int _minimumTempo = 100;
+	public static int[] _commonBeatsPerBar = [2, 3, 4, 6,];
+	public static int _beatsPerBar = 6;
 	public static BenchmarkAlbum _albumSubject = new();
 	public static BenchmarkAlbum _albumExpectation = new();
-	public static int[] _enumerableSubject = Enumerable.Range(1, 1000).ToArray();
-	public static int _enumerableCount = 1000;
-	public static List<string> _containsSubject = ["Come Together", "Here Comes the Sun",];
-	public static string _containsExpected = "Here Comes the Sun";
-	public static string[] _stringArraySubject = ["foo", "bar", "baz",];
-	public static string[] _stringArrayExpectation = ["foo", "bar", "baz",];
-	public static string[] _stringArrayAnyOrderSubject = ["foo", "bar", "baz",];
-	public static string[] _stringArrayAnyOrderExpectation = ["baz", "foo", "bar",];
-	public static int _satisfiesSubject = 42;
-	public static string _throwsMessage = "The track is already playing.";
-	public static Action _throwsSubject = () => throw new InvalidOperationException(_throwsMessage);
-	public static Func<Task> _throwsAsyncSubject = () => Task.FromException(new InvalidOperationException(_throwsMessage));
-	public static BenchmarkAlbum _multipleSubject = new();
+	public static int[] _trackIds = Enumerable.Range(1, 1000).ToArray();
+	public static int _minimumTrackCount = 1000;
+	public static List<string> _trackTitles = ["Come Together", "Here Comes the Sun",];
+	public static string _favoriteTitle = "Here Comes the Sun";
+	public static string[] _bandMembers = ["Sting", "Andy", "Stewart",];
+	public static string[] _expectedBandMembers = ["Sting", "Andy", "Stewart",];
+	public static string[] _lineUp = ["Sting", "Andy", "Stewart",];
+	public static string[] _shuffledLineUp = ["Sting", "Stewart", "Andy",];
+	public static int _playCount = 42;
+	public static string _alreadyPlayingMessage = "The track is already playing.";
+	public static Action _playTwice = () => throw new InvalidOperationException(_alreadyPlayingMessage);
+	public static Func<Task> _playTwiceAsync = () => Task.FromException(new InvalidOperationException(_alreadyPlayingMessage));
+	public static BenchmarkAlbum _album = new();
 
 	public enum Genre
 	{

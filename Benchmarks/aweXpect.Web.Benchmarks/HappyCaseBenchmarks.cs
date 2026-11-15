@@ -17,12 +17,12 @@ public partial class HappyCaseBenchmarks
 		{
 			Method = HttpMethod.Get,
 			RequestUri = new Uri("https://music.example.com/tracks/1"),
-			Content = new StringContent("request-foo"),
+			Content = new StringContent("Let It Be"),
 		},
-		Content = new StringContent("response-bar"),
+		Content = new StringContent("Come Together"),
 		Headers =
 		{
-			{ "x-vendor", "VENDOR" },
+			{ "x-genre", "Rock" },
 		},
 		StatusCode = HttpStatusCode.OK,
 	};

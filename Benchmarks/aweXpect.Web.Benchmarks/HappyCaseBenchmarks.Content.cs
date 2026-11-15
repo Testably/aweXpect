@@ -13,9 +13,9 @@ public partial class HappyCaseBenchmarks
 {
 	[Benchmark]
 	public async Task Content_aweXpect()
-		=> await Expect.That(_response).HasContent("response-bar");
+		=> await Expect.That(_response).HasContent("Come Together");
 
 	[Benchmark]
 	public async Task<AndConstraint<StringAssertions>> Content_FluentAssertions()
-		=> (await _response.Content.ReadAsStringAsync()).Should().Be("response-bar");
+		=> (await _response.Content.ReadAsStringAsync()).Should().Be("Come Together");
 }

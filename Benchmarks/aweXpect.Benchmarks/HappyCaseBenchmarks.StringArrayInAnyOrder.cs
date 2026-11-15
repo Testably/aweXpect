@@ -11,20 +11,20 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string[] _stringArrayAnyOrderExpectation = ["foo", "baz", "bar",];
-	private readonly string[] _stringArrayAnyOrderSubject = ["foo", "bar", "baz",];
+	private readonly string[] _lineUp = ["Sting", "Andy", "Stewart",];
+	private readonly string[] _shuffledLineUp = ["Sting", "Stewart", "Andy",];
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_aweXpect()
-		=> (await Expect.That(_stringArrayAnyOrderSubject).IsEqualTo(_stringArrayAnyOrderExpectation).InAnyOrder())!
+		=> (await Expect.That(_lineUp).IsEqualTo(_shuffledLineUp).InAnyOrder())!
 			.Consume(_consumer);
 
 	[Benchmark]
 	public AndConstraint<StringCollectionAssertions<IEnumerable<string>>> StringArrayInAnyOrder_FluentAssertions()
-		=> _stringArrayAnyOrderSubject.Should().BeEquivalentTo(_stringArrayAnyOrderExpectation);
+		=> _lineUp.Should().BeEquivalentTo(_shuffledLineUp);
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_TUnit()
-		=> (await Assert.That(_stringArrayAnyOrderSubject)
-			.IsEquivalentTo(_stringArrayAnyOrderExpectation))?.Consume(_consumer);
+		=> (await Assert.That(_lineUp)
+			.IsEquivalentTo(_shuffledLineUp))?.Consume(_consumer);
 }

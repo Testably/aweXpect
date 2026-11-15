@@ -9,18 +9,18 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string _containsExpected = "Here Comes the Sun";
-	private readonly List<string> _containsSubject = [..AbbeyRoadTitles,];
+	private readonly string _favoriteTitle = "Here Comes the Sun";
+	private readonly List<string> _trackTitles = [..AbbeyRoadTitles,];
 
 	[Benchmark]
 	public async Task Contains_aweXpect()
-		=> await Expect.That(_containsSubject).Contains(_containsExpected);
+		=> await Expect.That(_trackTitles).Contains(_favoriteTitle);
 
 	[Benchmark]
 	public AndWhichConstraint<StringCollectionAssertions<IEnumerable<string>>, string> Contains_FluentAssertions()
-		=> _containsSubject.Should().Contain(_containsExpected);
+		=> _trackTitles.Should().Contain(_favoriteTitle);
 
 	[Benchmark]
 	public async Task Contains_TUnit()
-		=> await Assert.That(_containsSubject).Contains(_containsExpected);
+		=> await Assert.That(_trackTitles).Contains(_favoriteTitle);
 }
