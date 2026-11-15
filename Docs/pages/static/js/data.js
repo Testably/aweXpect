@@ -2046,6 +2046,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -2389,7 +2395,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -2736,7 +2743,8 @@ window.BENCHMARK_DATA = {
           11159.658462524414,
           5485.34581048148,
           11283.176567077637,
-          7786.337127685547
+          7786.337127685547,
+          10881.961720784506
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2972,6 +2980,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3443,7 +3452,8 @@ window.BENCHMARK_DATA = {
           384135.9824544271,
           195653.098828125,
           379907.243359375,
-          258089.2572544643
+          258089.2572544643,
+          354188.12906901044
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3795,7 +3805,8 @@ window.BENCHMARK_DATA = {
           590287,
           590288,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4150,7 +4161,8 @@ window.BENCHMARK_DATA = {
           20269.15516310472,
           10718.522647857666,
           20830.950709416316,
-          14015.054443359375
+          14015.054443359375,
+          19971.056040445965
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4162,6 +4174,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6520,6 +6533,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -6856,7 +6875,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -7196,7 +7216,8 @@ window.BENCHMARK_DATA = {
           221.97000553057745,
           121.23281363340524,
           303.5646327336629,
-          168.0652672926585
+          168.0652672926585,
+          217.65196855862936
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7392,6 +7413,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7889,7 +7911,8 @@ window.BENCHMARK_DATA = {
           491.6105679784502,
           290.52707877525916,
           483.2353582382202,
-          412.47844044367474
+          412.47844044367474,
+          480.7244559015547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7901,6 +7924,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8582,7 +8606,8 @@ window.BENCHMARK_DATA = {
           400.6788743972778,
           238.70002848761422,
           384.14970305987765,
-          289.0543597085135
+          289.0543597085135,
+          367.9972962966332
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8594,6 +8619,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -15565,6 +15591,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -16671,7 +16703,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -17781,7 +17814,8 @@ window.BENCHMARK_DATA = {
           103.28280454022544,
           59.2300204208919,
           107.30825151602427,
-          78.49626001944908
+          78.49626001944908,
+          98.32832570586886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18780,6 +18814,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -20014,7 +20049,8 @@ window.BENCHMARK_DATA = {
           247.8762143942026,
           143.31547486782074,
           271.2481350558145,
-          198.73417064348857
+          198.73417064348857,
+          229.67377734184265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20207,6 +20243,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -21528,7 +21565,8 @@ window.BENCHMARK_DATA = {
           258.5239933331807,
           134.35251198496138,
           260.09573596318563,
-          179.4108293567385
+          179.4108293567385,
+          227.31986233393351
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21540,6 +21578,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -23984,6 +24023,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -24327,7 +24372,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -24674,7 +24720,8 @@ window.BENCHMARK_DATA = {
           219.2841629187266,
           120.45304573376974,
           202.3151956399282,
-          162.62540231432234
+          162.62540231432234,
+          197.35337411562602
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24879,6 +24926,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -25381,7 +25429,8 @@ window.BENCHMARK_DATA = {
           540.1971571604411,
           280.3841162749699,
           540.6407905578614,
-          407.59209408078874
+          407.59209408078874,
+          496.98234330690826
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25393,6 +25442,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -26088,7 +26138,8 @@ window.BENCHMARK_DATA = {
           374.75330174763997,
           194.03510136604308,
           328.47749315897624,
-          278.11150588989256
+          278.11150588989256,
+          327.1862882886614
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26100,6 +26151,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -33078,6 +33130,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -34184,7 +34242,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -35294,7 +35353,8 @@ window.BENCHMARK_DATA = {
           682.8813734735761,
           389.0264209747314,
           705.49670530955,
-          554.0093506971995
+          554.0093506971995,
+          674.8004852022443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36281,6 +36341,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -37527,7 +37588,8 @@ window.BENCHMARK_DATA = {
           1332.4117373057775,
           738.0507176262992,
           1348.664133199056,
-          1122.1278003692628
+          1122.1278003692628,
+          1304.1927871704102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37720,6 +37782,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39041,7 +39104,8 @@ window.BENCHMARK_DATA = {
           643.1820964813232,
           358.30675509770714,
           650.7082723617553,
-          495.65020847320557
+          495.65020847320557,
+          641.3451243914091
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39053,6 +39117,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -46075,6 +46140,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -47181,7 +47252,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -48291,7 +48363,8 @@ window.BENCHMARK_DATA = {
           684.1131469286405,
           357.2406534048227,
           715.5455803871155,
-          532.9337760380337
+          532.9337760380337,
+          657.8301407496134
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49278,6 +49351,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -50524,7 +50598,8 @@ window.BENCHMARK_DATA = {
           28222.254121907554,
           11594.601102388822,
           28389.67851139949,
-          16239.23378499349
+          16239.23378499349,
+          26813.661420549666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51639,6 +51714,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33367,
+          33367,
           33367
         ],
         "borderColor": "#FF671B",
@@ -52038,7 +52114,8 @@ window.BENCHMARK_DATA = {
           806.4933979851859,
           440.3179729666029,
           783.8583316167195,
-          600.3010859807332
+          600.3010859807332,
+          781.7243994932908
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52050,6 +52127,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -54842,6 +54920,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -55243,7 +55327,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -55648,7 +55733,8 @@ window.BENCHMARK_DATA = {
           707.2518057456383,
           377.88018767038983,
           706.3446550369263,
-          492.8691775639852
+          492.8691775639852,
+          687.819206682841
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55942,6 +56028,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -56471,7 +56558,8 @@ window.BENCHMARK_DATA = {
           85344.13065592448,
           30260.820627065805,
           84306.33377278646,
-          54605.64956665039
+          54605.64956665039,
+          81312.55045572917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56881,7 +56969,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59289,6 +59378,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -59690,7 +59785,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -60095,7 +60191,8 @@ window.BENCHMARK_DATA = {
           162.51938932736715,
           81.81054503184099,
           130.17936023076376,
-          101.87161766565762
+          101.87161766565762,
+          125.95900718982404
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60389,6 +60486,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -60918,7 +61016,8 @@ window.BENCHMARK_DATA = {
           32527.681415264422,
           11773.935746256511,
           31607.925154622397,
-          15258.472881062826
+          15258.472881062826,
+          31007.543326822917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61328,7 +61427,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61727,7 +61827,8 @@ window.BENCHMARK_DATA = {
           263.13593002728055,
           144.20030841827392,
           245.83721437454224,
-          178.8823502222697
+          178.8823502222697,
+          228.49766694582425
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -61739,6 +61840,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -64183,6 +64285,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -64526,7 +64634,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -64873,7 +64982,8 @@ window.BENCHMARK_DATA = {
           317.3720327445439,
           166.99628950868333,
           286.44761063502386,
-          246.1709875424703
+          246.1709875424703,
+          284.61304102625166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65078,6 +65188,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -65580,7 +65691,8 @@ window.BENCHMARK_DATA = {
           402.8846879641215,
           222.01794697688177,
           413.2564380645752,
-          317.1174627031599
+          317.1174627031599,
+          368.5629457405635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65592,6 +65704,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -66287,7 +66400,8 @@ window.BENCHMARK_DATA = {
           401.6282820020403,
           225.42775944301061,
           414.16840216318764,
-          322.9714773098628
+          322.9714773098628,
+          396.0151017506917
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66299,6 +66413,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -68699,6 +68814,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -69042,7 +69163,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -69389,7 +69511,8 @@ window.BENCHMARK_DATA = {
           781.8336554209392,
           404.122732264655,
           710.7851082938058,
-          556.8829371588571
+          556.8829371588571,
+          691.4784773508708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -69625,6 +69748,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -70096,7 +70220,8 @@ window.BENCHMARK_DATA = {
           1895.9992743900843,
           1185.5268632253012,
           1856.8427927834648,
-          1469.3988891601562
+          1469.3988891601562,
+          1838.6735764821372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70108,6 +70233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -70803,7 +70929,8 @@ window.BENCHMARK_DATA = {
           928.0684673309327,
           515.1612516811916,
           922.0684377670289,
-          755.316841670445
+          755.316841670445,
+          868.8201722417559
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70815,6 +70942,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -73215,6 +73343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -73558,7 +73692,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -73905,7 +74040,8 @@ window.BENCHMARK_DATA = {
           11831.89854313777,
           6053.894266401018,
           11929.802173614502,
-          8559.004533894857
+          8559.004533894857,
+          12027.176817673902
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -74144,6 +74280,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -74612,7 +74749,8 @@ window.BENCHMARK_DATA = {
           41107.21991780599,
           18992.433955601282,
           40882.51792689732,
-          26695.802193196614
+          26695.802193196614,
+          38801.17606201172
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -74949,6 +75087,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -75319,7 +75458,8 @@ window.BENCHMARK_DATA = {
           10460.201848347982,
           5822.833602905273,
           10593.936210123698,
-          7785.221122154822
+          7785.221122154822,
+          10566.155667622885
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -75331,6 +75471,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -77731,6 +77872,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -78074,7 +78221,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -78421,7 +78569,8 @@ window.BENCHMARK_DATA = {
           11131.640948704311,
           5862.777759552002,
           11587.241180419922,
-          8003.931792039138
+          8003.931792039138,
+          11639.7933077131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -78660,6 +78809,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -79128,7 +79278,8 @@ window.BENCHMARK_DATA = {
           59655.16999511719,
           28098.499629429407,
           59315.206970214844,
-          38092.64940098354
+          38092.64940098354,
+          56675.02381310096
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -79461,6 +79612,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -79835,7 +79987,8 @@ window.BENCHMARK_DATA = {
           20914.108328683036,
           11643.890658569337,
           20958.612368070164,
-          15323.596151498648
+          15323.596151498648,
+          20881.989292689734
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -79847,6 +80000,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -80327,6 +80481,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
@@ -80350,7 +80510,8 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
@@ -80377,7 +80538,8 @@ window.BENCHMARK_DATA = {
           204.23780902226767,
           117.63215805803027,
           196.98170164426168,
-          159.18266547520955
+          159.18266547520955,
+          189.9601080417633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -80408,6 +80570,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208,
           208
         ],
@@ -80444,7 +80607,8 @@ window.BENCHMARK_DATA = {
           213.3630438486735,
           121.02724599838257,
           227.73593422571818,
-          172.57184551556904
+          172.57184551556904,
+          203.53131119410196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -80456,6 +80620,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -80511,7 +80676,8 @@ window.BENCHMARK_DATA = {
           399.74751529693606,
           147.30713952382405,
           366.35662943522135,
-          190.24208639349257
+          190.24208639349257,
+          345.5947124276842
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -80542,6 +80708,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488,
           488
         ],
