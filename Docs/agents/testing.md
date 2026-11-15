@@ -61,7 +61,9 @@ The slow tests of `aweXpect.Docs.Tests`:
 
 - `CodeBlocks_ShouldCompile` compiles every ```` ```csharp ```` block of each page in `Docs/pages` together with
   `Scaffold/Scaffold.cs` and an optional `Scaffold/<page path>.cs`. A block must be complete code (a fragment of a
-  method fails); mark a block that cannot compile with ```` ```csharp no-compile ````.
+  method fails); mark a block that cannot compile with ```` ```csharp no-compile ````. The aweXpect analyzers run on
+  the blocks: a block that shows a mistake on purpose carries ```` ```csharp expect=aweXpect0001 ```` (several ids
+  comma-separated) and has to report exactly these ids, every other block none.
 - `ExtensionCode_ShouldCompileAgainstCoreOnly` compiles the pages in `11-extending` against `aweXpect.Core` alone.
 - `DocsApiCoverageTests` fails when a public `IThat<T>` extension of `aweXpect`, or a member of `Expect`, `Fail`,
   `Skip` or `Signaler`, is not mentioned on any page.

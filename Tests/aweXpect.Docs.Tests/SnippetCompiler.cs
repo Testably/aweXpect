@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,9 +8,11 @@ using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using aweXpect.Analyzers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace aweXpect.Docs.Tests;
 
@@ -31,6 +34,13 @@ internal static partial class SnippetCompiler
 	private static readonly Lazy<MetadataReference[]> References = new(() => GetReferences(false));
 	private static readonly Lazy<MetadataReference[]> CoreReferences = new(() => GetReferences(true));
 
+	private static readonly Lazy<ImmutableArray<DiagnosticAnalyzer>> Analyzers = new(() =>
+		[
+			..typeof(AwaitExpectationAnalyzer).Assembly.GetTypes()
+				.Where(type => !type.IsAbstract && typeof(DiagnosticAnalyzer).IsAssignableFrom(type))
+				.Select(type => (DiagnosticAnalyzer)Activator.CreateInstance(type)!),
+		]);
+
 #if NET8_0_OR_GREATER
 	[GeneratedRegex(OmittedInitializerPattern)]
 	private static partial Regex OmittedInitializer();
@@ -41,13 +51,14 @@ internal static partial class SnippetCompiler
 #endif
 
 	/// <summary>
-	///     Returns the compiler errors of the <paramref name="blocks" /> and <paramref name="scaffoldFiles" />, each
-	///     prefixed with the file and line.
+	///     Returns the problems of the <paramref name="blocks" /> and <paramref name="scaffoldFiles" />, each prefixed
+	///     with the file and line: every compiler error and aweXpect diagnostic outside of a block with an
+	///     <c>expect=</c> marker, and every such block whose diagnostic ids differ from the ones its marker lists.
 	/// </summary>
 	/// <remarks>
 	///     With <paramref name="isExtensionCode" />, only the declarations of the blocks are compiled, against
-	///     aweXpect.Core without aweXpect, as an extension references it. Their statements show how a test project uses
-	///     the extension, which also references aweXpect.
+	///     aweXpect.Core without aweXpect, as an extension references it, and without the analyzers of aweXpect. Their
+	///     statements show how a test project uses the extension, which also references aweXpect.
 	/// </remarks>
 	public static List<string> GetErrors(IReadOnlyList<CodeBlock> blocks, IEnumerable<string> scaffoldFiles,
 		bool isExtensionCode = false)
@@ -80,21 +91,40 @@ internal static partial class SnippetCompiler
 		CSharpCompilation compilation = CSharpCompilation.Create("Snippets",
 			scaffoldFiles
 				.Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file), ParseOptions, file))
-				.Append(CSharpSyntaxTree.ParseText(source.ToString(), ParseOptions, "Snippets.g.cs")),
+				.Append(CSharpSyntaxTree.ParseText(source.ToString(), ParseOptions, "Snippets.cs")),
 			isExtensionCode ? CoreReferences.Value : References.Value,
 			new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
 				nullableContextOptions: NullableContextOptions.Enable));
 
-		return compilation.GetDiagnostics()
+		List<Reported> reported = compilation.GetDiagnostics()
 			.Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error)
-			.Select(diagnostic =>
-			{
-				FileLinePositionSpan span = diagnostic.Location.GetMappedLineSpan();
-				return $"{span.Path}({span.StartLinePosition.Line + 1},{span.StartLinePosition.Character + 1}): " +
-				       $"{diagnostic.Id}: {diagnostic.GetMessage(CultureInfo.InvariantCulture)}";
-			})
+			.Concat(isExtensionCode ? [] : GetAnalyzerDiagnostics(compilation))
+			.Select(Reported.From)
 			.ToList();
+		List<CodeBlock> marked = isExtensionCode ? [] : blocks.Where(block => block.Expect.Length > 0).ToList();
+		List<string> errors = reported
+			.Where(x => !marked.Any(block => block.Contains(x.Page, x.Line)))
+			.Select(x => x.Text)
+			.ToList();
+		foreach (CodeBlock block in marked)
+		{
+			List<Reported> ofBlock = reported.Where(x => block.Contains(x.Page, x.Line)).ToList();
+			if (!ofBlock.Select(x => x.Id).ToHashSet().SetEquals(block.ExpectedIds))
+			{
+				errors.Add($"{block.Page}({block.Line}): expected exactly {block.Expect}, but found " +
+				           (ofBlock.Count == 0
+					           ? "nothing"
+					           : Environment.NewLine + string.Join(Environment.NewLine, ofBlock.Select(x => "  " + x.Text))));
+			}
+		}
+
+		return errors;
 	}
+
+	private static IEnumerable<Diagnostic> GetAnalyzerDiagnostics(CSharpCompilation compilation)
+		=> compilation.WithAnalyzers(Analyzers.Value).GetAnalyzerDiagnosticsAsync().GetAwaiter().GetResult()
+			.Where(diagnostic => diagnostic.Id.StartsWith("aweXpect", StringComparison.Ordinal) &&
+			                     diagnostic.Severity >= DiagnosticSeverity.Warning);
 
 	private static void AppendBlock(StringBuilder source, CodeBlock block, CompilationUnitSyntax root, int index,
 		HashSet<string> sharedTypes, bool withoutStatements)
@@ -217,4 +247,15 @@ internal static partial class SnippetCompiler
 		}
 	}
 #endif
+
+	private sealed record Reported(string Page, int Line, string Id, string Text)
+	{
+		public static Reported From(Diagnostic diagnostic)
+		{
+			FileLinePositionSpan span = diagnostic.Location.GetMappedLineSpan();
+			return new Reported(span.Path, span.StartLinePosition.Line + 1, diagnostic.Id,
+				$"{span.Path}({span.StartLinePosition.Line + 1},{span.StartLinePosition.Character + 1}): " +
+				$"{diagnostic.Id}: {diagnostic.GetMessage(CultureInfo.InvariantCulture)}");
+		}
+	}
 }

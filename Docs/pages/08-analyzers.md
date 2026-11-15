@@ -33,7 +33,7 @@ The analyzers and the source generators need Roslyn 4.8 or later, which ships wi
 An expectation is neither awaited nor verified, so it is never evaluated and never fails. A code fix is available.
 :::
 
-```csharp
+```csharp expect=aweXpect0001
 bool value = false;
 
 That(value).IsTrue();          // reported: never evaluated
@@ -66,7 +66,7 @@ For a `ref struct` that cannot be used in an `async` method, verify the expectat
 `Equals` is called on an expectation. It compares the expectation object itself and does not verify anything.
 :::
 
-```csharp
+```csharp expect=aweXpect0001,aweXpect0002
 int subject = 1;
 
 bool isEqual = That(subject).Equals(2);   // reported: verifies nothing
@@ -80,7 +80,7 @@ A `Has…` expectation is used directly after `Throws`, where the sentence "thro
 code fixes are available: switch to the `With…` twin, or insert `.Which`.
 :::
 
-```csharp
+```csharp expect=aweXpect0003
 void Act() => throw new InvalidOperationException("Yesterday");
 
 await That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
@@ -97,7 +97,7 @@ An expectation for an object is applied to a delegate subject, so it checks the 
 A code fix is available for a delegate that returns a value.
 :::
 
-```csharp
+```csharp expect=aweXpect0004
 int Act() => 3;
 
 await That(Act).IsEqualTo(3);                              // reported: checks the delegate
@@ -113,7 +113,7 @@ An expectation is awaited in an `async void` method or lambda, so its failure is
 and is not observed by the test.
 :::
 
-```csharp
+```csharp expect=aweXpect0005
 List<int> values = [1, 2, 3];
 
 values.ForEach(async x => await That(x).IsGreaterThan(0));   // reported: async void lambda
@@ -131,7 +131,7 @@ Return a `Task` instead, or await the expectation in the test method itself.
 A collection without a defined order, such as a set or a dictionary, is compared by position. A code fix is available.
 :::
 
-```csharp
+```csharp expect=aweXpect0006
 HashSet<int> values = [1, 2, 3];
 
 await That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
@@ -176,7 +176,7 @@ The value of an expectation is used although an `.Or` combines it with an altern
 so the value can be the `default`.
 :::
 
-```csharp
+```csharp expect=aweXpect0008
 object subject = "Yesterday";
 
 int count = await That(subject).Is<string>().Or.Is<int>();   // reported: 0 for a string subject
@@ -195,7 +195,7 @@ The value returned by an option method of an immutable option, such as a `Quanti
 is discarded, so the call has no effect.
 :::
 
-```csharp
+```csharp expect=aweXpect0009
 using aweXpect.Core;
 using aweXpect.Options;
 

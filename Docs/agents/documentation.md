@@ -50,7 +50,8 @@ in XML docs and `Docs/agents`, not in the user docs.
 - Occurrence counts as plain numbers: `AtLeast(2)`, `Between(1).And(4)`; `2.Times()` is optional.
 - Durations may use `aweXpect.Chronology` (`2.Seconds()`) with the comment `// from the aweXpect.Chronology package`.
 - `csharp` blocks in `Docs/pages` are compiled (see [testing](testing.md#documentation-tests)); mark a block that
-  cannot compile `csharp no-compile`. Blocks in `Docs/extensions` are not compiled.
+  cannot compile `csharp no-compile`, and a block that shows a mistake the analyzers report
+  `csharp expect=aweXpect0001`. Blocks in `Docs/extensions` are not compiled.
 - When a test project already has the sample as tested code, e.g. in an `Examples` folder, show that code instead of a
   version of your own, and change both together.
 - Check every statement and sample against `Source/` and the tests, also failure messages and default values. Don't

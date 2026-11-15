@@ -2,6 +2,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
+		<ProjectReference Include="..\..\Source\aweXpect.Analyzers\aweXpect.Analyzers.csproj"/>
 	</ItemGroup>
 
 	<ItemGroup>
