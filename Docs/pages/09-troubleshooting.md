@@ -12,7 +12,7 @@ Short answers to the problems that come up most often, each with a link to the p
 
 An expectation is only evaluated when it is awaited. Without `await` it is never evaluated, so it never fails, whatever the subject is:
 
-```csharp
+```csharp expect=aweXpect0001
 bool isPlayed = false;
 
 That(isPlayed).IsTrue();         // never evaluated: the test passes

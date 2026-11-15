@@ -111,6 +111,51 @@ public sealed class DocsPagesTests
 	}
 
 	[Test]
+	public async Task Extract_ShouldReadTheExpectMarker()
+	{
+		string[] lines =
+		[
+			"```csharp title=\"aweXpect\" expect=aweXpect0001,aweXpect0002",
+			"int a = 1;",
+			"```",
+		];
+
+		List<CodeBlock> blocks = CodeBlock.Extract("page.md", lines);
+
+		await That(blocks).IsEqualTo([new CodeBlock("page.md", 2, "int a = 1;", "aweXpect0001,aweXpect0002"),]);
+	}
+
+	[Test]
+	public async Task GetErrors_ShouldAcceptTheDiagnosticOfAMarkedBlock()
+	{
+		CodeBlock block = new("page.md", 10, "Expect.That(true).IsTrue();", "aweXpect0001");
+
+		List<string> errors = SnippetCompiler.GetErrors([block,], ScaffoldFiles("page.md"));
+
+		await That(errors).IsEmpty();
+	}
+
+	[Test]
+	public async Task GetErrors_ShouldReportAMarkedBlockWithoutItsDiagnostic()
+	{
+		CodeBlock block = new("page.md", 10, "await Expect.That(true).IsTrue();", "aweXpect0001");
+
+		List<string> errors = SnippetCompiler.GetErrors([block,], ScaffoldFiles("page.md"));
+
+		await That(errors).HasSingle().Which.IsEqualTo("page.md(10): expected exactly aweXpect0001, but found nothing");
+	}
+
+	[Test]
+	public async Task GetErrors_ShouldReportAnAnalyzerDiagnosticOfAnUnmarkedBlock()
+	{
+		CodeBlock block = new("page.md", 10, "Expect.That(true).IsTrue();");
+
+		List<string> errors = SnippetCompiler.GetErrors([block,], ScaffoldFiles("page.md"));
+
+		await That(errors).HasSingle().Which.StartsWith("page.md(10,1): aweXpect0001:");
+	}
+
+	[Test]
 	public async Task GetErrors_ShouldReportThePageAndLineOfTheBlock()
 	{
 		CodeBlock block = new("Docs/pages/page.md", 10, "int value = 1;\nawait Expect.That(value).IsFoo();");

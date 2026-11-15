@@ -6,12 +6,34 @@ namespace aweXpect.Docs.Tests;
 /// <summary>
 ///     A <c>```csharp</c> code block of a documentation page, starting at the one-based <paramref name="Line" />.
 /// </summary>
-internal sealed record CodeBlock(string Page, int Line, string Code)
+/// <param name="Expect">
+///     The comma-separated diagnostic ids that the block shows on purpose, from an <c>expect=</c> marker, or empty
+///     when the block has to compile cleanly.
+/// </param>
+internal sealed record CodeBlock(string Page, int Line, string Code, string Expect = "")
 {
 	/// <summary>
 	///     The info-string marker that excludes a block from the compile check.
 	/// </summary>
 	public const string NoCompile = "no-compile";
+
+	/// <summary>
+	///     The info-string prefix of the diagnostic ids that a block reports on purpose, e.g.
+	///     <c>expect=aweXpect0001</c>.
+	/// </summary>
+	public const string ExpectPrefix = "expect=";
+
+	/// <summary>
+	///     The distinct diagnostic ids of the <see cref="Expect" /> marker.
+	/// </summary>
+	public IReadOnlyCollection<string> ExpectedIds
+		=> Expect.Split(',').Where(id => id.Length > 0).Distinct().ToArray();
+
+	/// <summary>
+	///     Whether the one-based <paramref name="line" /> of the <paramref name="page" /> belongs to this block.
+	/// </summary>
+	public bool Contains(string page, int line)
+		=> page == Page && line >= Line && line < Line + Code.Split('\n').Length;
 
 	/// <summary>
 	///     Extracts the <c>```csharp</c> blocks from the <paramref name="lines" /> of the <paramref name="page" />,
@@ -47,7 +69,9 @@ internal sealed record CodeBlock(string Page, int Line, string Code)
 
 			if (info[0] == "csharp" && (includeNoCompile || !info.Contains(NoCompile)))
 			{
-				blocks.Add(new CodeBlock(page, start + 1, string.Join("\n", lines, start, i - start)));
+				string expect = info.FirstOrDefault(part => part.StartsWith(ExpectPrefix))?.Substring(ExpectPrefix.Length)
+				                ?? "";
+				blocks.Add(new CodeBlock(page, start + 1, string.Join("\n", lines, start, i - start), expect));
 			}
 		}
 
