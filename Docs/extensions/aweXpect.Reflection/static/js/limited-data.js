@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          379.2913550376892,
           652.9348757607596,
           656.1866428852081,
           568.3343185278086,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           411.0158950169881,
           582.6049766540527,
           778.2744434901646,
-          557.8256750106812
+          557.8256750106812,
+          419.15643412272135
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          517.6340182849339,
           642.518775499784,
           701.6170969742996,
           689.0230503763471,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           521.2452648707798,
           618.18845094045,
           814.6001623017447,
-          549.2007471720377
+          549.2007471720377,
+          506.33874664306643
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          50.2643816113472,
           92.96515253384908,
           96.95035772323608,
           77.34292974472046,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           58.168544896443684,
           84.67608000437419,
           110.32922866344452,
-          78.58869384867805
+          78.58869384867805,
+          61.75955239931742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          113.2635425879405,
           173.1757731607982,
           212.28255216280618,
           177.76527900355202,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           128.417256630384,
           185.17469364802042,
           256.6315572102865,
-          155.89514209429424
+          155.89514209429424,
+          117.46518940585
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          871.4064660753522,
           1215.0203011830647,
           1238.7971176734338,
           1453.9778975168863,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           995.9249263176551,
           1138.1626993815105,
           1487.7353777204241,
-          1038.7164287567139
+          1038.7164287567139,
+          997.1902973468488
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          734.3787422180176,
           1074.952763557434,
           1160.0633935928345,
           1131.4591146615835,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           888.0772321065267,
           1022.3263879503522,
           1372.1895190874736,
-          972.89669411523
+          972.89669411523,
+          846.7699742998395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1864,
           1952,
           1864,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1864,
-          1952
+          1952,
+          1864
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
       {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1292.8137963158745,
           1729.5372125080653,
           1922.469234759991,
           2099.210889376127,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1532.8788752922644,
           1698.0370689119611,
           2259.3742637634277,
-          1649.7513519287108
+          1649.7513519287108,
+          1431.8194337209065
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2013.6190861293248,
           2786.402897135417,
           2932.883852277483,
           3123.2681033794697,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2294.05210849217,
           2632.019598388672,
           3514.12398147583,
-          2467.584039815267
+          2467.584039815267,
+          2258.96197949923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3981,
           3977,
           3977,
           3981,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3977,
-          3977
+          3977,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
       {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          177.69185491970606,
           294.1364676475525,
           306.91323740141735,
           287.06098693211874,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           215.26145442894526,
           272.89529422613293,
           367.4448758193425,
-          252.03960065841676
+          252.03960065841676,
+          187.48620700836182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1173.4271015167237,
           1614.6694018046062,
           1758.887804667155,
           1809.0195495898906,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1342.662471516927,
           1583.7494107655116,
           2058.7274044581823,
-          1420.2243019104003
+          1420.2243019104003,
+          1283.767880121867
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 8.0.0 to 10.0.14 (#2169)"
-      },
-      {
         "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "5d53b9d1",
       "fa9f5111",
       "5e27d503",
       "2cb4b274",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "44f2de51",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1325.901752090454,
           1808.9827883793757,
           1879.5759940514197,
           2285.385926382882,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1531.1214680989583,
           1695.5673219045004,
           2215.3724733080185,
-          1622.435470036098
+          1622.435470036098,
+          1495.5318497877854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3507,7 +3507,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
+          2760,
           2760,
           2760
         ],
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          163231.82013346354,
           213302.1185960036,
           228487.6092703683,
           243432.4026066707,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           176183.31126185827,
           191592.01967075892,
           271710.0355794271,
-          187917.28690011162
+          187917.28690011162,
+          179382.56126185827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17574,
           17528,
           17528,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17576,
           17528,
           17658,
-          17658
+          17658,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
