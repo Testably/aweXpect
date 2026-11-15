@@ -1,5 +1,5 @@
 ---
-title: Benchmarks
+title: aweXpect.Json
 description: Benchmarks of passing aweXpect.Json expectations compared with the equivalent FluentAssertions calls.
 ---
 
@@ -18,11 +18,11 @@ FluentAssertions parses the string into a `JsonNode`.
 
 <BenchmarkResult package="aweXpect.Json" name="JsonString" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonString).IsValidJsonMatching(new { title = "Let It Be", artist = "The Beatles", });
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode.Parse(_jsonString).Should().BeEquivalentTo(new { title = "Let It Be", artist = "The Beatles", });
 ```
 
@@ -37,11 +37,11 @@ FluentAssertions cannot compare two `JsonNode`s with `BeEquivalentTo`, so it par
 
 <BenchmarkResult package="aweXpect.Json" name="JsonEquality" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonString).IsEqualTo(_expectedJsonString).AsJson();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode.DeepEquals(JsonNode.Parse(_jsonString), JsonNode.Parse(_expectedJsonString)).Should().BeTrue();
 ```
 
@@ -56,11 +56,11 @@ FluentAssertions parses the string into a `JsonNode`.
 
 <BenchmarkResult package="aweXpect.Json" name="JsonStringExpectations" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonString).IsValidJson(json => json.HasProperty("title", t => t.IsString("Let It Be")));
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode.Parse(_jsonString)!.Should().HaveProperty("title").Which.GetValue<string>().Should()
     .Be("Let It Be");
 ```
@@ -76,11 +76,11 @@ FluentAssertions parses the expected string once and verifies the result of `Jso
 
 <BenchmarkResult package="aweXpect.Json" name="JsonStringCollection" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonStrings).All().AreEqualTo(_expectedJsonString).AsJson();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode? expected = JsonNode.Parse(_expectedJsonString);
 _jsonStrings.Should()
     .AllSatisfy(jsonString => JsonNode.DeepEquals(JsonNode.Parse(jsonString), expected).Should().BeTrue());
@@ -97,11 +97,11 @@ aweXpect verifies a `JsonElement`, FluentAssertions a `JsonNode`.
 
 <BenchmarkResult package="aweXpect.Json" name="ParsedJson" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonElement).Matches(new { title = "Let It Be", artist = "The Beatles", });
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _jsonNode.Should().BeEquivalentTo(new { title = "Let It Be", artist = "The Beatles", });
 ```
 
@@ -115,13 +115,13 @@ Verifies single properties of a `JsonNode`: the title has the expected value and
 
 <BenchmarkResult package="aweXpect.Json" name="JsonProperty" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonNode)
     .HasProperty("title", t => t.IsString("Let It Be")).And
     .HasProperty("durationSeconds", d => d.IsNumber());
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _jsonNode.Should().HaveProperty("title").Which.GetValue<string>().Should().Be("Let It Be");
 _jsonNode.Should().HaveProperty("durationSeconds").Which.Should().BeNumeric();
 ```
@@ -137,7 +137,7 @@ FluentAssertions has no expectation that a node is an object, so it verifies tha
 
 <BenchmarkResult package="aweXpect.Json" name="JsonPropertyChain" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_jsonNode)
     .HasProperty("title").And
     .HasProperty("artist").And
@@ -146,7 +146,7 @@ await That(_jsonNode)
     .IsObject();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _jsonNode.Should().HaveProperty("title");
 _jsonNode.Should().HaveProperty("artist");
 _jsonNode.Should().HaveProperty("durationSeconds");
@@ -164,7 +164,7 @@ Verifies that the object in a property of a `JsonNode` has three properties.
 
 <BenchmarkResult package="aweXpect.Json" name="JsonNestedPropertyChain" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_nestedJsonNode)
     .HasProperty("track", track => track
         .HasProperty("title").And
@@ -172,7 +172,7 @@ await That(_nestedJsonNode)
         .HasProperty("durationSeconds"));
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode track = _nestedJsonNode.Should().HaveProperty("track").Which;
 track.Should().HaveProperty("title");
 track.Should().HaveProperty("artist");
@@ -190,12 +190,12 @@ aweXpect verifies a `JsonElement`, FluentAssertions a `JsonArray`.
 
 <BenchmarkResult package="aweXpect.Json" name="JsonArrayElements" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_tracksElement).IsArray().WhoseElements
     .All().ComplyWith(t => t.Matches(new { artist = "The Beatles", }));
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _tracksNode.Should().AllSatisfy(t => t.Should().BeEquivalentTo(new { artist = "The Beatles", }));
 ```
 
@@ -210,11 +210,11 @@ aweXpect verifies a `JsonElement`, FluentAssertions a `JsonNode`, whose `BeEquiv
 
 <BenchmarkResult package="aweXpect.Json" name="JsonArrayInAnyOrder" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_titlesElement).MatchesExactly(_reversedTitles, o => o.IgnoringArrayOrder());
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _titlesNode.Should().BeEquivalentTo(_reversedTitles);
 ```
 

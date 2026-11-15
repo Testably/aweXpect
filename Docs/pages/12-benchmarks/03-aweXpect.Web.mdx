@@ -1,5 +1,5 @@
 ---
-title: Benchmarks
+title: aweXpect.Web
 description: Benchmarks of passing aweXpect.Web expectations compared with the equivalent FluentAssertions calls.
 ---
 
@@ -18,11 +18,11 @@ FluentAssertions verifies `IsSuccessStatusCode`.
 
 <BenchmarkResult package="aweXpect.Web" name="SuccessStatusCode" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_response).HasStatusCode().Success();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _response.IsSuccessStatusCode.Should().BeTrue();
 ```
 
@@ -37,11 +37,11 @@ FluentAssertions verifies that the header has a single value which is equal to t
 
 <BenchmarkResult package="aweXpect.Web" name="Header" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_response).HasHeader("x-writer").WithValue("Lennon");
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _response.Headers.GetValues("x-writer").Should().ContainSingle().Which.Should().Be("Lennon");
 ```
 
@@ -56,11 +56,11 @@ FluentAssertions reads the content as a `string`.
 
 <BenchmarkResult package="aweXpect.Web" name="Content" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_response).HasContent("Drive My Car");
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 (await _response.Content.ReadAsStringAsync()).Should().Be("Drive My Car");
 ```
 
@@ -75,14 +75,14 @@ FluentAssertions reads the content as a `string`, parses it into a `JsonNode` an
 
 <BenchmarkResult package="aweXpect.Web" name="ProblemDetails" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_problemResponse)
     .HasProblemDetailsContent("https://httpstatuses.com/404")
     .WithTitle("Track not found")
     .WithStatus(404);
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 JsonNode.Parse(await _problemResponse.Content.ReadAsStringAsync()).Should().BeEquivalentTo(new
 {
     type = "https://httpstatuses.com/404",
@@ -102,13 +102,13 @@ FluentAssertions compares the `Method` and the `RequestUri` of the `RequestMessa
 
 <BenchmarkResult package="aweXpect.Web" name="RequestMessage" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_response).HasRequestMessage(request => request
     .HasMethod(HttpMethod.Get).And
     .HasRequestUri("https://music.example.com/tracks/1"));
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _response.RequestMessage.Should().NotBeNull();
 _response.RequestMessage!.Method.Should().Be(HttpMethod.Get);
 _response.RequestMessage.RequestUri.Should().Be(new Uri("https://music.example.com/tracks/1"));
@@ -125,11 +125,11 @@ FluentAssertions parses the query with `HttpUtility.ParseQueryString` and verifi
 
 <BenchmarkResult package="aweXpect.Web" name="QueryParameter" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_uri).HasQueryParameter("page").WithValue("2");
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 HttpUtility.ParseQueryString(_uri.Query)["page"].Should().Be("2");
 ```
 
