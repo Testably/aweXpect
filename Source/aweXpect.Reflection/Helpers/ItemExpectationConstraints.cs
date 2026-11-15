@@ -91,15 +91,6 @@ internal static class ItemExpectationConstraints
 				state.Quantifier, false, state.expectation));
 #endif
 
-	private static void AddIfNotNull<TItem>(List<TItem> items, TItem? item)
-		where TItem : class
-	{
-		if (item is not null)
-		{
-			items.Add(item);
-		}
-	}
-
 	private sealed class ItemsConstraint<TCollection, TItem>(
 		string it,
 		ExpectationGrammars grammars,
@@ -142,7 +133,10 @@ internal static class ItemExpectationConstraints
 				foreach (TItem? other in _context!.UseMaterializedEnumerable((IEnumerable<TItem?>)Actual!))
 				{
 					cancellationToken.ThrowIfCancellationRequested();
-					AddIfNotNull(items, other);
+					if (other is not null)
+					{
+						items.Add(other);
+					}
 				}
 
 				expectation.OnAllItems(items);
@@ -208,7 +202,10 @@ internal static class ItemExpectationConstraints
 			List<TItem> items = [];
 			await foreach (TItem? other in _context!.UseMaterializedAsyncEnumerable(Actual!, cancellationToken))
 			{
-				AddIfNotNull(items, other);
+				if (other is not null)
+				{
+					items.Add(other);
+				}
 			}
 
 			expectation.OnAllItems(items);
