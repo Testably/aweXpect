@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
-      {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          352.3877403259277,
           461.8383591969808,
           540.0930511768048,
           504.466541494642,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           302.5931468804677,
           501.38554041726246,
           373.0801973660787,
-          442.2173972811018
+          442.2173972811018,
+          462.79926153818764
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -448,7 +448,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          823.6583151817322,
           1049.0578703199114,
           990.3336378733317,
           977.3774132047381,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           710.4286426544189,
           1084.1443242293137,
           901.0949009577433,
-          1087.686595280965
+          1087.686595280965,
+          1047.9489348093668
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
-      {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          205.8272101720174,
           240.5412131037031,
           318.7833679199219,
           252.78348580996195,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           167.05041291032518,
           269.06742471059164,
           230.32829012189592,
-          251.92975114186603
+          251.92975114186603,
+          284.3831859588623
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          225.79763158730097,
           261.8787691752116,
           258.11550029118854,
           265.66814473697116,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           191.34272747773392,
           272.58094069163,
           246.53284667332966,
-          300.8903484980265
+          300.8903484980265,
+          251.0775852839152
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
-      {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          784.1663217544556,
           1069.851177068857,
           986.4647436141968,
           1031.8153250558037,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           656.5565757070269,
           994.0018147688645,
           820.2093912760416,
-          955.162692614964
+          955.162692614964,
+          1007.3538199106853
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          832.8873869578043,
           1014.8577059427897,
           1085.575074895223,
           1274.8910056522914,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           687.2358846664429,
           1035.0932673045568,
           893.145397122701,
-          1075.195317195012
+          1075.195317195012,
+          1014.7791933332171
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
-      {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1420.9827059427896,
           1951.1894088745116,
           1947.2651039123534,
           1970.9589227529673,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1171.328036880493,
           1867.514891079494,
           1440.1695177895683,
-          1655.6287610190254
+          1655.6287610190254,
+          1989.5115756988525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2272,7 +2272,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13173.81958242563,
           21770.636600748698,
           22032.23585158128,
           22250.64864908854,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           11158.807924543109,
           22454.420543125696,
           14817.430321248372,
-          16758.347052001955
+          16758.347052001955,
+          21076.90694580078
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
       {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          604.791879926409,
           759.6970792770386,
           778.333588218689,
           844.1925388063703,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           501.7323134967259,
           805.6725732258388,
           647.4183357678927,
-          729.118422644479
+          729.118422644479,
+          775.9141597066607
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1093.665636698405,
           1371.3303101857502,
           1405.6563457489015,
           1412.7450640360514,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           931.628839747111,
           1414.8506197611491,
           1184.1442808787028,
-          1394.4041161855062
+          1394.4041161855062,
+          1306.267011506217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "2cb4b2746c27056bc52fe087406754125e645ecf",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 09:47:24 2026 \u002B0100",
-        "message": "test: keep the attached pending snapshot until the test results are written (#2173)"
-      },
-      {
         "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "2cb4b274",
       "6f1c949d",
       "7f817d0f",
       "850f7373",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          941.2873355320522,
           1291.4382766723634,
           1329.0484181722006,
           1398.152526174273,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           791.5241567747934,
           1360.0402017320905,
           973.0347694983849,
-          1134.199993269784
+          1134.199993269784,
+          1307.7573939005533
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          662.7730319159372,
           791.8382557551066,
           794.4581047693888,
           785.8670385360717,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           573.7907935551235,
           838.6594259262085,
           733.4451368331909,
-          880.2839609146118
+          880.2839609146118,
+          744.1664467493694
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
