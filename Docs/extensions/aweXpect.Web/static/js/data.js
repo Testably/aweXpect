@@ -1692,6 +1692,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -1976,7 +1982,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -2264,7 +2271,8 @@ window.BENCHMARK_DATA = {
           484.2184110005697,
           379.08885387011935,
           302.5931468804677,
-          501.38554041726246
+          501.38554041726246,
+          373.0801973660787
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2539,6 +2547,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -2853,7 +2862,8 @@ window.BENCHMARK_DATA = {
           993.6132097977859,
           858.8258874575297,
           710.4286426544189,
-          1084.1443242293137
+          1084.1443242293137,
+          901.0949009577433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2865,6 +2875,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4852,6 +4863,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -5136,7 +5153,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -5424,7 +5442,8 @@ window.BENCHMARK_DATA = {
           228.44630653517586,
           203.37388375827246,
           167.05041291032518,
-          269.06742471059164
+          269.06742471059164,
+          230.32829012189592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5571,6 +5590,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6013,7 +6033,8 @@ window.BENCHMARK_DATA = {
           248.95880011149816,
           214.55803419862474,
           191.34272747773392,
-          272.58094069163
+          272.58094069163,
+          246.53284667332966
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6025,6 +6046,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7952,6 +7974,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -8226,7 +8254,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -8504,7 +8533,8 @@ window.BENCHMARK_DATA = {
           1074.2528731482369,
           738.4530684153239,
           656.5565757070269,
-          994.0018147688645
+          994.0018147688645,
+          820.2093912760416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8696,6 +8726,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9073,7 +9104,8 @@ window.BENCHMARK_DATA = {
           989.0661235536847,
           832.0672527949015,
           687.2358846664429,
-          1035.0932673045568
+          1035.0932673045568,
+          893.145397122701
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9085,6 +9117,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11002,6 +11035,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -11276,7 +11315,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -11554,7 +11594,8 @@ window.BENCHMARK_DATA = {
           1915.7189974103655,
           1593.603799673227,
           1171.328036880493,
-          1867.514891079494
+          1867.514891079494,
+          1440.1695177895683
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11819,6 +11860,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -12123,7 +12165,8 @@ window.BENCHMARK_DATA = {
           20898.21887441782,
           15247.654381385217,
           11158.807924543109,
-          22454.420543125696
+          22454.420543125696,
+          14817.430321248372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12406,7 +12449,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14052,6 +14096,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -14326,7 +14376,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -14604,7 +14655,8 @@ window.BENCHMARK_DATA = {
           832.3912954330444,
           595.5643518447876,
           501.7323134967259,
-          805.6725732258388
+          805.6725732258388,
+          647.4183357678927
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14743,6 +14795,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -15173,7 +15226,8 @@ window.BENCHMARK_DATA = {
           1322.0762605667114,
           1134.0578107833862,
           931.628839747111,
-          1414.8506197611491
+          1414.8506197611491,
+          1184.1442808787028
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15185,6 +15239,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -17102,6 +17157,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
@@ -17376,7 +17437,8 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
@@ -17654,7 +17716,8 @@ window.BENCHMARK_DATA = {
           1317.553305353437,
           1035.7857443491619,
           791.5241567747934,
-          1360.0402017320905
+          1360.0402017320905,
+          973.0347694983849
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17824,6 +17887,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -18223,7 +18287,8 @@ window.BENCHMARK_DATA = {
           741.2281613349915,
           659.870689868927,
           573.7907935551235,
-          838.6594259262085
+          838.6594259262085,
+          733.4451368331909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18235,6 +18300,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
