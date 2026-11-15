@@ -9,22 +9,22 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly Album _multipleSubject = Album.Create();
+	private readonly Album _abbeyRoadRecord = Album.Create();
 
 	[Benchmark]
 	public async Task Multiple_aweXpect()
 		=> await Expect.ThatAll(
-			Expect.That(_multipleSubject.Title).IsEqualTo("Abbey Road"),
-			Expect.That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles"),
-			Expect.That(_multipleSubject.Genre).IsEqualTo(Genre.Rock));
+			Expect.That(_abbeyRoadRecord.Title).IsEqualTo("Abbey Road"),
+			Expect.That(_abbeyRoadRecord.Artist.Name).IsEqualTo("The Beatles"),
+			Expect.That(_abbeyRoadRecord.Genre).IsEqualTo(Genre.Rock));
 
 	[Benchmark]
 	public void Multiple_FluentAssertions()
 	{
 		using AssertionScope _ = new();
-		_multipleSubject.Title.Should().Be("Abbey Road");
-		_multipleSubject.Artist.Name.Should().Be("The Beatles");
-		_multipleSubject.Genre.Should().Be(Genre.Rock);
+		_abbeyRoadRecord.Title.Should().Be("Abbey Road");
+		_abbeyRoadRecord.Artist.Name.Should().Be("The Beatles");
+		_abbeyRoadRecord.Genre.Should().Be(Genre.Rock);
 	}
 
 	[Benchmark]
@@ -32,9 +32,9 @@ public partial class HappyCaseBenchmarks
 	{
 		using (Assert.Multiple())
 		{
-			await Assert.That(_multipleSubject.Title).IsEqualTo("Abbey Road");
-			await Assert.That(_multipleSubject.Artist.Name).IsEqualTo("The Beatles");
-			await Assert.That(_multipleSubject.Genre).IsEqualTo(Genre.Rock);
+			await Assert.That(_abbeyRoadRecord.Title).IsEqualTo("Abbey Road");
+			await Assert.That(_abbeyRoadRecord.Artist.Name).IsEqualTo("The Beatles");
+			await Assert.That(_abbeyRoadRecord.Genre).IsEqualTo(Genre.Rock);
 		}
 	}
 }

@@ -38,11 +38,11 @@ FluentAssertions verifies that the header has a single value which is equal to t
 <BenchmarkResult package="aweXpect.Web" name="Header" />
 
 ```csharp title="aweXpect"
-await That(_response).HasHeader("x-vendor").WithValue("VENDOR");
+await That(_response).HasHeader("x-writer").WithValue("Lennon");
 ```
 
 ```csharp title="FluentAssertions"
-_response.Headers.GetValues("x-vendor").Should().ContainSingle().Which.Should().Be("VENDOR");
+_response.Headers.GetValues("x-writer").Should().ContainSingle().Which.Should().Be("Lennon");
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.Header.cs)
@@ -57,11 +57,11 @@ FluentAssertions reads the content as a `string`.
 <BenchmarkResult package="aweXpect.Web" name="Content" />
 
 ```csharp title="aweXpect"
-await That(_response).HasContent("response-bar");
+await That(_response).HasContent("Drive My Car");
 ```
 
 ```csharp title="FluentAssertions"
-(await _response.Content.ReadAsStringAsync()).Should().Be("response-bar");
+(await _response.Content.ReadAsStringAsync()).Should().Be("Drive My Car");
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Web.Benchmarks/HappyCaseBenchmarks.Content.cs)

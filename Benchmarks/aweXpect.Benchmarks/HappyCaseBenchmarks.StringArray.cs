@@ -11,19 +11,19 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string[] _stringArrayExpectation = ["foo", "bar", "baz",];
-	private readonly string[] _stringArraySubject = ["foo", "bar", "baz",];
+	private readonly string[] _scheduledStationGenres = ["Pop", "Rap", "Ska",];
+	private readonly string[] _radioStationGenres = ["Pop", "Rap", "Ska",];
 
 	[Benchmark]
 	public async Task StringArray_aweXpect()
-		=> (await Expect.That(_stringArraySubject).IsEqualTo(_stringArrayExpectation))!.Consume(_consumer);
+		=> (await Expect.That(_radioStationGenres).IsEqualTo(_scheduledStationGenres))!.Consume(_consumer);
 
 	[Benchmark]
 	public AndConstraint<StringCollectionAssertions<IEnumerable<string>>> StringArray_FluentAssertions()
-		=> _stringArraySubject.Should().Equal(_stringArrayExpectation);
+		=> _radioStationGenres.Should().Equal(_scheduledStationGenres);
 
 	[Benchmark]
 	public async Task StringArray_TUnit()
-		=> (await Assert.That(_stringArraySubject)
-			.IsEquivalentTo(_stringArrayExpectation, CollectionOrdering.Matching))?.Consume(_consumer);
+		=> (await Assert.That(_radioStationGenres)
+			.IsEquivalentTo(_scheduledStationGenres, CollectionOrdering.Matching))?.Consume(_consumer);
 }

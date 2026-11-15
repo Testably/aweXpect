@@ -9,17 +9,17 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly int _satisfiesSubject = 42;
+	private readonly int _playCountOfTrack = 42;
 
 	[Benchmark]
 	public async Task<int> Satisfies_aweXpect()
-		=> await Expect.That(_satisfiesSubject).Satisfies(x => x > 0);
+		=> await Expect.That(_playCountOfTrack).Satisfies(x => x > 0);
 
 	[Benchmark]
 	public AndConstraint<NumericAssertions<int>> Satisfies_FluentAssertions()
-		=> _satisfiesSubject.Should().Match(x => x > 0);
+		=> _playCountOfTrack.Should().Match(x => x > 0);
 
 	[Benchmark]
 	public async Task<int> Satisfies_TUnit()
-		=> await Assert.That(_satisfiesSubject).Satisfies(x => x > 0);
+		=> await Assert.That(_playCountOfTrack).Satisfies(x => x > 0);
 }
