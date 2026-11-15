@@ -52,6 +52,10 @@ in XML docs and `Docs/agents`, not in the user docs.
 - `csharp` blocks in `Docs/pages` are compiled (see [testing](testing.md#documentation-tests)); mark a block that
   cannot compile `csharp no-compile`, and a block that shows a mistake the analyzers report
   `csharp expect=aweXpect0001`. Blocks in `Docs/extensions` are not compiled.
+- On the Analyzers page, a rule whose fix is one code change shows the mistake (`expect=`) and the fixed code as two
+  blocks with `// highlight-next-line` on the changed line, wrapped in `<ApplyFix id="aweXpect000N">` (blank lines
+  around the blocks), which shows the fixed one behind an "Apply fix" button. Each further fix gets its own
+  `ApplyFix`.
 - When a test project already has the sample as tested code, e.g. in an `Examples` folder, show that code instead of a
   version of your own, and change both together.
 - Check every statement and sample against `Source/` and the tests, also failure messages and default values. Don't

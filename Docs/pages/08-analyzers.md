@@ -2,6 +2,8 @@
 description: The analyzers, suppressors and source generator diagnostics that ship with aweXpect, and how to fix what they report.
 ---
 
+import ApplyFix from '@site/src/components/ApplyFix';
+
 # Analyzers
 
 The `aweXpect` package includes analyzers that report common mistakes while you write the test. Errors stop the
@@ -33,12 +35,23 @@ The analyzers and the source generators need Roslyn 4.8 or later, which ships wi
 An expectation is neither awaited nor verified, so it is never evaluated and never fails. A code fix is available.
 :::
 
+<ApplyFix id="aweXpect0001">
+
 ```csharp expect=aweXpect0001
 bool value = false;
 
-That(value).IsTrue();          // reported: never evaluated
-await That(value).IsTrue();    // fixed: awaited, so it fails
+// highlight-next-line
+That(value).IsTrue();          // never evaluated, so it never fails
 ```
+
+```csharp
+bool value = false;
+
+// highlight-next-line
+await That(value).IsTrue();    // awaited, so it fails
+```
+
+</ApplyFix>
 
 The code fix awaits the expectation and makes the enclosing method, local function or lambda `async` where needed. It
 is not offered where that would not compile or would change a signature that other code depends on.
@@ -66,12 +79,23 @@ For a `ref struct` that cannot be used in an `async` method, verify the expectat
 `Equals` is called on an expectation. It compares the expectation object itself and does not verify anything.
 :::
 
+<ApplyFix id="aweXpect0002">
+
 ```csharp expect=aweXpect0001,aweXpect0002
 int subject = 1;
 
-bool isEqual = That(subject).Equals(2);   // reported: verifies nothing
-await That(subject).IsEqualTo(2);         // fixed
+// highlight-next-line
+bool isEqual = That(subject).Equals(2);   // compares the expectation, verifies nothing
 ```
+
+```csharp
+int subject = 1;
+
+// highlight-next-line
+await That(subject).IsEqualTo(2);         // verifies the subject
+```
+
+</ApplyFix>
 
 ## aweXpect0003
 
@@ -80,15 +104,45 @@ A `Has…` expectation is used directly after `Throws`, where the sentence "thro
 code fixes are available: switch to the `With…` twin, or insert `.Which`.
 :::
 
+<ApplyFix id="aweXpect0003">
+
 ```csharp expect=aweXpect0003
 void Act() => throw new InvalidOperationException("Yesterday");
 
-await That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");    // reported
-await That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");   // fixed
+// highlight-next-line
+await That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");
 ```
 
-The `Has…` vocabulary belongs after `.Which`. See
-[Delegates](./06-behavior/01-delegates.md#exception-details).
+```csharp
+void Act() => throw new InvalidOperationException("Yesterday");
+
+// highlight-next-line
+await That(Act).Throws<InvalidOperationException>().WithMessage("Yesterday");
+```
+
+</ApplyFix>
+
+The `Has…` vocabulary belongs after `.Which`, which the other code fix inserts:
+
+<ApplyFix id="aweXpect0003">
+
+```csharp expect=aweXpect0003
+void Act() => throw new InvalidOperationException("Yesterday");
+
+// highlight-next-line
+await That(Act).Throws<InvalidOperationException>().HasMessage("Yesterday");
+```
+
+```csharp
+void Act() => throw new InvalidOperationException("Yesterday");
+
+// highlight-next-line
+await That(Act).Throws<InvalidOperationException>().Which.HasMessage("Yesterday");
+```
+
+</ApplyFix>
+
+See [Delegates](./06-behavior/01-delegates.md#exception-details).
 
 ## aweXpect0004
 
@@ -97,12 +151,23 @@ An expectation for an object is applied to a delegate subject, so it checks the 
 A code fix is available for a delegate that returns a value.
 :::
 
+<ApplyFix id="aweXpect0004">
+
 ```csharp expect=aweXpect0004
 int Act() => 3;
 
-await That(Act).IsEqualTo(3);                              // reported: checks the delegate
-await That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // fixed: checks the returned value
+// highlight-next-line
+await That(Act).IsEqualTo(3);                              // checks the delegate
 ```
+
+```csharp
+int Act() => 3;
+
+// highlight-next-line
+await That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);   // checks the returned value
+```
+
+</ApplyFix>
 
 See [Delegates](./06-behavior/01-delegates.md#no-exception).
 
@@ -113,15 +178,27 @@ An expectation is awaited in an `async void` method or lambda, so its failure is
 and is not observed by the test.
 :::
 
+<ApplyFix id="aweXpect0005">
+
 ```csharp expect=aweXpect0005
 List<int> values = [1, 2, 3];
 
-values.ForEach(async x => await That(x).IsGreaterThan(0));   // reported: async void lambda
+// highlight-next-line
+values.ForEach(async x => await That(x).IsGreaterThan(0));   // an async void lambda
+```
+
+```csharp
+List<int> values = [1, 2, 3];
+
+// highlight-start
 foreach (int x in values)
 {
-    await That(x).IsGreaterThan(0);                            // fixed: awaited by the test
+    await That(x).IsGreaterThan(0);                            // awaited by the test
 }
+// highlight-end
 ```
+
+</ApplyFix>
 
 Return a `Task` instead, or await the expectation in the test method itself.
 
@@ -131,12 +208,23 @@ Return a `Task` instead, or await the expectation in the test method itself.
 A collection without a defined order, such as a set or a dictionary, is compared by position. A code fix is available.
 :::
 
+<ApplyFix id="aweXpect0006">
+
 ```csharp expect=aweXpect0006
 HashSet<int> values = [1, 2, 3];
 
-await That(values).IsEqualTo([1, 2, 3]);                  // reported: depends on the enumeration order
-await That(values).IsEqualTo([1, 2, 3]).InAnyOrder();     // fixed
+// highlight-next-line
+await That(values).IsEqualTo([1, 2, 3]);                  // depends on the enumeration order
 ```
+
+```csharp
+HashSet<int> values = [1, 2, 3];
+
+// highlight-next-line
+await That(values).IsEqualTo([1, 2, 3]).InAnyOrder();
+```
+
+</ApplyFix>
 
 `IsEqualTo`, `Contains` and `IsContainedIn` compare by position unless `.InAnyOrder()` is appended, which the code fix
 does. `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()` are about the order itself and have no meaning for
@@ -150,12 +238,23 @@ A delegate subject returns a `ValueTask` on a target without `ValueTask` delegat
 never awaited. A code fix is available.
 :::
 
+<ApplyFix id="aweXpect0007">
+
 ```csharp
 async ValueTask Act() => await Task.Yield();
 
+// highlight-next-line
 await That(() => Act()).DoesNotThrow();            // reported on targets before .NET 8
-await That(() => Act().AsTask()).DoesNotThrow();   // fixed
 ```
+
+```csharp
+async ValueTask Act() => await Task.Yield();
+
+// highlight-next-line
+await That(() => Act().AsTask()).DoesNotThrow();
+```
+
+</ApplyFix>
 
 On any target, the rule also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
 `That<ValueTask>(() => Act())`. An explicit `Task` type argument has the same effect and is reported as well,
@@ -176,12 +275,23 @@ The value of an expectation is used although an `.Or` combines it with an altern
 so the value can be the `default`.
 :::
 
+<ApplyFix id="aweXpect0008">
+
 ```csharp expect=aweXpect0008
 object subject = "Yesterday";
 
-int count = await That(subject).Is<string>().Or.Is<int>();   // reported: 0 for a string subject
-await That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
+// highlight-next-line
+int count = await That(subject).Is<string>().Or.Is<int>();   // 0 for a string subject
 ```
+
+```csharp
+object subject = "Yesterday";
+
+// highlight-next-line
+await That(subject).Is<string>().Or.Is<int>();               // the value is not used
+```
+
+</ApplyFix>
 
 The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative
 was met. Do not use it, or check it first and suppress the warning there. The rule is not reported when the value has
@@ -195,16 +305,55 @@ The value returned by an option method of an immutable option, such as a `Quanti
 is discarded, so the call has no effect.
 :::
 
+<ApplyFix id="aweXpect0009">
+
 ```csharp expect=aweXpect0009
 using aweXpect.Core;
 using aweXpect.Options;
 
 OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
 
-quantifier.Value.AtLeast(2);                       // reported: the quantifier stays unchanged
-quantifier.Value = quantifier.Value.AtLeast(2);    // fixed: the holder gets the new quantifier
-quantifier.AtLeast(2);                             // fixed: the holder's option method replaces its value
+// highlight-next-line
+quantifier.Value.AtLeast(2);                       // the quantifier stays unchanged
 ```
+
+```csharp
+using aweXpect.Core;
+using aweXpect.Options;
+
+OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+
+// highlight-next-line
+quantifier.Value = quantifier.Value.AtLeast(2);    // the holder gets the new quantifier
+```
+
+</ApplyFix>
+
+The option method of the holder itself replaces its value as well:
+
+<ApplyFix id="aweXpect0009">
+
+```csharp expect=aweXpect0009
+using aweXpect.Core;
+using aweXpect.Options;
+
+OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+
+// highlight-next-line
+quantifier.Value.AtLeast(2);                       // the quantifier stays unchanged
+```
+
+```csharp
+using aweXpect.Core;
+using aweXpect.Options;
+
+OptionsHolder<Quantifier> quantifier = new(Quantifier.Default);
+
+// highlight-next-line
+quantifier.AtLeast(2);                             // the holder's option method replaces its value
+```
+
+</ApplyFix>
 
 The options are immutable values, so an option method returns new options and leaves the ones it is called on
 unchanged. The rule covers every options type marked with `[ImmutableOptions]`: those of aweXpect, those of the
