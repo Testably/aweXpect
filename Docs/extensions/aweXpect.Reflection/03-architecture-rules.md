@@ -22,7 +22,6 @@ The dependency filters and expectations follow the familiar filter/expect pairin
 | does not depend on type      | `.WhichDoNotDependOn<T>()`              | `.DoesNotDependOn<T>()`               | `.DoNotDependOn<T>()`                  |
 | depends only on set          | `.WhichDependOnlyOn("x", …)`            | `.DependsOnlyOn("x", …)`              | `.DependOnlyOn("x", …)`                |
 | has dependencies outside set | `.WhichHaveDependenciesOutside("x", …)` | `.HasDependenciesOutside("x", …)`     | `.HaveDependenciesOutside("x", …)`     |
-| is only used by set          |                                         | `.IsOnlyUsedBy(set, …).SearchedIn(…)` | `.AreOnlyUsedBy(set, …).SearchedIn(…)` |
 
 ```csharp
 // The API layer must not reference the data layer
