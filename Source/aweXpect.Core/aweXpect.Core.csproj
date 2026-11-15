@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<Description>Core package for writing extensions for aweXpect.</Description>
 		<RootNamespace>aweXpect</RootNamespace>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 	</PropertyGroup>
 
 	<ItemGroup>

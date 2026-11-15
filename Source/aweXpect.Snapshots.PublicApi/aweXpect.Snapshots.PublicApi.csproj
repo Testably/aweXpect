@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<Description>Public API snapshots for aweXpect.</Description>
 		<PackageProjectUrl>https://docs.testably.org/Extensions/aweXpect.Snapshots</PackageProjectUrl>
-		<PackageReadmeSourceFile>$(RepositoryRoot)Source/aweXpect.Snapshots/README.md</PackageReadmeSourceFile>
+		<PackageReadmeSourceFile>$(MSBuildProjectDirectory)/README.md</PackageReadmeSourceFile>
 		<!-- Roslyn, which reads the assembly, can neither be trimmed nor published with Native AOT. -->
 		<IsTrimmable>false</IsTrimmable>
 		<IsAotCompatible>false</IsAotCompatible>
