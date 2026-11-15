@@ -1674,6 +1674,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -1955,7 +1961,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -2240,7 +2247,8 @@ window.BENCHMARK_DATA = {
           443.15780694144115,
           229.44743193112888,
           341.7852216879527,
-          484.2184110005697
+          484.2184110005697,
+          379.08885387011935
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2515,6 +2523,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -2823,7 +2832,8 @@ window.BENCHMARK_DATA = {
           947.0944427343516,
           610.155005009969,
           766.718957387484,
-          993.6132097977859
+          993.6132097977859,
+          858.8258874575297
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2835,6 +2845,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -4801,6 +4812,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -5082,7 +5099,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -5367,7 +5385,8 @@ window.BENCHMARK_DATA = {
           243.16033162389482,
           123.68325117429097,
           169.3542073249817,
-          228.44630653517586
+          228.44630653517586,
+          203.37388375827246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5514,6 +5533,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -5950,7 +5970,8 @@ window.BENCHMARK_DATA = {
           249.5268021583557,
           140.9641261736552,
           203.02837494441442,
-          248.95880011149816
+          248.95880011149816,
+          214.55803419862474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5962,6 +5983,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -7868,6 +7890,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -8139,7 +8167,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -8414,7 +8443,8 @@ window.BENCHMARK_DATA = {
           1034.287418952355,
           582.9119932468121,
           719.4770327295575,
-          1074.2528731482369
+          1074.2528731482369,
+          738.4530684153239
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8606,6 +8636,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -8977,7 +9008,8 @@ window.BENCHMARK_DATA = {
           913.8340173721314,
           530.0301569302877,
           736.2096825440725,
-          989.0661235536847
+          989.0661235536847,
+          832.0672527949015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8989,6 +9021,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -10885,6 +10918,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -11156,7 +11195,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -11431,7 +11471,8 @@ window.BENCHMARK_DATA = {
           1844.847546032497,
           1175.8620137532553,
           1451.9895920386682,
-          1915.7189974103655
+          1915.7189974103655,
+          1593.603799673227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11696,6 +11737,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -11994,7 +12036,8 @@ window.BENCHMARK_DATA = {
           20183.834061686197,
           11204.914393107096,
           14113.227682495117,
-          20898.21887441782
+          20898.21887441782,
+          15247.654381385217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12267,6 +12310,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -13902,6 +13946,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -14173,7 +14223,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -14448,7 +14499,8 @@ window.BENCHMARK_DATA = {
           744.2893003736224,
           426.16959703763325,
           550.4668477376302,
-          832.3912954330444
+          832.3912954330444,
+          595.5643518447876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14587,6 +14639,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -15011,7 +15064,8 @@ window.BENCHMARK_DATA = {
           1323.9517800649007,
           801.5823572794596,
           1006.8732441388644,
-          1322.0762605667114
+          1322.0762605667114,
+          1134.0578107833862
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15023,6 +15077,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -16919,6 +16974,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
@@ -17190,7 +17251,8 @@ window.BENCHMARK_DATA = {
       "fc5718b5",
       "5d0d05da",
       "44f2de51",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
@@ -17465,7 +17527,8 @@ window.BENCHMARK_DATA = {
           1380.9216418947492,
           782.9585380554199,
           1016.2255373001099,
-          1317.553305353437
+          1317.553305353437,
+          1035.7857443491619
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17635,6 +17698,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -18028,7 +18092,8 @@ window.BENCHMARK_DATA = {
           730.1758700052898,
           407.71797919273376,
           595.7936842100961,
-          741.2281613349915
+          741.2281613349915,
+          659.870689868927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18040,6 +18105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
