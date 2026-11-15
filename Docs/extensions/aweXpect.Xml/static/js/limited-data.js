@@ -296,10 +296,10 @@ window.BENCHMARK_DATA = {
         "message": "docs: list the extensions in alphabetical order (#2241)"
       },
       {
-        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
         "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
-        "message": "docs: show a single version badge in the README (#2243)"
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
@@ -352,7 +352,7 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "3db03066"
     ],
     "datasets": [
       {
@@ -408,7 +408,7 @@ window.BENCHMARK_DATA = {
           752.7962532777053,
           470.07111568450927,
           533.9656011141263,
-          661.1877224785941
+          928.203790297875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -533,7 +533,7 @@ window.BENCHMARK_DATA = {
           813.8868272145589,
           362.4126643400926,
           654.3925535837809,
-          614.53961130778
+          682.2438536961873
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -904,10 +904,10 @@ window.BENCHMARK_DATA = {
         "message": "docs: list the extensions in alphabetical order (#2241)"
       },
       {
-        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
         "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
-        "message": "docs: show a single version badge in the README (#2243)"
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
@@ -960,7 +960,7 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "3db03066"
     ],
     "datasets": [
       {
@@ -1016,7 +1016,7 @@ window.BENCHMARK_DATA = {
           5076.69371693929,
           2735.976405588786,
           4032.9640670776366,
-          3993.941042582194
+          4456.637746429444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1141,7 +1141,7 @@ window.BENCHMARK_DATA = {
           5970.327434285482,
           2958.4171180725098,
           4462.370715332031,
-          4122.848430887858
+          5199.623377873348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1512,10 +1512,10 @@ window.BENCHMARK_DATA = {
         "message": "docs: list the extensions in alphabetical order (#2241)"
       },
       {
-        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
         "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
-        "message": "docs: show a single version badge in the README (#2243)"
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
@@ -1568,7 +1568,7 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "3db03066"
     ],
     "datasets": [
       {
@@ -1624,7 +1624,7 @@ window.BENCHMARK_DATA = {
           2808.840386904203,
           1423.7171019236246,
           2241.473960876465,
-          2123.4776331583657
+          2587.8544573102677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1749,7 +1749,7 @@ window.BENCHMARK_DATA = {
           3832.8056579589843,
           2079.591823577881,
           3067.744758333479,
-          3023.0977615356446
+          3552.9059364318846
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2120,10 +2120,10 @@ window.BENCHMARK_DATA = {
         "message": "docs: list the extensions in alphabetical order (#2241)"
       },
       {
-        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "sha": "3db030664d0e7a062c3e84db277d98abc4a3fd73",
         "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
-        "message": "docs: show a single version badge in the README (#2243)"
+        "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
+        "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
       }
     ],
     "labels": [
@@ -2176,7 +2176,7 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "44f2de51"
+      "3db03066"
     ],
     "datasets": [
       {
@@ -2232,7 +2232,7 @@ window.BENCHMARK_DATA = {
           14056.498024495442,
           7517.447546822684,
           10814.076622517903,
-          10768.715535481771
+          14262.294637044271
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2357,7 +2357,7 @@ window.BENCHMARK_DATA = {
           289444.7764718192,
           178826.03356119792,
           215421.46290940506,
-          262428.6709960938
+          371704.8115234375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
