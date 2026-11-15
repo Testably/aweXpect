@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          490.0048530442374,
           821.4825664928982,
           891.4198982874552,
           645.5271056493124,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           752.7962532777053,
           470.07111568450927,
           533.9656011141263,
-          928.203790297875
+          928.203790297875,
+          633.8864799817403
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          363.5286680221558,
           735.9000127792358,
           693.450292451041,
           591.0894039017813,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           813.8868272145589,
           362.4126643400926,
           654.3925535837809,
-          682.2438536961873
+          682.2438536961873,
+          538.4036912236895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2683.4963063557943,
           4365.362184143067,
           4303.925585610526,
           3719.2788091023763,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           5076.69371693929,
           2735.976405588786,
           4032.9640670776366,
-          4456.637746429444
+          4456.637746429444,
+          3240.6863000052317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24172,
           24172,
           24178,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24179,
+          24178,
           24178
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3033.083034515381,
           5368.274541219075,
           5289.851538085937,
           4222.60557607015,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5970.327434285482,
           2958.4171180725098,
           4462.370715332031,
-          5199.623377873348
+          5199.623377873348,
+          3769.455213001796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1462.400083287557,
           2491.5595565209023,
           2585.4953333536782,
           2162.2487515767416,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2808.840386904203,
           1423.7171019236246,
           2241.473960876465,
-          2587.8544573102677
+          2587.8544573102677,
+          1860.0127792358398
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1652,7 +1652,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1675,6 +1674,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2034.3683068593343,
           3633.013139851888,
           3682.1226132710776,
           2917.283984629313,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3832.8056579589843,
           2079.591823577881,
           3067.744758333479,
-          3552.9059364318846
+          3552.9059364318846,
+          2622.4513268103965
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:13:43 2026 \u002B0100",
         "message": "docs: give aweXpect.Core and the Snapshots add-ons their own package README (#2244)"
+      },
+      {
+        "sha": "055703d4ec438657490065a7b31b2e269d23f0ba",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
+        "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8d553589",
       "fc5718b5",
       "5d0d05da",
-      "3db03066"
+      "3db03066",
+      "055703d4"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7709.100393676757,
           13868.768104044597,
           13848.51791229248,
           11038.599586995442,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14056.498024495442,
           7517.447546822684,
           10814.076622517903,
-          14262.294637044271
+          14262.294637044271,
+          9968.521857706706
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2260,7 +2260,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2283,6 +2282,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          176262.88766276042,
           368774.86666666664,
           359579.63344029017,
           256356.623828125,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           289444.7764718192,
           178826.03356119792,
           215421.46290940506,
-          371704.8115234375
+          371704.8115234375,
+          239287.15946451822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544246,
           544329,
           544246,
+          544335,
           544335
         ],
         "borderColor": "#FF671B",
