@@ -2040,6 +2040,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -2382,7 +2388,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -2728,7 +2735,8 @@ window.BENCHMARK_DATA = {
           5165.486906941732,
           11159.658462524414,
           5485.34581048148,
-          11283.176567077637
+          11283.176567077637,
+          7786.337127685547
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2964,6 +2972,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3433,7 +3442,8 @@ window.BENCHMARK_DATA = {
           161454.2696063702,
           384135.9824544271,
           195653.098828125,
-          379907.243359375
+          379907.243359375,
+          258089.2572544643
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3784,7 +3794,8 @@ window.BENCHMARK_DATA = {
           590288,
           590287,
           590288,
-          590292
+          590292,
+          590288
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4138,7 +4149,8 @@ window.BENCHMARK_DATA = {
           9820.543166024345,
           20269.15516310472,
           10718.522647857666,
-          20830.950709416316
+          20830.950709416316,
+          14015.054443359375
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4150,6 +4162,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6501,6 +6514,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -6836,7 +6855,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -7175,7 +7195,8 @@ window.BENCHMARK_DATA = {
           109.41724846192768,
           221.97000553057745,
           121.23281363340524,
-          303.5646327336629
+          303.5646327336629,
+          168.0652672926585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7371,6 +7392,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7866,7 +7888,8 @@ window.BENCHMARK_DATA = {
           245.9540924390157,
           491.6105679784502,
           290.52707877525916,
-          483.2353582382202
+          483.2353582382202,
+          412.47844044367474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7878,6 +7901,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8557,7 +8581,8 @@ window.BENCHMARK_DATA = {
           188.03371054785592,
           400.6788743972778,
           238.70002848761422,
-          384.14970305987765
+          384.14970305987765,
+          289.0543597085135
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8569,6 +8594,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -15533,6 +15559,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -16638,7 +16670,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -17747,7 +17780,8 @@ window.BENCHMARK_DATA = {
           53.39738355477651,
           103.28280454022544,
           59.2300204208919,
-          107.30825151602427
+          107.30825151602427,
+          78.49626001944908
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18746,6 +18780,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -19978,7 +20013,8 @@ window.BENCHMARK_DATA = {
           124.45391447544098,
           247.8762143942026,
           143.31547486782074,
-          271.2481350558145
+          271.2481350558145,
+          198.73417064348857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20171,6 +20207,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -21490,7 +21527,8 @@ window.BENCHMARK_DATA = {
           117.46443247795105,
           258.5239933331807,
           134.35251198496138,
-          260.09573596318563
+          260.09573596318563,
+          179.4108293567385
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21502,6 +21540,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -23939,6 +23978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -24281,7 +24326,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -24627,7 +24673,8 @@ window.BENCHMARK_DATA = {
           116.97670836959567,
           219.2841629187266,
           120.45304573376974,
-          202.3151956399282
+          202.3151956399282,
+          162.62540231432234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24832,6 +24879,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -25332,7 +25380,8 @@ window.BENCHMARK_DATA = {
           269.19638861928667,
           540.1971571604411,
           280.3841162749699,
-          540.6407905578614
+          540.6407905578614,
+          407.59209408078874
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25344,6 +25393,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -26037,7 +26087,8 @@ window.BENCHMARK_DATA = {
           171.17882013320923,
           374.75330174763997,
           194.03510136604308,
-          328.47749315897624
+          328.47749315897624,
+          278.11150588989256
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26049,6 +26100,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -33020,6 +33072,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -34125,7 +34183,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -35234,7 +35293,8 @@ window.BENCHMARK_DATA = {
           367.8223155461825,
           682.8813734735761,
           389.0264209747314,
-          705.49670530955
+          705.49670530955,
+          554.0093506971995
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36221,6 +36281,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -37465,7 +37526,8 @@ window.BENCHMARK_DATA = {
           680.8944663320269,
           1332.4117373057775,
           738.0507176262992,
-          1348.664133199056
+          1348.664133199056,
+          1122.1278003692628
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37658,6 +37720,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -38977,7 +39040,8 @@ window.BENCHMARK_DATA = {
           387.4808829307556,
           643.1820964813232,
           358.30675509770714,
-          650.7082723617553
+          650.7082723617553,
+          495.65020847320557
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -38989,6 +39053,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -46004,6 +46069,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -47109,7 +47180,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -48218,7 +48290,8 @@ window.BENCHMARK_DATA = {
           397.69488634381975,
           684.1131469286405,
           357.2406534048227,
-          715.5455803871155
+          715.5455803871155,
+          532.9337760380337
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49205,6 +49278,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -50449,7 +50523,8 @@ window.BENCHMARK_DATA = {
           11447.92987874349,
           28222.254121907554,
           11594.601102388822,
-          28389.67851139949
+          28389.67851139949,
+          16239.23378499349
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51563,6 +51638,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33367,
           33367
         ],
         "borderColor": "#FF671B",
@@ -51961,7 +52037,8 @@ window.BENCHMARK_DATA = {
           489.4987859725952,
           806.4933979851859,
           440.3179729666029,
-          783.8583316167195
+          783.8583316167195,
+          600.3010859807332
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -51973,6 +52050,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -54758,6 +54836,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -55158,7 +55242,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -55562,7 +55647,8 @@ window.BENCHMARK_DATA = {
           313.7595352104732,
           707.2518057456383,
           377.88018767038983,
-          706.3446550369263
+          706.3446550369263,
+          492.8691775639852
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55856,6 +55942,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -56383,7 +56470,8 @@ window.BENCHMARK_DATA = {
           29947.889711507163,
           85344.13065592448,
           30260.820627065805,
-          84306.33377278646
+          84306.33377278646,
+          54605.64956665039
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56792,7 +56880,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59194,6 +59283,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -59594,7 +59689,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -59998,7 +60094,8 @@ window.BENCHMARK_DATA = {
           69.64764895439149,
           162.51938932736715,
           81.81054503184099,
-          130.17936023076376
+          130.17936023076376,
+          101.87161766565762
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60292,6 +60389,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -60819,7 +60917,8 @@ window.BENCHMARK_DATA = {
           10399.23122253418,
           32527.681415264422,
           11773.935746256511,
-          31607.925154622397
+          31607.925154622397,
+          15258.472881062826
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61228,7 +61327,8 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61626,7 +61726,8 @@ window.BENCHMARK_DATA = {
           129.45620617866516,
           263.13593002728055,
           144.20030841827392,
-          245.83721437454224
+          245.83721437454224,
+          178.8823502222697
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -61638,6 +61739,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -64075,6 +64177,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -64417,7 +64525,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -64763,7 +64872,8 @@ window.BENCHMARK_DATA = {
           146.5660949150721,
           317.3720327445439,
           166.99628950868333,
-          286.44761063502386
+          286.44761063502386,
+          246.1709875424703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -64968,6 +65078,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -65468,7 +65579,8 @@ window.BENCHMARK_DATA = {
           203.04091816682083,
           402.8846879641215,
           222.01794697688177,
-          413.2564380645752
+          413.2564380645752,
+          317.1174627031599
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -65480,6 +65592,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -66173,7 +66286,8 @@ window.BENCHMARK_DATA = {
           199.43734630516596,
           401.6282820020403,
           225.42775944301061,
-          414.16840216318764
+          414.16840216318764,
+          322.9714773098628
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66185,6 +66299,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -68578,6 +68693,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -68920,7 +69041,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -69266,7 +69388,8 @@ window.BENCHMARK_DATA = {
           343.17482665606906,
           781.8336554209392,
           404.122732264655,
-          710.7851082938058
+          710.7851082938058,
+          556.8829371588571
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -69502,6 +69625,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -69971,7 +70095,8 @@ window.BENCHMARK_DATA = {
           983.1754955878624,
           1895.9992743900843,
           1185.5268632253012,
-          1856.8427927834648
+          1856.8427927834648,
+          1469.3988891601562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -69983,6 +70108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -70676,7 +70802,8 @@ window.BENCHMARK_DATA = {
           477.8124357541402,
           928.0684673309327,
           515.1612516811916,
-          922.0684377670289
+          922.0684377670289,
+          755.316841670445
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -70688,6 +70815,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -73081,6 +73209,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -73423,7 +73557,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -73769,7 +73904,8 @@ window.BENCHMARK_DATA = {
           5952.243912251791,
           11831.89854313777,
           6053.894266401018,
-          11929.802173614502
+          11929.802173614502,
+          8559.004533894857
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -74008,6 +74144,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -74474,7 +74611,8 @@ window.BENCHMARK_DATA = {
           18540.377931722007,
           41107.21991780599,
           18992.433955601282,
-          40882.51792689732
+          40882.51792689732,
+          26695.802193196614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -74811,6 +74949,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -75179,7 +75318,8 @@ window.BENCHMARK_DATA = {
           5555.698782784598,
           10460.201848347982,
           5822.833602905273,
-          10593.936210123698
+          10593.936210123698,
+          7785.221122154822
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -75191,6 +75331,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -77584,6 +77725,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -77926,7 +78073,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -78272,7 +78420,8 @@ window.BENCHMARK_DATA = {
           5734.733288104718,
           11131.640948704311,
           5862.777759552002,
-          11587.241180419922
+          11587.241180419922,
+          8003.931792039138
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -78511,6 +78660,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -78977,7 +79127,8 @@ window.BENCHMARK_DATA = {
           26628.76614176432,
           59655.16999511719,
           28098.499629429407,
-          59315.206970214844
+          59315.206970214844,
+          38092.64940098354
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -79310,6 +79461,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -79682,7 +79834,8 @@ window.BENCHMARK_DATA = {
           11137.969436645508,
           20914.108328683036,
           11643.890658569337,
-          20958.612368070164
+          20958.612368070164,
+          15323.596151498648
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -79694,6 +79847,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -80167,6 +80321,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -80189,7 +80349,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -80215,7 +80376,8 @@ window.BENCHMARK_DATA = {
           106.00931198780353,
           204.23780902226767,
           117.63215805803027,
-          196.98170164426168
+          196.98170164426168,
+          159.18266547520955
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -80246,6 +80408,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208
         ],
         "borderColor": "#63A2AC",
@@ -80280,7 +80443,8 @@ window.BENCHMARK_DATA = {
           105.51290760040283,
           213.3630438486735,
           121.02724599838257,
-          227.73593422571818
+          227.73593422571818,
+          172.57184551556904
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -80292,6 +80456,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -80345,7 +80510,8 @@ window.BENCHMARK_DATA = {
           131.34225497245788,
           399.74751529693606,
           147.30713952382405,
-          366.35662943522135
+          366.35662943522135,
+          190.24208639349257
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -80376,6 +80542,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488
         ],
         "borderColor": "#1A6029",
