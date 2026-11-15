@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1175.600423666147,
           2185.6247502840483,
           1198.7228419440132,
           2024.2918801988874,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1207.2798188073295,
           1561.0619543711343,
           2123.4801720210485,
-          1572.652847290039
+          1572.652847290039,
+          1989.6077699661255
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7666.721838814871,
           16761.464113362632,
           8364.371936798096,
           16145.221973964146,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           8562.969096883138,
           10746.93864847819,
           15050.270794459751,
-          10994.717174275716
+          10994.717174275716,
+          16615.367903645834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          963.8841904860276,
           1795.7101196289063,
           1012.8036221822102,
           1670.9583698272704,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           925.0626365116665,
           1246.3335219791957,
           1622.681305371798,
-          1247.7755767277308
+          1247.7755767277308,
+          1649.9122157778058
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7424.364787801107,
           15566.961777907152,
           7115.443501790364,
           14529.213978068034,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           8000.706430053711,
           9471.08405303955,
           13791.761687215168,
-          9836.806711832682
+          9836.806711832682,
+          14451.721668788365
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3074.3918042500813,
           5843.108795166016,
           3078.2969760894775,
           5420.51114654541,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3088.533816019694,
           4042.284175109863,
           5038.399965286255,
-          3896.969349161784
+          3896.969349161784,
+          5559.634200541178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20313.072583879744,
           49673.30724158654,
           21343.283730643136,
           46265.30142211914,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           27251.773559570312,
           29410.467388916015,
           41744.392423502606,
-          28749.606184895834
+          28749.606184895834,
+          46739.72054617746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61925,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
       {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4980.286395263672,
           9943.665045420328,
           5382.198513539633,
           9579.354129028321,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5897.20330282358,
           7692.123990885417,
           9877.432601928711,
-          7333.253802998861
+          7333.253802998861,
+          9448.228754679361
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          145737.60415039063,
           323829.82275390625,
           155368.51022135417,
           294528.84736328124,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           183684.59622395833,
           209520.20885416667,
           291217.0144042969,
-          202853.8486328125
+          202853.8486328125,
+          309560.621882512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521572,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
       {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1626.9390209515889,
           2963.866914621989,
           1667.9871774400983,
           2894.3931582132977,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1910.5332903180804,
           2207.076309712728,
           3108.7864202771866,
-          2179.3267993927
+          2179.3267993927,
+          2887.0414657592773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1100.2137662342616,
           2131.0386197016787,
           1190.6243685313634,
           1947.1150057474772,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1405.500081722553,
           1613.1645071665446,
           2078.5829674857005,
-          1463.3359880447388
+          1463.3359880447388,
+          1943.9779823303222
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1615.7463476816813,
           3032.6112396240233,
           1702.2648797353108,
           2966.483023071289,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1655.4944248199463,
           2298.4846872965495,
           2747.4408350626627,
-          2147.4234406607493
+          2147.4234406607493,
+          2992.0010787963865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          956.4898250579834,
           2038.5299530029297,
           1063.2106075286865,
           1752.7520659310478,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1364.263887814113,
           1546.6974910736085,
           1989.157934061686,
-          1493.6406791687011
+          1493.6406791687011,
+          1900.921873219808
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1337.4692803064981,
           2437.4949714115687,
           1425.0826082229614,
           2349.417063395182,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1406.6858350208827,
           1836.317422720102,
           2237.3565569559732,
-          1723.4775581359863
+          1723.4775581359863,
+          2413.3453216552734
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          623.7351026535034,
           1333.3494918823242,
           723.0316363743374,
           1169.7907464345296,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           994.0796783447265,
           961.1719090779623,
           1357.7363758087158,
-          954.6520275115967
+          954.6520275115967,
+          1152.4242350260417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1740.7071010044642,
           3279.5002149854386,
           1866.4550837003267,
           3124.053300221761,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1848.7032053629557,
           2368.890586344401,
           3296.384835379464,
-          2337.00180376493
+          2337.00180376493,
+          3081.9924466451007
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          726.0079667409261,
           1520.9347489220756,
           778.5111038501447,
           1299.4629280090332,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           989.0630373954773,
           1107.0960784912108,
           1496.4628651936848,
-          1137.1963990075249
+          1137.1963990075249,
+          1334.4355269840785
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
-      {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 4 12:48:13 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          98926.89944893973,
           169815.48548302284,
           97786.93975360577,
           167298.53982979912,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           104199.9702336238,
           127238.4463266226,
           173629.20318134016,
-          129113.03030598958
+          129113.03030598958,
+          166219.0934307392
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          114249.43017578125,
           210272.38551548548,
           116475.14571126302,
           191215.26126302083,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           113572.12916782925,
           150241.09264322917,
           199207.30712890625,
-          151155.99972098213
+          151155.99972098213,
+          192040.26663643974
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266951,
           266936,
           266950,
@@ -5458,6 +5457,7 @@ window.BENCHMARK_DATA = {
           266882,
           266950,
           266873,
+          266950,
           266950
         ],
         "borderColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "6f1c949d1fbf518b7fcbebad9145ce675ac539d9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 06:57:00 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to V8.0.0-pre.2 (#2174)"
-      },
       {
         "sha": "7f817d0fa8a90028fe9ada1423b6cde5d9ed387d",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
         "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
+      },
+      {
+        "sha": "c7e470c5c44d5c4ca9f012e63b50d88857501fc5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
+        "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
       }
     ],
     "labels": [
-      "6f1c949d",
       "7f817d0f",
       "850f7373",
       "0c95f82a",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "8fdcab14",
       "4300826c",
       "2ad6489b",
-      "727c5520"
+      "727c5520",
+      "c7e470c5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1539.7473066770112,
           2822.8733632405597,
           1514.1533808026995,
           2762.8252130235946,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1486.5438902537028,
           2083.640441385905,
           2655.894285837809,
-          2130.498626200358
+          2130.498626200358,
+          2806.0460123697917
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1099.8314296177455,
           2030.3731703077044,
           1155.753547668457,
           1800.0268741335187,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1196.1116711752754,
           1389.9287302652995,
           1996.835540008545,
-          1439.9398747762045
+          1439.9398747762045,
+          1850.9162314097086
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
