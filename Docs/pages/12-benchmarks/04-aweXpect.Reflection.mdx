@@ -1,5 +1,5 @@
 ---
-title: Benchmarks
+title: aweXpect.Reflection
 description: Benchmarks comparing the happy-path overhead of aweXpect.Reflection with the equivalent FluentAssertions calls.
 ---
 
@@ -17,11 +17,11 @@ Verifies that a type is decorated with an attribute.
 
 <BenchmarkResult package="aweXpect.Reflection" name="TypeHasAttribute" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_entityType).Has<EntityAttribute>();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _entityType.Should().BeDecoratedWith<EntityAttribute>();
 ```
 
@@ -35,11 +35,11 @@ Verifies that a type is not static.
 
 <BenchmarkResult package="aweXpect.Reflection" name="TypeIsNotStatic" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_type).IsNotStatic();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 _type.Should().NotBeStatic();
 ```
 
@@ -54,11 +54,11 @@ FluentAssertions reads the nullability of the declared properties with a `Nullab
 
 <BenchmarkResult package="aweXpect.Reflection" name="TypeNullability" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(_trackType).OnlyHasNonNullableMembers();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 NullabilityInfoContext context = new();
 _trackType.GetProperties(DeclaredMembers).Select(property => context.Create(property).ReadState)
     .Should().NotContain(NullabilityState.Nullable);
@@ -74,12 +74,12 @@ Verifies the convention that all types in a namespace of an assembly are sealed,
 
 <BenchmarkResult package="aweXpect.Reflection" name="TypesAreSealed" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
     .AreSealed();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).Should().BeSealed();
 ```
 
@@ -93,13 +93,13 @@ Verifies the convention that all methods returning a `Task` in a namespace of an
 
 <BenchmarkResult package="aweXpect.Reflection" name="MethodsAreAsync" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace)
         .Methods().WhichReturn<Task>())
     .AreAsync();
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).Methods().ThatReturn<Task>().Should().BeAsync();
 ```
 
@@ -114,12 +114,12 @@ FluentAssertions collects the types of the fields, properties, method return val
 
 <BenchmarkResult package="aweXpect.Reflection" name="TypesDoNotDependOn" />
 
-```csharp title="aweXpect"
+```csharp no-compile title="aweXpect"
 await That(In.AssemblyContaining<HappyCaseBenchmarks>().Types().WhichAreWithinNamespace(_namespace))
     .DoNotDependOn("System.Net");
 ```
 
-```csharp title="FluentAssertions"
+```csharp no-compile title="FluentAssertions"
 AllTypes.From(_assembly).ThatAreUnderNamespace(_namespace).SelectMany(GetSignatureTypes).Should()
     .NotContain(type => type.Namespace != null &&
                         (type.Namespace == "System.Net" || type.Namespace.StartsWith("System.Net.")));

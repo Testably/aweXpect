@@ -57,8 +57,8 @@ dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*Str
   the comment.
 - On `main`, every package appends its results to its history on the `benchmarks` branch, which the docs site reads:
   `Docs/pages/static/js` for `aweXpect`, `Docs/extensions/<Package>/static/js` for an extension package. The results
-  are shown in `Docs/pages/12-benchmarks.mdx` and `Docs/extensions/<Package>/99-benchmarks.mdx`; a new benchmark
-  needs a tab there.
+  are shown in `Docs/pages/12-benchmarks/00-index.mdx` and, for an extension package, on its subpage
+  `Docs/pages/12-benchmarks/NN-<Package>.mdx`; a new benchmark needs a tab there.
 
 ## Mutation tests
 
