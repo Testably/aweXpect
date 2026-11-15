@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 5 updates (#2168)"
-      },
-      {
         "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "36493d03",
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          891.4198982874552,
           645.5271056493124,
           875.3374515533447,
           940.159942150116,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           533.9656011141263,
           928.203790297875,
           633.8864799817403,
-          750.9823728970119
+          750.9823728970119,
+          759.7740166187286
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          693.450292451041,
           591.0894039017813,
           753.4910699208577,
           690.986235109965,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           654.3925535837809,
           682.2438536961873,
           538.4036912236895,
-          624.5452000935873
+          624.5452000935873,
+          826.5953498567853
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 5 updates (#2168)"
-      },
-      {
         "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "36493d03",
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4303.925585610526,
           3719.2788091023763,
           4835.385817936489,
           4450.473106384277,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4032.9640670776366,
           4456.637746429444,
           3240.6863000052317,
-          3816.741600581578
+          3816.741600581578,
+          5059.452820841471
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24172,
           24178,
           24178,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24178,
           24178,
-          24179
+          24179,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5289.851538085937,
           4222.60557607015,
           5585.841941324869,
           5113.37202351888,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4462.370715332031,
           5199.623377873348,
           3769.455213001796,
-          4482.773561604818
+          4482.773561604818,
+          5951.589480082194
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 5 updates (#2168)"
-      },
-      {
         "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "36493d03",
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2585.4953333536782,
           2162.2487515767416,
           2724.7676582336426,
           2536.9251907348635,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2241.473960876465,
           2587.8544573102677,
           1860.0127792358398,
-          2027.1988156636555
+          2027.1988156636555,
+          2866.5415210723877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1650,7 +1650,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1673,6 +1672,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3682.1226132710776,
           2917.283984629313,
           3706.12823232015,
           3488.767860119159,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3067.744758333479,
           3552.9059364318846,
           2622.4513268103965,
-          2912.4821985880535
+          2912.4821985880535,
+          3845.4788513183594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "36493d03c95f2319d3b2176f9629d208b104d803",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:55:47 2026 \u002B0100",
-        "message": "chore: Bump the tunit group with 5 updates (#2168)"
-      },
-      {
         "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
         "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
+      },
+      {
+        "sha": "8fdcab14918e5262cdc3d363626bd47df0676d8f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
+        "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
       }
     ],
     "labels": [
-      "36493d03",
       "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "3db03066",
       "055703d4",
-      "c9f9d7b3"
+      "c9f9d7b3",
+      "8fdcab14"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13848.51791229248,
           11038.599586995442,
           15546.908922467914,
           13446.001353672573,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10814.076622517903,
           14262.294637044271,
           9968.521857706706,
-          10884.380028860909
+          10884.380028860909,
+          14089.25101361956
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2281,6 +2280,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          359579.63344029017,
           256356.623828125,
           372392.89957682294,
           349453.7430338542,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           215421.46290940506,
           371704.8115234375,
           239287.15946451822,
-          222568.27013346355
+          222568.27013346355,
+          290191.95133463544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           544246,
           544335,
           544335,
+          544246,
           544246
         ],
         "borderColor": "#FF671B",
