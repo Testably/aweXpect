@@ -1680,6 +1680,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -1962,7 +1968,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -2248,7 +2255,8 @@ window.BENCHMARK_DATA = {
           750.9823728970119,
           759.7740166187286,
           467.53906697493335,
-          638.3073506673177
+          638.3073506673177,
+          566.7161260445913
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2429,6 +2437,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2833,7 +2842,8 @@ window.BENCHMARK_DATA = {
           624.5452000935873,
           826.5953498567853,
           369.0392594178518,
-          568.7751359303792
+          568.7751359303792,
+          639.0146774564471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2845,6 +2855,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4818,6 +4829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -5100,7 +5117,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -5386,7 +5404,8 @@ window.BENCHMARK_DATA = {
           3816.741600581578,
           5059.452820841471,
           2421.369259425572,
-          3386.37841796875
+          3386.37841796875,
+          3452.2733863830567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5677,7 +5696,8 @@ window.BENCHMARK_DATA = {
           24179,
           24172,
           24178,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5971,7 +5991,8 @@ window.BENCHMARK_DATA = {
           4482.773561604818,
           5951.589480082194,
           2765.0292478288925,
-          4046.9874567304337
+          4046.9874567304337,
+          4107.478490702311
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5983,6 +6004,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -7896,6 +7918,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -8168,7 +8196,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -8444,7 +8473,8 @@ window.BENCHMARK_DATA = {
           2027.1988156636555,
           2866.5415210723877,
           1376.6617533365886,
-          1988.0905772617884
+          1988.0905772617884,
+          1878.601703898112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8710,6 +8740,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -9009,7 +9040,8 @@ window.BENCHMARK_DATA = {
           2912.4821985880535,
           3845.4788513183594,
           1923.7551305135091,
-          2692.6176315307616
+          2692.6176315307616,
+          2556.932213374547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9021,6 +9053,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -10924,6 +10957,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
@@ -11196,7 +11235,8 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
@@ -11472,7 +11512,8 @@ window.BENCHMARK_DATA = {
           10884.380028860909,
           14089.25101361956,
           7206.849414280483,
-          10282.91986670861
+          10282.91986670861,
+          10160.08616739909
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11738,6 +11779,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -12037,7 +12079,8 @@ window.BENCHMARK_DATA = {
           222568.27013346355,
           290191.95133463544,
           167338.28160807292,
-          244411.30546875
+          244411.30546875,
+          216474.30649414062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12318,7 +12361,8 @@ window.BENCHMARK_DATA = {
           544246,
           544246,
           544335,
-          546620
+          546620,
+          546549
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
