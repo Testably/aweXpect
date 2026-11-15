@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1156.093823506282,
           2101.6880422319687,
           2058.476535524641,
           1175.600423666147,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           2085.591893709623,
           2062.5178270339966,
           2014.6671559260442,
-          1207.2798188073295
+          1207.2798188073295,
+          1561.0619543711343
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7529.982671101888,
           16839.187114170618,
           16085.560051551232,
           7666.721838814871,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           16685.269009399413,
           16416.962329101563,
           17252.24414469401,
-          8562.969096883138
+          8562.969096883138,
+          10746.93864847819
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          925.721905263265,
           1673.483045578003,
           1673.6562520345053,
           963.8841904860276,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1734.3985529581705,
           1624.1022524515788,
           1663.9608253751483,
-          925.0626365116665
+          925.0626365116665,
+          1246.3335219791957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7265.1912246704105,
           15453.133737836566,
           14677.167522975376,
           7424.364787801107,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           14962.973474355844,
           14887.131168619791,
           14502.29665222168,
-          8000.706430053711
+          8000.706430053711,
+          9471.08405303955
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2878.2244361877442,
           5571.581067598783,
           5589.1646319798065,
           3074.3918042500813,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           5532.1627812703455,
           5513.235642569406,
           5538.940173012869,
-          3088.533816019694
+          3088.533816019694,
+          4042.284175109863
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19539.201289876302,
           49355.10128549429,
           47768.46976143973,
           20313.072583879744,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           47932.15408935547,
           47658.06896565755,
           47053.026041666664,
-          27251.773559570312
+          27251.773559570312,
+          29410.467388916015
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
       {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5087.9374857584635,
           9620.458963666644,
           9784.473254864033,
           4980.286395263672,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           9517.005974324544,
           9446.183248901367,
           9604.193771362305,
-          5897.20330282358
+          5897.20330282358,
+          7692.123990885417
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          142575.05111490886,
           313625.8534830729,
           309541.97549203725,
           145737.60415039063,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           312242.52706705726,
           310522.6944335938,
           303969.5940880409,
-          183684.59622395833
+          183684.59622395833,
+          209520.20885416667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521542
+          521542,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
       {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1539.0551851590474,
           2860.511367162069,
           2875.3090433393204,
           1626.9390209515889,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2949.27232170105,
           2972.1003247774565,
           2862.427579561869,
-          1910.5332903180804
+          1910.5332903180804,
+          2207.076309712728
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1106.0989636739096,
           2036.4583116258893,
           2002.062146759033,
           1100.2137662342616,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2042.860870107015,
           1983.7181704203288,
           2022.4644214923565,
-          1405.500081722553
+          1405.500081722553,
+          1613.1645071665446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1632.6405119895935,
           2982.697763170515,
           3007.885787691389,
           1615.7463476816813,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           3000.396400197347,
           2836.38228225708,
           2936.633266155536,
-          1655.4944248199463
+          1655.4944248199463,
+          2298.4846872965495
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1015.6368763263409,
           1963.1865575154623,
           1844.3215240478517,
           956.4898250579834,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1940.7215954916817,
           2046.2266629536946,
           2137.7652834574383,
-          1364.263887814113
+          1364.263887814113,
+          1546.6974910736085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1364.2688386099678,
           2452.967204538981,
           2353.3624079568044,
           1337.4692803064981,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2395.7353415171306,
           2377.400690205892,
           2441.891252077543,
-          1406.6858350208827
+          1406.6858350208827,
+          1836.317422720102
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          635.4574656486511,
           1221.2541269938151,
           1182.8154940287272,
           623.7351026535034,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1205.1413749694825,
           1234.321753365653,
           1527.9197633107503,
-          994.0796783447265
+          994.0796783447265,
+          961.1719090779623
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1693.555485566457,
           3083.0093488057455,
           3117.943437848772,
           1740.7071010044642,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           3097.5245872497558,
           3052.6751759847007,
           3008.089215596517,
-          1848.7032053629557
+          1848.7032053629557,
+          2368.890586344401
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          679.0698460851397,
           1390.7452667236328,
           1356.3512930552165,
           726.0079667409261,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1443.0100841522217,
           1483.1400707244873,
           1809.0921651204428,
-          989.0630373954773
+          989.0630373954773,
+          1107.0960784912108
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          94911.84517415364,
           163248.54805814303,
           167371.45295061384,
           98926.89944893973,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           173930.9006673177,
           172843.83370535713,
           168333.08583170574,
-          104199.9702336238
+          104199.9702336238,
+          127238.4463266226
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          113644.451171875,
           204670.83358328682,
           195194.39243861608,
           114249.43017578125,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           201011.9212297712,
           196260.8642752511,
           202999.62709263392,
-          113572.12916782925
+          113572.12916782925,
+          150241.09264322917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266951,
           266950,
           266936,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
-          266882
+          266882,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
       {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 09:59:07 2026 \u002B0100",
         "message": "feat: add predicate overloads to the negated attribute expectations and filters (#2245)"
+      },
+      {
+        "sha": "4300826c10a4d237dd90e48930ea402eec06aed4",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 13:02:23 2026 \u002B0100",
+        "message": "docs: collapse the benchmark methodology and drop the median summary (#2247)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "3db03066",
       "055703d4",
       "c9f9d7b3",
-      "8fdcab14"
+      "8fdcab14",
+      "4300826c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1469.376049722944,
           2783.914956410726,
           2728.920848083496,
           1539.7473066770112,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2853.4069508143834,
           2789.6617146809895,
           2806.5896311442057,
-          1486.5438902537028
+          1486.5438902537028,
+          2083.640441385905
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1077.9223961463342,
           1949.0055333455405,
           1887.989437690148,
           1099.8314296177455,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1929.1073534647624,
           1936.5626621246338,
           2032.0862533569336,
-          1196.1116711752754
+          1196.1116711752754,
+          1389.9287302652995
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
