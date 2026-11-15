@@ -18,15 +18,15 @@ Verifies that two `string` values are equal, ignoring case.
 <BenchmarkResult name="String" />
 
 ```csharp title="aweXpect"
-await That(_upperCaseTitle).IsEqualTo(_title).IgnoringCase();
+await That(_capsSongTitle).IsEqualTo(_expectedSongTitle).IgnoringCase();
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_upperCaseTitle.Should().BeEquivalentTo(_title);
+_capsSongTitle.Should().BeEquivalentTo(_expectedSongTitle);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_upperCaseTitle).IsEqualTo(_title).IgnoringCase();
+await Assert.That(_capsSongTitle).IsEqualTo(_expectedSongTitle).IgnoringCase();
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.String.cs)
@@ -40,15 +40,15 @@ Verifies that an `int` subject is greater than a minimum.
 <BenchmarkResult name="Int_GreaterThan" />
 
 ```csharp title="aweXpect"
-await That(_tempo).IsGreaterThan(_minimumTempo);
+await That(_currentBpm).IsGreaterThan(_minimumBpm);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_tempo.Should().BeGreaterThan(_minimumTempo);
+_currentBpm.Should().BeGreaterThan(_minimumBpm);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_tempo).IsGreaterThan(_minimumTempo);
+await Assert.That(_currentBpm).IsGreaterThan(_minimumBpm);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Int_GreaterThan.cs)
@@ -62,15 +62,15 @@ Verifies that an `int` subject is one of four candidates.
 <BenchmarkResult name="Int_IsOneOf" />
 
 ```csharp title="aweXpect"
-await That(_beatsPerBar).IsOneOf(_commonBeatsPerBar);
+await That(_songBeatsPerBar).IsOneOf(_allowedBeatsPerBar);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_beatsPerBar.Should().BeOneOf(_commonBeatsPerBar);
+_songBeatsPerBar.Should().BeOneOf(_allowedBeatsPerBar);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_beatsPerBar).IsIn(_commonBeatsPerBar);
+await Assert.That(_songBeatsPerBar).IsIn(_allowedBeatsPerBar);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Int_IsOneOf.cs)
@@ -106,15 +106,15 @@ Verifies that an `int[]` has at least the expected number of items (1,000 items 
 <BenchmarkResult name="ItemsCount_AtLeast" />
 
 ```csharp title="aweXpect"
-await That(_trackIds).HasCount().GreaterThanOrEqualTo(_minimumTrackCount);
+await That(_trackIdsInLibrary).HasCount().GreaterThanOrEqualTo(_minTracksNeeded);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_trackIds.Should().HaveCountGreaterThanOrEqualTo(_minimumTrackCount);
+_trackIdsInLibrary.Should().HaveCountGreaterThanOrEqualTo(_minTracksNeeded);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_trackIds).Count().IsGreaterThanOrEqualTo(_minimumTrackCount);
+await Assert.That(_trackIdsInLibrary).Count().IsGreaterThanOrEqualTo(_minTracksNeeded);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.ItemsCount_AtLeast.cs)
@@ -128,15 +128,15 @@ Verifies that a `List<string>` of 17 track titles contains the expected title.
 <BenchmarkResult name="Contains" />
 
 ```csharp title="aweXpect"
-await That(_trackTitles).Contains(_favoriteTitle);
+await That(_abbeyRoadTracks).Contains(_mostStreamedSong);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_trackTitles.Should().Contain(_favoriteTitle);
+_abbeyRoadTracks.Should().Contain(_mostStreamedSong);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_trackTitles).Contains(_favoriteTitle);
+await Assert.That(_abbeyRoadTracks).Contains(_mostStreamedSong);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Contains.cs)
@@ -155,24 +155,24 @@ Verifies that two three-element `string` arrays contain the same values regardle
 <BenchmarkResult name="StringArrayInAnyOrder" />
 
 ```csharp title="aweXpect"
-await That(_bandMembers).IsEqualTo(_expectedBandMembers);
+await That(_radioStationGenres).IsEqualTo(_scheduledStationGenres);
 // In any order
-await That(_lineUp)
-    .IsEqualTo(_shuffledLineUp).InAnyOrder();
+await That(_radioStationGenresAsListed)
+    .IsEqualTo(_radioStationGenresInOtherOrder).InAnyOrder();
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_bandMembers.Should().Equal(_expectedBandMembers);
+_radioStationGenres.Should().Equal(_scheduledStationGenres);
 // In any order
-_lineUp.Should().BeEquivalentTo(_shuffledLineUp);
+_radioStationGenresAsListed.Should().BeEquivalentTo(_radioStationGenresInOtherOrder);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_bandMembers)
-    .IsEquivalentTo(_expectedBandMembers, CollectionOrdering.Matching);
+await Assert.That(_radioStationGenres)
+    .IsEquivalentTo(_scheduledStationGenres, CollectionOrdering.Matching);
 // In any order
-await Assert.That(_lineUp)
-    .IsEquivalentTo(_shuffledLineUp);
+await Assert.That(_radioStationGenresAsListed)
+    .IsEquivalentTo(_radioStationGenresInOtherOrder);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.StringArray.cs)
@@ -189,15 +189,15 @@ FluentAssertions' `Match` takes an expression tree and compiles it on every call
 <BenchmarkResult name="Satisfies" />
 
 ```csharp title="aweXpect"
-await That(_playCount).Satisfies(x => x > 0);
+await That(_playCountOfTrack).Satisfies(x => x > 0);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_playCount.Should().Match(x => x > 0);
+_playCountOfTrack.Should().Match(x => x > 0);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_playCount).Satisfies(x => x > 0);
+await Assert.That(_playCountOfTrack).Satisfies(x => x > 0);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Satisfies.cs)
@@ -217,21 +217,21 @@ Verifies the same for an asynchronous delegate.
 <BenchmarkResult name="ThrowsAsync" />
 
 ```csharp title="aweXpect"
-await That(_playTwice).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+await That(_playSongTwice).Throws<InvalidOperationException>().WithMessage(_playbackError);
 // Asynchronous
-await That(_playTwiceAsync).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+await That(_playSongTwiceAsync).Throws<InvalidOperationException>().WithMessage(_playbackError);
 ```
 
 ```csharp no-compile title="FluentAssertions"
-_playTwice.Should().Throw<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+_playSongTwice.Should().Throw<InvalidOperationException>().WithMessage(_playbackError);
 // Asynchronous
-await _playTwiceAsync.Should().ThrowAsync<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+await _playSongTwiceAsync.Should().ThrowAsync<InvalidOperationException>().WithMessage(_playbackError);
 ```
 
 ```csharp no-compile title="TUnit"
-await Assert.That(_playTwice).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+await Assert.That(_playSongTwice).Throws<InvalidOperationException>().WithMessage(_playbackError);
 // Asynchronous
-await Assert.That(_playTwiceAsync).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+await Assert.That(_playSongTwiceAsync).Throws<InvalidOperationException>().WithMessage(_playbackError);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Throws.cs)
@@ -248,26 +248,26 @@ Verifies three properties of an album at once, so that all failures would be rep
 
 ```csharp title="aweXpect"
 await Expect.ThatAll(
-    That(_album.Title).IsEqualTo("Abbey Road"),
-    That(_album.Artist.Name).IsEqualTo("The Beatles"),
-    That(_album.Genre).IsEqualTo(Genre.Rock));
+    That(_abbeyRoadRecord.Title).IsEqualTo("Abbey Road"),
+    That(_abbeyRoadRecord.Artist.Name).IsEqualTo("The Beatles"),
+    That(_abbeyRoadRecord.Genre).IsEqualTo(Genre.Rock));
 ```
 
 ```csharp no-compile title="FluentAssertions"
 using (new AssertionScope())
 {
-    _album.Title.Should().Be("Abbey Road");
-    _album.Artist.Name.Should().Be("The Beatles");
-    _album.Genre.Should().Be(Genre.Rock);
+    _abbeyRoadRecord.Title.Should().Be("Abbey Road");
+    _abbeyRoadRecord.Artist.Name.Should().Be("The Beatles");
+    _abbeyRoadRecord.Genre.Should().Be(Genre.Rock);
 }
 ```
 
 ```csharp no-compile title="TUnit"
 using (Assert.Multiple())
 {
-    await Assert.That(_album.Title).IsEqualTo("Abbey Road");
-    await Assert.That(_album.Artist.Name).IsEqualTo("The Beatles");
-    await Assert.That(_album.Genre).IsEqualTo(Genre.Rock);
+    await Assert.That(_abbeyRoadRecord.Title).IsEqualTo("Abbey Road");
+    await Assert.That(_abbeyRoadRecord.Artist.Name).IsEqualTo("The Beatles");
+    await Assert.That(_abbeyRoadRecord.Genre).IsEqualTo(Genre.Rock);
 }
 ```
 

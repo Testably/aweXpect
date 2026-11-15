@@ -13,9 +13,9 @@ public partial class HappyCaseBenchmarks
 {
 	[Benchmark]
 	public async Task Header_aweXpect()
-		=> await Expect.That(_response).HasHeader("x-genre").WithValue("Rock");
+		=> await Expect.That(_response).HasHeader("x-writer").WithValue("Lennon");
 
 	[Benchmark]
 	public AndConstraint<StringAssertions> Header_FluentAssertions()
-		=> _response.Headers.GetValues("x-genre").Should().ContainSingle().Which.Should().Be("Rock");
+		=> _response.Headers.GetValues("x-writer").Should().ContainSingle().Which.Should().Be("Lennon");
 }

@@ -19,10 +19,10 @@ public partial class HappyCaseBenchmarks
 			RequestUri = new Uri("https://music.example.com/tracks/1"),
 			Content = new StringContent("Let It Be"),
 		},
-		Content = new StringContent("Come Together"),
+		Content = new StringContent("Drive My Car"),
 		Headers =
 		{
-			{ "x-genre", "Rock" },
+			{ "x-writer", "Lennon" },
 		},
 		StatusCode = HttpStatusCode.OK,
 	};

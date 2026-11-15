@@ -9,18 +9,18 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string _alreadyPlayingMessage = "The track is already playing.";
-	private readonly Action _playTwice = () => throw new InvalidOperationException("The track is already playing.");
+	private readonly string _playbackError = "The track is already playing.";
+	private readonly Action _playSongTwice = () => throw new InvalidOperationException("The track is already playing.");
 
 	[Benchmark]
 	public async Task Throws_aweXpect()
-		=> await Expect.That(_playTwice).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+		=> await Expect.That(_playSongTwice).Throws<InvalidOperationException>().WithMessage(_playbackError);
 
 	[Benchmark]
 	public ExceptionAssertions<InvalidOperationException> Throws_FluentAssertions()
-		=> _playTwice.Should().Throw<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+		=> _playSongTwice.Should().Throw<InvalidOperationException>().WithMessage(_playbackError);
 
 	[Benchmark]
 	public async Task Throws_TUnit()
-		=> await Assert.That(_playTwice).Throws<InvalidOperationException>().WithMessage(_alreadyPlayingMessage);
+		=> await Assert.That(_playSongTwice).Throws<InvalidOperationException>().WithMessage(_playbackError);
 }

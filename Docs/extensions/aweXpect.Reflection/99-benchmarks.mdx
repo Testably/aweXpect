@@ -36,11 +36,11 @@ Verifies that a type is not static.
 <BenchmarkResult package="aweXpect.Reflection" name="TypeIsNotStatic" />
 
 ```csharp title="aweXpect"
-await That(_repositoryType).IsNotStatic();
+await That(_type).IsNotStatic();
 ```
 
 ```csharp title="FluentAssertions"
-_repositoryType.Should().NotBeStatic();
+_type.Should().NotBeStatic();
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Reflection.Benchmarks/HappyCaseBenchmarks.TypeIsNotStatic.cs)

@@ -52,18 +52,18 @@ _xmlElement.Should().BeEquivalentTo(XElement.Parse(_xmlExpectation));
 <TabItem value="ElementOrder" label="Element order">
 
 Verifies that an `XElement` with 10 child elements is equivalent to the expected XML with the child elements in reverse order.
-FluentAssertions has no XML equivalency that ignores the element order, so it only approximates the expectation by comparing the `id` attributes of the child elements in any order.
+FluentAssertions has no XML equivalency that ignores the element order, so it only approximates the expectation by comparing the `bpm` attributes of the child elements in any order.
 
 <BenchmarkResult package="aweXpect.Xml" name="ElementOrder" />
 
 ```csharp title="aweXpect"
-await That(_playlist).MatchesExactly(_reversedPlaylist, o => o.IgnoringElementOrder());
+await That(_album).MatchesExactly(_reversedAlbum, o => o.IgnoringElementOrder());
 ```
 
 ```csharp title="FluentAssertions"
-_playlist.Elements("track").Select(track => track.Attribute("id")!.Value).Should()
-    .BeEquivalentTo(XElement.Parse(_reversedPlaylist).Elements("track")
-        .Select(track => track.Attribute("id")!.Value));
+_album.Elements("song").Select(song => song.Attribute("bpm")!.Value).Should()
+    .BeEquivalentTo(XElement.Parse(_reversedAlbum).Elements("song")
+        .Select(song => song.Attribute("bpm")!.Value));
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Xml.Benchmarks/HappyCaseBenchmarks.ElementOrder.cs)

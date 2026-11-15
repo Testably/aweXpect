@@ -9,18 +9,18 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly int _minimumTempo = 100;
-	private readonly int _tempo = 128;
+	private readonly int _minimumBpm = 100;
+	private readonly int _currentBpm = 128;
 
 	[Benchmark]
 	public async Task<int> Int_GreaterThan_aweXpect()
-		=> await Expect.That(_tempo).IsGreaterThan(_minimumTempo);
+		=> await Expect.That(_currentBpm).IsGreaterThan(_minimumBpm);
 
 	[Benchmark]
 	public AndConstraint<NumericAssertions<int>> Int_GreaterThan_FluentAssertions()
-		=> _tempo.Should().BeGreaterThan(_minimumTempo);
+		=> _currentBpm.Should().BeGreaterThan(_minimumBpm);
 
 	[Benchmark]
 	public async Task<int> Int_GreaterThan_TUnit()
-		=> await Assert.That(_tempo).IsGreaterThan(_minimumTempo);
+		=> await Assert.That(_currentBpm).IsGreaterThan(_minimumBpm);
 }

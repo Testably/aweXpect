@@ -11,20 +11,20 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string[] _lineUp = ["Sting", "Andy", "Stewart",];
-	private readonly string[] _shuffledLineUp = ["Sting", "Stewart", "Andy",];
+	private readonly string[] _radioStationGenresInOtherOrder = ["Pop", "Ska", "Rap",];
+	private readonly string[] _radioStationGenresAsListed = ["Pop", "Rap", "Ska",];
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_aweXpect()
-		=> (await Expect.That(_lineUp).IsEqualTo(_shuffledLineUp).InAnyOrder())!
+		=> (await Expect.That(_radioStationGenresAsListed).IsEqualTo(_radioStationGenresInOtherOrder).InAnyOrder())!
 			.Consume(_consumer);
 
 	[Benchmark]
 	public AndConstraint<StringCollectionAssertions<IEnumerable<string>>> StringArrayInAnyOrder_FluentAssertions()
-		=> _lineUp.Should().BeEquivalentTo(_shuffledLineUp);
+		=> _radioStationGenresAsListed.Should().BeEquivalentTo(_radioStationGenresInOtherOrder);
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_TUnit()
-		=> (await Assert.That(_lineUp)
-			.IsEquivalentTo(_shuffledLineUp))?.Consume(_consumer);
+		=> (await Assert.That(_radioStationGenresAsListed)
+			.IsEquivalentTo(_radioStationGenresInOtherOrder))?.Consume(_consumer);
 }

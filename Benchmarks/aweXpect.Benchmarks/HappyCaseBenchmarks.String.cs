@@ -9,18 +9,18 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string _title = "Help!";
-	private readonly string _upperCaseTitle = "HELP!";
+	private readonly string _expectedSongTitle = "Rio";
+	private readonly string _capsSongTitle = "RIO";
 
 	[Benchmark]
 	public async Task<string?> String_aweXpect()
-		=> await Expect.That(_upperCaseTitle).IsEqualTo(_title).IgnoringCase();
+		=> await Expect.That(_capsSongTitle).IsEqualTo(_expectedSongTitle).IgnoringCase();
 
 	[Benchmark]
 	public AndConstraint<StringAssertions> String_FluentAssertions()
-		=> _upperCaseTitle.Should().BeEquivalentTo(_title);
+		=> _capsSongTitle.Should().BeEquivalentTo(_expectedSongTitle);
 
 	[Benchmark]
 	public async Task<string?> String_TUnit()
-		=> await Assert.That(_upperCaseTitle).IsEqualTo(_title).IgnoringCase();
+		=> await Assert.That(_capsSongTitle).IsEqualTo(_expectedSongTitle).IgnoringCase();
 }

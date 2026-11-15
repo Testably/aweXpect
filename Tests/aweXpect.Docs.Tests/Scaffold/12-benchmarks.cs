@@ -4,27 +4,27 @@ namespace Snippets;
 
 internal static class Prelude
 {
-	public static string _upperCaseTitle = "HELP!";
-	public static string _title = "Help!";
-	public static int _tempo = 128;
-	public static int _minimumTempo = 100;
-	public static int[] _commonBeatsPerBar = [2, 3, 4, 6,];
-	public static int _beatsPerBar = 6;
+	public static string _capsSongTitle = "RIO";
+	public static string _expectedSongTitle = "Rio";
+	public static int _currentBpm = 128;
+	public static int _minimumBpm = 100;
+	public static int[] _allowedBeatsPerBar = [2, 3, 4, 6,];
+	public static int _songBeatsPerBar = 6;
 	public static BenchmarkAlbum _albumSubject = new();
 	public static BenchmarkAlbum _albumExpectation = new();
-	public static int[] _trackIds = Enumerable.Range(1, 1000).ToArray();
-	public static int _minimumTrackCount = 1000;
-	public static List<string> _trackTitles = ["Come Together", "Here Comes the Sun",];
-	public static string _favoriteTitle = "Here Comes the Sun";
-	public static string[] _bandMembers = ["Sting", "Andy", "Stewart",];
-	public static string[] _expectedBandMembers = ["Sting", "Andy", "Stewart",];
-	public static string[] _lineUp = ["Sting", "Andy", "Stewart",];
-	public static string[] _shuffledLineUp = ["Sting", "Stewart", "Andy",];
-	public static int _playCount = 42;
-	public static string _alreadyPlayingMessage = "The track is already playing.";
-	public static Action _playTwice = () => throw new InvalidOperationException(_alreadyPlayingMessage);
-	public static Func<Task> _playTwiceAsync = () => Task.FromException(new InvalidOperationException(_alreadyPlayingMessage));
-	public static BenchmarkAlbum _album = new();
+	public static int[] _trackIdsInLibrary = Enumerable.Range(1, 1000).ToArray();
+	public static int _minTracksNeeded = 1000;
+	public static List<string> _abbeyRoadTracks = ["Come Together", "Here Comes the Sun",];
+	public static string _mostStreamedSong = "Here Comes the Sun";
+	public static string[] _radioStationGenres = ["Pop", "Rap", "Ska",];
+	public static string[] _scheduledStationGenres = ["Pop", "Rap", "Ska",];
+	public static string[] _radioStationGenresAsListed = ["Pop", "Rap", "Ska",];
+	public static string[] _radioStationGenresInOtherOrder = ["Ska", "Pop", "Rap",];
+	public static int _playCountOfTrack = 42;
+	public static string _playbackError = "The track is already playing.";
+	public static Action _playSongTwice = () => throw new InvalidOperationException(_playbackError);
+	public static Func<Task> _playSongTwiceAsync = () => Task.FromException(new InvalidOperationException(_playbackError));
+	public static BenchmarkAlbum _abbeyRoadRecord = new();
 
 	public enum Genre
 	{
