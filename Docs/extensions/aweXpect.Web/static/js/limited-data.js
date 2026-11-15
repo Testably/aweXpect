@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          442.5956117085048,
           458.5815397671291,
           236.82004312106542,
           354.32197618484497,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           478.4688217980521,
           259.8590409415109,
           443.15780694144115,
-          229.44743193112888
+          229.44743193112888,
+          341.7852216879527
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -455,7 +455,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1128.0433668409075,
           963.9214069366456,
           520.9855494181315,
           859.8134956359863,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1036.5065071923393,
           570.5758566538493,
           947.0944427343516,
-          610.155005009969
+          610.155005009969,
+          766.718957387484
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.27181117875233,
           242.79161001841229,
           133.49193998972575,
           180.37146946589152,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           287.32062063217165,
           133.4971878358296,
           243.16033162389482,
-          123.68325117429097
+          123.68325117429097,
+          169.3542073249817
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          318.63816400936673,
           240.62100273768107,
           134.57967740297318,
           213.57694873809814,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           259.4875532150269,
           135.37719937960307,
           249.5268021583557,
-          140.9641261736552
+          140.9641261736552,
+          203.02837494441442
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          973.2031075404241,
           970.8140046255929,
           488.33608940669467,
           760.0682645944448,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1051.5912532806396,
           565.1819468816121,
           1034.287418952355,
-          582.9119932468121
+          582.9119932468121,
+          719.4770327295575
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1092.550279344831,
           933.1230291366577,
           460.394495900472,
           875.9253684557401,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1076.7059329106257,
           552.1339081355503,
           913.8340173721314,
-          530.0301569302877
+          530.0301569302877,
+          736.2096825440725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1714.3901007516045,
           1901.673245021275,
           1074.4428888956706,
           1510.8230589548746,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2008.4007131136382,
           1172.6532446997505,
           1844.847546032497,
-          1175.8620137532553
+          1175.8620137532553,
+          1451.9895920386682
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2279,7 +2279,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          17299.828063964844,
           21367.002838134766,
           9987.94697679792,
           15325.140707833427,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22617.931099446614,
           10820.529170696553,
           20183.834061686197,
-          11204.914393107096
+          11204.914393107096,
+          14113.227682495117
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34713,
@@ -2413,6 +2412,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713,
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
       {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          757.3146889550345,
           748.9378308614095,
           402.4188807805379,
           584.5255438940866,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           784.7278814996992,
           416.3058612530048,
           744.2893003736224,
-          426.16959703763325
+          426.16959703763325,
+          550.4668477376302
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1476.635341644287,
           1296.0750034877233,
           703.6973687489827,
           1137.2971270243327,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1448.4601662953694,
           751.9316567693438,
           1323.9517800649007,
-          801.5823572794596
+          801.5823572794596,
+          1006.8732441388644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
-        "message": "test: run the timing tests on the MockTimeSystem of Testably.Abstractions.Testing (#2166)"
-      },
-      {
         "sha": "c1f4f866a4caaeb3c8248507bc2840e1980b2f72",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:52:45 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "3903c857",
       "c1f4f866",
       "36493d03",
       "a5ae13eb",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1172.9074870518275,
           1303.7188658033099,
           788.4071518091055,
           1013.9994605137751,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1353.7195482987624,
           771.4838317235311,
           1380.9216418947492,
-          782.9585380554199
+          782.9585380554199,
+          1016.2255373001099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          928.4233367919921,
           728.4841364542643,
           437.62008206049603,
           670.3013818105062,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           846.4234142303467,
           444.8477056821187,
           730.1758700052898,
-          407.71797919273376
+          407.71797919273376,
+          595.7936842100961
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
