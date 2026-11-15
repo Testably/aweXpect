@@ -1680,6 +1680,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -1962,7 +1968,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -2248,7 +2255,8 @@ window.BENCHMARK_DATA = {
           613.8106923103333,
           411.0158950169881,
           582.6049766540527,
-          778.2744434901646
+          778.2744434901646,
+          557.8256750106812
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2472,6 +2480,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -2833,7 +2842,8 @@ window.BENCHMARK_DATA = {
           618.6364737290603,
           521.2452648707798,
           618.18845094045,
-          814.6001623017447
+          814.6001623017447,
+          549.2007471720377
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2845,6 +2855,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -4818,6 +4829,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -5100,7 +5117,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -5386,7 +5404,8 @@ window.BENCHMARK_DATA = {
           84.1467264175415,
           58.168544896443684,
           84.67608000437419,
-          110.32922866344452
+          110.32922866344452,
+          78.58869384867805
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5533,6 +5552,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -5971,7 +5991,8 @@ window.BENCHMARK_DATA = {
           208.69916723569233,
           128.417256630384,
           185.17469364802042,
-          256.6315572102865
+          256.6315572102865,
+          155.89514209429424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5983,6 +6004,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -7956,6 +7978,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -8238,7 +8266,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -8524,7 +8553,8 @@ window.BENCHMARK_DATA = {
           1127.7611651102702,
           995.9249263176551,
           1138.1626993815105,
-          1487.7353777204241
+          1487.7353777204241,
+          1038.7164287567139
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8719,6 +8749,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -9109,7 +9140,8 @@ window.BENCHMARK_DATA = {
           1036.6949776240758,
           888.0772321065267,
           1022.3263879503522,
-          1372.1895190874736
+          1372.1895190874736,
+          972.89669411523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9400,7 +9432,8 @@ window.BENCHMARK_DATA = {
           1952,
           1953,
           1864,
-          1864
+          1864,
+          1952
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11034,6 +11067,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -11306,7 +11345,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -11582,7 +11622,8 @@ window.BENCHMARK_DATA = {
           1708.1423016956874,
           1532.8788752922644,
           1698.0370689119611,
-          2259.3742637634277
+          2259.3742637634277,
+          1649.7513519287108
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11767,6 +11808,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -12147,7 +12189,8 @@ window.BENCHMARK_DATA = {
           2685.678467341832,
           2294.05210849217,
           2632.019598388672,
-          3514.12398147583
+          3514.12398147583,
+          2467.584039815267
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12427,6 +12470,7 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3980,
+          3977,
           3977,
           3977
         ],
@@ -14062,6 +14106,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -14334,7 +14384,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -14610,7 +14661,8 @@ window.BENCHMARK_DATA = {
           274.5618874004909,
           215.26145442894526,
           272.89529422613293,
-          367.4448758193425
+          367.4448758193425,
+          252.03960065841676
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14747,6 +14799,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -15175,7 +15228,8 @@ window.BENCHMARK_DATA = {
           1579.6092923482258,
           1342.662471516927,
           1583.7494107655116,
-          2058.7274044581823
+          2058.7274044581823,
+          1420.2243019104003
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15187,6 +15241,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -17090,6 +17145,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
@@ -17362,7 +17423,8 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
@@ -17638,7 +17700,8 @@ window.BENCHMARK_DATA = {
           1682.5715887705485,
           1531.1214680989583,
           1695.5673219045004,
-          2215.3724733080185
+          2215.3724733080185,
+          1622.435470036098
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -17919,6 +17982,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          2760,
           2760
         ],
         "borderColor": "#63A2AC",
@@ -18203,7 +18267,8 @@ window.BENCHMARK_DATA = {
           191539.4991280692,
           176183.31126185827,
           191592.01967075892,
-          271710.0355794271
+          271710.0355794271,
+          187917.28690011162
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18484,6 +18549,7 @@ window.BENCHMARK_DATA = {
           17528,
           17576,
           17528,
+          17658,
           17658
         ],
         "borderColor": "#FF671B",
