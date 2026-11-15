@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          940.159942150116,
           961.2702892303466,
           787.1732439994812,
           663.2587267330715,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           750.9823728970119,
           759.7740166187286,
           467.53906697493335,
-          638.3073506673177
+          638.3073506673177,
+          566.7161260445913
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          690.986235109965,
           720.9330297470093,
           799.3850512186687,
           610.7837354342142,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           624.5452000935873,
           826.5953498567853,
           369.0392594178518,
-          568.7751359303792
+          568.7751359303792,
+          639.0146774564471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4450.473106384277,
           4559.5549715482275,
           4431.633692814754,
           3729.209423319499,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3816.741600581578,
           5059.452820841471,
           2421.369259425572,
-          3386.37841796875
+          3386.37841796875,
+          3452.2733863830567
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24172,
           24179,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24172,
           24178,
-          24172
+          24172,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5113.37202351888,
           5297.50129699707,
           5153.6997647966655,
           4454.675517272949,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4482.773561604818,
           5951.589480082194,
           2765.0292478288925,
-          4046.9874567304337
+          4046.9874567304337,
+          4107.478490702311
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2536.9251907348635,
           2706.9839029947916,
           2495.7636557987757,
           2186.3819833483017,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2027.1988156636555,
           2866.5415210723877,
           1376.6617533365886,
-          1988.0905772617884
+          1988.0905772617884,
+          1878.601703898112
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1647,7 +1647,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1670,6 +1669,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3488.767860119159,
           3549.006671651204,
           3516.617214457194,
           2914.4485071818035,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2912.4821985880535,
           3845.4788513183594,
           1923.7551305135091,
-          2692.6176315307616
+          2692.6176315307616,
+          2556.932213374547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "fa9f5111a92b6d8f9e0cf69f4b5f683406ce9a01",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 3 01:00:11 2026 \u002B0100",
-        "message": "ci: fail the static code analysis job when the Sonar quality gate fails on pull requests (#2171)"
-      },
-      {
         "sha": "5e27d503d534ca9bdfdd19924d115be92cd12d88",
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 3 08:00:18 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 14:23:39 2026 \u002B0100",
         "message": "refactor: use the music theme in all benchmarks (#2248)"
+      },
+      {
+        "sha": "727c55200144c4b559f50bd9d671be1d102cd840",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 14:25:03 2026 \u002B0100",
+        "message": "docs: move the benchmark pages of the extensions below the benchmarks (#2249)"
       }
     ],
     "labels": [
-      "fa9f5111",
       "5e27d503",
       "2cb4b274",
       "6f1c949d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c9f9d7b3",
       "8fdcab14",
       "4300826c",
-      "2ad6489b"
+      "2ad6489b",
+      "727c5520"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13446.001353672573,
           13898.258018493652,
           14268.596590314593,
           10954.243966238839,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10884.380028860909,
           14089.25101361956,
           7206.849414280483,
-          10282.91986670861
+          10282.91986670861,
+          10160.08616739909
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2255,7 +2255,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2278,6 +2277,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          349453.7430338542,
           354092.89107840403,
           284892.31666666665,
           259388.03951822917,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           222568.27013346355,
           290191.95133463544,
           167338.28160807292,
-          244411.30546875
+          244411.30546875,
+          216474.30649414062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544246,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544246,
           544246,
           544335,
-          546620
+          546620,
+          546549
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
