@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          430.56206862131756,
           490.0048530442374,
           821.4825664928982,
           891.4198982874552,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           646.170018641154,
           752.7962532777053,
           470.07111568450927,
-          533.9656011141263
+          533.9656011141263,
+          661.1877224785941
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          329.02975153923035,
           363.5286680221558,
           735.9000127792358,
           693.450292451041,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           596.6469285147531,
           813.8868272145589,
           362.4126643400926,
-          654.3925535837809
+          654.3925535837809,
+          614.53961130778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2348.130291748047,
           2683.4963063557943,
           4365.362184143067,
           4303.925585610526,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3401.1106572469075,
           5076.69371693929,
           2735.976405588786,
-          4032.9640670776366
+          4032.9640670776366,
+          3993.941042582194
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24172,
           24178,
           24172,
           24172,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24178,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2554.760531792274,
           3033.083034515381,
           5368.274541219075,
           5289.851538085937,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4029.8369710286456,
           5970.327434285482,
           2958.4171180725098,
-          4462.370715332031
+          4462.370715332031,
+          4122.848430887858
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1294.5423451741538,
           1462.400083287557,
           2491.5595565209023,
           2585.4953333536782,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1892.0608515058245,
           2808.840386904203,
           1423.7171019236246,
-          2241.473960876465
+          2241.473960876465,
+          2123.4776331583657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1653,7 +1653,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1676,6 +1675,7 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1867.573366546631,
           2034.3683068593343,
           3633.013139851888,
           3682.1226132710776,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2643.6571708092324,
           3832.8056579589843,
           2079.591823577881,
-          3067.744758333479
+          3067.744758333479,
+          3023.0977615356446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "b53d74ccbbc8a5bbb9259106ff4da558ae15b291",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 2 07:05:03 2026 \u002B0100",
-        "message": "fix: decide a cancellation when it arrives, not when a continuation notices it (#2165)"
-      },
-      {
         "sha": "3903c85782f1141bf1f5fffca0ae02995a2a2b34",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 2 17:07:04 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 14 18:49:29 2026 \u002B0100",
         "message": "docs: list the extensions in alphabetical order (#2241)"
+      },
+      {
+        "sha": "44f2de51a8a9a9e59205c2606cfeab66dfa574c5",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 08:01:03 2026 \u002B0100",
+        "message": "docs: show a single version badge in the README (#2243)"
       }
     ],
     "labels": [
-      "b53d74cc",
       "3903c857",
       "c1f4f866",
       "36493d03",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "165d849c",
       "8d553589",
       "fc5718b5",
-      "5d0d05da"
+      "5d0d05da",
+      "44f2de51"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          6798.191546848842,
           7709.100393676757,
           13868.768104044597,
           13848.51791229248,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10889.912614186605,
           14056.498024495442,
           7517.447546822684,
-          10814.076622517903
+          10814.076622517903,
+          10768.715535481771
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2261,7 +2261,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2284,6 +2283,7 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          156931.56604817708,
           176262.88766276042,
           368774.86666666664,
           359579.63344029017,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           221374.94620186943,
           289444.7764718192,
           178826.03356119792,
-          215421.46290940506
+          215421.46290940506,
+          262428.6709960938
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           544245,
           544246,
           544329,
-          544246
+          544246,
+          544335
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
