@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
-      {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          354.32197618484497,
           479.5638365064348,
           247.8905804838453,
           334.7561794916789,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           229.44743193112888,
           341.7852216879527,
           484.2184110005697,
-          379.08885387011935
+          379.08885387011935,
+          302.5931468804677
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -452,7 +452,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          859.8134956359863,
           1103.4839130129133,
           575.1248204367502,
           751.5023863474528,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           610.155005009969,
           766.718957387484,
           993.6132097977859,
-          858.8258874575297
+          858.8258874575297,
+          710.4286426544189
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
-      {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          180.37146946589152,
           251.6106086730957,
           124.58865673201424,
           175.80076657808743,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           123.68325117429097,
           169.3542073249817,
           228.44630653517586,
-          203.37388375827246
+          203.37388375827246,
+          167.05041291032518
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          213.57694873809814,
           285.1488622347514,
           138.163690163539,
           203.67925635973612,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           140.9641261736552,
           203.02837494441442,
           248.95880011149816,
-          214.55803419862474
+          214.55803419862474,
+          191.34272747773392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
-      {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          760.0682645944448,
           997.006590906779,
           543.139175755637,
           691.1171099344889,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           582.9119932468121,
           719.4770327295575,
           1074.2528731482369,
-          738.4530684153239
+          738.4530684153239,
+          656.5565757070269
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          875.9253684557401,
           1076.0143171037946,
           503.38019231160484,
           743.5535878401536,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           530.0301569302877,
           736.2096825440725,
           989.0661235536847,
-          832.0672527949015
+          832.0672527949015,
+          687.2358846664429
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
-      {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1510.8230589548746,
           1980.7205449422202,
           1109.7527424948555,
           1473.8766563415527,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1175.8620137532553,
           1451.9895920386682,
           1915.7189974103655,
-          1593.603799673227
+          1593.603799673227,
+          1171.328036880493
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2276,7 +2276,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          15325.140707833427,
           20317.872913067156,
           10148.716247558594,
           14251.385841369629,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           11204.914393107096,
           14113.227682495117,
           20898.21887441782,
-          15247.654381385217
+          15247.654381385217,
+          11158.807924543109
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34713,
           34712,
           34713,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
       {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          584.5255438940866,
           769.8451211111886,
           416.11402636307935,
           564.4042382921491,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           426.16959703763325,
           550.4668477376302,
           832.3912954330444,
-          595.5643518447876
+          595.5643518447876,
+          501.7323134967259
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1137.2971270243327,
           1536.3257658640543,
           719.7886102994283,
           1003.669601949056,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           801.5823572794596,
           1006.8732441388644,
           1322.0762605667114,
-          1134.0578107833862
+          1134.0578107833862,
+          931.628839747111
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "a5ae13ebee799b24ed57c3e0db58c80e291ca73d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 3 00:56:25 2026 \u002B0100",
-        "message": "chore: Bump Microsoft.Testing.Extensions.TrxReport from 2.5.1 to 2.5.2 (#2170)"
-      },
-      {
         "sha": "5d53b9d11e125c889f7b30d5e81cc7e92d900a4f",
         "author": "dependabot[bot]",
         "date": "Tue Nov 3 00:56:37 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 08:21:28 2026 \u002B0100",
         "message": "feat: add \u0060IsOnlyUsedBy\u0060 and \u0060AreOnlyUsedBy\u0060 dependency rules for types (#2242)"
+      },
+      {
+        "sha": "c9f9d7b3bb45acb9825ce5b40f04e084ced4548f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Nov 15 09:08:30 2026 \u002B0100",
+        "message": "feat: pretty-print content with a \u002Bjson media type suffix in failure messages (#2246)"
       }
     ],
     "labels": [
-      "a5ae13eb",
       "5d53b9d1",
       "fa9f5111",
       "5e27d503",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "5d0d05da",
       "44f2de51",
       "3db03066",
-      "055703d4"
+      "055703d4",
+      "c9f9d7b3"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1013.9994605137751,
           1277.583984375,
           753.9521387645176,
           971.027081044515,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           782.9585380554199,
           1016.2255373001099,
           1317.553305353437,
-          1035.7857443491619
+          1035.7857443491619,
+          791.5241567747934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          670.3013818105062,
           869.249768447876,
           421.2064799149831,
           589.850031153361,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           407.71797919273376,
           595.7936842100961,
           741.2281613349915,
-          659.870689868927
+          659.870689868927,
+          573.7907935551235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
