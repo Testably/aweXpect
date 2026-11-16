@@ -1710,6 +1710,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -1997,7 +2003,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -2288,7 +2295,8 @@ window.BENCHMARK_DATA = {
           1561.0619543711343,
           2123.4801720210485,
           1572.652847290039,
-          1989.6077699661255
+          1989.6077699661255,
+          1567.0479545593262
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2434,6 +2442,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2883,7 +2892,8 @@ window.BENCHMARK_DATA = {
           10746.93864847819,
           15050.270794459751,
           10994.717174275716,
-          16615.367903645834
+          16615.367903645834,
+          10159.470987592425
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2895,6 +2905,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4903,6 +4914,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -5190,7 +5207,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -5481,7 +5499,8 @@ window.BENCHMARK_DATA = {
           1246.3335219791957,
           1622.681305371798,
           1247.7755767277308,
-          1649.9122157778058
+          1649.9122157778058,
+          1219.0085327965874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5627,6 +5646,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -6076,7 +6096,8 @@ window.BENCHMARK_DATA = {
           9471.08405303955,
           13791.761687215168,
           9836.806711832682,
-          14451.721668788365
+          14451.721668788365,
+          9344.171761145959
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6088,6 +6109,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -8036,6 +8058,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -8313,7 +8341,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -8594,7 +8623,8 @@ window.BENCHMARK_DATA = {
           4042.284175109863,
           5038.399965286255,
           3896.969349161784,
-          5559.634200541178
+          5559.634200541178,
+          3930.481143951416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8777,6 +8807,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -9169,7 +9200,8 @@ window.BENCHMARK_DATA = {
           29410.467388916015,
           41744.392423502606,
           28749.606184895834,
-          46739.72054617746
+          46739.72054617746,
+          28056.927497355144
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9455,7 +9487,8 @@ window.BENCHMARK_DATA = {
           61925,
           61925,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11119,6 +11152,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -11396,7 +11435,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -11677,7 +11717,8 @@ window.BENCHMARK_DATA = {
           7692.123990885417,
           9877.432601928711,
           7333.253802998861,
-          9448.228754679361
+          9448.228754679361,
+          7278.533350263323
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11813,6 +11854,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -12252,7 +12294,8 @@ window.BENCHMARK_DATA = {
           209520.20885416667,
           291217.0144042969,
           202853.8486328125,
-          309560.621882512
+          309560.621882512,
+          201133.82610212054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12537,6 +12580,7 @@ window.BENCHMARK_DATA = {
           521542,
           521594,
           521572,
+          521594,
           521594,
           521594
         ],
@@ -14202,6 +14246,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -14479,7 +14529,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -14760,7 +14811,8 @@ window.BENCHMARK_DATA = {
           2207.076309712728,
           3108.7864202771866,
           2179.3267993927,
-          2887.0414657592773
+          2887.0414657592773,
+          2183.0796673114482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14946,6 +14998,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -15335,7 +15388,8 @@ window.BENCHMARK_DATA = {
           1613.1645071665446,
           2078.5829674857005,
           1463.3359880447388,
-          1943.9779823303222
+          1943.9779823303222,
+          1432.6801464374248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15347,6 +15401,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -17285,6 +17340,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -17562,7 +17623,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -17843,7 +17905,8 @@ window.BENCHMARK_DATA = {
           2298.4846872965495,
           2747.4408350626627,
           2147.4234406607493,
-          2992.0010787963865
+          2992.0010787963865,
+          2179.5279591878257
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18026,6 +18089,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -18418,7 +18482,8 @@ window.BENCHMARK_DATA = {
           1546.6974910736085,
           1989.157934061686,
           1493.6406791687011,
-          1900.921873219808
+          1900.921873219808,
+          1325.1518877574376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18430,6 +18495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -19666,6 +19732,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -19826,7 +19898,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -19990,7 +20063,8 @@ window.BENCHMARK_DATA = {
           1836.317422720102,
           2237.3565569559732,
           1723.4775581359863,
-          2413.3453216552734
+          2413.3453216552734,
+          1730.9716250101726
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20056,6 +20130,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -20331,7 +20406,8 @@ window.BENCHMARK_DATA = {
           961.1719090779623,
           1357.7363758087158,
           954.6520275115967,
-          1152.4242350260417
+          1152.4242350260417,
+          907.6308310215289
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20343,6 +20419,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -21462,6 +21539,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -21622,7 +21705,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -21786,7 +21870,8 @@ window.BENCHMARK_DATA = {
           2368.890586344401,
           3296.384835379464,
           2337.00180376493,
-          3081.9924466451007
+          3081.9924466451007,
+          2289.4311221440635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21836,6 +21921,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -22127,7 +22213,8 @@ window.BENCHMARK_DATA = {
           1107.0960784912108,
           1496.4628651936848,
           1137.1963990075249,
-          1334.4355269840785
+          1334.4355269840785,
+          1028.7155975341798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22139,6 +22226,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -22916,6 +23004,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -23019,7 +23113,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -23126,7 +23221,8 @@ window.BENCHMARK_DATA = {
           127238.4463266226,
           173629.20318134016,
           129113.03030598958,
-          166219.0934307392
+          166219.0934307392,
+          125784.44950358073
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23138,6 +23234,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -23353,7 +23450,8 @@ window.BENCHMARK_DATA = {
           150241.09264322917,
           199207.30712890625,
           151155.99972098213,
-          192040.26663643974
+          192040.26663643974,
+          144191.98375651042
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23464,6 +23562,7 @@ window.BENCHMARK_DATA = {
           266882,
           266950,
           266873,
+          266950,
           266950,
           266950
         ],
@@ -24085,6 +24184,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 15 22:21:16 2026 \u002B0100",
         "message": "docs: show the fix of each analyzer rule behind an \u0022Apply fix\u0022 button (#2251)"
+      },
+      {
+        "sha": "c3a5defc5e3a53e131842af88434f850e1b6a8f4",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
+        "message": "chore: Bump the mstest group with 2 updates (#2253)"
       }
     ],
     "labels": [
@@ -24188,7 +24293,8 @@ window.BENCHMARK_DATA = {
       "4300826c",
       "2ad6489b",
       "727c5520",
-      "c7e470c5"
+      "c7e470c5",
+      "c3a5defc"
     ],
     "datasets": [
       {
@@ -24295,7 +24401,8 @@ window.BENCHMARK_DATA = {
           2083.640441385905,
           2655.894285837809,
           2130.498626200358,
-          2806.0460123697917
+          2806.0460123697917,
+          2024.1291506840632
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24307,6 +24414,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -24522,7 +24630,8 @@ window.BENCHMARK_DATA = {
           1389.9287302652995,
           1996.835540008545,
           1439.9398747762045,
-          1850.9162314097086
+          1850.9162314097086,
+          1356.3893432617188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24534,6 +24643,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
