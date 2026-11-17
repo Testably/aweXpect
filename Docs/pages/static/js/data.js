@@ -2070,6 +2070,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -2417,7 +2423,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -2768,7 +2775,8 @@ window.BENCHMARK_DATA = {
           10881.961720784506,
           7725.828825730544,
           7667.840589250837,
-          10214.065940856934
+          10214.065940856934,
+          9426.791743977865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3004,6 +3012,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3483,7 +3492,8 @@ window.BENCHMARK_DATA = {
           354188.12906901044,
           265978.758203125,
           253442.3818359375,
-          367775.76983173075
+          367775.76983173075,
+          331701.1209635417
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3839,7 +3849,8 @@ window.BENCHMARK_DATA = {
           590292,
           590288,
           590288,
-          590292
+          590292,
+          590266
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4198,7 +4209,8 @@ window.BENCHMARK_DATA = {
           19971.056040445965,
           14666.130574544271,
           14264.908586774554,
-          19037.75731201172
+          19037.75731201172,
+          22139.593186442056
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4210,6 +4222,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6596,6 +6609,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -6936,7 +6955,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -7280,7 +7300,8 @@ window.BENCHMARK_DATA = {
           217.65196855862936,
           186.15514845848082,
           172.95355728694372,
-          231.85875498453777
+          231.85875498453777,
+          236.01130151748657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7476,6 +7497,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -7981,7 +8003,8 @@ window.BENCHMARK_DATA = {
           480.7244559015547,
           446.40052808125813,
           434.60047041575115,
-          479.24793100357056
+          479.24793100357056,
+          568.3970845767429
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7993,6 +8016,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8682,7 +8706,8 @@ window.BENCHMARK_DATA = {
           367.9972962966332,
           306.8319716453552,
           300.7171937306722,
-          384.4086503664652
+          384.4086503664652,
+          419.52103318486894
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8694,6 +8719,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -15693,6 +15719,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -16803,7 +16835,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -17917,7 +17950,8 @@ window.BENCHMARK_DATA = {
           98.32832570586886,
           84.96287916501363,
           81.93195377985636,
-          99.74263095004218
+          99.74263095004218,
+          109.39850219090779
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18916,6 +18950,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -20158,7 +20193,8 @@ window.BENCHMARK_DATA = {
           229.67377734184265,
           203.41069771693304,
           203.31076946258545,
-          243.9441827774048
+          243.9441827774048,
+          302.4709095319112
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20351,6 +20387,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -21680,7 +21717,8 @@ window.BENCHMARK_DATA = {
           227.31986233393351,
           191.5358113875756,
           187.1003658612569,
-          235.73802529062544
+          235.73802529062544,
+          243.01457125345866
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21692,6 +21730,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -24164,6 +24203,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -24511,7 +24556,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -24862,7 +24908,8 @@ window.BENCHMARK_DATA = {
           197.35337411562602,
           157.78079107602437,
           167.26104565767142,
-          199.39415942705594
+          199.39415942705594,
+          223.26458365122477
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25067,6 +25114,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -25577,7 +25625,8 @@ window.BENCHMARK_DATA = {
           496.98234330690826,
           434.304903779711,
           406.50658331598555,
-          519.1424098968506
+          519.1424098968506,
+          638.2686306408474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25589,6 +25638,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -26292,7 +26342,8 @@ window.BENCHMARK_DATA = {
           327.1862882886614,
           274.79039777119954,
           245.5480636869158,
-          330.04360709871565
+          330.04360709871565,
+          363.80842542648315
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26304,6 +26355,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -33310,6 +33362,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -34420,7 +34478,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -35534,7 +35593,8 @@ window.BENCHMARK_DATA = {
           674.8004852022443,
           549.8889215333121,
           522.9807176589966,
-          679.3141191346305
+          679.3141191346305,
+          679.4204305013021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36521,6 +36581,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -37775,7 +37836,8 @@ window.BENCHMARK_DATA = {
           1304.1927871704102,
           1149.5122067769369,
           1108.0305737813314,
-          1307.7510142008464
+          1307.7510142008464,
+          1567.4135893503824
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -37968,6 +38030,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39297,7 +39360,8 @@ window.BENCHMARK_DATA = {
           641.3451243914091,
           525.4735500471933,
           510.81571712493894,
-          640.6364790109487
+          640.6364790109487,
+          676.3494091033936
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39309,6 +39373,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -46359,6 +46424,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -47469,7 +47540,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -48583,7 +48655,8 @@ window.BENCHMARK_DATA = {
           657.8301407496134,
           537.1877356937954,
           520.7190535227458,
-          679.2865728231577
+          679.2865728231577,
+          674.7930170467922
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49570,6 +49643,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -50824,7 +50898,8 @@ window.BENCHMARK_DATA = {
           26813.661420549666,
           16505.567576090496,
           15935.34903564453,
-          27200.530013020834
+          27200.530013020834,
+          24865.665930175783
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -51943,7 +52018,8 @@ window.BENCHMARK_DATA = {
           33367,
           33367,
           33367,
-          33367
+          33367,
+          33365
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52346,7 +52422,8 @@ window.BENCHMARK_DATA = {
           781.7243994932908,
           590.4581829479763,
           589.3566037495931,
-          773.2339996610369
+          773.2339996610369,
+          782.4746287027995
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52358,6 +52435,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -55178,6 +55256,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -55583,7 +55667,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -55992,7 +56077,8 @@ window.BENCHMARK_DATA = {
           687.819206682841,
           522.3063416163127,
           480.66394526163737,
-          616.108654158456
+          616.108654158456,
+          664.7786088307698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56286,6 +56372,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -56823,7 +56910,8 @@ window.BENCHMARK_DATA = {
           81312.55045572917,
           53907.07500813802,
           54128.436161295576,
-          82258.05521647136
+          82258.05521647136,
+          61155.96433367048
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57237,7 +57325,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
-          5252
+          5252,
+          5254
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59669,6 +59758,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -60074,7 +60169,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -60483,7 +60579,8 @@ window.BENCHMARK_DATA = {
           125.95900718982404,
           101.02712866465251,
           102.04563855330149,
-          134.5487054347992
+          134.5487054347992,
+          150.1670011083285
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -60777,6 +60874,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -61314,7 +61412,8 @@ window.BENCHMARK_DATA = {
           31007.543326822917,
           15137.068521118164,
           15198.87383219401,
-          30674.84480067662
+          30674.84480067662,
+          25073.735737391882
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -61728,7 +61827,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62131,7 +62231,8 @@ window.BENCHMARK_DATA = {
           228.49766694582425,
           186.3753058274587,
           183.96103288577154,
-          239.11013610546405
+          239.11013610546405,
+          244.21812127431232
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62143,6 +62244,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -64615,6 +64717,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -64962,7 +65070,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -65313,7 +65422,8 @@ window.BENCHMARK_DATA = {
           284.61304102625166,
           241.54267149705154,
           230.92034784385137,
-          297.6052808443705
+          297.6052808443705,
+          301.6142504692078
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65518,6 +65628,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -66028,7 +66139,8 @@ window.BENCHMARK_DATA = {
           368.5629457405635,
           333.6179276784261,
           309.69104525248207,
-          379.9886278084346
+          379.9886278084346,
+          444.1666729927063
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66040,6 +66152,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -66743,7 +66856,8 @@ window.BENCHMARK_DATA = {
           396.0151017506917,
           344.2480423927307,
           324.8626009305318,
-          399.43505749335657
+          399.43505749335657,
+          415.59048652648926
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -66755,6 +66869,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -69183,6 +69298,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -69530,7 +69651,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -69881,7 +70003,8 @@ window.BENCHMARK_DATA = {
           691.4784773508708,
           557.4930598395212,
           580.8272602217538,
-          708.7184155537532
+          708.7184155537532,
+          715.3205430984497
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70117,6 +70240,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -70596,7 +70720,8 @@ window.BENCHMARK_DATA = {
           1838.6735764821372,
           1551.410796991984,
           1624.4684111277263,
-          1865.8952497754779
+          1865.8952497754779,
+          2203.7502242497035
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -70608,6 +70733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -71311,7 +71437,8 @@ window.BENCHMARK_DATA = {
           868.8201722417559,
           727.7141534169515,
           741.8466379801432,
-          911.6369574228922
+          911.6369574228922,
+          960.2082491556804
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71323,6 +71450,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -73751,6 +73879,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -74098,7 +74232,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -74449,7 +74584,8 @@ window.BENCHMARK_DATA = {
           12027.176817673902,
           8491.38618687221,
           8588.383245849609,
-          11725.852584838867
+          11725.852584838867,
+          11603.767028808594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -74688,6 +74824,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -75164,7 +75301,8 @@ window.BENCHMARK_DATA = {
           38801.17606201172,
           27088.379738943917,
           26603.300550188338,
-          40640.28186848958
+          40640.28186848958,
+          35892.0028163365
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -75501,6 +75639,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -75879,7 +76018,8 @@ window.BENCHMARK_DATA = {
           10566.155667622885,
           7869.198741367885,
           7823.9894291804385,
-          10362.083494919996
+          10362.083494919996,
+          10247.321278163365
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -75891,6 +76031,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -78319,6 +78460,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -78666,7 +78813,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -79017,7 +79165,8 @@ window.BENCHMARK_DATA = {
           11639.7933077131,
           8001.52154976981,
           8032.570708138602,
-          11252.44660135905
+          11252.44660135905,
+          11151.237318856376
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -79256,6 +79405,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -79732,7 +79882,8 @@ window.BENCHMARK_DATA = {
           56675.02381310096,
           38979.9505746024,
           37980.49460710798,
-          57750.90610758463
+          57750.90610758463,
+          51473.53996930803
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -80065,6 +80216,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -80447,7 +80599,8 @@ window.BENCHMARK_DATA = {
           20881.989292689734,
           15288.179001871746,
           15273.37304280599,
-          20656.181604003905
+          20656.181604003905,
+          19766.57093811035
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -80459,6 +80612,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -80967,6 +81121,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
@@ -80994,7 +81154,8 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
@@ -81025,7 +81186,8 @@ window.BENCHMARK_DATA = {
           189.9601080417633,
           165.9237376689911,
           153.82416003545126,
-          190.75821577707927
+          190.75821577707927,
+          175.38548285620553
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -81056,6 +81218,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208,
           208,
           208,
@@ -81100,7 +81263,8 @@ window.BENCHMARK_DATA = {
           203.53131119410196,
           176.31545532544453,
           172.7713676232558,
-          198.28432834148407
+          198.28432834148407,
+          247.95984319051107
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -81112,6 +81276,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -81175,7 +81340,8 @@ window.BENCHMARK_DATA = {
           345.5947124276842,
           196.43688634725717,
           196.1059648990631,
-          353.44130312601726
+          353.44130312601726,
+          246.0956003482525
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -81206,6 +81372,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488,
           488,
           488,
