@@ -1740,6 +1740,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
@@ -2032,7 +2038,8 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
@@ -2328,7 +2335,8 @@ window.BENCHMARK_DATA = {
           445.6644116083781,
           640.4858710765839,
           560.349425976093,
-          829.5799956003825
+          829.5799956003825,
+          875.4637475013733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2509,6 +2517,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -2933,7 +2942,8 @@ window.BENCHMARK_DATA = {
           356.65176649093627,
           624.1844889095852,
           605.6624272210257,
-          754.9798163572947
+          754.9798163572947,
+          668.3146922928946
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2945,6 +2955,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -4988,6 +4999,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
@@ -5280,7 +5297,8 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
@@ -5576,7 +5594,8 @@ window.BENCHMARK_DATA = {
           2410.0212560017903,
           3280.3413725632886,
           3317.9467775980634,
-          4437.612045796713
+          4437.612045796713,
+          4519.579442705427
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5877,7 +5896,8 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24179,
-          24172
+          24172,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6181,7 +6201,8 @@ window.BENCHMARK_DATA = {
           2823.146270206996,
           4010.8158543904624,
           3919.5432510375977,
-          5159.7183707101
+          5159.7183707101,
+          5042.679300035749
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6193,6 +6214,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -8176,6 +8198,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
@@ -8458,7 +8486,8 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
@@ -8744,7 +8773,8 @@ window.BENCHMARK_DATA = {
           1476.0396695454915,
           1956.937777709961,
           2053.2683628627233,
-          2416.2685892740888
+          2416.2685892740888,
+          2497.6392729441327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9034,6 +9064,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654
         ],
@@ -9329,7 +9360,8 @@ window.BENCHMARK_DATA = {
           1897.3640403747559,
           2864.848408478957,
           2585.5823903401692,
-          3654.0557414463588
+          3654.0557414463588,
+          3450.433626992362
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9341,6 +9373,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -11314,6 +11347,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
@@ -11596,7 +11635,8 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
@@ -11882,7 +11922,8 @@ window.BENCHMARK_DATA = {
           7317.715763854981,
           11057.457580566406,
           10441.766852823894,
-          13433.801885986328
+          13433.801885986328,
+          13466.818738301596
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12172,6 +12213,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367
         ],
@@ -12467,7 +12509,8 @@ window.BENCHMARK_DATA = {
           163348.84044596355,
           218296.21963266225,
           209783.5060546875,
-          333753.81393229164
+          333753.81393229164,
+          350384.3933454241
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12758,6 +12801,7 @@ window.BENCHMARK_DATA = {
           546630,
           546549,
           546549,
+          546620,
           546620
         ],
         "borderColor": "#FF671B",
