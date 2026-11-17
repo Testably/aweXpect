@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
-      {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          751.6682180991539,
           722.1957015991211,
           409.0365822315216,
           781.582831450871,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           537.2624183067909,
           372.4564640045166,
           791.4477145121648,
-          787.2326662699381
+          787.2326662699381,
+          563.241699899946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          902.4402693339756,
           869.0769025166829,
           546.3331633885701,
           944.4801342646281,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           666.8186354955037,
           495.14642752011616,
           967.0197402409145,
-          941.4769315083821
+          941.4769315083821,
+          699.9812914984567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
-      {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          103.88713658650717,
           101.66405953679767,
           60.91156035264333,
           105.57014689275196,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           76.1066950639089,
           53.83347429434458,
           110.8356237411499,
-          110.87616055011749
+          110.87616055011749,
+          83.28741684981755
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          216.9920997619629,
           214.82798318862916,
           143.58922073046367,
           200.7239324092865,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           166.09147543566567,
           118.80078600247701,
           233.7640003987721,
-          210.8187549908956
+          210.8187549908956,
+          161.43262677533286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
-      {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1889.4191912137544,
           1785.052332196917,
           920.5461337906974,
           1952.9921277364094,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1344.431013243539,
           976.4671447753906,
           1955.2991872514997,
-          2013.0489398411341
+          2013.0489398411341,
+          1406.1968065897624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1537.2212629318237,
           1442.9987864176433,
           764.6617459569659,
           1497.6625966389975,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1059.4378515879314,
           781.1064182917277,
           1499.3552610079448,
-          1519.3359895070394
+          1519.3359895070394,
+          1082.1711365836006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1953,
           1864,
           1953,
           1953,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
       {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2803.7182256062824,
           2635.2708887736003,
           1423.3629774366107,
           2943.5023909977504,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2048.944100788661,
           1431.351949964251,
           2818.0463829040527,
-          2974.2957697550455
+          2974.2957697550455,
+          2141.7490712483723
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3921.484300466684,
           3778.8923416137695,
           2105.5106555393763,
           3874.676141866048,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           2918.0071217463565,
           2150.1224266052245,
           3920.8116035461426,
-          3928.562005724226
+          3928.562005724226,
+          3081.64146396092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2372,7 +2372,6 @@ window.BENCHMARK_DATA = {
           3980,
           3980,
           3980,
-          3980,
           3981,
           3981,
           3978,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           3981,
           3980,
           3980,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
       {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          388.23036511739093,
           356.92648289998374,
           200.03694906234742,
           387.5491731961568,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           272.2909517288208,
           195.902490957578,
           417.56168473561604,
-          384.18116452143744
+          384.18116452143744,
+          269.73641735712687
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2360.224435533796,
           2237.424961090088,
           1241.432836151123,
           2276.222061429705,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1676.7577083587646,
           1232.3184056599935,
           2407.238986424037,
-          2268.8003639808067
+          2268.8003639808067,
+          1692.1962135021504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
-        "message": "test: use the strict timer order of the MockTimeSystem where tests depend on it (#2178)"
-      },
-      {
         "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
         "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
+      },
+      {
+        "sha": "17ab26bafed9a747ab6ac050412fcdebf287f233",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
       }
     ],
     "labels": [
-      "13f124fd",
       "60f2a583",
       "4f093bbd",
       "a5924ccd",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "c7e470c5",
       "c3a5defc",
       "2ae7ee43",
-      "ce2186a2"
+      "ce2186a2",
+      "17ab26ba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2929.9041873386927,
           2838.6184412638345,
           1379.4181876863752,
           2946.9017154148646,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2093.9885248819987,
           1381.3623472849529,
           2974.4689664204916,
-          2937.5468887329102
+          2937.5468887329102,
+          2203.4557136535645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3499,7 +3499,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
+          2760,
           2760,
           2760,
           2760,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          282025.5499441964,
           300236.6799504207,
           164346.85032435827,
           277213.3720327524,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           242899.74361979167,
           180164.77532087054,
           286317.864327567,
-          281551.67637416295
+          281551.67637416295,
+          239326.41012369792
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17577,
           17577,
           17574,
           17577,
@@ -3634,7 +3633,8 @@ window.BENCHMARK_DATA = {
           17835,
           17573,
           17577,
-          17719
+          17719,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
