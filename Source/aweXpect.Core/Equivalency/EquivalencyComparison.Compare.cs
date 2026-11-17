@@ -46,19 +46,7 @@ public static partial class EquivalencyComparison
 				failureBuilder, memberPath, memberType, context);
 		}
 
-		if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
-		{
-			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
-			return false;
-		}
-
-		bool isEqual = UserCode.Invoke(
-			static values => values.IsDecidedByExpected
-				? values.Expected!.Equals(values.Actual)
-				: values.Actual!.Equals(values.Expected),
-			(Actual: actual, Expected: expected, IsDecidedByExpected: isDecidedByExpected),
-			static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
-		if (!isEqual)
+		if (!IsEqualByValue(actual, expected, isDecidedByExpected))
 		{
 			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
 			return false;
@@ -66,6 +54,18 @@ public static partial class EquivalencyComparison
 
 		return true;
 	}
+
+	private static bool IsEqualByValue<TActual, TExpected>(
+		[DisallowNull] TActual actual,
+		[DisallowNull] TExpected expected,
+		bool isDecidedByExpected)
+		=> !DateTimeKindComparison.AreKindsIncompatible(actual, expected) &&
+		   UserCode.Invoke(
+			   static values => values.IsDecidedByExpected
+				   ? values.Expected!.Equals(values.Actual)
+				   : values.Actual!.Equals(values.Expected),
+			   (Actual: actual, Expected: expected, IsDecidedByExpected: isDecidedByExpected),
+			   static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
 
 	/// <summary>
 	///     Who threw in the failure message when code of the caller fails while the value at the
@@ -619,15 +619,18 @@ public static partial class EquivalencyComparison
 			GetRegisteredOptions(expected.GetType(), equivalencyOptions, context);
 		EquivalencyTypeOptions pairOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
 		if (pairOptions.TypePairComparisons.Length > 0 &&
-		    TryCompareByPredicate(actual, expected, pairOptions.TypePairComparisons, failureBuilder, memberPath,
-			    memberType, context, out isEquivalent))
+		    TryCompareByPredicate(actual, expected, expected, pairOptions.TypePairComparisons, failureBuilder,
+			    memberPath, memberType, context, out isEquivalent))
 		{
 			return true;
 		}
 
 		if (IsComparedByValue(actual.GetType(), actualOptions ?? inheritedOptions, equivalencyOptions))
 		{
-			isEquivalent = CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
+			isEquivalent = EquivalencyConverters.TryConvert(expected, actual.GetType(), out object? converted)
+				? CompareConverted(actual, expected, converted, pairOptions.TypePairComparisons, failureBuilder,
+					memberPath, memberType, context)
+				: CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
 			return true;
 		}
 
@@ -648,11 +651,14 @@ public static partial class EquivalencyComparison
 	/// </summary>
 	/// <remarks>
 	///     The comparisons are looked up in the options that the values would be compared by members with, so a
-	///     comparison of the enclosing options applies unless the type of a value has options of its own.
+	///     comparison of the enclosing options applies unless the type of a value has options of its own.<br />
+	///     A difference shows the <paramref name="shownExpected" /> value, which differs from the
+	///     <paramref name="expected" /> value when it was converted.
 	/// </remarks>
 	private static bool TryCompareByPredicate(
 		object actual,
 		object expected,
+		object shownExpected,
 		TypePairComparison[] comparisons,
 		StringBuilder failureBuilder,
 		MemberPath memberPath,
@@ -674,7 +680,7 @@ public static partial class EquivalencyComparison
 				static values => GetComparisonThrower(values.Type, values.Path.ToString()));
 			if (!isEquivalent)
 			{
-				AppendPredicateDifference(failureBuilder, memberType, memberPath, actual, expected, comparison,
+				AppendPredicateDifference(failureBuilder, memberType, memberPath, actual, shownExpected, comparison,
 					context);
 			}
 
@@ -682,6 +688,43 @@ public static partial class EquivalencyComparison
 		}
 
 		isEquivalent = false;
+		return false;
+	}
+
+	/// <summary>
+	///     Compares the <paramref name="actual" /> value with the <paramref name="converted" /> expected value like with
+	///     any other value of its type.
+	/// </summary>
+	/// <remarks>
+	///     A difference shows the <paramref name="expected" /> value as written in the test, not the converted one.
+	/// </remarks>
+	private static bool CompareConverted(
+		object actual,
+		object expected,
+		object converted,
+		TypePairComparison[] comparisons,
+		StringBuilder failureBuilder,
+		MemberPath memberPath,
+		MemberType memberType,
+		EquivalencyContext context)
+	{
+		if (TryCompareByPredicate(actual, converted, expected, comparisons, failureBuilder, memberPath, memberType,
+			    context, out bool isEquivalent))
+		{
+			return isEquivalent;
+		}
+
+		if (EquivalencyContent.IsComparedByContent(actual.GetType()))
+		{
+			return CompareByValue(actual, converted, false, failureBuilder, memberPath, memberType, context);
+		}
+
+		if (IsEqualByValue(actual, converted, false))
+		{
+			return true;
+		}
+
+		AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
 		return false;
 	}
 

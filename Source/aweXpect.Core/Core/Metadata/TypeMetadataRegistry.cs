@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -149,6 +150,19 @@ public static class TypeMetadataRegistry
 		=> Instance.AddRecord(typeof(T));
 
 	/// <summary>
+	///     Registers the <typeparamref name="TConverter" /> that <typeparamref name="T" /> declares with a
+	///     <see cref="TypeConverterAttribute" />, so that the equivalency comparison converts an expected
+	///     <typeparamref name="T" /> to the type of the actual value.
+	/// </summary>
+	/// <remarks>
+	///     Finding the converter otherwise needs reflection, which is switched off when publishing with trimming or Native
+	///     AOT enabled.
+	/// </remarks>
+	public static void RegisterConverter<T, TConverter>()
+		where TConverter : TypeConverter, new()
+		=> Instance.AddConverter(typeof(T), EquivalencyConverters.CreateLazily(static () => new TConverter()));
+
+	/// <summary>
 	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
 	///     it returns.
 	/// </summary>
@@ -208,6 +222,9 @@ public static class TypeMetadataRegistry
 
 		public void AddRecord(Type type)
 			=> Add(type, metadata => metadata.IsCompilerGeneratedRecord = true);
+
+		public void AddConverter(Type type, Lazy<TypeConverter> converter)
+			=> Add(type, metadata => metadata.Converter = converter);
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -317,6 +334,11 @@ public static class TypeMetadataRegistry
 		public bool IsCompilerGeneratedRecord { get; set; }
 
 		/// <summary>
+		///     The converter the type declares with a <see cref="TypeConverterAttribute" />.
+		/// </summary>
+		public Lazy<TypeConverter>? Converter { get; set; }
+
+		/// <summary>
 		///     The registered events in the order of their registration.
 		/// </summary>
 		/// <remarks>
@@ -347,6 +369,7 @@ public static class TypeMetadataRegistry
 				ItemComparer = registered.ItemComparer ?? ItemComparer,
 				IsCollection = registered.IsCollection || IsCollection,
 				IsCompilerGeneratedRecord = registered.IsCompilerGeneratedRecord || IsCompilerGeneratedRecord,
+				Converter = registered.Converter ?? Converter,
 			};
 			Merge(merged.Fields, Fields, registered.Fields);
 			Merge(merged.Properties, Properties, registered.Properties);

@@ -1168,6 +1168,7 @@ namespace aweXpect.Core.Metadata
     {
         public static void RegisterBatch(System.Action register) { }
         public static void RegisterCollection<T>() { }
+        public static void RegisterConverter<T, TConverter>() where TConverter : System.ComponentModel.TypeConverter, new() { }
         public static void RegisterDictionary<TKey, TValue>() { }
         public static void RegisterEvent<T>(string name, System.Func<System.Action<object?[]>, System.Delegate> createHandler, System.Action<T, System.Delegate> addHandler, System.Action<T, System.Delegate> removeHandler) { }
         public static void RegisterExplicitProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
