@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7770.047457013811,
           7971.755490112305,
           10682.0943943904,
           7931.04435143104,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           10214.065940856934,
           9426.791743977865,
           10293.300881019006,
-          5175.605963134765
+          5175.605963134765,
+          11513.132423909505
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          303825.67996651784,
           263356.55423177086,
           382770.95842633926,
           258878.79368489582,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           367775.76983173075,
           331701.1209635417,
           360172.10367838544,
-          169806.24049479168
+          169806.24049479168,
+          367218.46588541666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590225,
           590287,
           590292,
           590287,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590292,
           590266,
           590292,
-          590288
+          590288,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          17668.177557138297,
           14544.71586717878,
           19578.425173950196,
           14434.922869873048,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           19037.75731201172,
           22139.593186442056,
           18899.421310424805,
-          9263.558100382486
+          9263.558100382486,
+          18878.039513221152
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          225.09995566095625,
           175.8557895251683,
           270.2351848057338,
           168.33460025787355,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           231.85875498453777,
           236.01130151748657,
           316.99695037206016,
-          107.81712389389673
+          107.81712389389673,
+          230.15825017860956
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          588.9297527166514,
           438.2013214111328,
           502.1989903767904,
           435.79489653905233,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           479.24793100357056,
           568.3970845767429,
           485.72344678243,
-          270.7659987722124
+          270.7659987722124,
+          485.9348871231079
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          408.55249579747516,
           312.1380790074666,
           384.33453736986434,
           348.4645422867366,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           384.4086503664652,
           419.52103318486894,
           379.75472678456987,
-          202.59627714157105
+          202.59627714157105,
+          380.9839943477086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          113.70171150990895,
           82.16497475306193,
           109.55252869129181,
           79.70712162767138,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           99.74263095004218,
           109.39850219090779,
           101.51893159548442,
-          53.01597789525986
+          53.01597789525986,
+          101.72276105483373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          325.64638247856726,
           200.38758434568132,
           254.84425926208496,
           206.38414963654108,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           243.9441827774048,
           302.4709095319112,
           244.38657492857712,
-          126.21989337035588
+          126.21989337035588,
+          242.42404237160315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          242.0282021522522,
           197.35148413976034,
           242.13599100112916,
           186.04121959209442,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           235.73802529062544,
           243.01457125345866,
           247.06816914876302,
-          121.27157018184661
+          121.27157018184661,
+          242.16389414242335
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          217.3489405155182,
           158.55246456464133,
           216.0857523759206,
           156.73081194437466,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           199.39415942705594,
           223.26458365122477,
           208.8733320236206,
-          105.51593721764428
+          105.51593721764428,
+          212.7281045436859
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          665.6529387791951,
           428.44302105903625,
           547.3123740514119,
           451.3399315198263,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           519.1424098968506,
           638.2686306408474,
           500.55054372151693,
-          267.6123641649882
+          267.6123641649882,
+          500.2596909840902
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          352.13671181996665,
           255.58346786499024,
           334.14066872229944,
           284.5666858037313,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           330.04360709871565,
           363.80842542648315,
           340.9460469654628,
-          165.58129862149556
+          165.58129862149556,
+          329.03981707646295
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          618.5508168765476,
           544.2524162292481,
           724.601040326632,
           547.7654306547983,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           679.3141191346305,
           679.4204305013021,
           684.0669346536909,
-          350.068932278951
+          350.068932278951,
+          711.4058710734049
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1543.6967314311437,
           1121.4667744954427,
           1387.3948567708333,
           1179.4152186075846,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1307.7510142008464,
           1567.4135893503824,
           1351.8111452738444,
-          714.4655644734701
+          714.4655644734701,
+          1392.1550000508626
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          647.6328786849975,
           506.2031344731649,
           666.432870165507,
           513.5285079320272,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           640.6364790109487,
           676.3494091033936,
           636.3601399739583,
-          325.1221736272176
+          325.1221736272176,
+          655.0298279444377
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          628.684294627263,
           535.6573098727634,
           704.4348600827731,
           535.3313143412272,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           679.2865728231577,
           674.7930170467922,
           710.3932214101155,
-          361.2088078816732
+          361.2088078816732,
+          685.4851449819712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          18253.325486246744,
           16014.569110107423,
           28462.832657877603,
           17545.951978410994,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           27200.530013020834,
           24865.665930175783,
           27542.928647867837,
-          9804.826781209309
+          9804.826781209309,
+          28503.07414463588
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4259,6 +4258,7 @@ window.BENCHMARK_DATA = {
           33367,
           33365,
           33367,
+          33367,
           33367
         ],
         "borderColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          757.0284495035808,
           614.8974687576294,
           795.9804546356202,
           620.7387568155924,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           773.2339996610369,
           782.4746287027995,
           765.2287247975668,
-          374.0082003389086
+          374.0082003389086,
+          804.9371222178141
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          626.863347307841,
           506.4627825873239,
           721.1166655858358,
           496.9776355743408,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           616.108654158456,
           664.7786088307698,
           624.0078235353742,
-          326.59591385523476
+          326.59591385523476,
+          655.2355301196759
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          34273.07128470285,
           55757.62966918945,
           84690.81872558594,
           52872.31494140625,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           82258.05521647136,
           61155.96433367048,
           83426.31229654948,
-          27703.324651082356
+          27703.324651082356,
+          81848.19754464286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4944,7 +4944,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           5256,
-          5256,
           5252,
           5256,
           5252,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5252,
           5254,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
       {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          142.81591520309448,
           105.41215523084004,
           134.30999252001445,
           123.53128833770752,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           134.5487054347992,
           150.1670011083285,
           135.8071904182434,
-          71.3670353492101
+          71.3670353492101,
+          141.94074853828974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          17179.020436604816,
           15707.686973571777,
           32665.412686861477,
           14949.248994954427,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           30674.84480067662,
           25073.735737391882,
           31411.419388834634,
-          9634.570831298828
+          9634.570831298828,
+          30717.495640345984
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5551,7 +5551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          240.75408074061076,
           182.5123967329661,
           258.10770113127575,
           188.5168319384257,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           239.11013610546405,
           244.21812127431232,
           234.70626040867396,
-          122.86247332890828
+          122.86247332890828,
+          233.95210826396942
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          285.74098148345945,
           233.15900200208029,
           304.6103596051534,
           228.42252747217813,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           297.6052808443705,
           301.6142504692078,
           300.73934804476227,
-          144.13194360733033
+          144.13194360733033,
+          309.41057949066163
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          473.8753970691136,
           336.66280387242637,
           406.3437856992086,
           345.96329294840496,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           379.9886278084346,
           444.1666729927063,
           375.0893073399862,
-          198.59447809855143
+          198.59447809855143,
+          373.9766913731893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          398.028454712459,
           336.3426252092634,
           423.000523630778,
           334.62842814127606,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           399.43505749335657,
           415.59048652648926,
           406.97783983670746,
-          196.31983491352625
+          196.31983491352625,
+          400.5833860397339
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          698.2741949558258,
           558.996187891279,
           720.4517538706461,
           551.2606260435922,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           708.7184155537532,
           715.3205430984497,
           709.1792603333791,
-          369.9301750500997
+          369.9301750500997,
+          698.6134647222666
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2207.2546043395996,
           1720.7080759684245,
           1932.6034987313408,
           1740.5729477746147,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1865.8952497754779,
           2203.7502242497035,
           1805.735782623291,
-          1036.6152064005535
+          1036.6152064005535,
+          1857.991102472941
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          914.9931436947414,
           781.9774660746257,
           919.8531631469726,
           764.9542441685994,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           911.6369574228922,
           960.2082491556804,
           895.1700371228732,
-          466.0429979324341
+          466.0429979324341,
+          897.198016847883
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9716.588502066475,
           8514.822473379281,
           12071.222578866142,
           8566.173863002232,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           11725.852584838867,
           11603.767028808594,
           11813.116338876578,
-          5643.487073262532
+          5643.487073262532,
+          12051.054819379535
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          32862.370064871655,
           27592.682055664063,
           40995.32376534598,
           27002.049198404948,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           40640.28186848958,
           35892.0028163365,
           40290.84531947545,
-          17174.269287109375
+          17174.269287109375,
+          42129.977095540366
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18609,
           18609,
           18609,
           18609,
@@ -7799,6 +7798,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18609,
+          18609,
           18609
         ],
         "borderColor": "#FF671B",
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          9091.033655439105,
           7862.589434305827,
           10490.723879132953,
           7887.915387667143,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           10362.083494919996,
           10247.321278163365,
           10433.537874494281,
-          5384.603485107422
+          5384.603485107422,
+          10558.812047322592
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
-        "message": "fix: reject null items in the list-valued settings of Core, Reflection and Web (#2184)"
-      },
-      {
         "sha": "34bd6e692fe6da1a688cef4da2ed5b79b8a42a17",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:34:26 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
-      "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
       "58c2e4bf",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          9151.2462111253,
           8003.639696756999,
           11764.603154109074,
           8075.0719523111975,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           11252.44660135905,
           11151.237318856376,
           11342.937955416166,
-          5332.988307189941
+          5332.988307189941,
+          11404.144384530875
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          46678.667189534506,
           39208.34562901088,
           59545.69777972881,
           38636.018157958984,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           57750.90610758463,
           51473.53996930803,
           57246.00942789714,
-          24772.86708984375
+          24772.86708984375,
+          59610.31715175084
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8486,7 +8486,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8506,6 +8505,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          17911.49846473107,
           15142.63215637207,
           20756.2164175851,
           15188.399296351841,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           20656.181604003905,
           19766.57093811035,
           20726.95289175851,
-          10507.419735248272
+          10507.419735248272,
+          20810.375270589193
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8839,6 +8839,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -8869,7 +8875,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -8903,7 +8910,8 @@ window.BENCHMARK_DATA = {
           190.75821577707927,
           175.38548285620553,
           199.78954997062684,
-          102.42984824180603
+          102.42984824180603,
+          255.36730791727703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8934,6 +8942,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208,
           208,
           208,
@@ -8984,7 +8993,8 @@ window.BENCHMARK_DATA = {
           198.28432834148407,
           247.95984319051107,
           207.02956245740253,
-          106.72698050340017
+          106.72698050340017,
+          200.4914038521903
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8996,6 +9006,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -9065,7 +9076,8 @@ window.BENCHMARK_DATA = {
           353.44130312601726,
           246.0956003482525,
           351.51809919797455,
-          118.16638568731454
+          118.16638568731454,
+          360.8957124710083
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9096,6 +9108,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488,
           488,
           488,
