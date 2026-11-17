@@ -2094,6 +2094,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -2445,7 +2451,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -2800,7 +2807,8 @@ window.BENCHMARK_DATA = {
           9426.791743977865,
           10293.300881019006,
           5175.605963134765,
-          11513.132423909505
+          11513.132423909505,
+          8234.794784545898
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3036,6 +3044,7 @@ window.BENCHMARK_DATA = {
           1984,
           1984,
           1984,
+          1968,
           1968,
           1968,
           1968,
@@ -3523,7 +3532,8 @@ window.BENCHMARK_DATA = {
           331701.1209635417,
           360172.10367838544,
           169806.24049479168,
-          367218.46588541666
+          367218.46588541666,
+          243351.04551478795
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3883,7 +3893,8 @@ window.BENCHMARK_DATA = {
           590266,
           590292,
           590288,
-          590292
+          590292,
+          590287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4246,7 +4257,8 @@ window.BENCHMARK_DATA = {
           22139.593186442056,
           18899.421310424805,
           9263.558100382486,
-          18878.039513221152
+          18878.039513221152,
+          14365.966012573243
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4258,6 +4270,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          15680,
           15680,
           15680,
           15680,
@@ -6672,6 +6685,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -7016,7 +7035,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -7364,7 +7384,8 @@ window.BENCHMARK_DATA = {
           236.01130151748657,
           316.99695037206016,
           107.81712389389673,
-          230.15825017860956
+          230.15825017860956,
+          181.7595853124346
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7560,6 +7581,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          384,
           384,
           384,
           384,
@@ -8073,7 +8095,8 @@ window.BENCHMARK_DATA = {
           568.3970845767429,
           485.72344678243,
           270.7659987722124,
-          485.9348871231079
+          485.9348871231079,
+          430.2912985165914
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8085,6 +8108,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2008,
           2008,
           2008,
           2008,
@@ -8782,7 +8806,8 @@ window.BENCHMARK_DATA = {
           419.52103318486894,
           379.75472678456987,
           202.59627714157105,
-          380.9839943477086
+          380.9839943477086,
+          303.8387575785319
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8794,6 +8819,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -15821,6 +15847,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -16935,7 +16967,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -18053,7 +18086,8 @@ window.BENCHMARK_DATA = {
           109.39850219090779,
           101.51893159548442,
           53.01597789525986,
-          101.72276105483373
+          101.72276105483373,
+          78.31573617458344
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19052,6 +19086,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          272,
           272,
           272,
           272,
@@ -20302,7 +20337,8 @@ window.BENCHMARK_DATA = {
           302.4709095319112,
           244.38657492857712,
           126.21989337035588,
-          242.42404237160315
+          242.42404237160315,
+          200.62432428995768
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20495,6 +20531,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -21832,7 +21869,8 @@ window.BENCHMARK_DATA = {
           243.01457125345866,
           247.06816914876302,
           121.27157018184661,
-          242.16389414242335
+          242.16389414242335,
+          185.87186179842269
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -21844,6 +21882,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -24344,6 +24383,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -24695,7 +24740,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -25050,7 +25096,8 @@ window.BENCHMARK_DATA = {
           223.26458365122477,
           208.8733320236206,
           105.51593721764428,
-          212.7281045436859
+          212.7281045436859,
+          167.1342261348452
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25255,6 +25302,7 @@ window.BENCHMARK_DATA = {
           520,
           392,
           392,
+          344,
           344,
           344,
           344,
@@ -25773,7 +25821,8 @@ window.BENCHMARK_DATA = {
           638.2686306408474,
           500.55054372151693,
           267.6123641649882,
-          500.2596909840902
+          500.2596909840902,
+          422.8486691157023
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25785,6 +25834,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2304,
           2304,
           2304,
           2304,
@@ -26496,7 +26546,8 @@ window.BENCHMARK_DATA = {
           363.80842542648315,
           340.9460469654628,
           165.58129862149556,
-          329.03981707646295
+          329.03981707646295,
+          262.73838872909545
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -26508,6 +26559,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -33542,6 +33594,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -34656,7 +34714,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -35774,7 +35833,8 @@ window.BENCHMARK_DATA = {
           679.4204305013021,
           684.0669346536909,
           350.068932278951,
-          711.4058710734049
+          711.4058710734049,
+          550.985778263637
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -36761,6 +36821,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          632,
           632,
           632,
           632,
@@ -38023,7 +38084,8 @@ window.BENCHMARK_DATA = {
           1567.4135893503824,
           1351.8111452738444,
           714.4655644734701,
-          1392.1550000508626
+          1392.1550000508626,
+          1138.4772139231363
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38216,6 +38278,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -39553,7 +39616,8 @@ window.BENCHMARK_DATA = {
           676.3494091033936,
           636.3601399739583,
           325.1221736272176,
-          655.0298279444377
+          655.0298279444377,
+          500.63237435477123
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39565,6 +39629,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -46643,6 +46708,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -47757,7 +47828,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -48875,7 +48947,8 @@ window.BENCHMARK_DATA = {
           674.7930170467922,
           710.3932214101155,
           361.2088078816732,
-          685.4851449819712
+          685.4851449819712,
+          530.7764073053996
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -49862,6 +49935,7 @@ window.BENCHMARK_DATA = {
           648,
           648,
           648,
+          680,
           680,
           680,
           680,
@@ -51124,7 +51198,8 @@ window.BENCHMARK_DATA = {
           24865.665930175783,
           27542.928647867837,
           9804.826781209309,
-          28503.07414463588
+          28503.07414463588,
+          16472.07058919271
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -52247,6 +52322,7 @@ window.BENCHMARK_DATA = {
           33365,
           33367,
           33367,
+          33367,
           33367
         ],
         "borderColor": "#FF671B",
@@ -52654,7 +52730,8 @@ window.BENCHMARK_DATA = {
           782.4746287027995,
           765.2287247975668,
           374.0082003389086,
-          804.9371222178141
+          804.9371222178141,
+          584.3441988627116
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -52666,6 +52743,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -55514,6 +55592,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -55923,7 +56007,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -56336,7 +56421,8 @@ window.BENCHMARK_DATA = {
           664.7786088307698,
           624.0078235353742,
           326.59591385523476,
-          655.2355301196759
+          655.2355301196759,
+          477.0456876118978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56630,6 +56716,7 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
+          1488,
           1488,
           1488,
           1488,
@@ -57175,7 +57262,8 @@ window.BENCHMARK_DATA = {
           61155.96433367048,
           83426.31229654948,
           27703.324651082356,
-          81848.19754464286
+          81848.19754464286,
+          53583.63090163011
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57593,7 +57681,8 @@ window.BENCHMARK_DATA = {
           5254,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -60049,6 +60138,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -60458,7 +60553,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -60871,7 +60967,8 @@ window.BENCHMARK_DATA = {
           150.1670011083285,
           135.8071904182434,
           71.3670353492101,
-          141.94074853828974
+          141.94074853828974,
+          106.22862704311099
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -61165,6 +61262,7 @@ window.BENCHMARK_DATA = {
           320,
           320,
           320,
+          304,
           304,
           304,
           304,
@@ -61710,7 +61808,8 @@ window.BENCHMARK_DATA = {
           25073.735737391882,
           31411.419388834634,
           9634.570831298828,
-          30717.495640345984
+          30717.495640345984,
+          15247.107376098633
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -62128,6 +62227,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -62535,7 +62635,8 @@ window.BENCHMARK_DATA = {
           244.21812127431232,
           234.70626040867396,
           122.86247332890828,
-          233.95210826396942
+          233.95210826396942,
+          186.25960516929626
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -62547,6 +62648,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
@@ -65047,6 +65149,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -65398,7 +65506,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -65753,7 +65862,8 @@ window.BENCHMARK_DATA = {
           301.6142504692078,
           300.73934804476227,
           144.13194360733033,
-          309.41057949066163
+          309.41057949066163,
+          227.72362496171678
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -65958,6 +66068,7 @@ window.BENCHMARK_DATA = {
           656,
           528,
           528,
+          480,
           480,
           480,
           480,
@@ -66476,7 +66587,8 @@ window.BENCHMARK_DATA = {
           444.1666729927063,
           375.0893073399862,
           198.59447809855143,
-          373.9766913731893
+          373.9766913731893,
+          329.6419829368591
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -66488,6 +66600,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1608,
           1608,
           1608,
           1608,
@@ -67199,7 +67312,8 @@ window.BENCHMARK_DATA = {
           415.59048652648926,
           406.97783983670746,
           196.31983491352625,
-          400.5833860397339
+          400.5833860397339,
+          340.5445177895682
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -67211,6 +67325,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          848,
           848,
           848,
           848,
@@ -69667,6 +69782,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -70018,7 +70139,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -70373,7 +70495,8 @@ window.BENCHMARK_DATA = {
           715.3205430984497,
           709.1792603333791,
           369.9301750500997,
-          698.6134647222666
+          698.6134647222666,
+          565.5571358544486
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -70609,6 +70732,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1232,
           1232,
           1232,
           1232,
@@ -71096,7 +71220,8 @@ window.BENCHMARK_DATA = {
           2203.7502242497035,
           1805.735782623291,
           1036.6152064005535,
-          1857.991102472941
+          1857.991102472941,
+          1613.1462326049805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -71108,6 +71233,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6744,
           6744,
           6744,
           6744,
@@ -71819,7 +71945,8 @@ window.BENCHMARK_DATA = {
           960.2082491556804,
           895.1700371228732,
           466.0429979324341,
-          897.198016847883
+          897.198016847883,
+          740.7013424555461
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -71831,6 +71958,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2240,
           2240,
           2240,
           2240,
@@ -74287,6 +74415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -74638,7 +74772,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -74993,7 +75128,8 @@ window.BENCHMARK_DATA = {
           11603.767028808594,
           11813.116338876578,
           5643.487073262532,
-          12051.054819379535
+          12051.054819379535,
+          8546.105925496418
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -75232,6 +75368,7 @@ window.BENCHMARK_DATA = {
           1712,
           1712,
           1712,
+          1720,
           1720,
           1720,
           1720,
@@ -75716,7 +75853,8 @@ window.BENCHMARK_DATA = {
           35892.0028163365,
           40290.84531947545,
           17174.269287109375,
-          42129.977095540366
+          42129.977095540366,
+          26988.3541935512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -76053,6 +76191,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -76439,7 +76578,8 @@ window.BENCHMARK_DATA = {
           10247.321278163365,
           10433.537874494281,
           5384.603485107422,
-          10558.812047322592
+          10558.812047322592,
+          7817.982357570103
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -76451,6 +76591,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1824,
           1824,
           1824,
           1824,
@@ -78907,6 +79048,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -79258,7 +79405,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -79613,7 +79761,8 @@ window.BENCHMARK_DATA = {
           11151.237318856376,
           11342.937955416166,
           5332.988307189941,
-          11404.144384530875
+          11404.144384530875,
+          8003.775025587815
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -79852,6 +80001,7 @@ window.BENCHMARK_DATA = {
           2192,
           2192,
           2192,
+          2200,
           2200,
           2200,
           2200,
@@ -80336,7 +80486,8 @@ window.BENCHMARK_DATA = {
           51473.53996930803,
           57246.00942789714,
           24772.86708984375,
-          59610.31715175084
+          59610.31715175084,
+          38809.106412447414
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -80669,6 +80820,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -81059,7 +81211,8 @@ window.BENCHMARK_DATA = {
           19766.57093811035,
           20726.95289175851,
           10507.419735248272,
-          20810.375270589193
+          20810.375270589193,
+          15277.673760550362
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -81071,6 +81224,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          2920,
           2920,
           2920,
           2920,
@@ -81607,6 +81761,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
@@ -81638,7 +81798,8 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
@@ -81673,7 +81834,8 @@ window.BENCHMARK_DATA = {
           175.38548285620553,
           199.78954997062684,
           102.42984824180603,
-          255.36730791727703
+          255.36730791727703,
+          157.37187002499897
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -81704,6 +81866,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208,
           208,
           208,
@@ -81756,7 +81919,8 @@ window.BENCHMARK_DATA = {
           247.95984319051107,
           207.02956245740253,
           106.72698050340017,
-          200.4914038521903
+          200.4914038521903,
+          169.97448803697313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -81768,6 +81932,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -81839,7 +82004,8 @@ window.BENCHMARK_DATA = {
           246.0956003482525,
           351.51809919797455,
           118.16638568731454,
-          360.8957124710083
+          360.8957124710083,
+          198.94630279541016
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -81870,6 +82036,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488,
           488,
           488,
