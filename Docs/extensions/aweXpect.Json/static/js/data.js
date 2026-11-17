@@ -1716,6 +1716,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -2004,7 +2010,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -2296,7 +2303,8 @@ window.BENCHMARK_DATA = {
           2123.4801720210485,
           1572.652847290039,
           1989.6077699661255,
-          1567.0479545593262
+          1567.0479545593262,
+          1441.658516223614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2442,6 +2450,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2893,7 +2902,8 @@ window.BENCHMARK_DATA = {
           15050.270794459751,
           10994.717174275716,
           16615.367903645834,
-          10159.470987592425
+          10159.470987592425,
+          9914.697369384765
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2905,6 +2915,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -4920,6 +4931,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -5208,7 +5225,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -5500,7 +5518,8 @@ window.BENCHMARK_DATA = {
           1622.681305371798,
           1247.7755767277308,
           1649.9122157778058,
-          1219.0085327965874
+          1219.0085327965874,
+          1126.6157945905413
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5646,6 +5665,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -6097,7 +6117,8 @@ window.BENCHMARK_DATA = {
           13791.761687215168,
           9836.806711832682,
           14451.721668788365,
-          9344.171761145959
+          9344.171761145959,
+          9165.310422770182
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6109,6 +6130,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -8064,6 +8086,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -8342,7 +8370,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -8624,7 +8653,8 @@ window.BENCHMARK_DATA = {
           5038.399965286255,
           3896.969349161784,
           5559.634200541178,
-          3930.481143951416
+          3930.481143951416,
+          3485.338065846761
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8807,6 +8837,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -9201,7 +9232,8 @@ window.BENCHMARK_DATA = {
           41744.392423502606,
           28749.606184895834,
           46739.72054617746,
-          28056.927497355144
+          28056.927497355144,
+          28902.504256184897
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9488,6 +9520,7 @@ window.BENCHMARK_DATA = {
           61925,
           61926,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -11158,6 +11191,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -11436,7 +11475,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -11718,7 +11758,8 @@ window.BENCHMARK_DATA = {
           9877.432601928711,
           7333.253802998861,
           9448.228754679361,
-          7278.533350263323
+          7278.533350263323,
+          6933.687888081869
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -11854,6 +11895,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -12295,7 +12337,8 @@ window.BENCHMARK_DATA = {
           291217.0144042969,
           202853.8486328125,
           309560.621882512,
-          201133.82610212054
+          201133.82610212054,
+          193112.28367396764
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12582,7 +12625,8 @@ window.BENCHMARK_DATA = {
           521572,
           521594,
           521594,
-          521594
+          521594,
+          521541
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14252,6 +14296,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -14530,7 +14580,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -14812,7 +14863,8 @@ window.BENCHMARK_DATA = {
           3108.7864202771866,
           2179.3267993927,
           2887.0414657592773,
-          2183.0796673114482
+          2183.0796673114482,
+          2217.1312540690105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14998,6 +15050,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -15389,7 +15442,8 @@ window.BENCHMARK_DATA = {
           2078.5829674857005,
           1463.3359880447388,
           1943.9779823303222,
-          1432.6801464374248
+          1432.6801464374248,
+          1550.8821870168051
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15401,6 +15455,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -17346,6 +17401,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -17624,7 +17685,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -17906,7 +17968,8 @@ window.BENCHMARK_DATA = {
           2747.4408350626627,
           2147.4234406607493,
           2992.0010787963865,
-          2179.5279591878257
+          2179.5279591878257,
+          1960.4299883524577
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18089,6 +18152,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -18483,7 +18547,8 @@ window.BENCHMARK_DATA = {
           1989.157934061686,
           1493.6406791687011,
           1900.921873219808,
-          1325.1518877574376
+          1325.1518877574376,
+          1477.4626786549886
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18495,6 +18560,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -19738,6 +19804,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -19899,7 +19971,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -20064,7 +20137,8 @@ window.BENCHMARK_DATA = {
           2237.3565569559732,
           1723.4775581359863,
           2413.3453216552734,
-          1730.9716250101726
+          1730.9716250101726,
+          1595.1299140930175
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20130,6 +20204,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -20407,7 +20482,8 @@ window.BENCHMARK_DATA = {
           1357.7363758087158,
           954.6520275115967,
           1152.4242350260417,
-          907.6308310215289
+          907.6308310215289,
+          1020.9613711039225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20419,6 +20495,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -21545,6 +21622,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -21706,7 +21789,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -21871,7 +21955,8 @@ window.BENCHMARK_DATA = {
           3296.384835379464,
           2337.00180376493,
           3081.9924466451007,
-          2289.4311221440635
+          2289.4311221440635,
+          2173.643751144409
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21921,6 +22006,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -22214,7 +22300,8 @@ window.BENCHMARK_DATA = {
           1496.4628651936848,
           1137.1963990075249,
           1334.4355269840785,
-          1028.7155975341798
+          1028.7155975341798,
+          1141.0512537638347
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22226,6 +22313,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -23010,6 +23098,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -23114,7 +23208,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -23222,7 +23317,8 @@ window.BENCHMARK_DATA = {
           173629.20318134016,
           129113.03030598958,
           166219.0934307392,
-          125784.44950358073
+          125784.44950358073,
+          124491.33166503906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23234,6 +23330,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -23451,7 +23548,8 @@ window.BENCHMARK_DATA = {
           199207.30712890625,
           151155.99972098213,
           192040.26663643974,
-          144191.98375651042
+          144191.98375651042,
+          142559.69365985578
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23564,7 +23662,8 @@ window.BENCHMARK_DATA = {
           266873,
           266950,
           266950,
-          266950
+          266950,
+          266882
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24190,6 +24289,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 22:50:32 2026 \u002B0000",
         "message": "chore: Bump the mstest group with 2 updates (#2253)"
+      },
+      {
+        "sha": "2ae7ee43512d13451a09a412177dc8a4ce09863d",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 5 updates (#2254)"
       }
     ],
     "labels": [
@@ -24294,7 +24399,8 @@ window.BENCHMARK_DATA = {
       "2ad6489b",
       "727c5520",
       "c7e470c5",
-      "c3a5defc"
+      "c3a5defc",
+      "2ae7ee43"
     ],
     "datasets": [
       {
@@ -24402,7 +24508,8 @@ window.BENCHMARK_DATA = {
           2655.894285837809,
           2130.498626200358,
           2806.0460123697917,
-          2024.1291506840632
+          2024.1291506840632,
+          1743.075824192592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24414,6 +24521,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -24631,7 +24739,8 @@ window.BENCHMARK_DATA = {
           1996.835540008545,
           1439.9398747762045,
           1850.9162314097086,
-          1356.3893432617188
+          1356.3893432617188,
+          1405.7507025400798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24643,6 +24752,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
