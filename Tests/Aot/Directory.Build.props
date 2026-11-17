@@ -34,7 +34,8 @@
 		<IsTestProject>false</IsTestProject>
 		<SonarQubeExclude>true</SonarQubeExclude>
 		<SignAssembly>False</SignAssembly>
-		<NoWarn>701;1702;CA1845</NoWarn>
+		<NoWarn>1701;1702;CA1845</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 
 	<!-- The shared checks verify aweXpect under each test framework; an extension brings its own checks. -->
