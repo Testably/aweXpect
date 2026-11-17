@@ -79,7 +79,7 @@ using aweXpect.Core.Metadata;
 [assembly: GenerateMetadata(typeof(Track))]
 ```
 
-`GenerateMetadata` registers the members and the events of the type. The generator only sees the types declared in
+`GenerateMetadata` registers the members, the events and the `[TypeConverter]` of the type. The generator only sees the types declared in
 your source, so you need it for:
 
 - the instance behind a member or subject declared as `object`, an interface, an abstract class or a base type, which

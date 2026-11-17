@@ -114,6 +114,11 @@ reported as ambiguous. Failures name the kind of the *expected* member.
   [`It.Is<T>()`](#per-property-expectations-with-itist).
 - A `JsonElement` or `JsonNode` is compared by its JSON text without the whitespace between tokens, so the order of
   the properties and the notation of numbers still matter: `{"a":1.0}` differs from `{"a":1}`.
+- An expected value whose type declares a `[TypeConverter]` is converted to the type of the actual value, when that type
+  is compared by value and the converter supports it, so a builder can stand for the `DateTime` it builds. Only the
+  expected value is converted, never to `string` and never from a type of `System` or `Microsoft`. A
+  [predicate](#comparing-different-types-with-a-predicate) for the converted types applies, and a failure shows the
+  value as you wrote it.
 
 ### Collections and dictionaries
 

@@ -58,6 +58,15 @@ internal static class Checks
 				});
 				await That(actual).IsEquivalentTo(expected);
 			}, "[vip]")),
+		new("an expected value is converted by the type converter its type declares",
+			() => ShouldPass(async ()
+				=> await That(new Album("Abbey Road", new DateTime(1969, 9, 26)))
+					.IsEquivalentTo(new { Title = "Abbey Road", Released = new ReleaseDate(1969, 9, 26), }))),
+		new("a converted expected value that differs fails",
+			() => ShouldFail(async ()
+				=> await That(new Album("Abbey Road", new DateTime(1969, 9, 26)))
+					.IsEquivalentTo(new { Title = "Abbey Road", Released = new ReleaseDate(1969, 10, 31), }),
+				"Released differed")),
 		new("a dictionary is compared with its key comparer",
 			() => ShouldPass(async () =>
 			{
