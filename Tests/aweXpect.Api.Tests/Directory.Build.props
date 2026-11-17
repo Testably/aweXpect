@@ -13,8 +13,10 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<NoWarn>701;1702;CA1845;S2699</NoWarn>
-		<WarningsAsErrors>$(WarningsAsErrors);CS8620</WarningsAsErrors>
+		<NoWarn>1701;1702;CA1845;S2699</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<!-- A newly published advisory must not fail an unrelated build. -->
+		<WarningsNotAsErrors>$(WarningsNotAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsNotAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup>
