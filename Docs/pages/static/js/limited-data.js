@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11082.352454049247,
           7737.92293724647,
           7770.047457013811,
           7971.755490112305,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           7725.828825730544,
           7667.840589250837,
           10214.065940856934,
-          9426.791743977865
+          9426.791743977865,
+          10293.300881019006
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          384164.57200520835,
           255276.38040364583,
           303825.67996651784,
           263356.55423177086,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           265978.758203125,
           253442.3818359375,
           367775.76983173075,
-          331701.1209635417
+          331701.1209635417,
+          360172.10367838544
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -545,7 +545,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          590292,
           590288,
           590225,
           590287,
@@ -594,7 +593,8 @@ window.BENCHMARK_DATA = {
           590288,
           590288,
           590292,
-          590266
+          590266,
+          590292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -609,7 +609,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          19764.84799194336,
           14236.347882952008,
           17668.177557138297,
           14544.71586717878,
@@ -658,7 +657,8 @@ window.BENCHMARK_DATA = {
           14666.130574544271,
           14264.908586774554,
           19037.75731201172,
-          22139.593186442056
+          22139.593186442056,
+          18899.421310424805
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -735,12 +735,6 @@ window.BENCHMARK_DATA = {
   "ItemsCount_AtLeast": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -1033,10 +1027,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -1085,14 +1084,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          331.66513713200885,
           182.89270445278711,
           225.09995566095625,
           175.8557895251683,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           186.15514845848082,
           172.95355728694372,
           231.85875498453777,
-          236.01130151748657
+          236.01130151748657,
+          316.99695037206016
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1217,7 +1217,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          552.7654976526896,
           422.539989344279,
           588.9297527166514,
           438.2013214111328,
@@ -1266,7 +1265,8 @@ window.BENCHMARK_DATA = {
           446.40052808125813,
           434.60047041575115,
           479.24793100357056,
-          568.3970845767429
+          568.3970845767429,
+          485.72344678243
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1342,7 +1342,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          420.9972195943197,
           314.79348105650683,
           408.55249579747516,
           312.1380790074666,
@@ -1391,7 +1390,8 @@ window.BENCHMARK_DATA = {
           306.8319716453552,
           300.7171937306722,
           384.4086503664652,
-          419.52103318486894
+          419.52103318486894,
+          379.75472678456987
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1468,12 +1468,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -1766,10 +1760,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -1818,14 +1817,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          108.31948997974396,
           85.58905855246952,
           113.70171150990895,
           82.16497475306193,
@@ -1874,7 +1873,8 @@ window.BENCHMARK_DATA = {
           84.96287916501363,
           81.93195377985636,
           99.74263095004218,
-          109.39850219090779
+          109.39850219090779,
+          101.51893159548442
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1950,7 +1950,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          269.2680602709452,
           196.07251926830835,
           325.64638247856726,
           200.38758434568132,
@@ -1999,7 +1998,8 @@ window.BENCHMARK_DATA = {
           203.41069771693304,
           203.31076946258545,
           243.9441827774048,
-          302.4709095319112
+          302.4709095319112,
+          244.38657492857712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2075,7 +2075,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          257.8455810546875,
           176.76377620015825,
           242.0282021522522,
           197.35148413976034,
@@ -2124,7 +2123,8 @@ window.BENCHMARK_DATA = {
           191.5358113875756,
           187.1003658612569,
           235.73802529062544,
-          243.01457125345866
+          243.01457125345866,
+          247.06816914876302
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2201,12 +2201,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -2499,10 +2493,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -2551,14 +2550,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          219.41062421798705,
           158.1358119249344,
           217.3489405155182,
           158.55246456464133,
@@ -2607,7 +2606,8 @@ window.BENCHMARK_DATA = {
           157.78079107602437,
           167.26104565767142,
           199.39415942705594,
-          223.26458365122477
+          223.26458365122477,
+          208.8733320236206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,7 +2683,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          581.1067529678345,
           423.374032052358,
           665.6529387791951,
           428.44302105903625,
@@ -2732,7 +2731,8 @@ window.BENCHMARK_DATA = {
           434.304903779711,
           406.50658331598555,
           519.1424098968506,
-          638.2686306408474
+          638.2686306408474,
+          500.55054372151693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2808,7 +2808,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          355.635246855872,
           278.29092270533243,
           352.13671181996665,
           255.58346786499024,
@@ -2857,7 +2856,8 @@ window.BENCHMARK_DATA = {
           274.79039777119954,
           245.5480636869158,
           330.04360709871565,
-          363.80842542648315
+          363.80842542648315,
+          340.9460469654628
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2934,12 +2934,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -3232,10 +3226,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -3284,14 +3283,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          739.7887395858764,
           571.2629759652274,
           618.5508168765476,
           544.2524162292481,
@@ -3340,7 +3339,8 @@ window.BENCHMARK_DATA = {
           549.8889215333121,
           522.9807176589966,
           679.3141191346305,
-          679.4204305013021
+          679.4204305013021,
+          684.0669346536909
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3416,7 +3416,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1450.913328297933,
           1163.5314646402994,
           1543.6967314311437,
           1121.4667744954427,
@@ -3465,7 +3464,8 @@ window.BENCHMARK_DATA = {
           1149.5122067769369,
           1108.0305737813314,
           1307.7510142008464,
-          1567.4135893503824
+          1567.4135893503824,
+          1351.8111452738444
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3541,7 +3541,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          710.2224672317504,
           546.6877751668294,
           647.6328786849975,
           506.2031344731649,
@@ -3590,7 +3589,8 @@ window.BENCHMARK_DATA = {
           525.4735500471933,
           510.81571712493894,
           640.6364790109487,
-          676.3494091033936
+          676.3494091033936,
+          636.3601399739583
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3667,12 +3667,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -3965,10 +3959,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -4017,14 +4016,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          726.022767680032,
           557.9554260889689,
           628.684294627263,
           535.6573098727634,
@@ -4073,7 +4072,8 @@ window.BENCHMARK_DATA = {
           537.1877356937954,
           520.7190535227458,
           679.2865728231577,
-          674.7930170467922
+          674.7930170467922,
+          710.3932214101155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4149,7 +4149,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28945.438170369467,
           17078.28748732347,
           18253.325486246744,
           16014.569110107423,
@@ -4198,7 +4197,8 @@ window.BENCHMARK_DATA = {
           16505.567576090496,
           15935.34903564453,
           27200.530013020834,
-          24865.665930175783
+          24865.665930175783,
+          27542.928647867837
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4210,7 +4210,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33471,
           33465,
           33471,
@@ -4259,7 +4258,8 @@ window.BENCHMARK_DATA = {
           33367,
           33367,
           33367,
-          33365
+          33365,
+          33367
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4274,7 +4274,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          845.544377708435,
           635.1385590871175,
           757.0284495035808,
           614.8974687576294,
@@ -4323,7 +4322,8 @@ window.BENCHMARK_DATA = {
           590.4581829479763,
           589.3566037495931,
           773.2339996610369,
-          782.4746287027995
+          782.4746287027995,
+          765.2287247975668
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4400,12 +4400,6 @@ window.BENCHMARK_DATA = {
   "EventTriggered": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -4698,10 +4692,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -4750,14 +4749,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          635.0987175623576,
           483.70685144571155,
           626.863347307841,
           506.4627825873239,
@@ -4806,7 +4805,8 @@ window.BENCHMARK_DATA = {
           522.3063416163127,
           480.66394526163737,
           616.108654158456,
-          664.7786088307698
+          664.7786088307698,
+          624.0078235353742
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4882,7 +4882,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          85032.96202674278,
           54837.705802408855,
           34273.07128470285,
           55757.62966918945,
@@ -4931,7 +4930,8 @@ window.BENCHMARK_DATA = {
           53907.07500813802,
           54128.436161295576,
           82258.05521647136,
-          61155.96433367048
+          61155.96433367048,
+          83426.31229654948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4943,7 +4943,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          5252,
           5256,
           5256,
           5256,
@@ -4992,7 +4991,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5254
+          5254,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5007,12 +5007,6 @@ window.BENCHMARK_DATA = {
   },
   "Satisfies": {
     "commits": [
-      {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
       {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
@@ -5306,10 +5300,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -5358,14 +5357,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          139.74606606165568,
           103.30361034870148,
           142.81591520309448,
           105.41215523084004,
@@ -5414,7 +5413,8 @@ window.BENCHMARK_DATA = {
           101.02712866465251,
           102.04563855330149,
           134.5487054347992,
-          150.1670011083285
+          150.1670011083285,
+          135.8071904182434
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5490,7 +5490,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          33927.89495035807,
           14959.991483561198,
           17179.020436604816,
           15707.686973571777,
@@ -5539,7 +5538,8 @@ window.BENCHMARK_DATA = {
           15137.068521118164,
           15198.87383219401,
           30674.84480067662,
-          25073.735737391882
+          25073.735737391882,
+          31411.419388834634
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5553,7 +5553,6 @@ window.BENCHMARK_DATA = {
         "data": [
           5614,
           5614,
-          5614,
           5615,
           5614,
           5615,
@@ -5600,7 +5599,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5615,7 +5615,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          255.40481907980782,
           184.632887951533,
           240.75408074061076,
           182.5123967329661,
@@ -5664,7 +5663,8 @@ window.BENCHMARK_DATA = {
           186.3753058274587,
           183.96103288577154,
           239.11013610546405,
-          244.21812127431232
+          244.21812127431232,
+          234.70626040867396
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5741,12 +5741,6 @@ window.BENCHMARK_DATA = {
   "Contains": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -6039,10 +6033,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -6091,14 +6090,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          308.7871476809184,
           228.49099661622728,
           285.74098148345945,
           233.15900200208029,
@@ -6147,7 +6146,8 @@ window.BENCHMARK_DATA = {
           241.54267149705154,
           230.92034784385137,
           297.6052808443705,
-          301.6142504692078
+          301.6142504692078,
+          300.73934804476227
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6223,7 +6223,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          418.9914395014445,
           330.6550660133362,
           473.8753970691136,
           336.66280387242637,
@@ -6272,7 +6271,8 @@ window.BENCHMARK_DATA = {
           333.6179276784261,
           309.69104525248207,
           379.9886278084346,
-          444.1666729927063
+          444.1666729927063,
+          375.0893073399862
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6348,7 +6348,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          424.36002124150593,
           347.74627742767336,
           398.028454712459,
           336.3426252092634,
@@ -6397,7 +6396,8 @@ window.BENCHMARK_DATA = {
           344.2480423927307,
           324.8626009305318,
           399.43505749335657,
-          415.59048652648926
+          415.59048652648926,
+          406.97783983670746
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -6474,12 +6474,6 @@ window.BENCHMARK_DATA = {
   "Multiple": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -6772,10 +6766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -6824,14 +6823,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          748.310804435185,
           570.0206724575588,
           698.2741949558258,
           558.996187891279,
@@ -6880,7 +6879,8 @@ window.BENCHMARK_DATA = {
           557.4930598395212,
           580.8272602217538,
           708.7184155537532,
-          715.3205430984497
+          715.3205430984497,
+          709.1792603333791
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6956,7 +6956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2120.196397781372,
           1638.542156346639,
           2207.2546043395996,
           1720.7080759684245,
@@ -7005,7 +7004,8 @@ window.BENCHMARK_DATA = {
           1551.410796991984,
           1624.4684111277263,
           1865.8952497754779,
-          2203.7502242497035
+          2203.7502242497035,
+          1805.735782623291
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7081,7 +7081,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          1022.1797915140788,
           830.564300610469,
           914.9931436947414,
           781.9774660746257,
@@ -7130,7 +7129,8 @@ window.BENCHMARK_DATA = {
           727.7141534169515,
           741.8466379801432,
           911.6369574228922,
-          960.2082491556804
+          960.2082491556804,
+          895.1700371228732
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7207,12 +7207,6 @@ window.BENCHMARK_DATA = {
   "Throws": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -7505,10 +7499,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -7557,14 +7556,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          12270.772983006069,
           8522.82632798415,
           9716.588502066475,
           8514.822473379281,
@@ -7613,7 +7612,8 @@ window.BENCHMARK_DATA = {
           8491.38618687221,
           8588.383245849609,
           11725.852584838867,
-          11603.767028808594
+          11603.767028808594,
+          11813.116338876578
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7689,7 +7689,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          40382.99315970285,
           27342.850977971004,
           32862.370064871655,
           27592.682055664063,
@@ -7738,7 +7737,8 @@ window.BENCHMARK_DATA = {
           27088.379738943917,
           26603.300550188338,
           40640.28186848958,
-          35892.0028163365
+          35892.0028163365,
+          40290.84531947545
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7750,7 +7750,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          18394,
           18609,
           18609,
           18609,
@@ -7779,6 +7778,7 @@ window.BENCHMARK_DATA = {
           18609,
           18609,
           18608,
+          18609,
           18609,
           18609,
           18609,
@@ -7814,7 +7814,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          10709.443417140415,
           7896.369658333914,
           9091.033655439105,
           7862.589434305827,
@@ -7863,7 +7862,8 @@ window.BENCHMARK_DATA = {
           7869.198741367885,
           7823.9894291804385,
           10362.083494919996,
-          10247.321278163365
+          10247.321278163365,
+          10433.537874494281
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7940,12 +7940,6 @@ window.BENCHMARK_DATA = {
   "ThrowsAsync": {
     "commits": [
       {
-        "sha": "60f2a5830e95d0205257c1087ef45aede2d5572d",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 15:10:20 2026 \u002B0100",
-        "message": "test: keep the abandoned task of the ExecutesIn timeout tests pending (#2179)"
-      },
-      {
         "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
@@ -8238,10 +8232,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
-      "60f2a583",
       "4f093bbd",
       "a5924ccd",
       "34bd6e69",
@@ -8290,14 +8289,14 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          11723.398033650716,
           8110.120013645717,
           9151.2462111253,
           8003.639696756999,
@@ -8346,7 +8345,8 @@ window.BENCHMARK_DATA = {
           8001.52154976981,
           8032.570708138602,
           11252.44660135905,
-          11151.237318856376
+          11151.237318856376,
+          11342.937955416166
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8422,7 +8422,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          60028.240342360274,
           38798.54372297014,
           46678.667189534506,
           39208.34562901088,
@@ -8471,7 +8470,8 @@ window.BENCHMARK_DATA = {
           38979.9505746024,
           37980.49460710798,
           57750.90610758463,
-          51473.53996930803
+          51473.53996930803,
+          57246.00942789714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8488,7 +8488,6 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23553,
-          23553,
           23554,
           23553,
           23553,
@@ -8508,6 +8507,7 @@ window.BENCHMARK_DATA = {
           23553,
           23553,
           23554,
+          23553,
           23553,
           23553,
           23553,
@@ -8547,7 +8547,6 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          21463.75767211914,
           15368.306867327008,
           17911.49846473107,
           15142.63215637207,
@@ -8596,7 +8595,8 @@ window.BENCHMARK_DATA = {
           15288.179001871746,
           15273.37304280599,
           20656.181604003905,
-          19766.57093811035
+          19766.57093811035,
+          20726.95289175851
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8827,6 +8827,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:18:31 2026 \u002B0000",
         "message": "chore: Bump Microsoft.Bcl.TimeProvider from 10.0.14 to 11.0.0 (#2257)"
+      },
+      {
+        "sha": "27f14a50a7015a2e1955778597ec2823548d268a",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
+        "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
       }
     ],
     "labels": [
@@ -8855,7 +8861,8 @@ window.BENCHMARK_DATA = {
       "c3a5defc",
       "2ae7ee43",
       "ce2186a2",
-      "17ab26ba"
+      "17ab26ba",
+      "27f14a50"
     ],
     "datasets": [
       {
@@ -8887,7 +8894,8 @@ window.BENCHMARK_DATA = {
           165.9237376689911,
           153.82416003545126,
           190.75821577707927,
-          175.38548285620553
+          175.38548285620553,
+          199.78954997062684
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8918,6 +8926,7 @@ window.BENCHMARK_DATA = {
           280,
           280,
           280,
+          208,
           208,
           208,
           208,
@@ -8964,7 +8973,8 @@ window.BENCHMARK_DATA = {
           176.31545532544453,
           172.7713676232558,
           198.28432834148407,
-          247.95984319051107
+          247.95984319051107,
+          207.02956245740253
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8976,6 +8986,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          928,
           928,
           928,
           928,
@@ -9041,7 +9052,8 @@ window.BENCHMARK_DATA = {
           196.43688634725717,
           196.1059648990631,
           353.44130312601726,
-          246.0956003482525
+          246.0956003482525,
+          351.51809919797455
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -9072,6 +9084,7 @@ window.BENCHMARK_DATA = {
           704,
           704,
           704,
+          488,
           488,
           488,
           488,
