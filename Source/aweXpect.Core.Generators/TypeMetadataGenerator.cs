@@ -351,7 +351,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		ImmutableArray<TypeRegistration> registrations = walker.Registrations;
 		ImmutableArray<UnregisteredType> unregistered = named
-			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type) || r.Key == EventsKey(SeedKey(x.Type))))
+			.Where(x => !registrations.Any(r => r.Key == SeedKey(x.Type) || r.Key == EventsKey(SeedKey(x.Type)) ||
+			                                    r.Key == ConverterKey(SeedKey(x.Type))))
 			.Select(x => new UnregisteredType(x.Type.ToDisplayString(), x.AttributeIndex))
 			.ToImmutableArray();
 		return new AssemblyRegistrations(new EquatableArray<TypeRegistration>(registrations),
@@ -395,6 +396,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// </remarks>
 	private static string EventsKey(string typeName)
 		=> "events of " + typeName;
+
+	private static string ConverterKey(string typeName)
+		=> "converter of " + typeName;
 
 	/// <remarks>
 	///     Registering against an older aweXpect.Core would not compile, so anything but a matching registry
@@ -702,6 +706,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private bool? _supportsRecordRegistration;
 
+		private bool? _supportsConverterRegistration;
+
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
 		public void Seed(ITypeSymbol? type)
@@ -725,8 +731,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 
 			named = named.TupleUnderlyingType ?? named;
-			if (!_visited.Add(named) || IsComparedByValue(named) || ContainsTypeParameter(named) ||
-			    IsExpectation(named))
+			if (!_visited.Add(named))
+			{
+				return;
+			}
+
+			SeedConverter(named);
+			if (IsComparedByValue(named) || ContainsTypeParameter(named) || IsExpectation(named))
 			{
 				return;
 			}
@@ -824,6 +835,56 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				_registrations.Add(new TypeRegistration("set of " + argument,
 					new StringBuilder().Append("\t\t").Append(Registry).Append(".RegisterSet<").Append(argument)
 						.AppendLine(">();").ToString(), "", null));
+			}
+		}
+
+		/// <remarks>
+		///     The comparison converts an expected value with the converter its type declares, which it can otherwise only
+		///     find by reflection. Only a converter that the generated code can create is registered: an accessible,
+		///     non-abstract <c>TypeConverter</c> with a public parameterless constructor, named by type in the attribute.
+		///     Mirrors <c>EquivalencyConverters</c>, which ignores the converters of the framework types.
+		/// </remarks>
+		private void SeedConverter(INamedTypeSymbol type)
+		{
+			_supportsConverterRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterConverter").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+			if (_supportsConverterRegistration != true || IsFramework(type) || ContainsTypeParameter(type) ||
+			    !IsNameable(type) || !IsReferenceable(type))
+			{
+				return;
+			}
+
+			AttributeData? attribute = type.GetAttributes().FirstOrDefault(x
+				=> x.AttributeClass?.ToDisplayString() == "System.ComponentModel.TypeConverterAttribute");
+			if (attribute is null || attribute.ConstructorArguments.Length != 1 ||
+			    attribute.ConstructorArguments[0].Value is not INamedTypeSymbol converter ||
+			    converter.IsAbstract || ContainsTypeParameter(converter) || !IsReferenceable(converter) ||
+			    !IsTypeConverter(converter) ||
+			    !converter.InstanceConstructors.Any(x
+				    => x.Parameters.Length == 0 && x.DeclaredAccessibility == Accessibility.Public))
+			{
+				return;
+			}
+
+			string typeName = type.ToDisplayString(TypeFormat);
+			_registrations.Add(new TypeRegistration(ConverterKey(typeName),
+				new StringBuilder().Append("\t\t").Append(Registry).Append(".RegisterConverter<").Append(typeName)
+					.Append(", ").Append(converter.ToDisplayString(TypeFormat)).AppendLine(">();").ToString(), "",
+				null));
+
+			static bool IsTypeConverter(INamedTypeSymbol converter)
+			{
+				for (INamedTypeSymbol? current = converter; current is not null; current = current.BaseType)
+				{
+					if (current.ToDisplayString() == "System.ComponentModel.TypeConverter")
+					{
+						return true;
+					}
+				}
+
+				return false;
 			}
 		}
 

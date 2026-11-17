@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using aweXpect.Core.Metadata;
 
 [assembly: GenerateMetadata(typeof(aweXpect.Aot.Shipment))]
@@ -124,4 +126,28 @@ public sealed class HiddenPublisher : IPublisher
 	public event EventHandler? Changed;
 
 	public void RaiseChanged() => Changed?.Invoke(this, EventArgs.Empty);
+}
+
+public sealed record Album(string Title, DateTime Released);
+
+/// <summary>
+///     Converts to a <see cref="DateTime" /> only through its declared converter, which the generator has to register,
+///     because the attribute cannot be read by reflection when publishing with Native AOT.
+/// </summary>
+[TypeConverter(typeof(ReleaseDateConverter))]
+public readonly struct ReleaseDate(int year, int month, int day)
+{
+	public DateTime Value { get; } = new(year, month, day);
+}
+
+public sealed class ReleaseDateConverter : TypeConverter
+{
+	public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType)
+		=> destinationType == typeof(DateTime) || base.CanConvertTo(context, destinationType);
+
+	public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value,
+		Type destinationType)
+		=> value is ReleaseDate releaseDate && destinationType == typeof(DateTime)
+			? releaseDate.Value
+			: base.ConvertTo(context, culture, value, destinationType);
 }

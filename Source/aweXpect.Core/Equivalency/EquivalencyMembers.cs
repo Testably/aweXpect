@@ -308,7 +308,7 @@ internal static class EquivalencyMembers
 	private static bool IsOwn(Type declaringType)
 		=> !IsFramework(declaringType) && !declaringType.IsDefined(typeof(CompilerGeneratedAttribute), false);
 
-	private static bool IsFramework(Type type)
+	internal static bool IsFramework(Type type)
 		=> type.Namespace is { } typeNamespace &&
 		   (IsOrIsNestedIn(typeNamespace, "System") || IsOrIsNestedIn(typeNamespace, "Microsoft"));
 
