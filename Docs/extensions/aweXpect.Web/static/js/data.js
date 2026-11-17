@@ -1752,6 +1752,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -2046,7 +2052,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -2344,7 +2351,8 @@ window.BENCHMARK_DATA = {
           479.0837610789708,
           445.7286325454712,
           479.29560610453285,
-          334.61388979639327
+          334.61388979639327,
+          337.1931755883353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2619,6 +2627,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -2953,7 +2962,8 @@ window.BENCHMARK_DATA = {
           1043.203540802002,
           969.6990740849421,
           1014.4522838592529,
-          768.2031251271566
+          768.2031251271566,
+          804.6551114400228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2965,6 +2975,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5022,6 +5033,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -5316,7 +5333,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -5614,7 +5632,8 @@ window.BENCHMARK_DATA = {
           251.92876974741617,
           262.84915075302126,
           244.23889108804556,
-          175.1115577697754
+          175.1115577697754,
+          187.44005489349365
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5761,6 +5780,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6223,7 +6243,8 @@ window.BENCHMARK_DATA = {
           251.0081767302293,
           262.4994293621608,
           279.78438946406044,
-          201.1484891634721
+          201.1484891634721,
+          223.59863989693778
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6235,6 +6256,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8232,6 +8254,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -8516,7 +8544,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -8804,7 +8833,8 @@ window.BENCHMARK_DATA = {
           1067.1011019388834,
           906.5137439092,
           1006.1630978902181,
-          695.9193876902262
+          695.9193876902262,
+          709.8784530003866
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -8996,6 +9026,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9393,7 +9424,8 @@ window.BENCHMARK_DATA = {
           1031.9934739430746,
           928.8494720458984,
           1029.0253993988038,
-          730.1836013158162
+          730.1836013158162,
+          772.8947478021894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9405,6 +9437,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11392,6 +11425,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -11676,7 +11715,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -11964,7 +12004,8 @@ window.BENCHMARK_DATA = {
           1929.1843539646693,
           1940.9197397232056,
           1978.3078857421874,
-          1488.8647217069354
+          1488.8647217069354,
+          1236.6052253723144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12229,6 +12270,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -12553,7 +12595,8 @@ window.BENCHMARK_DATA = {
           21982.22201131185,
           17910.524552408853,
           22128.697332763673,
-          13872.805690220424
+          13872.805690220424,
+          12260.962462288993
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12846,7 +12889,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14552,6 +14596,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -14836,7 +14886,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -15124,7 +15175,8 @@ window.BENCHMARK_DATA = {
           833.91323928833,
           718.4111283847263,
           845.8223886489868,
-          560.0922778202937
+          560.0922778202937,
+          537.3966447830201
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15263,6 +15315,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -15713,7 +15766,8 @@ window.BENCHMARK_DATA = {
           1394.6019266764322,
           1290.965514455523,
           1403.9370970408122,
-          1006.5284171785627
+          1006.5284171785627,
+          1045.7820326487224
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15725,6 +15779,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -17712,6 +17767,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
         "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
+      },
+      {
+        "sha": "73d898082b2de4aaac2d5bbf20cc33ce018ee989",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
+        "message": "chore: Treat warnings as errors in test projects (#2259)"
       }
     ],
     "labels": [
@@ -17996,7 +18057,8 @@ window.BENCHMARK_DATA = {
       "ce2186a2",
       "17ab26ba",
       "27f14a50",
-      "f8eeb7c9"
+      "f8eeb7c9",
+      "73d89808"
     ],
     "datasets": [
       {
@@ -18284,7 +18346,8 @@ window.BENCHMARK_DATA = {
           1300.900275157048,
           1271.3143978118896,
           1329.4536425272624,
-          996.6828468322753
+          996.6828468322753,
+          827.0678229649861
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18454,6 +18517,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -18873,7 +18937,8 @@ window.BENCHMARK_DATA = {
           791.4640241350446,
           752.6748504638672,
           845.2999457041423,
-          613.5767791748046
+          613.5767791748046,
+          645.1455681664603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -18885,6 +18950,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
