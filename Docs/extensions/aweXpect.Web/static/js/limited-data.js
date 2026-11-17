@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
-      {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          393.13746782938637,
           337.5139049212138,
           360.17263879776,
           432.0374268123082,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           462.79926153818764,
           344.3458317597707,
           484.5335053035191,
-          448.01417926641614
+          448.01417926641614,
+          479.0837610789708
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -444,7 +444,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          896.2365102767944,
           894.5700384286733,
           948.0402340522179,
           923.0064988454183,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1047.9489348093668,
           734.6254198891776,
           1106.9159078598022,
-          944.7370364325387
+          944.7370364325387,
+          1043.203540802002
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
-      {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          215.81124877929688,
           192.69957841237385,
           229.79083015124004,
           252.84952510197957,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           284.3831859588623,
           171.66616678237915,
           247.86896200180053,
-          241.9503471170153
+          241.9503471170153,
+          251.92876974741617
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          238.455833366939,
           247.1441742011479,
           268.7767217499869,
           240.36885870420016,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           251.0775852839152,
           205.73317471345266,
           291.4924830754598,
-          257.9500727971395
+          257.9500727971395,
+          251.0081767302293
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
-      {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          856.8820991516113,
           703.2574746268136,
           752.585807459695,
           936.6029814992633,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1007.3538199106853,
           736.8754657336643,
           1101.5701917012532,
-          1026.7014770507812
+          1026.7014770507812,
+          1067.1011019388834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          876.3387022018433,
           859.7595116297404,
           895.7199317296346,
           937.614222017924,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1014.7791933332171,
           729.4559408823649,
           1092.8541898727417,
-          1001.4175954965444
+          1001.4175954965444,
+          1031.9934739430746
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
-      {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1485.7137116023473,
           1253.4065192086357,
           1333.9417401631674,
           1895.1236245291573,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1989.5115756988525,
           1469.365450922648,
           1937.8942266610952,
-          1907.3010911207932
+          1907.3010911207932,
+          1929.1843539646693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2268,7 +2268,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14082.458379109701,
           13245.913962809245,
           14309.641669718425,
           20840.049255371094,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21076.90694580078,
           13772.906966145832,
           20502.626057942707,
-          20768.94112141927
+          20768.94112141927,
+          21982.22201131185
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2371,7 +2371,6 @@ window.BENCHMARK_DATA = {
         "data": [
           34712,
           34712,
-          34712,
           34713,
           34713,
           34713,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
       {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          660.1283797484177,
           549.0496471845187,
           576.4322287877401,
           755.9450314839681,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           775.9141597066607,
           554.7019495282855,
           791.7055697441101,
-          788.5248499552409
+          788.5248499552409,
+          833.91323928833
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1210.636733373006,
           1131.2529127756754,
           1149.3772983551025,
           1267.1902982271636,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1306.267011506217,
           1008.6116460164388,
           1524.6061950411115,
-          1318.9764092763264
+          1318.9764092763264,
+          1394.6019266764322
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "0c95f82a0707e6bab18eec3b04ef077ba4b3252c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Nov 4 21:28:18 2026 \u002B0100",
-        "message": "chore: bump Testably.Abstractions.Testing to v8.0.0-pre.3 (#2177)"
-      },
-      {
         "sha": "13f124fd8545cbd6ae206bb55a9f1ff7126b5137",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 10:12:22 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 16 23:12:31 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 5 updates (#2254)"
+      },
+      {
+        "sha": "ce2186a29d4f8a3654622501ec069426d98071cc",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 00:13:48 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.NET.Test.Sdk from 18.11.0 to 18.12.0 (#2258)"
       }
     ],
     "labels": [
-      "0c95f82a",
       "13f124fd",
       "60f2a583",
       "4f093bbd",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "727c5520",
       "c7e470c5",
       "c3a5defc",
-      "2ae7ee43"
+      "2ae7ee43",
+      "ce2186a2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1057.3421249389648,
           835.2240226745605,
           928.5770222345988,
           1292.3036208519568,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1307.7573939005533,
           993.2591487884522,
           1286.8015854699272,
-          1292.8137305123466
+          1292.8137305123466,
+          1300.900275157048
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          720.573264280955,
           727.2604808807373,
           774.9994736353557,
           714.9428385954636,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           744.1664467493694,
           617.4788921062762,
           886.0964984893799,
-          728.6595282921425
+          728.6595282921425,
+          791.4640241350446
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
