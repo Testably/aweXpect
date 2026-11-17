@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1164.7170331319173,
           2101.274386814662,
           1640.6081005096435,
           2020.5579292297364,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1553.3973697662354,
           1553.4953158242363,
           1565.9133483341761,
-          1966.6887620779185
+          1966.6887620779185,
+          1420.4999016125996
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7441.881343841553,
           15280.439073835101,
           11008.760184733073,
           15112.188228352865,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           10638.736721801757,
           10732.123354085286,
           11320.056605529786,
-          13317.213907877604
+          13317.213907877604,
+          9604.799432607797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          933.2086126963297,
           1603.2596329909104,
           1282.1262341908046,
           1669.0937925066266,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1215.4537770589193,
           1225.3852505002703,
           1238.926645596822,
-          1581.6919624010723
+          1581.6919624010723,
+          1114.2445458632249
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7202.76773223877,
           13729.337122990535,
           10161.80207010905,
           13569.857523991512,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9665.958632835975,
           10575.387067667643,
           10567.324384416852,
-          12371.246237182617
+          12371.246237182617,
+          8926.177355957032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2926.7716601445127,
           4997.226754324777,
           4006.1066350301107,
           5486.1012285672705,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4031.837156023298,
           4014.087766919817,
           4061.688028971354,
-          5020.966034444174
+          5020.966034444174,
+          3447.824900817871
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20694.152872721355,
           42500.48453194754,
           31023.902799479165,
           44739.5182820638,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           31144.909781901042,
           30752.52632039388,
           30870.862389197715,
-          37703.5406616211
+          37703.5406616211,
+          28015.66796875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61932,
           61925,
           61926,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61926,
-          61926
+          61926,
+          61921
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
       {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5008.315219116211,
           9865.281103280875,
           7649.655676269531,
           9666.252646891277,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7701.359744480678,
           7357.944160461426,
           7539.84034200815,
-          9420.247183663505
+          9420.247183663505,
+          6895.707287597656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          145885.21360677082,
           288900.0768103966,
           209553.9464029948,
           278952.53749302455,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           212070.83424479168,
           221123.86666666667,
           222900.37724609376,
-          265118.77132161456
+          265118.77132161456,
+          186768.32978515624
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521573,
           521542,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521594
+          521594,
+          521542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
       {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1528.5327204295568,
           3044.7324256896973,
           2508.00612004598,
           2875.119228907994,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2221.9705142974854,
           2265.5687403361003,
           2205.9067192077637,
-          2822.809223175049
+          2822.809223175049,
+          2217.60267668504
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1047.2323877334595,
           2110.2493776957194,
           1731.5336634772164,
           1918.1558825174968,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1520.943980407715,
           1543.6591785430908,
           1596.0030690601893,
-          1909.9895669301352
+          1909.9895669301352,
+          1623.481517791748
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1493.6359672546387,
           2734.226946194967,
           2126.4985376085556,
           2958.200578689575,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2223.9222379048665,
           2307.3752596928525,
           2313.3421178545273,
-          2811.071904318673
+          2811.071904318673,
+          1848.233467395489
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          925.8834203402201,
           2008.6294118245444,
           1656.4797300974528,
           1753.7188034057617,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1455.5673327128093,
           1428.832774434771,
           1566.8822345733643,
-          1762.0287928263347
+          1762.0287928263347,
+          1463.4357399259295
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1257.9205870310466,
           2272.942900793893,
           1809.4410732269287,
           2276.348109436035,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1846.8208323160807,
           1840.7500076293945,
           1879.4594280536357,
-          2213.5966700236004
+          2213.5966700236004,
+          1564.700717339149
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          552.3154356820243,
           1395.8038952691215,
           1157.0985036577497,
           1084.9639465332032,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1007.1086428324381,
           935.8279976163592,
           971.51924756368,
-          1184.3206879933675
+          1184.3206879933675,
+          1024.414878164019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1640.911438369751,
           3139.883852445162,
           2382.8600351969403,
           2986.2488189697265,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2363.315392303467,
           2421.687639872233,
           2420.6685630253382,
-          2964.919607434954
+          2964.919607434954,
+          2109.195683034261
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          692.7010534286499,
           1583.627987798055,
           1312.040745417277,
           1220.2510668436687,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1117.360915819804,
           1057.7045047124227,
           1136.4567064557757,
-          1326.352777481079
+          1326.352777481079,
+          1163.485581942967
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          92246.59491373698,
           171032.34246826172,
           140936.50411283053,
           166190.79954310827,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           127087.07431640624,
           129986.64426967075,
           128297.55925641741,
-          163037.5103853666
+          163037.5103853666,
+          123130.36595052083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          110132.98283168247,
           199959.15087890625,
           157602.29415690104,
           191120.18450520834,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           146128.76840444712,
           151145.89955357142,
           153482.33427734376,
-          188878.03384164663
+          188878.03384164663,
+          149423.87205403644
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266873,
           266883,
           266951,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
-          266950
+          266950,
+          266882
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
       {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
         "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
+      },
+      {
+        "sha": "0572eba767354f1e1f960bb1cf980688f4e39963",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
+        "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "27f14a50",
       "f8eeb7c9",
       "73d89808",
-      "4385c01a"
+      "4385c01a",
+      "0572eba7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1501.0403453826905,
           2616.3718795776367,
           1912.7924176534018,
           2684.653305562337,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2051.6210771288193,
           2120.849330608661,
           2143.5086569104874,
-          2657.689724513463
+          2657.689724513463,
+          1727.47757136027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1050.0155845055212,
           2000.2458516438803,
           1591.157462801252,
           1893.2926500865392,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1396.1924150173481,
           1493.5866534550985,
           1488.0642312367756,
-          1796.4771723747253
+          1796.4771723747253,
+          1465.0661392211914
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
