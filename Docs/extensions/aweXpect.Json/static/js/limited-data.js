@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1576.177994801448,
           1528.5788828042837,
           1219.3007618586223,
           1164.7170331319173,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1441.658516223614,
           1249.2390333811443,
           1562.196013768514,
-          1553.3973697662354
+          1553.3973697662354,
+          1553.4953158242363
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10150.386913553873,
           10062.187292916435,
           8192.451523917061,
           7441.881343841553,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           9914.697369384765,
           8679.970069885254,
           10485.05551147461,
-          10638.736721801757
+          10638.736721801757,
+          10732.123354085286
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1232.4859441121419,
           1232.718726671659,
           970.8439986889178,
           933.2086126963297,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1126.6157945905413,
           963.5280413309733,
           1251.8413154057093,
-          1215.4537770589193
+          1215.4537770589193,
+          1225.3852505002703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10305.47396138509,
           9264.010444054236,
           6476.932324727376,
           7202.76773223877,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           9165.310422770182,
           7750.882305908203,
           9809.842690022786,
-          9665.958632835975
+          9665.958632835975,
+          10575.387067667643
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4038.6126118977863,
           3819.931579883282,
           3289.137732872596,
           2926.7716601445127,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3485.338065846761,
           2944.7223007202147,
           4079.704797363281,
-          4031.837156023298
+          4031.837156023298,
+          4014.087766919817
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          30463.608463541666,
           28614.575122070313,
           20919.911678059896,
           20694.152872721355,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           28902.504256184897,
           24809.676025390625,
           31379.27540690104,
-          31144.909781901042
+          31144.909781901042,
+          30752.52632039388
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61705,
           61926,
           61925,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61925,
           61921,
           61926,
-          61926
+          61926,
+          61925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
       {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7306.787633455717,
           7283.224003131573,
           5693.14376613072,
           5008.315219116211,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           6933.687888081869,
           6022.732423909505,
           7500.624545170711,
-          7701.359744480678
+          7701.359744480678,
+          7357.944160461426
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          206065.43764648438,
           199326.73543875557,
           142479.34682617188,
           145885.21360677082,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           193112.28367396764,
           167717.31201171875,
           224588.50762067523,
-          212070.83424479168
+          212070.83424479168,
+          221123.86666666667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           521541,
           521542,
           521594,
+          521594,
           521594
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
       {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2221.3314648946125,
           2224.5750097547257,
           1630.878024646214,
           1528.5327204295568,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2217.1312540690105,
           1957.005462137858,
           2251.7295687357587,
-          2221.9705142974854
+          2221.9705142974854,
+          2265.5687403361003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1488.753778048924,
           1473.186813218253,
           1149.155450957162,
           1047.2323877334595,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1550.8821870168051,
           1384.559862645467,
           1595.6224720818657,
-          1520.943980407715
+          1520.943980407715,
+          1543.6591785430908
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2211.8910472576435,
           2177.089767964681,
           1540.5200232097081,
           1493.6359672546387,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1960.4299883524577,
           1653.6488684336343,
           2385.5300483703613,
-          2223.9222379048665
+          2223.9222379048665,
+          2307.3752596928525
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1324.189241663615,
           1333.9619255065918,
           1040.5297092437745,
           925.8834203402201,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1477.4626786549886,
           1674.7171237945556,
           1534.073190689087,
-          1455.5673327128093
+          1455.5673327128093,
+          1428.832774434771
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1776.2979638235909,
           1720.5347955067953,
           1320.2512763341267,
           1257.9205870310466,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1595.1299140930175,
           1352.170308303833,
           1890.3337898254395,
-          1846.8208323160807
+          1846.8208323160807,
+          1840.7500076293945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          912.8885090901301,
           924.3374543507894,
           587.7667066710336,
           552.3154356820243,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1020.9613711039225,
           1015.8167278289795,
           995.0400511423746,
-          1007.1086428324381
+          1007.1086428324381,
+          935.8279976163592
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2302.976835123698,
           2271.038771311442,
           1688.860026223319,
           1640.911438369751,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2173.643751144409,
           2024.3011441548665,
           2434.9789527893067,
-          2363.315392303467
+          2363.315392303467,
+          2421.687639872233
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1038.7029108683269,
           1039.5310550417219,
           754.0119138445173,
           692.7010534286499,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1141.0512537638347,
           1057.4019269307455,
           1041.7752315814678,
-          1117.360915819804
+          1117.360915819804,
+          1057.7045047124227
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          127523.44786658653,
           127669.76213191106,
           105614.15098353794,
           92246.59491373698,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           124491.33166503906,
           107500.19400227864,
           127964.89266531808,
-          127087.07431640624
+          127087.07431640624,
+          129986.64426967075
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          146826.62983398436,
           148206.3178222656,
           116721.84833635602,
           110132.98283168247,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           142559.69365985578,
           121563.08912004743,
           150086.77418870194,
-          146128.76840444712
+          146128.76840444712,
+          151145.89955357142
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266950,
           266950,
           266950,
           266936,
@@ -5458,6 +5457,7 @@ window.BENCHMARK_DATA = {
           266882,
           266882,
           266950,
+          266950,
           266950
         ],
         "borderColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
       {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Tue Nov 17 00:26:37 2026 \u002B0000",
         "message": "chore: Bump coverlet.collector from 10.1.0 to 10.1.1 (#2255)"
+      },
+      {
+        "sha": "f8eeb7c91e35a2c2c33e9d6aa789d7110567d694",
+        "author": "dependabot[bot]",
+        "date": "Tue Nov 17 01:08:55 2026 \u002B0000",
+        "message": "chore: Bump Microsoft.AspNetCore.Mvc.Testing from 8.0.33 to 8.0.34 (#2256)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "2ae7ee43",
       "ce2186a2",
       "17ab26ba",
-      "27f14a50"
+      "27f14a50",
+      "f8eeb7c9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2112.248678334554,
           2031.5272695101226,
           1473.075864655631,
           1501.0403453826905,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1743.075824192592,
           1480.5594699859619,
           2075.4251271565754,
-          2051.6210771288193
+          2051.6210771288193,
+          2120.849330608661
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1394.433391571045,
           1352.8242018381754,
           1158.7170741217476,
           1050.0155845055212,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1405.7507025400798,
           1590.8072422027587,
           1400.3451344807943,
-          1396.1924150173481
+          1396.1924150173481,
+          1493.5866534550985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
