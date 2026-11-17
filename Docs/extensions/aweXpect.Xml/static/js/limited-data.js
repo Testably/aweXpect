@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          491.8521828651428,
           766.1589309147427,
           868.0472666195461,
           692.040686861674,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           827.351542409261,
           445.6644116083781,
           640.4858710765839,
-          560.349425976093
+          560.349425976093,
+          829.5799956003825
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          378.67552845818653,
           803.1279058456421,
           699.1890646389553,
           570.8611010771531,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           759.4289569173541,
           356.65176649093627,
           624.1844889095852,
-          605.6624272210257
+          605.6624272210257,
+          754.9798163572947
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3036.8672655741375,
           5039.038271767752,
           4857.692450968424,
           3571.4985724857875,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4950.709079488119,
           2410.0212560017903,
           3280.3413725632886,
-          3317.9467775980634
+          3317.9467775980634,
+          4437.612045796713
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24172,
           24179,
           24172,
           24179,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24179,
-          24179
+          24179,
+          24172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3323.279590352376,
           5818.160186258951,
           5679.595049540202,
           3891.1916834513345,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5929.844842529297,
           2823.146270206996,
           4010.8158543904624,
-          3919.5432510375977
+          3919.5432510375977,
+          5159.7183707101
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1556.0332471302577,
           2831.3306193033854,
           2803.5553299585977,
           2106.973723347982,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2927.9446901957194,
           1476.0396695454915,
           1956.937777709961,
-          2053.2683628627233
+          2053.2683628627233,
+          2416.2685892740888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2089.884005619929,
           3703.4350382486978,
           3686.421055348714,
           2978.742046083723,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3916.469506127494,
           1897.3640403747559,
           2864.848408478957,
-          2585.5823903401692
+          2585.5823903401692,
+          3654.0557414463588
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "4f093bbd7bff3f3f44299da3ae73e202ad6f0bf9",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 18:26:43 2026 \u002B0100",
-        "message": "test: use the strict timer order in all tests where a timeout must take effect before a later timer (#2180)"
-      },
-      {
         "sha": "a5924ccd1acb97e8011a5d4a1ce1341278379a35",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 20:29:49 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 13:34:01 2026 \u002B0100",
         "message": "chore: Treat warnings as errors in test projects (#2259)"
+      },
+      {
+        "sha": "4385c01ada51035a4dedd91c131e637e4a852e49",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Nov 17 19:37:31 2026 \u002B0100",
+        "message": "feat: convert an expected value with the \u0060TypeConverter\u0060 its type declares in equivalency comparisons (#2261)"
       }
     ],
     "labels": [
-      "4f093bbd",
       "a5924ccd",
       "34bd6e69",
       "e1ceda7d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "17ab26ba",
       "27f14a50",
       "f8eeb7c9",
-      "73d89808"
+      "73d89808",
+      "4385c01a"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8038.047477722168,
           13894.258349100748,
           14486.604932657878,
           10606.586554972331,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13981.511352539062,
           7317.715763854981,
           11057.457580566406,
-          10441.766852823894
+          10441.766852823894,
+          13433.801885986328
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          186145.7418561663,
           283493.42619977676,
           356686.0393880208,
           260398.90970052083,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           334666.9275948661,
           163348.84044596355,
           218296.21963266225,
-          209783.5060546875
+          209783.5060546875,
+          333753.81393229164
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544246,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           546601,
           546630,
           546549,
-          546549
+          546549,
+          546620
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
