@@ -1788,6 +1788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -2088,7 +2094,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -2392,7 +2399,8 @@ window.BENCHMARK_DATA = {
           755.4637423197429,
           775.230617459615,
           567.4778116226196,
-          549.28227297465
+          549.28227297465,
+          762.2509718577068
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2616,6 +2624,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -3013,7 +3022,8 @@ window.BENCHMARK_DATA = {
           798.481620652335,
           917.0031588236491,
           586.0646684646606,
-          668.8708369255066
+          668.8708369255066,
+          910.8511278788249
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3025,6 +3035,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -5124,6 +5135,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -5424,7 +5441,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -5728,7 +5746,8 @@ window.BENCHMARK_DATA = {
           113.51080211571285,
           108.48384633858998,
           79.36160541432244,
-          80.065762424469
+          80.065762424469,
+          116.1054621219635
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5875,6 +5894,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -6349,7 +6369,8 @@ window.BENCHMARK_DATA = {
           262.53678607940674,
           218.79877592836107,
           170.81176665623983,
-          166.1042593717575
+          166.1042593717575,
+          206.02339827219646
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6361,6 +6382,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -8460,6 +8482,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -8760,7 +8788,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -9064,7 +9093,8 @@ window.BENCHMARK_DATA = {
           1455.5051532158484,
           2018.294924872262,
           1067.4852380116781,
-          1360.7556886672974
+          1360.7556886672974,
+          1968.456643785749
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9259,6 +9289,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -9685,7 +9716,8 @@ window.BENCHMARK_DATA = {
           1312.4353817531041,
           1488.4769708088465,
           962.958702967717,
-          1074.3025547907903
+          1074.3025547907903,
+          1822.2656191507974
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9994,7 +10026,8 @@ window.BENCHMARK_DATA = {
           1864,
           1864,
           1864,
-          1864
+          1864,
+          1953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11736,6 +11769,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -12026,7 +12065,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -12320,7 +12360,8 @@ window.BENCHMARK_DATA = {
           2199.2378000895183,
           2699.7937927246094,
           1667.48536330003,
-          2081.924361928304
+          2081.924361928304,
+          2786.8415018717446
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12505,6 +12546,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -12921,7 +12963,8 @@ window.BENCHMARK_DATA = {
           3441.7957846323648,
           3834.9093290056503,
           2594.3049138387046,
-          3049.6015014648438
+          3049.6015014648438,
+          3874.867985861642
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13220,7 +13263,8 @@ window.BENCHMARK_DATA = {
           3977,
           3981,
           3977,
-          3981
+          3981,
+          3980
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14962,6 +15006,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -15252,7 +15302,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -15546,7 +15597,8 @@ window.BENCHMARK_DATA = {
           369.3247617653438,
           410.4525058746338,
           264.714603360494,
-          281.1081254641215
+          281.1081254641215,
+          401.41445910135906
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15683,6 +15735,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -16147,7 +16200,8 @@ window.BENCHMARK_DATA = {
           2040.0259704589844,
           2300.9916346413747,
           1494.3997941698346,
-          1695.6308069864908
+          1695.6308069864908,
+          2359.753821509225
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16159,6 +16213,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -18188,6 +18243,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
@@ -18478,7 +18539,8 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
@@ -18772,7 +18834,8 @@ window.BENCHMARK_DATA = {
           2155.404590900128,
           2898.2444171905518,
           1643.7787049611409,
-          2132.3087109883627
+          2132.3087109883627,
+          2955.758315495082
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19053,6 +19116,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          2760,
           2760,
           2760,
           2760,
@@ -19373,7 +19437,8 @@ window.BENCHMARK_DATA = {
           255352.03193359374,
           279792.7647530692,
           191340.50568498884,
-          237687.08555385045
+          237687.08555385045,
+          279698.1260742188
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19672,7 +19737,8 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17528,
-          17576
+          17576,
+          17577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
