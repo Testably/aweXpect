@@ -202,6 +202,19 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
+			public async Task WhenExpectedUsesChronologyBuilders_ShouldConvertThem()
+			{
+				var subject = new { Released = new DateTime(1969, 9, 26), Duration = TimeSpan.FromMinutes(47), };
+				var expected = new { Released = 26.September(1969), Duration = 47.Minutes(), };
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the builders of aweXpect.Chronology declare a converter to the DateTime and TimeSpan they build");
+			}
+
+			[Test]
 			public async Task WhenReflectedConverterConstructorThrows_ShouldFailWithTheException()
 			{
 				var subject = new { Released = new DateTime(1969, 9, 26), };
