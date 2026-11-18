@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
-      {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          464.17532021658764,
           215.49249725341798,
           486.4692967732747,
           426.9934498469035,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           470.70309316194977,
           476.0360873086112,
           446.38873624801636,
-          333.0078377383096
+          333.0078377383096,
+          453.4543751648494
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -435,7 +435,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1061.3809125264486,
           506.1190433502197,
           1063.23406292842,
           1104.0352654774983,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           999.4237337112427,
           995.8706130981445,
           990.6389422098796,
-          823.3838088989257
+          823.3838088989257,
+          1168.6285456339517
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
-      {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          240.30705676078796,
           121.71787426869075,
           246.99476623535156,
           247.73440783364433,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           260.72857058842976,
           259.1982714335124,
           239.2328510625022,
-          193.32374599774678
+          193.32374599774678,
+          264.8047750336783
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.247495834644,
           128.7858556849616,
           280.7596593856812,
           281.90998336247037,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           254.84532594680786,
           275.44186245600383,
           262.41677907535006,
-          242.03759984970094
+          242.03759984970094,
+          316.94255889256794
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
-      {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          977.2244734446208,
           505.97992928822833,
           1054.0909311930338,
           936.5313198725382,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1034.6286020914713,
           989.5135856628418,
           993.8218688964844,
-          714.190848795573
+          714.190848795573,
+          981.2943676539829
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          986.4515163421631,
           487.4431512696402,
           1072.6894055684409,
           1029.834334309896,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           967.0715582529704,
           951.6085747310093,
           1046.1682829538981,
-          818.748482577006
+          818.748482577006,
+          1128.3411755195032
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
-      {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1970.544095357259,
           1081.560115950448,
           1988.760061645508,
           1682.2827657063801,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1926.7366913386754,
           1952.4200815473284,
           1883.1657285690308,
-          1261.9071047856257
+          1261.9071047856257,
+          1737.601314417521
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2259,7 +2259,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          19423.09619547526,
           9362.062799072266,
           20312.337469482423,
           16421.029397147042,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21355.783201090493,
           21079.024153645834,
           21639.66630045573,
-          13374.694177246094
+          13374.694177246094,
+          17439.08848063151
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34712,
           34712,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34713,
+          34712,
           34712
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
       {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          766.1675936381022,
           392.0967173916953,
           762.898933092753,
           734.9194453557333,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           844.4385128657024,
           819.3643128077189,
           789.0511112848918,
-          554.8621947215154
+          554.8621947215154,
+          741.706606388092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1389.7713011423746,
           710.9012879689534,
           1460.5343994140626,
           1373.5542538506645,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1309.274131266276,
           1341.2156710306804,
           1361.1597313199725,
-          1127.1082768758138
+          1127.1082768758138,
+          1499.7908333369664
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
-        "message": "perf: skip a formatter scope that would not change the scoped formatters (#2185)"
-      },
-      {
         "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
-      "7524c744",
       "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1254.2845175425211,
           746.5886924450214,
           1247.6740617752075,
           1112.6286829630533,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1290.7667958577474,
           1341.8871419270833,
           1314.0905168973482,
-          846.4503896077474
+          846.4503896077474,
+          1157.9673514732947
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          764.6244032723563,
           410.7543091138204,
           886.7203978220622,
           814.1402980940683,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           774.4714527130127,
           774.182383664449,
           779.1190296808878,
-          733.6716420491537
+          733.6716420491537,
+          930.8885487828936
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
