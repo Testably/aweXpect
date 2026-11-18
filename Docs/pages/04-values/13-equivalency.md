@@ -120,6 +120,19 @@ reported as ambiguous. Failures name the kind of the *expected* member.
   [predicate](#comparing-different-types-with-a-predicate) for the converted types applies, and a failure shows the
   value as you wrote it.
 
+The builders of [aweXpect.Chronology](/aweXpect/chronology) declare such a converter, so you can write the expected dates and durations with them:
+
+```csharp
+using aweXpect.Chronology; // from the aweXpect.Chronology package
+
+// class Album { public DateTime Released { get; } public TimeSpan Duration { get; } }
+await That(album).IsEquivalentTo(new
+{
+  Released = 26.September(1969),
+  Duration = 47.Minutes(),
+});
+```
+
 ### Collections and dictionaries
 
 - A set on either side is enough to match the items without an order, exactly like
