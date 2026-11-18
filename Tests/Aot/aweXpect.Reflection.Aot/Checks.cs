@@ -75,6 +75,16 @@ internal static class Checks
 			() => ShouldFailOrFailLoudly(async ()
 				=> await That(In.Types<Order, Customer>()).AtLeast(2).Implement(typeof(IEntity)),
 				"implements IEntity for at least 2 items")),
+		new("the base types of named types without a declared base type are empty",
+			() => ShouldPass(async () => await That(In.Types<Order, Customer>().BaseTypes()).IsEmpty())),
+		new("the interfaces a type implements directly contain its interface",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.Type<Order>().ImplementedInterfaces().Directly()).Contains(typeof(IEntity)))),
+		new("the nested types of a type without nested types are empty",
+			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().NestedTypes()).IsEmpty())),
+		new("the exceptions of an assembly are sealed",
+			() => ShouldPassOrFailLoudly(async ()
+				=> await That(In.AssemblyContaining<Order>().Exceptions()).AreSealed())),
 		new("the methods of a type are not abstract",
 			() => ShouldPassOrFailLoudly(async () => await That(In.Type<Order>().Methods()).AreNotAbstract())),
 		new("the declared and inherited methods of a type including the object members are not abstract",

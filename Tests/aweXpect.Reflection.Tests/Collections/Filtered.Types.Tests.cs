@@ -9,7 +9,7 @@ namespace aweXpect.Reflection.Tests.Collections;
 
 public sealed partial class Filtered
 {
-	public sealed class Types
+	public sealed partial class Types
 	{
 		public sealed class Tests
 		{

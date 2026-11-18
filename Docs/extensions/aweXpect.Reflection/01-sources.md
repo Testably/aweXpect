@@ -58,17 +58,25 @@ await That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<MusicStor
 ## Navigating to members
 
 From a collection of assemblies or types you can navigate to the members they contain, and from members
-back to their declaring types.
+back to their declaring types. From types you can also navigate to related types.
 
-| From               | Navigate with                                                              | Yields                   |
-|--------------------|----------------------------------------------------------------------------|--------------------------|
-| assemblies         | `.Types()`                                                                 | the contained types      |
-| assemblies / types | `.Methods()`, `.Properties()`, `.Fields()`, `.Events()`, `.Constructors()` | the contained members    |
-| members            | `.DeclaringTypes()`                                                        | the declaring types      |
-| types              | `.Assemblies()`                                                            | the declaring assemblies |
+| From               | Navigate with                                                              | Yields                                               |
+|--------------------|----------------------------------------------------------------------------|------------------------------------------------------|
+| assemblies         | `.Types()`                                                                 | the contained types                                  |
+| assemblies / types | `.Methods()`, `.Properties()`, `.Fields()`, `.Events()`, `.Constructors()` | the contained members                                |
+| members            | `.DeclaringTypes()`                                                        | the declaring types                                  |
+| types              | `.Assemblies()`                                                            | the declaring assemblies                             |
+| types              | `.BaseTypes()`                                                             | the base types, up the inheritance chain             |
+| types              | `.ImplementedInterfaces()`                                                 | the implemented interfaces (`.Directly()`: declared) |
+| types              | `.NestedTypes()`                                                           | the types nested directly in them                    |
+
+A type reached from several types is included once. `.BaseTypes()` does not include the implicit base types
+`object`, `ValueType` and `Enum`. With `.ImplementedInterfaces().Directly()` an interface that a type receives
+through its base class or through another implemented interface is not included.
 
 Assemblies also expose shorthand terminals that select a type *kind* directly:
-`.Classes()`, `.Interfaces()`, `.Enums()`, `.Structs()`, `.Records()`, `.RecordStructs()`.
+`.Classes()`, `.Interfaces()`, `.Enums()`, `.Structs()`, `.Records()`, `.RecordStructs()`, `.Delegates()`,
+`.Exceptions()`, `.Attributes()`.
 
 ```csharp
 // All types in all (non-system) assemblies
@@ -79,4 +87,19 @@ In.AllLoadedAssemblies().Methods().DeclaringTypes()
 
 // Shorthand: all public classes
 In.AllLoadedAssemblies().Public.Classes()
+```
+
+Navigating to related types describes the source in the failure message, e.g.
+`interfaces implemented by types within namespace "MusicStore.Domain" in assembly containing type Album`:
+
+```csharp
+// Domain types only implement interfaces of the domain or of the framework
+await That(Types.InNamespace("MusicStore.Domain").InAssemblyContaining<Album>()
+        .ImplementedInterfaces()
+        .WhichAreNotWithinNamespace("System"))
+    .AreWithinNamespace("MusicStore.Domain");
+
+// Every exception of the library is sealed
+await That(In.AssemblyContaining<Album>().Exceptions())
+    .AreSealed();
 ```

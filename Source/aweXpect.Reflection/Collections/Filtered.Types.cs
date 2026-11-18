@@ -110,6 +110,15 @@ public static partial class Filtered
 		}
 
 		/// <summary>
+		///     Container for the distinct types that <paramref name="navigate" /> reaches from the <paramref name="types" />.
+		/// </summary>
+		private Types(Types types, Func<Type, IEnumerable<Type>> navigate, string descriptionPrefix)
+			: base(types.SelectMany(navigate).Distinct())
+		{
+			_description = () => descriptionPrefix + types.GetDescription();
+		}
+
+		/// <summary>
 		///     Container for a filterable collection of <see cref="Type" />.
 		/// </summary>
 		private protected Types(Types inner) : this(inner, inner.Filters)
@@ -286,6 +295,59 @@ public static partial class Filtered
 		///     Get all assemblies of the filtered types.
 		/// </summary>
 		public Assemblies Assemblies() => new(this);
+
+		/// <summary>
+		///     Get the base types of the filtered types, up the inheritance chain.
+		/// </summary>
+		/// <remarks>
+		///     The implicit base types <see cref="object" />, <see cref="ValueType" /> and <see cref="Enum" /> are not
+		///     included. A base type shared by several types is included once.
+		/// </remarks>
+		public Types BaseTypes() => new(this, type => type.GetBaseTypes(), "base types of ");
+
+		/// <summary>
+		///     Get the interfaces the filtered types implement.
+		/// </summary>
+		/// <remarks>
+		///     An interface implemented by several types is included once. To include only the interfaces the types
+		///     implement directly use <see cref="ImplementedInterfacesResult.Directly" />.
+		/// </remarks>
+		public ImplementedInterfacesResult ImplementedInterfaces() => new(this);
+
+		/// <summary>
+		///     Get the types nested directly in the filtered types.
+		/// </summary>
+		public Types NestedTypes() => new(this, type => type.GetDeclaredNestedTypes(), "nested types of ");
+
+		/// <summary>
+		///     The interfaces that types implement, allowing to restrict them to the directly implemented interfaces via
+		///     <see cref="Directly" />.
+		/// </summary>
+		/// <remarks>
+		///     Set this option directly after selecting the interfaces, as a filter returns a plain
+		///     <see cref="Filtered.Types" />.
+		/// </remarks>
+		public sealed class ImplementedInterfacesResult : Types
+		{
+			private readonly Types _source;
+
+			internal ImplementedInterfacesResult(Types source)
+				: base(source, type => type.GetImplementedInterfaces(false), "interfaces implemented by ")
+			{
+				_source = source;
+			}
+
+			/// <summary>
+			///     Only includes the interfaces the types implement directly, and not those they receive through a base
+			///     class or through another implemented interface.
+			/// </summary>
+			/// <remarks>
+			///     As the compiler emits all inherited interfaces into the metadata, an interface that is declared on the
+			///     type and also inherited cannot be told apart and counts as not direct.
+			/// </remarks>
+			public Types Directly()
+				=> new(_source, type => type.GetImplementedInterfaces(true), "interfaces directly implemented by ");
+		}
 
 		private sealed class LoadableTypes(Type[] types)
 		{

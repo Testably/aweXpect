@@ -52,6 +52,21 @@ public interface ITypeAssemblies
 	Filtered.Types Structs();
 
 	/// <summary>
+	///     Get all delegates in the filtered assemblies.
+	/// </summary>
+	Filtered.Types Delegates();
+
+	/// <summary>
+	///     Get all exceptions in the filtered assemblies.
+	/// </summary>
+	Filtered.Types Exceptions();
+
+	/// <summary>
+	///     Get all attributes in the filtered assemblies.
+	/// </summary>
+	Filtered.Types Attributes();
+
+	/// <summary>
 	///     An interface to allow filtering for types in assemblies.
 	/// </summary>
 	/// <remarks>
