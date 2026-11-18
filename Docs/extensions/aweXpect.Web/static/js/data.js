@@ -1770,6 +1770,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -2067,7 +2073,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -2368,7 +2375,8 @@ window.BENCHMARK_DATA = {
           334.61388979639327,
           337.1931755883353,
           470.70309316194977,
-          476.0360873086112
+          476.0360873086112,
+          446.38873624801636
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2643,6 +2651,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -2983,7 +2992,8 @@ window.BENCHMARK_DATA = {
           768.2031251271566,
           804.6551114400228,
           999.4237337112427,
-          995.8706130981445
+          995.8706130981445,
+          990.6389422098796
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2995,6 +3005,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5073,6 +5084,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -5370,7 +5387,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -5671,7 +5689,8 @@ window.BENCHMARK_DATA = {
           175.1115577697754,
           187.44005489349365,
           260.72857058842976,
-          259.1982714335124
+          259.1982714335124,
+          239.2328510625022
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5818,6 +5837,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6286,7 +6306,8 @@ window.BENCHMARK_DATA = {
           201.1484891634721,
           223.59863989693778,
           254.84532594680786,
-          275.44186245600383
+          275.44186245600383,
+          262.41677907535006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6298,6 +6319,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8316,6 +8338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -8603,7 +8631,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -8894,7 +8923,8 @@ window.BENCHMARK_DATA = {
           695.9193876902262,
           709.8784530003866,
           1034.6286020914713,
-          989.5135856628418
+          989.5135856628418,
+          993.8218688964844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9086,6 +9116,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9489,7 +9520,8 @@ window.BENCHMARK_DATA = {
           730.1836013158162,
           772.8947478021894,
           967.0715582529704,
-          951.6085747310093
+          951.6085747310093,
+          1046.1682829538981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9501,6 +9533,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11509,6 +11542,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -11796,7 +11835,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -12087,7 +12127,8 @@ window.BENCHMARK_DATA = {
           1488.8647217069354,
           1236.6052253723144,
           1926.7366913386754,
-          1952.4200815473284
+          1952.4200815473284,
+          1883.1657285690308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12352,6 +12393,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -12682,7 +12724,8 @@ window.BENCHMARK_DATA = {
           13872.805690220424,
           12260.962462288993,
           21355.783201090493,
-          21079.024153645834
+          21079.024153645834,
+          21639.66630045573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12977,6 +13020,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713,
           34713
         ],
@@ -14702,6 +14746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -14989,7 +15039,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -15280,7 +15331,8 @@ window.BENCHMARK_DATA = {
           560.0922778202937,
           537.3966447830201,
           844.4385128657024,
-          819.3643128077189
+          819.3643128077189,
+          789.0511112848918
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15419,6 +15471,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -15875,7 +15928,8 @@ window.BENCHMARK_DATA = {
           1006.5284171785627,
           1045.7820326487224,
           1309.274131266276,
-          1341.2156710306804
+          1341.2156710306804,
+          1361.1597313199725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15887,6 +15941,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -17895,6 +17950,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Nov 17 20:10:38 2026 \u002B0100",
         "message": "ci: wait up to 60 minutes for the NuGet listing before notifying the docs site (#2260)"
+      },
+      {
+        "sha": "37a55fad8f282d62edf013d8511e4a76c9f298e0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
+        "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
       }
     ],
     "labels": [
@@ -18182,7 +18243,8 @@ window.BENCHMARK_DATA = {
       "f8eeb7c9",
       "73d89808",
       "4385c01a",
-      "0572eba7"
+      "0572eba7",
+      "37a55fad"
     ],
     "datasets": [
       {
@@ -18473,7 +18535,8 @@ window.BENCHMARK_DATA = {
           996.6828468322753,
           827.0678229649861,
           1290.7667958577474,
-          1341.8871419270833
+          1341.8871419270833,
+          1314.0905168973482
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18643,6 +18706,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -19068,7 +19132,8 @@ window.BENCHMARK_DATA = {
           613.5767791748046,
           645.1455681664603,
           774.4714527130127,
-          774.182383664449
+          774.182383664449,
+          779.1190296808878
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19080,6 +19145,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
