@@ -155,7 +155,7 @@ public sealed partial class Filtered
 			{
 				public static Type PrivateNestedType => typeof(PrivateNestedClass);
 
-				public Func<int> CreateCounter(int start) => () => start + 1;
+				public static Func<int> CreateCounter(int start) => () => start + 1;
 
 				public sealed class PublicNestedClass;
 
