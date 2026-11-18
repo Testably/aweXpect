@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          692.040686861674,
           835.4179099400839,
           920.5865637915475,
           940.7775998796735,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           560.349425976093,
           829.5799956003825,
           875.4637475013733,
-          958.5230199268887
+          958.5230199268887,
+          677.2756849288941
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          570.8611010771531,
           755.3909554163615,
           808.5359552383422,
           706.2097478594098,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           605.6624272210257,
           754.9798163572947,
           668.3146922928946,
-          756.3859150568644
+          756.3859150568644,
+          592.0475885527475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3571.4985724857875,
           4914.060402933756,
           4999.999930318197,
           4498.199612544133,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3317.9467775980634,
           4437.612045796713,
           4519.579442705427,
-          4763.2257146199545
+          4763.2257146199545,
+          3904.5238843282063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24179,
           24172,
           24178,
           24178,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24172,
+          24178,
           24178,
           24178
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3891.1916834513345,
           5832.564754740397,
           5958.191146850586,
           5043.230907985142,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           3919.5432510375977,
           5159.7183707101,
           5042.679300035749,
-          5627.498880513509
+          5627.498880513509,
+          4173.096271514893
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2106.973723347982,
           2781.6805905659994,
           2767.0736536661784,
           2585.5399562290736,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2053.2683628627233,
           2416.2685892740888,
           2497.6392729441327,
-          2849.884278488159
+          2849.884278488159,
+          2174.456503041585
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12728,
           12654,
           12654,
           12654,
@@ -1682,6 +1681,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2978.742046083723,
           3722.167692057292,
           3922.4374603271485,
           3461.405462137858,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2585.5823903401692,
           3654.0557414463588,
           3450.433626992362,
-          3886.1111521402995
+          3886.1111521402995,
+          3006.349583943685
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "e1ceda7d28664ec4cc35729efcccd9945415311a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Nov 5 20:34:43 2026 \u002B0100",
-        "message": "feat: store public API snapshots as C# files (#2182)"
-      },
-      {
         "sha": "58c2e4bf6e45a4841889e5dd0267f730f4eaab21",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 5 22:12:16 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "e1ceda7d",
       "58c2e4bf",
       "09367520",
       "7524c744",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10606.586554972331,
           14673.151072184244,
           14240.05289001465,
           14724.432180132184,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10441.766852823894,
           13433.801885986328,
           13466.818738301596,
-          14305.912847246442
+          14305.912847246442,
+          10824.377031598773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25440,
           25367,
           25367,
           25367,
@@ -2290,6 +2289,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          260398.90970052083,
           342786.5363606771,
           379217.9697265625,
           363890.465234375,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           209783.5060546875,
           333753.81393229164,
           350384.3933454241,
-          375864.88385416666
+          375864.88385416666,
+          266536.7101111779
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544298,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           546549,
           546620,
           546620,
-          546620
+          546620,
+          546621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
