@@ -1782,6 +1782,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -2081,7 +2087,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -2384,7 +2391,8 @@ window.BENCHMARK_DATA = {
           739.7638568878174,
           755.4637423197429,
           775.230617459615,
-          567.4778116226196
+          567.4778116226196,
+          549.28227297465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2608,6 +2616,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -3003,7 +3012,8 @@ window.BENCHMARK_DATA = {
           929.933049583435,
           798.481620652335,
           917.0031588236491,
-          586.0646684646606
+          586.0646684646606,
+          668.8708369255066
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3015,6 +3025,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -5107,6 +5118,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -5406,7 +5423,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -5709,7 +5727,8 @@ window.BENCHMARK_DATA = {
           113.42445181210836,
           113.51080211571285,
           108.48384633858998,
-          79.36160541432244
+          79.36160541432244,
+          80.065762424469
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5856,6 +5875,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -6328,7 +6348,8 @@ window.BENCHMARK_DATA = {
           215.1960225423177,
           262.53678607940674,
           218.79877592836107,
-          170.81176665623983
+          170.81176665623983,
+          166.1042593717575
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6340,6 +6361,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -8432,6 +8454,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -8731,7 +8759,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -9034,7 +9063,8 @@ window.BENCHMARK_DATA = {
           1908.4590398348296,
           1455.5051532158484,
           2018.294924872262,
-          1067.4852380116781
+          1067.4852380116781,
+          1360.7556886672974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9229,6 +9259,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -9653,7 +9684,8 @@ window.BENCHMARK_DATA = {
           1565.7061822255453,
           1312.4353817531041,
           1488.4769708088465,
-          962.958702967717
+          962.958702967717,
+          1074.3025547907903
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9959,6 +9991,7 @@ window.BENCHMARK_DATA = {
           1953,
           1864,
           1953,
+          1864,
           1864,
           1864,
           1864
@@ -11697,6 +11730,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -11986,7 +12025,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -12279,7 +12319,8 @@ window.BENCHMARK_DATA = {
           2863.6491859436037,
           2199.2378000895183,
           2699.7937927246094,
-          1667.48536330003
+          1667.48536330003,
+          2081.924361928304
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12464,6 +12505,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -12878,7 +12920,8 @@ window.BENCHMARK_DATA = {
           3904.992125193278,
           3441.7957846323648,
           3834.9093290056503,
-          2594.3049138387046
+          2594.3049138387046,
+          3049.6015014648438
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13176,7 +13219,8 @@ window.BENCHMARK_DATA = {
           3980,
           3977,
           3981,
-          3977
+          3977,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14912,6 +14956,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -15201,7 +15251,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -15494,7 +15545,8 @@ window.BENCHMARK_DATA = {
           383.36215664545693,
           369.3247617653438,
           410.4525058746338,
-          264.714603360494
+          264.714603360494,
+          281.1081254641215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15631,6 +15683,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -16093,7 +16146,8 @@ window.BENCHMARK_DATA = {
           2300.526585170201,
           2040.0259704589844,
           2300.9916346413747,
-          1494.3997941698346
+          1494.3997941698346,
+          1695.6308069864908
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16105,6 +16159,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -18127,6 +18182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
         "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
+      },
+      {
+        "sha": "35823ecccc72743fd6edcba8f965f4b5c478cf61",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
+        "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
       }
     ],
     "labels": [
@@ -18416,7 +18477,8 @@ window.BENCHMARK_DATA = {
       "4385c01a",
       "0572eba7",
       "37a55fad",
-      "ae367d31"
+      "ae367d31",
+      "35823ecc"
     ],
     "datasets": [
       {
@@ -18709,7 +18771,8 @@ window.BENCHMARK_DATA = {
           2923.697083693284,
           2155.404590900128,
           2898.2444171905518,
-          1643.7787049611409
+          1643.7787049611409,
+          2132.3087109883627
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18990,6 +19053,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          2760,
           2760,
           2760,
           2760,
@@ -19308,7 +19372,8 @@ window.BENCHMARK_DATA = {
           279381.54443359375,
           255352.03193359374,
           279792.7647530692,
-          191340.50568498884
+          191340.50568498884,
+          237687.08555385045
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19606,7 +19671,8 @@ window.BENCHMARK_DATA = {
           17577,
           17528,
           17577,
-          17528
+          17528,
+          17576
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
