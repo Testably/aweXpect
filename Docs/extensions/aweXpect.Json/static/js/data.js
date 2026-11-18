@@ -1770,6 +1770,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -2067,7 +2073,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -2368,7 +2375,8 @@ window.BENCHMARK_DATA = {
           1565.9133483341761,
           1966.6887620779185,
           1420.4999016125996,
-          1687.7712898254395
+          1687.7712898254395,
+          1273.099061012268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2514,6 +2522,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -2983,7 +2992,8 @@ window.BENCHMARK_DATA = {
           11320.056605529786,
           13317.213907877604,
           9604.799432607797,
-          12737.952022007534
+          12737.952022007534,
+          9690.129448445638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2995,6 +3005,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -5073,6 +5084,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -5370,7 +5387,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -5671,7 +5689,8 @@ window.BENCHMARK_DATA = {
           1238.926645596822,
           1581.6919624010723,
           1114.2445458632249,
-          1329.2892699608435
+          1329.2892699608435,
+          975.2295409611294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5817,6 +5836,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -6286,7 +6306,8 @@ window.BENCHMARK_DATA = {
           10567.324384416852,
           12371.246237182617,
           8926.177355957032,
-          11864.961554391044
+          11864.961554391044,
+          8818.346589152019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6298,6 +6319,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -8316,6 +8338,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -8603,7 +8631,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -8894,7 +8923,8 @@ window.BENCHMARK_DATA = {
           4061.688028971354,
           5020.966034444174,
           3447.824900817871,
-          4115.671655782064
+          4115.671655782064,
+          3108.0416394551594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9077,6 +9107,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -9489,7 +9520,8 @@ window.BENCHMARK_DATA = {
           30870.862389197715,
           37703.5406616211,
           28015.66796875,
-          35012.90710449219
+          35012.90710449219,
+          27459.591756184895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9785,7 +9817,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61921,
-          61925
+          61925,
+          61921
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11509,6 +11542,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -11796,7 +11835,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -12087,7 +12127,8 @@ window.BENCHMARK_DATA = {
           7539.84034200815,
           9420.247183663505,
           6895.707287597656,
-          8251.493374415806
+          8251.493374415806,
+          6146.780662027994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12223,6 +12264,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -12682,7 +12724,8 @@ window.BENCHMARK_DATA = {
           222900.37724609376,
           265118.77132161456,
           186768.32978515624,
-          244537.15263671876
+          244537.15263671876,
+          195889.70442708334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -12978,7 +13021,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
-          521541
+          521541,
+          521542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14702,6 +14746,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -14989,7 +15039,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -15280,7 +15331,8 @@ window.BENCHMARK_DATA = {
           2205.9067192077637,
           2822.809223175049,
           2217.60267668504,
-          2599.509952000209
+          2599.509952000209,
+          1969.7870089213054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15466,6 +15518,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -15875,7 +15928,8 @@ window.BENCHMARK_DATA = {
           1596.0030690601893,
           1909.9895669301352,
           1623.481517791748,
-          1889.335530417306
+          1889.335530417306,
+          1427.399649810791
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15887,6 +15941,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -17895,6 +17950,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -18182,7 +18243,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -18473,7 +18535,8 @@ window.BENCHMARK_DATA = {
           2313.3421178545273,
           2811.071904318673,
           1848.233467395489,
-          2284.3395449320474
+          2284.3395449320474,
+          1714.4316504160563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18656,6 +18719,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -19068,7 +19132,8 @@ window.BENCHMARK_DATA = {
           1566.8822345733643,
           1762.0287928263347,
           1463.4357399259295,
-          2017.751517704555
+          2017.751517704555,
+          1493.7551391601562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19080,6 +19145,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -20386,6 +20452,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -20556,7 +20628,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -20730,7 +20803,8 @@ window.BENCHMARK_DATA = {
           1879.4594280536357,
           2213.5966700236004,
           1564.700717339149,
-          1967.4006447425256
+          1967.4006447425256,
+          1437.3955102648054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -20796,6 +20870,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -21091,7 +21166,8 @@ window.BENCHMARK_DATA = {
           971.51924756368,
           1184.3206879933675,
           1024.414878164019,
-          1456.7029830932618
+          1456.7029830932618,
+          1089.6593227386475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21103,6 +21179,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -22292,6 +22369,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -22462,7 +22545,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -22636,7 +22720,8 @@ window.BENCHMARK_DATA = {
           2420.6685630253382,
           2964.919607434954,
           2109.195683034261,
-          2638.5700165884837
+          2638.5700165884837,
+          1984.5024981180827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22686,6 +22771,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -22997,7 +23083,8 @@ window.BENCHMARK_DATA = {
           1136.4567064557757,
           1326.352777481079,
           1163.485581942967,
-          1656.0825465066093
+          1656.0825465066093,
+          1180.3751224517823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23009,6 +23096,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -23856,6 +23944,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -23969,7 +24063,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -24086,7 +24181,8 @@ window.BENCHMARK_DATA = {
           128297.55925641741,
           163037.5103853666,
           123130.36595052083,
-          146772.7362234933
+          146772.7362234933,
+          109198.81678185097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24098,6 +24194,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -24333,7 +24430,8 @@ window.BENCHMARK_DATA = {
           153482.33427734376,
           188878.03384164663,
           149423.87205403644,
-          173336.69919996994
+          173336.69919996994,
+          129784.98616536458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24455,7 +24553,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266882,
-          266882
+          266882,
+          266883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25135,6 +25234,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
@@ -25248,7 +25353,8 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
@@ -25365,7 +25471,8 @@ window.BENCHMARK_DATA = {
           2143.5086569104874,
           2657.689724513463,
           1727.47757136027,
-          2088.5997475215368
+          2088.5997475215368,
+          1574.920174662272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25377,6 +25484,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -25612,7 +25720,8 @@ window.BENCHMARK_DATA = {
           1488.0642312367756,
           1796.4771723747253,
           1465.0661392211914,
-          1885.169917379107
+          1885.169917379107,
+          1343.130462374006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25624,6 +25733,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
