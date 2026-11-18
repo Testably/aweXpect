@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1640.6081005096435,
           2020.5579292297364,
           2064.3817693074543,
           1588.920223236084,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1565.9133483341761,
           1966.6887620779185,
           1420.4999016125996,
-          1687.7712898254395
+          1687.7712898254395,
+          1273.099061012268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          11008.760184733073,
           15112.188228352865,
           16142.249790445963,
           10886.367145284017,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           11320.056605529786,
           13317.213907877604,
           9604.799432607797,
-          12737.952022007534
+          12737.952022007534,
+          9690.129448445638
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1282.1262341908046,
           1669.0937925066266,
           1698.1461855570476,
           1262.2627299172539,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1238.926645596822,
           1581.6919624010723,
           1114.2445458632249,
-          1329.2892699608435
+          1329.2892699608435,
+          975.2295409611294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10161.80207010905,
           13569.857523991512,
           14373.778502244215,
           10285.310757446288,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10567.324384416852,
           12371.246237182617,
           8926.177355957032,
-          11864.961554391044
+          11864.961554391044,
+          8818.346589152019
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4006.1066350301107,
           5486.1012285672705,
           5454.689495380108,
           4012.6834602355957,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4061.688028971354,
           5020.966034444174,
           3447.824900817871,
-          4115.671655782064
+          4115.671655782064,
+          3108.0416394551594
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          31023.902799479165,
           44739.5182820638,
           48101.33492838542,
           30497.739501953125,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           30870.862389197715,
           37703.5406616211,
           28015.66796875,
-          35012.90710449219
+          35012.90710449219,
+          27459.591756184895
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61925,
           61926,
           61926,
           61925,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61921,
-          61925
+          61925,
+          61921
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
       {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          7649.655676269531,
           9666.252646891277,
           9669.440991719564,
           7518.382668631418,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7539.84034200815,
           9420.247183663505,
           6895.707287597656,
-          8251.493374415806
+          8251.493374415806,
+          6146.780662027994
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          209553.9464029948,
           278952.53749302455,
           311913.21616908483,
           214540.68717447916,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           222900.37724609376,
           265118.77132161456,
           186768.32978515624,
-          244537.15263671876
+          244537.15263671876,
+          195889.70442708334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521542,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521542,
-          521541
+          521541,
+          521542
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
       {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2508.00612004598,
           2875.119228907994,
           2939.0386788504466,
           2259.1283988952637,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2205.9067192077637,
           2822.809223175049,
           2217.60267668504,
-          2599.509952000209
+          2599.509952000209,
+          1969.7870089213054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1731.5336634772164,
           1918.1558825174968,
           2020.654443359375,
           1536.4678754170736,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1596.0030690601893,
           1909.9895669301352,
           1623.481517791748,
-          1889.335530417306
+          1889.335530417306,
+          1427.399649810791
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2126.4985376085556,
           2958.200578689575,
           3024.6391380855016,
           2193.4462787083216,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2313.3421178545273,
           2811.071904318673,
           1848.233467395489,
-          2284.3395449320474
+          2284.3395449320474,
+          1714.4316504160563
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1656.4797300974528,
           1753.7188034057617,
           1989.5530342102052,
           1489.6739541371664,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1566.8822345733643,
           1762.0287928263347,
           1463.4357399259295,
-          2017.751517704555
+          2017.751517704555,
+          1493.7551391601562
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1809.4410732269287,
           2276.348109436035,
           2466.1263449532644,
           1833.495033009847,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1879.4594280536357,
           2213.5966700236004,
           1564.700717339149,
-          1967.4006447425256
+          1967.4006447425256,
+          1437.3955102648054
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1157.0985036577497,
           1084.9639465332032,
           1242.3541319529215,
           968.3064895357404,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           971.51924756368,
           1184.3206879933675,
           1024.414878164019,
-          1456.7029830932618
+          1456.7029830932618,
+          1089.6593227386475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2382.8600351969403,
           2986.2488189697265,
           3328.6429690043133,
           2357.8171490260534,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2420.6685630253382,
           2964.919607434954,
           2109.195683034261,
-          2638.5700165884837
+          2638.5700165884837,
+          1984.5024981180827
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1312.040745417277,
           1220.2510668436687,
           1365.5647393544516,
           1070.2066541399274,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1136.4567064557757,
           1326.352777481079,
           1163.485581942967,
-          1656.0825465066093
+          1656.0825465066093,
+          1180.3751224517823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
-      {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 6 08:54:27 2026 \u002B0100",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          140936.50411283053,
           166190.79954310827,
           171940.4540640024,
           129762.61982073102,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           128297.55925641741,
           163037.5103853666,
           123130.36595052083,
-          146772.7362234933
+          146772.7362234933,
+          109198.81678185097
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          157602.29415690104,
           191120.18450520834,
           194970.45528470553,
           154037.20875651043,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           153482.33427734376,
           188878.03384164663,
           149423.87205403644,
-          173336.69919996994
+          173336.69919996994,
+          129784.98616536458
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266883,
           266951,
           266950,
           266950,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266882,
-          266882
+          266882,
+          266883
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "0936752031ef68be44c9f0057f61696c83da8adc",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Nov 6 06:41:23 2026 \u002B0100",
-        "message": "refactor!: remove StopWhen from IEventRecording (#2186)"
-      },
       {
         "sha": "7524c74473c6e9fd8f2c3b2a0a7dc347c4c0fc22",
         "author": "Valentin Breu\u00DF",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 21:38:08 2026 \u002B0100",
         "message": "feat: add \u0060AreNull\u0060 and \u0060AreNotNull\u0060 for the items of a collection (#2262)"
+      },
+      {
+        "sha": "ae367d3167d407856f9962697202ffeaa22a09ea",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 21:49:59 2026 \u002B0100",
+        "message": "ci: compare the benchmarks of a pull request with main from the same runner (#2263)"
       }
     ],
     "labels": [
-      "09367520",
       "7524c744",
       "cefa1d5e",
       "cc35431a",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "73d89808",
       "4385c01a",
       "0572eba7",
-      "37a55fad"
+      "37a55fad",
+      "ae367d31"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1912.7924176534018,
           2684.653305562337,
           2827.448939641317,
           2121.716818237305,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2143.5086569104874,
           2657.689724513463,
           1727.47757136027,
-          2088.5997475215368
+          2088.5997475215368,
+          1574.920174662272
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1591.157462801252,
           1893.2926500865392,
           1937.0216680254255,
           1469.4469006856282,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1488.0642312367756,
           1796.4771723747253,
           1465.0661392211914,
-          1885.169917379107
+          1885.169917379107,
+          1343.130462374006
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
