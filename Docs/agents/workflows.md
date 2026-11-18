@@ -52,9 +52,10 @@ dotnet run -c Release --project Benchmarks/aweXpect.Benchmarks -- --filter "*Str
 - `BenchmarkProjects` in `Pipeline/Build.Benchmarks.cs` lists the benchmark project of each package and the packages
   it measures. The parameter `BenchmarkPackage` selects one of them; without it, all run.
 - CI runs one job per package. In a pull request, a job only runs the benchmarks when the pull request changes the
-  source of a measured package, the benchmark project or a shared build input (`SharedBenchmarkInputs`), and
-  `ci-analysis.yml` posts one PR comment per package that ran. A method name ending in `_aweXpect` is highlighted in
-  the comment.
+  source of a measured package, the benchmark project or a shared build input (`SharedBenchmarkInputs`). The job then
+  also runs the `_aweXpect` benchmarks of `main` on the same runner (`BenchmarkMain`), and `ci-analysis.yml` posts one
+  PR comment that compares the packages that ran with them. A method name ending in `_aweXpect` is highlighted in the
+  comment.
 - On `main`, every package appends its results to its history on the `benchmarks` branch, which the docs site reads:
   `Docs/pages/static/js` for `aweXpect`, `Docs/extensions/<Package>/static/js` for an extension package. The results
   are shown in `Docs/pages/12-benchmarks/00-index.mdx` and, for an extension package, on its subpage

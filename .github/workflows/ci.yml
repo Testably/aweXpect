@@ -113,6 +113,12 @@ jobs:
                 run: ./build.sh Benchmarks
                 env:
                     BenchmarkPackage: ${{ matrix.package }}
+            -   name: Run benchmarks of main
+                # Without results of main the comment only shows a warning, so a failure must not fail the pull request.
+                continue-on-error: true
+                run: ./build.sh BenchmarkMain
+                env:
+                    BenchmarkPackage: ${{ matrix.package }}
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
