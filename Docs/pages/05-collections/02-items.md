@@ -65,6 +65,7 @@ and what the items must meet:
 | [`AreEquivalentTo`](#equality)      | is [equivalent](../04-values/13-equivalency.md) to the expected value |
 | [`Are<T>`](#type)                   | is of type `T` or a derived type                                      |
 | [`AreExactly<T>`](#type)            | is exactly of type `T`                                                |
+| [`AreNull`](#null)                  | is `null` (`AreNotNull`: is not `null`)                               |
 | [`AreUnique`](#unique)              | occurs exactly once (`AreNotUnique`: more than once)                  |
 
 An empty collection satisfies `All()`, like it does `Enumerable.All`, so
@@ -145,6 +146,17 @@ IEnumerable<INotification> notifications = //...
 await That(notifications).All().Are<INotification>();
 await That(notifications).AtLeast(1).AreExactly<TrackAddedNotification>();
 await That(notifications).None().Are(typeof(TrackRemovedNotification));
+```
+
+### Null
+
+You can verify that the items are `null` or not:
+
+```csharp
+Track?[] tracks = [new() { Title = "Let It Be" }, null];
+
+await That(tracks).AtLeast(1).AreNotNull();
+await That(tracks).Exactly(1).AreNull();
 ```
 
 ### Unique
