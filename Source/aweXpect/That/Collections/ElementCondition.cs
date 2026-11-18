@@ -133,6 +133,42 @@ internal sealed class ElementOfType<TItem, TType> : SynchronousElementCondition<
 }
 
 /// <summary>
+///     An item that is <see langword="null" />, or that is not.
+/// </summary>
+/// <remarks>
+///     The condition holds no state, so one instance serves every expectation.
+/// </remarks>
+internal sealed class ElementNull<TItem> : SynchronousElementCondition<TItem>
+{
+	private readonly bool _expectNull;
+
+	private ElementNull(bool expectNull)
+	{
+		_expectNull = expectNull;
+	}
+
+	/// <summary>
+	///     An item that is <see langword="null" />.
+	/// </summary>
+	public static ElementNull<TItem> Instance { get; } = new(true);
+
+	/// <summary>
+	///     An item that is not <see langword="null" />.
+	/// </summary>
+	public static ElementNull<TItem> NotInstance { get; } = new(false);
+
+	/// <inheritdoc />
+	public override bool IsMet(TItem item)
+		=> item is null == _expectNull;
+
+	/// <inheritdoc />
+	public override string GetExpectation(ExpectationGrammars grammars)
+		=> _expectNull
+			? ElementExpectations.IsNull(grammars)
+			: ElementExpectations.IsNotNull(grammars);
+}
+
+/// <summary>
 ///     An item of the <paramref name="type" />, or exactly of it.
 /// </summary>
 internal sealed class ElementOfType<TItem>(Type type, bool exactly) : SynchronousElementCondition<TItem>

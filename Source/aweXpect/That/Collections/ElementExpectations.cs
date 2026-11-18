@@ -53,6 +53,18 @@ internal static class ElementExpectations
 			: $"is exactly of type {type}";
 
 	/// <summary>
+	///     …is not <see langword="null" />.
+	/// </summary>
+	public static string IsNotNull(ExpectationGrammars grammars)
+		=> grammars.IsPlural() ? "are not null" : "is not null";
+
+	/// <summary>
+	///     …is <see langword="null" />.
+	/// </summary>
+	public static string IsNull(ExpectationGrammars grammars)
+		=> grammars.IsPlural() ? "are null" : "is null";
+
+	/// <summary>
 	///     …is of type <paramref name="type" />.
 	/// </summary>
 	public static string IsOfType(ExpectationGrammars grammars, string type)
