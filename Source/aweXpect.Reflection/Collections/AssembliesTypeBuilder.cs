@@ -80,6 +80,15 @@ internal sealed class AssembliesTypeBuilder :
 	public Filtered.Types Enums()
 		=> BuildTypes(AppendFilter(t => t.IsEnum), _typeFilterDescription, "enums ");
 
+	public Filtered.Types Delegates()
+		=> BuildTypes(AppendFilter(t => t.IsDelegate()), _typeFilterDescription, "delegates ");
+
+	public Filtered.Types Exceptions()
+		=> BuildTypes(AppendFilter(t => t.IsException()), _typeFilterDescription, "exceptions ");
+
+	public Filtered.Types Attributes()
+		=> BuildTypes(AppendFilter(t => t.IsAttribute()), _typeFilterDescription, "attributes ");
+
 	// Member selectors below intentionally do NOT apply _typeFilters to the source type set:
 	// `assemblies.Static.Methods()` returns static methods on ALL types in the assembly, not
 	// methods on static types. This matches pre-refactor behavior; tracked as a separate concern.

@@ -1499,6 +1499,79 @@ internal static class TypeHelpers
 		=> type is not null && typeof(Attribute).IsAssignableFrom(type);
 
 	/// <summary>
+	///     Gets the base types of the <paramref name="type" />, from the direct base type upwards.
+	/// </summary>
+	/// <remarks>
+	///     The implicit base types <see cref="object" />, <see cref="ValueType" /> and <see cref="Enum" /> are skipped,
+	///     like their members are for the members of a type. They end every chain, so the walk stops there.
+	/// </remarks>
+	internal static IEnumerable<Type> GetBaseTypes(this Type type)
+	{
+		for (Type? baseType = type.BaseType;
+		     baseType is not null && baseType != typeof(object) && baseType != typeof(ValueType) &&
+		     baseType != typeof(Enum);
+		     baseType = baseType.BaseType)
+		{
+			yield return baseType;
+		}
+	}
+
+	/// <summary>
+	///     Gets the interfaces the <paramref name="type" /> implements, or only those it implements
+	///     <paramref name="directly" />.
+	/// </summary>
+	/// <remarks>
+	///     An interface is not implemented directly when the type receives it through its base type or through another
+	///     implemented interface, like in <see cref="Implements(Type, Type, bool)" />.
+	/// </remarks>
+	internal static Type[] GetImplementedInterfaces(this Type type, bool directly)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "interfaces");
+		}
+
+		Type[] interfaces = type.GetInterfaces();
+		if (!directly)
+		{
+			return interfaces;
+		}
+
+		HashSet<Type> inherited = [];
+		if (type.BaseType is { } baseType)
+		{
+			inherited.UnionWith(baseType.GetInterfaces());
+		}
+
+		foreach (Type @interface in interfaces)
+		{
+			inherited.UnionWith(@interface.GetInterfaces());
+		}
+
+		return Array.FindAll(interfaces, @interface => !inherited.Contains(@interface));
+	}
+
+	/// <summary>
+	///     Gets the types nested directly in the <paramref name="type" />.
+	/// </summary>
+	/// <remarks>
+	///     Compiler-generated types are skipped unless they are included via
+	///     <see cref="CompilerGeneratedMembers.Types" />, like when listing the types of an assembly.
+	/// </remarks>
+	internal static Type[] GetDeclaredNestedTypes(this Type type)
+	{
+		if (!ReflectionFallback.IsSupported)
+		{
+			throw ReflectionFallbackHelpers.NotSupported(type, "nested types");
+		}
+
+		Type[] nestedTypes = type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
+		return (IncludedCompilerGeneratedMembers & CompilerGeneratedMembers.Types) != 0
+			? nestedTypes
+			: Array.FindAll(nestedTypes, nestedType => !nestedType.IsCompilerGenerated());
+	}
+
+	/// <summary>
 	///     Gets a value indicating whether the <see cref="Type" /> is a read-only struct
 	///     (declared with the <c>readonly</c> modifier).
 	/// </summary>

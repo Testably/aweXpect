@@ -153,6 +153,15 @@ public static partial class Filtered
 		/// <inheritdoc cref="ITypeAssemblies.Enums()" />
 		public Types Enums() => NewBuilder(MemberFilterState.Empty).Enums();
 
+		/// <inheritdoc cref="ITypeAssemblies.Delegates()" />
+		public Types Delegates() => NewBuilder(MemberFilterState.Empty).Delegates();
+
+		/// <inheritdoc cref="ITypeAssemblies.Exceptions()" />
+		public Types Exceptions() => NewBuilder(MemberFilterState.Empty).Exceptions();
+
+		/// <inheritdoc cref="ITypeAssemblies.Attributes()" />
+		public Types Attributes() => NewBuilder(MemberFilterState.Empty).Attributes();
+
 		/// <inheritdoc cref="ILimitedStaticTypeAssemblies.Constructors()" />
 		public Constructors Constructors() => NewBuilder(MemberFilterState.Empty).Constructors();
 
