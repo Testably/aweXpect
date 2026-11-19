@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
-      {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          215.49249725341798,
           486.4692967732747,
           426.9934498469035,
           356.8894415537516,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           476.0360873086112,
           446.38873624801636,
           333.0078377383096,
-          453.4543751648494
+          453.4543751648494,
+          458.60972391764324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -434,7 +434,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          506.1190433502197,
           1063.23406292842,
           1104.0352654774983,
           727.4845709433922,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           995.8706130981445,
           990.6389422098796,
           823.3838088989257,
-          1168.6285456339517
+          1168.6285456339517,
+          993.30059521993
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
-      {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          121.71787426869075,
           246.99476623535156,
           247.73440783364433,
           168.97363936106365,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           259.1982714335124,
           239.2328510625022,
           193.32374599774678,
-          264.8047750336783
+          264.8047750336783,
+          241.08178014755248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          128.7858556849616,
           280.7596593856812,
           281.90998336247037,
           201.51027666727703,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           275.44186245600383,
           262.41677907535006,
           242.03759984970094,
-          316.94255889256794
+          316.94255889256794,
+          258.20712718963625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
-      {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          505.97992928822833,
           1054.0909311930338,
           936.5313198725382,
           664.6222269351666,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           989.5135856628418,
           993.8218688964844,
           714.190848795573,
-          981.2943676539829
+          981.2943676539829,
+          983.7499443934514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          487.4431512696402,
           1072.6894055684409,
           1029.834334309896,
           710.4350616455079,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           951.6085747310093,
           1046.1682829538981,
           818.748482577006,
-          1128.3411755195032
+          1128.3411755195032,
+          965.939442316691
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
-      {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1081.560115950448,
           1988.760061645508,
           1682.2827657063801,
           1455.0910160882133,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1952.4200815473284,
           1883.1657285690308,
           1261.9071047856257,
-          1737.601314417521
+          1737.601314417521,
+          1966.1342274983724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2258,7 +2258,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9362.062799072266,
           20312.337469482423,
           16421.029397147042,
           13784.341008867535,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21079.024153645834,
           21639.66630045573,
           13374.694177246094,
-          17439.08848063151
+          17439.08848063151,
+          22006.783131917316
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34713,
           34712,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
       {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          392.0967173916953,
           762.898933092753,
           734.9194453557333,
           537.1974818365915,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           819.3643128077189,
           789.0511112848918,
           554.8621947215154,
-          741.706606388092
+          741.706606388092,
+          749.4433670725141
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          710.9012879689534,
           1460.5343994140626,
           1373.5542538506645,
           975.8025608062744,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1341.2156710306804,
           1361.1597313199725,
           1127.1082768758138,
-          1499.7908333369664
+          1499.7908333369664,
+          1297.098721577571
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "cefa1d5e9b9f0dc60ddd16ab7a9e68a0e9aedee0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 01:48:49 2026 \u002B0100",
-        "message": "docs: draw the aweXpect check as a brush stroke (#2190)"
-      },
-      {
         "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
         "author": "Valentin Breu\u00DF",
         "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:25:38 2026 \u002B0100",
         "message": "docs: show the aweXpect.Chronology builders in equivalency comparisons (#2265)"
+      },
+      {
+        "sha": "ede25433f6ae1e199fae0767c054b3c5617264bb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
+        "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
       }
     ],
     "labels": [
-      "cefa1d5e",
       "cc35431a",
       "4d8ac6be",
       "564b7a26",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "0572eba7",
       "37a55fad",
       "ae367d31",
-      "35823ecc"
+      "35823ecc",
+      "ede25433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          746.5886924450214,
           1247.6740617752075,
           1112.6286829630533,
           970.6570403235299,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1341.8871419270833,
           1314.0905168973482,
           846.4503896077474,
-          1157.9673514732947
+          1157.9673514732947,
+          1343.062260945638
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          410.7543091138204,
           886.7203978220622,
           814.1402980940683,
           594.755026953561,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           774.182383664449,
           779.1190296808878,
           733.6716420491537,
-          930.8885487828936
+          930.8885487828936,
+          748.5500675201416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
