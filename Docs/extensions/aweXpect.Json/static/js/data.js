@@ -1788,6 +1788,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -2088,7 +2094,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -2392,7 +2399,8 @@ window.BENCHMARK_DATA = {
           1687.7712898254395,
           1273.099061012268,
           2028.3811168670654,
-          1519.3496657151443
+          1519.3496657151443,
+          1599.0052149846003
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2538,6 +2546,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -3013,7 +3022,8 @@ window.BENCHMARK_DATA = {
           12737.952022007534,
           9690.129448445638,
           13426.350298368014,
-          10394.767622375488
+          10394.767622375488,
+          11268.639283316475
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3025,6 +3035,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -5124,6 +5135,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -5424,7 +5441,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -5728,7 +5746,8 @@ window.BENCHMARK_DATA = {
           1329.2892699608435,
           975.2295409611294,
           1632.2987895965575,
-          1209.0523559252422
+          1209.0523559252422,
+          1242.6998300552368
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5874,6 +5893,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -6349,7 +6369,8 @@ window.BENCHMARK_DATA = {
           11864.961554391044,
           8818.346589152019,
           13089.226967875164,
-          9605.022980826241
+          9605.022980826241,
+          10459.313957722981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6361,6 +6382,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -8400,6 +8422,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -8690,7 +8718,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -8984,7 +9013,8 @@ window.BENCHMARK_DATA = {
           4115.671655782064,
           3108.0416394551594,
           5112.313375032865,
-          3966.670503234863
+          3966.670503234863,
+          4036.207266671317
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9167,6 +9197,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -9585,7 +9616,8 @@ window.BENCHMARK_DATA = {
           35012.90710449219,
           27459.591756184895,
           39377.190376790364,
-          29079.408826555526
+          29079.408826555526,
+          31076.51490196815
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9884,6 +9916,7 @@ window.BENCHMARK_DATA = {
           61925,
           61921,
           61707,
+          61926,
           61926
         ],
         "borderColor": "#FF671B",
@@ -11626,6 +11659,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -11916,7 +11955,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -12210,7 +12250,8 @@ window.BENCHMARK_DATA = {
           8251.493374415806,
           6146.780662027994,
           9569.281405857631,
-          7343.025005634015
+          7343.025005634015,
+          7636.899537306565
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12346,6 +12387,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -12811,7 +12853,8 @@ window.BENCHMARK_DATA = {
           244537.15263671876,
           195889.70442708334,
           276694.07112630206,
-          207786.3542198768
+          207786.3542198768,
+          227315.6701171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13109,6 +13152,7 @@ window.BENCHMARK_DATA = {
           521542,
           521541,
           521542,
+          521594,
           521594,
           521594
         ],
@@ -14852,6 +14896,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -15142,7 +15192,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -15436,7 +15487,8 @@ window.BENCHMARK_DATA = {
           2599.509952000209,
           1969.7870089213054,
           2931.4484599186826,
-          2198.7520629337855
+          2198.7520629337855,
+          2241.098029817854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15622,6 +15674,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -16037,7 +16090,8 @@ window.BENCHMARK_DATA = {
           1889.335530417306,
           1427.399649810791,
           1887.268555861253,
-          1527.9025027411324
+          1527.9025027411324,
+          1590.6337235314506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16049,6 +16103,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -18078,6 +18133,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -18368,7 +18429,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -18662,7 +18724,8 @@ window.BENCHMARK_DATA = {
           2284.3395449320474,
           1714.4316504160563,
           2821.825623376029,
-          2247.5045483907065
+          2247.5045483907065,
+          2299.6866171700613
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18845,6 +18908,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -19263,7 +19327,8 @@ window.BENCHMARK_DATA = {
           2017.751517704555,
           1493.7551391601562,
           1746.9914332169753,
-          1356.9550848007202
+          1356.9550848007202,
+          1506.2159973780315
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19275,6 +19340,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -20602,6 +20668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -20775,7 +20847,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -20952,7 +21025,8 @@ window.BENCHMARK_DATA = {
           1967.4006447425256,
           1437.3955102648054,
           2237.109637124198,
-          1800.4617674691337
+          1800.4617674691337,
+          1841.608616511027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21018,6 +21092,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -21319,7 +21394,8 @@ window.BENCHMARK_DATA = {
           1456.7029830932618,
           1089.6593227386475,
           1177.9726716359457,
-          927.6368819645473
+          927.6368819645473,
+          966.7529465357462
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21331,6 +21407,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -22541,6 +22618,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -22714,7 +22797,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -22891,7 +22975,8 @@ window.BENCHMARK_DATA = {
           2638.5700165884837,
           1984.5024981180827,
           2942.3587427775064,
-          2335.0148714701336
+          2335.0148714701336,
+          2438.179992167155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22941,6 +23026,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -23258,7 +23344,8 @@ window.BENCHMARK_DATA = {
           1656.0825465066093,
           1180.3751224517823,
           1349.1795001711164,
-          1053.6323952356975
+          1053.6323952356975,
+          1072.286313565572
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23270,6 +23357,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -24138,6 +24226,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -24254,7 +24348,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -24374,7 +24469,8 @@ window.BENCHMARK_DATA = {
           146772.7362234933,
           109198.81678185097,
           168347.31746419272,
-          126628.33053152902
+          126628.33053152902,
+          128215.75261579241
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24386,6 +24482,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -24627,7 +24724,8 @@ window.BENCHMARK_DATA = {
           173336.69919996994,
           129784.98616536458,
           192490.13268229167,
-          145648.05988420759
+          145648.05988420759,
+          154680.46571858725
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24751,6 +24849,7 @@ window.BENCHMARK_DATA = {
           266882,
           266882,
           266883,
+          266950,
           266950,
           266950
         ],
@@ -25450,6 +25549,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
@@ -25566,7 +25671,8 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
@@ -25686,7 +25792,8 @@ window.BENCHMARK_DATA = {
           2088.5997475215368,
           1574.920174662272,
           2726.8292717566856,
-          2101.3125588553294
+          2101.3125588553294,
+          2147.1824078877767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -25698,6 +25805,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -25939,7 +26047,8 @@ window.BENCHMARK_DATA = {
           1885.169917379107,
           1343.130462374006,
           1909.964427947998,
-          1397.7811295645577
+          1397.7811295645577,
+          1476.5446764628093
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25951,6 +26060,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
