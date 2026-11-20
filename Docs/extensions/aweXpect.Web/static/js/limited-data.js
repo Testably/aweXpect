@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
-      {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          486.4692967732747,
           426.9934498469035,
           356.8894415537516,
           338.6182895024618,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           446.38873624801636,
           333.0078377383096,
           453.4543751648494,
-          458.60972391764324
+          458.60972391764324,
+          466.7571269353231
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -433,7 +433,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1063.23406292842,
           1104.0352654774983,
           727.4845709433922,
           753.665256245931,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           990.6389422098796,
           823.3838088989257,
           1168.6285456339517,
-          993.30059521993
+          993.30059521993,
+          965.4913920084635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
-      {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          246.99476623535156,
           247.73440783364433,
           168.97363936106365,
           171.00144333839415,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           239.2328510625022,
           193.32374599774678,
           264.8047750336783,
-          241.08178014755248
+          241.08178014755248,
+          240.5167721748352
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          280.7596593856812,
           281.90998336247037,
           201.51027666727703,
           205.6811504840851,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           262.41677907535006,
           242.03759984970094,
           316.94255889256794,
-          258.20712718963625
+          258.20712718963625,
+          251.1662084375109
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
-      {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1054.0909311930338,
           936.5313198725382,
           664.6222269351666,
           683.8553036371867,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           993.8218688964844,
           714.190848795573,
           981.2943676539829,
-          983.7499443934514
+          983.7499443934514,
+          1094.8744735717773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1072.6894055684409,
           1029.834334309896,
           710.4350616455079,
           731.360378742218,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1046.1682829538981,
           818.748482577006,
           1128.3411755195032,
-          965.939442316691
+          965.939442316691,
+          965.1590598179744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
-      {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1988.760061645508,
           1682.2827657063801,
           1455.0910160882133,
           1465.0292893818446,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1883.1657285690308,
           1261.9071047856257,
           1737.601314417521,
-          1966.1342274983724
+          1966.1342274983724,
+          1939.4889640808105
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2257,7 +2257,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20312.337469482423,
           16421.029397147042,
           13784.341008867535,
           14078.629677405725,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           21639.66630045573,
           13374.694177246094,
           17439.08848063151,
-          22006.783131917316
+          22006.783131917316,
+          21346.01322501046
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           34712,
-          34712,
           34713,
           34713,
           34712,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
       {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          762.898933092753,
           734.9194453557333,
           537.1974818365915,
           555.4904356002808,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           789.0511112848918,
           554.8621947215154,
           741.706606388092,
-          749.4433670725141
+          749.4433670725141,
+          829.2559848785401
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1460.5343994140626,
           1373.5542538506645,
           975.8025608062744,
           997.8122164862497,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1361.1597313199725,
           1127.1082768758138,
           1499.7908333369664,
-          1297.098721577571
+          1297.098721577571,
+          1309.3434693654378
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "cc35431a175301eee217bf0f1d41cd1d579362c8",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Nov 8 16:04:58 2026 \u002B0100",
-        "message": "docs: link aweXpect.Chronology at its new location (#2191)"
-      },
-      {
         "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Nov 18 22:53:25 2026 \u002B0100",
         "message": "feat: add navigation to base types, implemented interfaces and nested types, and the missing type-kind selectors (#2264)"
+      },
+      {
+        "sha": "0b9ee433e3be5a002eb7dd1cf2d8b09d25144f7e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
+        "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
       }
     ],
     "labels": [
-      "cc35431a",
       "4d8ac6be",
       "564b7a26",
       "4ca5e961",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "37a55fad",
       "ae367d31",
       "35823ecc",
-      "ede25433"
+      "ede25433",
+      "0b9ee433"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1247.6740617752075,
           1112.6286829630533,
           970.6570403235299,
           1008.276535306658,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1314.0905168973482,
           846.4503896077474,
           1157.9673514732947,
-          1343.062260945638
+          1343.062260945638,
+          1288.6159763336182
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          886.7203978220622,
           814.1402980940683,
           594.755026953561,
           595.3485330854144,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           779.1190296808878,
           733.6716420491537,
           930.8885487828936,
-          748.5500675201416
+          748.5500675201416,
+          736.6271330515543
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
