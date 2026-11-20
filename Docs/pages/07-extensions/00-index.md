@@ -2,29 +2,39 @@
 description: The extension packages that add expectations for JSON, XML, HTTP, reflection, snapshots, logging, file systems and mocks.
 ---
 
+import PackageVersion from '@site/src/components/PackageVersion';
+
 # Extension packages
 
 Expectations for types outside the base class library are provided by separate packages. Each package adds extension
 methods on `IThat<T>` for its types, so once it is referenced, its expectations appear on `That(…)` next to the
 built-in ones.
 
-**Core** extensions live in the aweXpect repository and are released together with `aweXpect`, always with the
-same version. **Separate** extensions have their own repository and release cycle.
+## Core extensions
 
-| Package                                                         | Release  | Expectations                                                                                                                                                                                                       |
-|-----------------------------------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [aweXpect.Json](/aweXpect/extensions/aweXpect.Json)             | core     | JSON strings, `JsonElement`, `JsonNode` and the JSON serialization of objects: `IsEqualTo(…).AsJson()`, `IsValidJson`, `Matches`, `HasProperty`, `IsObject`, `IsArray`, `IsJsonSerializable`, `IsJsonSerializedAs` |
-| [aweXpect.Logging](/aweXpect/extensions/aweXpect.Logging)       | separate | the records of a `FakeLogger` or `FakeLogCollector`: `Logged`, `LoggedWarning`, `DidNotLog`, `WithMessage`, `Within`, `Then`                                                                                       |
-| [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate)   | separate | interactions with [Mockolate](/Mockolate) mocks: `Once`, `Never`, `AtLeast`, `Then`, `AllInteractionsAreVerified`                                                                                                  |
-| [aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection) | core     | assemblies, types and members, for architecture and convention tests                                                                                                                                               |
-| [aweXpect.Snapshots](/aweXpect/extensions/aweXpect.Snapshots)   | core     | strings, objects and public APIs compared with a reviewed snapshot stored next to the test: `MatchesSnapshot`, `MatchesPublicApiSnapshot`                                                                          |
-| [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)     | separate | the file and time systems of [Testably.Abstractions](/Abstractions): `HasFile`, `HasDirectory`, timers, watcher events                                                                                             |
-| [aweXpect.Web](/aweXpect/extensions/aweXpect.Web)               | core     | `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress`: `HasMethod`, `HasRequestUri`, `HasStatusCode`, `HasHeader`, `HasContent`, `HasHost`, `HasQueryParameter`                                       |
-| [aweXpect.Xml](/aweXpect/extensions/aweXpect.Xml)               | core     | XML strings, `XElement` and `XDocument`: `IsEqualTo(…).AsXml()`, `IsValidXml`, `Matches`, `HasAttribute`, `HasElement`                                                                                             |
+These packages live in the aweXpect repository and are released together with `aweXpect`, always with the same version.
 
-[aweXpect.Chronology](/aweXpect/chronology) adds no expectations, but readable `TimeSpan` and
-`DateTime` values like `5.Seconds()` or `24.December(2024)`. It does not depend on aweXpect, and many samples in
-this documentation use it.
+| Package                                                         | Checks                                                                   |
+|-----------------------------------------------------------------|--------------------------------------------------------------------------|
+| [aweXpect.Json](/aweXpect/extensions/aweXpect.Json)             | JSON strings, `JsonElement`, `JsonNode` and the serialization of objects |
+| [aweXpect.Reflection](/aweXpect/extensions/aweXpect.Reflection) | assemblies, types and members, for architecture and convention tests     |
+| [aweXpect.Snapshots](/aweXpect/extensions/aweXpect.Snapshots)   | strings, objects and public APIs against a reviewed snapshot             |
+| [aweXpect.Web](/aweXpect/extensions/aweXpect.Web)               | `HttpRequestMessage`, `HttpResponseMessage`, `Uri` and `IPAddress`       |
+| [aweXpect.Xml](/aweXpect/extensions/aweXpect.Xml)               | XML strings, `XElement` and `XDocument`                                  |
+
+## Separate extensions
+
+These packages have their own repository and release cycle.
+
+| Package                                                       | Version                                           | Checks                                                              |
+|---------------------------------------------------------------|---------------------------------------------------|---------------------------------------------------------------------|
+| [aweXpect.Logging](/aweXpect/extensions/aweXpect.Logging)     | <PackageVersion package="aweXpect.Logging" />     | the records of a `FakeLogger` or `FakeLogCollector`                 |
+| [aweXpect.Mockolate](/aweXpect/extensions/aweXpect.Mockolate) | <PackageVersion package="aweXpect.Mockolate" />   | interactions with [Mockolate](/Mockolate) mocks                     |
+| [aweXpect.Testably](/aweXpect/extensions/aweXpect.Testably)   | <PackageVersion package="aweXpect.Testably" />    | the file and time systems of [Testably.Abstractions](/Abstractions) |
+
+:::tip[aweXpect.Chronology]
+[aweXpect.Chronology](/aweXpect/chronology) adds readable `TimeSpan` and `DateTime` values like `5.Seconds()` or `24.December(2024)`. It adds no expectations and does not depend on aweXpect; many samples in this documentation use it.
+:::
 
 ## Write your own
 
