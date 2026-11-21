@@ -6,10 +6,10 @@ description: Verify that an object survives a round trip through System.Text.Jso
 
 Describes the possible expectations for the JSON serialization of objects with `System.Text.Json`.
 
-| Expectation                                 | Negated | Summary                                                |
-|---------------------------------------------|---------|--------------------------------------------------------|
-| [`IsJsonSerializable`](#json-serializable)  |         | survives a round trip through the JSON serializer      |
-| [`IsJsonSerializedAs`](#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
+| Expectation                                 | Summary                                                |
+|---------------------------------------------|--------------------------------------------------------|
+| [`IsJsonSerializable`](#json-serializable)  | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](#serialized-as-json) | serialized by the JSON serializer as the expected JSON |
 
 ## JSON serializable
 

@@ -8,10 +8,10 @@ Describes the possible expectations for matching a `JsonElement` or a
 [`JsonNode`](./04-json-nodes.md) with an expected value, and the [options](#options) to relax the
 comparison.
 
-| Expectation                  | Negated | Summary                                                   |
-|------------------------------|---------|-----------------------------------------------------------|
-| [`Matches`](#objects)        |         | matches the expected value, additional properties allowed |
-| [`MatchesExactly`](#objects) |         | matches the expected value exactly                        |
+| Expectation                  | Summary                                                   |
+|------------------------------|-----------------------------------------------------------|
+| [`Matches`](#objects)        | matches the expected value, additional properties allowed |
+| [`MatchesExactly`](#objects) | matches the expected value exactly                        |
 
 ## Objects
 

@@ -87,10 +87,10 @@ Expectations for `JsonElement` and [`JsonNode`](https://docs.testably.org/aweXpe
 
 Expectations for any `object`, serialized with `System.Text.Json`:
 
-| Expectation                                                                                                     | Negated | Summary                                                |
-|-----------------------------------------------------------------------------------------------------------------|---------|--------------------------------------------------------|
-| [`IsJsonSerializable`](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/serialization#json-serializable)  |         | survives a round trip through the JSON serializer      |
-| [`IsJsonSerializedAs`](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/serialization#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
+| Expectation                                                                                                     | Summary                                                |
+|-----------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| [`IsJsonSerializable`](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/serialization#json-serializable)  | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](https://docs.testably.org/aweXpect/extensions/aweXpect.Json/serialization#serialized-as-json) | serialized by the JSON serializer as the expected JSON |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
 `IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see

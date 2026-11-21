@@ -89,16 +89,16 @@ Pending snapshot:
 
 Expectations for `string` and any other object:
 
-| Expectation                                             | Negated | Summary                                                                                  |
-|---------------------------------------------------------|---------|------------------------------------------------------------------------------------------|
-| [`MatchesSnapshot`](./01-matching-snapshots.md#strings) |         | a string matches the snapshot stored next to the test, with rules for its lines and text |
-| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) |         | an object matches its snapshot, written by aweXpect, with rules for its members and text |
+| Expectation                                             | Summary                                                                                  |
+|---------------------------------------------------------|------------------------------------------------------------------------------------------|
+| [`MatchesSnapshot`](./01-matching-snapshots.md#strings) | a string matches the snapshot stored next to the test, with rules for its lines and text |
+| [`MatchesSnapshot`](./01-matching-snapshots.md#objects) | an object matches its snapshot, written by aweXpect, with rules for its members and text |
 
 Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 
-| Expectation                                      | Negated | Summary                                                                              |
-|--------------------------------------------------|---------|--------------------------------------------------------------------------------------|
-| [`MatchesPublicApiSnapshot`](./07-public-api.md) |         | the public API of the assembly, or of the assembly in the file, matches the snapshot |
+| Expectation                                      | Summary                                                                              |
+|--------------------------------------------------|--------------------------------------------------------------------------------------|
+| [`MatchesPublicApiSnapshot`](./07-public-api.md) | the public API of the assembly, or of the assembly in the file, matches the snapshot |
 
 ## Customization
 
