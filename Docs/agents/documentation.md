@@ -37,7 +37,8 @@ in XML docs and `Docs/agents`, not in the user docs.
   `Expectation | Negated | Summary` with a link per row, then one section per expectation, starting with
   "You can verify that …" and a sample with positive and negated calls.
 - Every expectation of the page has a row in the overview table. Leave the Negated cell empty when there is no
-  negation; for a quantifier write e.g. "use `None()`".
+  negation; for a quantifier write e.g. "use `None()`". Drop the Negated column when none of the table's
+  expectations has a negation.
 - Where expectations overlap, e.g. `Contains(predicate)`, `Any().Satisfy(…)` and `HasItem(…)`, say which one to use
   and why.
 - An extension package index follows the extension page template of the style guide: the pitch linking aweXpect (`/aweXpect`), Installation (`<PackageInstall package="..." />`, the needed `using`, and that `aweXpect` is referenced as well), At a glance with a failure message, Overview with the tables, then a Documentation page list and, when the package has settings, a Customization table. Its settings page is called "Customization".

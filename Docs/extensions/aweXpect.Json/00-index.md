@@ -89,10 +89,10 @@ Expectations for `JsonElement` and [`JsonNode`](./04-json-nodes.md):
 
 Expectations for any `object`, serialized with `System.Text.Json`:
 
-| Expectation                                                      | Negated | Summary                                                |
-|------------------------------------------------------------------|---------|--------------------------------------------------------|
-| [`IsJsonSerializable`](./05-serialization.md#json-serializable)  |         | survives a round trip through the JSON serializer      |
-| [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json) |         | serialized by the JSON serializer as the expected JSON |
+| Expectation                                                      | Summary                                                |
+|------------------------------------------------------------------|--------------------------------------------------------|
+| [`IsJsonSerializable`](./05-serialization.md#json-serializable)  | survives a round trip through the JSON serializer      |
+| [`IsJsonSerializedAs`](./05-serialization.md#serialized-as-json) | serialized by the JSON serializer as the expected JSON |
 
 The comparisons can be relaxed with options like `TreatingNullAsAbsent()`, `IgnoringArrayOrder()`,
 `IgnoringMember(name)` or `ComparingNumbersWithin(tolerance)`, see [Matching JSON](./02-matching.md).

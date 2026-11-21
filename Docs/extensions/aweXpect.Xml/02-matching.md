@@ -7,10 +7,10 @@ description: Match an XElement or XDocument with an expected XML and relax the c
 Describes the possible expectations for matching an `XElement` or an `XDocument` with an expected XML, and the
 [options](#options) to relax the comparison.
 
-| Expectation                                 | Negated | Summary                                            |
-|---------------------------------------------|---------|----------------------------------------------------|
-| [`Matches`](#elements-and-documents)        |         | matches the expected XML, additional nodes allowed |
-| [`MatchesExactly`](#elements-and-documents) |         | matches the expected XML exactly                   |
+| Expectation                                 | Summary                                            |
+|---------------------------------------------|----------------------------------------------------|
+| [`Matches`](#elements-and-documents)        | matches the expected XML, additional nodes allowed |
+| [`MatchesExactly`](#elements-and-documents) | matches the expected XML exactly                   |
 
 ## Elements and documents
 
