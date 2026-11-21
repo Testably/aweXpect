@@ -1800,6 +1800,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -2102,7 +2108,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -2408,7 +2415,8 @@ window.BENCHMARK_DATA = {
           333.0078377383096,
           453.4543751648494,
           458.60972391764324,
-          466.7571269353231
+          466.7571269353231,
+          434.3489905993144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2683,6 +2691,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -3033,7 +3042,8 @@ window.BENCHMARK_DATA = {
           823.3838088989257,
           1168.6285456339517,
           993.30059521993,
-          965.4913920084635
+          965.4913920084635,
+          1073.1471761067708
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3045,6 +3055,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5158,6 +5169,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -5460,7 +5477,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -5766,7 +5784,8 @@ window.BENCHMARK_DATA = {
           193.32374599774678,
           264.8047750336783,
           241.08178014755248,
-          240.5167721748352
+          240.5167721748352,
+          259.97015771865847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5913,6 +5932,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6391,7 +6411,8 @@ window.BENCHMARK_DATA = {
           242.03759984970094,
           316.94255889256794,
           258.20712718963625,
-          251.1662084375109
+          251.1662084375109,
+          293.6182666142782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6403,6 +6424,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8456,6 +8478,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -8748,7 +8776,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -9044,7 +9073,8 @@ window.BENCHMARK_DATA = {
           714.190848795573,
           981.2943676539829,
           983.7499443934514,
-          1094.8744735717773
+          1094.8744735717773,
+          952.2472215379987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9236,6 +9266,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9649,7 +9680,8 @@ window.BENCHMARK_DATA = {
           818.748482577006,
           1128.3411755195032,
           965.939442316691,
-          965.1590598179744
+          965.1590598179744,
+          1057.3841901143392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9661,6 +9693,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11704,6 +11737,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -11996,7 +12035,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -12292,7 +12332,8 @@ window.BENCHMARK_DATA = {
           1261.9071047856257,
           1737.601314417521,
           1966.1342274983724,
-          1939.4889640808105
+          1939.4889640808105,
+          1609.8612560544695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12557,6 +12598,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -12897,7 +12939,8 @@ window.BENCHMARK_DATA = {
           13374.694177246094,
           17439.08848063151,
           22006.783131917316,
-          21346.01322501046
+          21346.01322501046,
+          16290.501041666666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13198,7 +13241,8 @@ window.BENCHMARK_DATA = {
           34712,
           34712,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14952,6 +14996,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -15244,7 +15294,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -15540,7 +15591,8 @@ window.BENCHMARK_DATA = {
           554.8621947215154,
           741.706606388092,
           749.4433670725141,
-          829.2559848785401
+          829.2559848785401,
+          714.0382732244639
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15679,6 +15731,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -16145,7 +16198,8 @@ window.BENCHMARK_DATA = {
           1127.1082768758138,
           1499.7908333369664,
           1297.098721577571,
-          1309.3434693654378
+          1309.3434693654378,
+          1434.0298520406088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16157,6 +16211,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -18200,6 +18255,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
@@ -18492,7 +18553,8 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
@@ -18788,7 +18850,8 @@ window.BENCHMARK_DATA = {
           846.4503896077474,
           1157.9673514732947,
           1343.062260945638,
-          1288.6159763336182
+          1288.6159763336182,
+          1100.4487668446131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -18958,6 +19021,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -19393,7 +19457,8 @@ window.BENCHMARK_DATA = {
           733.6716420491537,
           930.8885487828936,
           748.5500675201416,
-          736.6271330515543
+          736.6271330515543,
+          868.3132740901067
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19405,6 +19470,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
