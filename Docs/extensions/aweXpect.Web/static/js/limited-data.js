@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
-      {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          426.9934498469035,
           356.8894415537516,
           338.6182895024618,
           484.90661873136247,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           333.0078377383096,
           453.4543751648494,
           458.60972391764324,
-          466.7571269353231
+          466.7571269353231,
+          434.3489905993144
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -432,7 +432,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1104.0352654774983,
           727.4845709433922,
           753.665256245931,
           1116.3289230891637,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           823.3838088989257,
           1168.6285456339517,
           993.30059521993,
-          965.4913920084635
+          965.4913920084635,
+          1073.1471761067708
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
-      {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          247.73440783364433,
           168.97363936106365,
           171.00144333839415,
           256.36533662251065,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           193.32374599774678,
           264.8047750336783,
           241.08178014755248,
-          240.5167721748352
+          240.5167721748352,
+          259.97015771865847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          281.90998336247037,
           201.51027666727703,
           205.6811504840851,
           302.12337834494457,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           242.03759984970094,
           316.94255889256794,
           258.20712718963625,
-          251.1662084375109
+          251.1662084375109,
+          293.6182666142782
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
-      {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          936.5313198725382,
           664.6222269351666,
           683.8553036371867,
           1059.555549621582,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           714.190848795573,
           981.2943676539829,
           983.7499443934514,
-          1094.8744735717773
+          1094.8744735717773,
+          952.2472215379987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1029.834334309896,
           710.4350616455079,
           731.360378742218,
           1092.98411996024,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           818.748482577006,
           1128.3411755195032,
           965.939442316691,
-          965.1590598179744
+          965.1590598179744,
+          1057.3841901143392
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
-      {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1682.2827657063801,
           1455.0910160882133,
           1465.0292893818446,
           1922.4851902553014,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1261.9071047856257,
           1737.601314417521,
           1966.1342274983724,
-          1939.4889640808105
+          1939.4889640808105,
+          1609.8612560544695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2256,7 +2256,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16421.029397147042,
           13784.341008867535,
           14078.629677405725,
           21090.994164603097,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           13374.694177246094,
           17439.08848063151,
           22006.783131917316,
-          21346.01322501046
+          21346.01322501046,
+          16290.501041666666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34712,
           34713,
           34713,
           34712,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34712,
           34712,
           34713,
-          34713
+          34713,
+          34712
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
       {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          734.9194453557333,
           537.1974818365915,
           555.4904356002808,
           787.1205213253314,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           554.8621947215154,
           741.706606388092,
           749.4433670725141,
-          829.2559848785401
+          829.2559848785401,
+          714.0382732244639
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1373.5542538506645,
           975.8025608062744,
           997.8122164862497,
           1515.7170279576228,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1127.1082768758138,
           1499.7908333369664,
           1297.098721577571,
-          1309.3434693654378
+          1309.3434693654378,
+          1434.0298520406088
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "4d8ac6be82474b1112bed61276c801c3bf41ef48",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Nov 9 11:37:50 2026 \u002B0100",
-        "message": "test: verify that IsNull succeeds for a null non-generic enumerable (#2192)"
-      },
-      {
         "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 20 11:37:28 2026 \u002B0100",
         "message": "docs: split the extension packages overview by release cycle and show the versions of separate extensions (#2266)"
+      },
+      {
+        "sha": "f19c642cc261ad526a971eb94d261f458f6f63b0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
+        "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
       }
     ],
     "labels": [
-      "4d8ac6be",
       "564b7a26",
       "4ca5e961",
       "d8a0d145",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "ae367d31",
       "35823ecc",
       "ede25433",
-      "0b9ee433"
+      "0b9ee433",
+      "f19c642c"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1112.6286829630533,
           970.6570403235299,
           1008.276535306658,
           1289.309011186872,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           846.4503896077474,
           1157.9673514732947,
           1343.062260945638,
-          1288.6159763336182
+          1288.6159763336182,
+          1100.4487668446131
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          814.1402980940683,
           594.755026953561,
           595.3485330854144,
           927.696897983551,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           733.6716420491537,
           930.8885487828936,
           748.5500675201416,
-          736.6271330515543
+          736.6271330515543,
+          868.3132740901067
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
