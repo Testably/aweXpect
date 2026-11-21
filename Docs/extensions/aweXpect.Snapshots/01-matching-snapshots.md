@@ -6,13 +6,13 @@ description: Compare strings, objects, exceptions, binary data and files with a 
 
 Describes the possible expectations for comparing strings, objects, exceptions, binary data and files with a snapshot.
 
-| Expectation                                 | Negated | Summary                                                  |
-|---------------------------------------------|---------|----------------------------------------------------------|
-| [`MatchesSnapshot`](#strings)               |         | a string matches the snapshot stored next to the test    |
-| [`MatchesSnapshot`](#objects)               |         | an object matches its snapshot, written by aweXpect      |
-| [`MatchesSnapshot`](#exceptions)            |         | an exception matches its snapshot, written member-wise   |
-| [`MatchesSnapshot`](#binary-data-and-files) |         | a `byte[]` or `Stream` matches its snapshot byte by byte |
-| [`MatchesSnapshot`](#binary-data-and-files) |         | a `FileInfo` matches its snapshot byte by byte           |
+| Expectation                                 | Summary                                                  |
+|---------------------------------------------|----------------------------------------------------------|
+| [`MatchesSnapshot`](#strings)               | a string matches the snapshot stored next to the test    |
+| [`MatchesSnapshot`](#objects)               | an object matches its snapshot, written by aweXpect      |
+| [`MatchesSnapshot`](#exceptions)            | an exception matches its snapshot, written member-wise   |
+| [`MatchesSnapshot`](#binary-data-and-files) | a `byte[]` or `Stream` matches its snapshot byte by byte |
+| [`MatchesSnapshot`](#binary-data-and-files) | a `FileInfo` matches its snapshot byte by byte           |
 
 ## Strings
 

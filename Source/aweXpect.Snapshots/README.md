@@ -88,16 +88,16 @@ Pending snapshot:
 
 Expectations for `string` and any other object:
 
-| Expectation                                                                                                     | Negated | Summary                                                                                  |
-|-----------------------------------------------------------------------------------------------------------------|---------|------------------------------------------------------------------------------------------|
-| [`MatchesSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#strings) |         | a string matches the snapshot stored next to the test, with rules for its lines and text |
-| [`MatchesSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#objects) |         | an object matches its snapshot, written by aweXpect, with rules for its members and text |
+| Expectation                                                                                                     | Summary                                                                                  |
+|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| [`MatchesSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#strings) | a string matches the snapshot stored next to the test, with rules for its lines and text |
+| [`MatchesSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/matching-snapshots#objects) | an object matches its snapshot, written by aweXpect, with rules for its members and text |
 
 Expectations for `Assembly` and `FileInfo`, from aweXpect.Snapshots.PublicApi:
 
-| Expectation                                                                                         | Negated | Summary                                                                              |
-|-----------------------------------------------------------------------------------------------------|---------|--------------------------------------------------------------------------------------|
-| [`MatchesPublicApiSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/public-api) |         | the public API of the assembly, or of the assembly in the file, matches the snapshot |
+| Expectation                                                                                         | Summary                                                                              |
+|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+| [`MatchesPublicApiSnapshot`](https://docs.testably.org/aweXpect/extensions/aweXpect.Snapshots/public-api) | the public API of the assembly, or of the assembly in the file, matches the snapshot |
 
 ## Customization
 
