@@ -1806,6 +1806,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -2109,7 +2115,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -2416,7 +2423,8 @@ window.BENCHMARK_DATA = {
           453.4543751648494,
           458.60972391764324,
           466.7571269353231,
-          434.3489905993144
+          434.3489905993144,
+          340.6776588303702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2691,6 +2699,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -3043,7 +3052,8 @@ window.BENCHMARK_DATA = {
           1168.6285456339517,
           993.30059521993,
           965.4913920084635,
-          1073.1471761067708
+          1073.1471761067708,
+          767.6268122012799
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3055,6 +3065,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5175,6 +5186,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -5478,7 +5495,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -5785,7 +5803,8 @@ window.BENCHMARK_DATA = {
           264.8047750336783,
           241.08178014755248,
           240.5167721748352,
-          259.97015771865847
+          259.97015771865847,
+          171.12653133074443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5932,6 +5951,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6412,7 +6432,8 @@ window.BENCHMARK_DATA = {
           316.94255889256794,
           258.20712718963625,
           251.1662084375109,
-          293.6182666142782
+          293.6182666142782,
+          202.8525614420573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6424,6 +6445,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8484,6 +8506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -8777,7 +8805,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -9074,7 +9103,8 @@ window.BENCHMARK_DATA = {
           981.2943676539829,
           983.7499443934514,
           1094.8744735717773,
-          952.2472215379987
+          952.2472215379987,
+          699.5326673801129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9266,6 +9296,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9681,7 +9712,8 @@ window.BENCHMARK_DATA = {
           1128.3411755195032,
           965.939442316691,
           965.1590598179744,
-          1057.3841901143392
+          1057.3841901143392,
+          714.7849926948547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9693,6 +9725,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11743,6 +11776,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -12036,7 +12075,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -12333,7 +12373,8 @@ window.BENCHMARK_DATA = {
           1737.601314417521,
           1966.1342274983724,
           1939.4889640808105,
-          1609.8612560544695
+          1609.8612560544695,
+          1469.2371085030693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12598,6 +12639,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -12940,7 +12982,8 @@ window.BENCHMARK_DATA = {
           17439.08848063151,
           22006.783131917316,
           21346.01322501046,
-          16290.501041666666
+          16290.501041666666,
+          13619.140379685621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13242,7 +13285,8 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15002,6 +15046,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -15295,7 +15345,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -15592,7 +15643,8 @@ window.BENCHMARK_DATA = {
           741.706606388092,
           749.4433670725141,
           829.2559848785401,
-          714.0382732244639
+          714.0382732244639,
+          544.9894917170207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15731,6 +15783,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -16199,7 +16252,8 @@ window.BENCHMARK_DATA = {
           1499.7908333369664,
           1297.098721577571,
           1309.3434693654378,
-          1434.0298520406088
+          1434.0298520406088,
+          983.8789087023054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16211,6 +16265,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -18261,6 +18316,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
@@ -18554,7 +18615,8 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
@@ -18851,7 +18913,8 @@ window.BENCHMARK_DATA = {
           1157.9673514732947,
           1343.062260945638,
           1288.6159763336182,
-          1100.4487668446131
+          1100.4487668446131,
+          1013.7464510599772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19021,6 +19084,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -19458,7 +19522,8 @@ window.BENCHMARK_DATA = {
           930.8885487828936,
           748.5500675201416,
           736.6271330515543,
-          868.3132740901067
+          868.3132740901067,
+          594.7628682000296
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19470,6 +19535,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
