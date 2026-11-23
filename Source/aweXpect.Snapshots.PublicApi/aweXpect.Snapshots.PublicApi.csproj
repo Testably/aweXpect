@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<!-- The analyzers and generators pin an older Roslyn centrally, because they only load in compilers at least as new as it. -->
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" VersionOverride="5.3.0"/>
+		<PackageReference Include="System.Collections.Immutable" />
 	</ItemGroup>
 
 	<ItemGroup>

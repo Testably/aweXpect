@@ -17,6 +17,7 @@
 		<!-- Only the test project depends on Mono.Cecil (for the example dependency resolver);
 		     the library stays dependency-free. -->
 		<PackageReference Include="Mono.Cecil"/>
+		<PackageReference Include="System.Collections.Immutable" />
 	</ItemGroup>
 
 </Project>

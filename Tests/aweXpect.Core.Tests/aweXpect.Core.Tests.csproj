@@ -22,6 +22,7 @@
 	<ItemGroup>
 		<PackageReference Remove="Nullable"/>
 		<PackageReference Include="aweXpect.Chronology"/>
+		<PackageReference Include="System.Collections.Immutable" />
 		<PackageReference Include="Testably.Abstractions.Testing"/>
 		<Using Include="Testably.Abstractions.Testing"/>
 		<Using Include="System.TimeProvider" Alias="TimeProvider"/>
