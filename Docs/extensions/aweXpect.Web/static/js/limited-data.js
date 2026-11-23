@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          338.6182895024618,
           484.90661873136247,
           210.19834791819255,
           442.5257850646973,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           458.60972391764324,
           466.7571269353231,
           434.3489905993144,
-          340.6776588303702
+          340.6776588303702,
+          334.8751019331125
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -430,7 +430,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          753.665256245931,
           1116.3289230891637,
           473.9439888636271,
           1134.9262437184652,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           993.30059521993,
           965.4913920084635,
           1073.1471761067708,
-          767.6268122012799
+          767.6268122012799,
+          751.5597145080567
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          171.00144333839415,
           256.36533662251065,
           112.66835227012635,
           256.0678748130798,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           241.08178014755248,
           240.5167721748352,
           259.97015771865847,
-          171.12653133074443
+          171.12653133074443,
+          171.4389183154473
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          205.6811504840851,
           302.12337834494457,
           120.81080665038182,
           314.0624558766683,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           258.20712718963625,
           251.1662084375109,
           293.6182666142782,
-          202.8525614420573
+          202.8525614420573,
+          203.70362772260393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          683.8553036371867,
           1059.555549621582,
           462.1221591063908,
           935.1418494542439,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           983.7499443934514,
           1094.8744735717773,
           952.2472215379987,
-          699.5326673801129
+          699.5326673801129,
+          701.5369965689523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          731.360378742218,
           1092.98411996024,
           440.83453092575076,
           1071.2368014653523,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           965.939442316691,
           965.1590598179744,
           1057.3841901143392,
-          714.7849926948547
+          714.7849926948547,
+          736.1331580025809
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1465.0292893818446,
           1922.4851902553014,
           1022.25754737854,
           1634.6663829803467,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1966.1342274983724,
           1939.4889640808105,
           1609.8612560544695,
-          1469.2371085030693
+          1469.2371085030693,
+          1480.820371500651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2254,7 +2254,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          14078.629677405725,
           21090.994164603097,
           8826.081477238582,
           16729.777658315805,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           22006.783131917316,
           21346.01322501046,
           16290.501041666666,
-          13619.140379685621
+          13619.140379685621,
+          13935.118415323894
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          34713,
           34712,
           34713,
           34712,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
+          34713,
           34713
         ],
         "borderColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
       {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          555.4904356002808,
           787.1205213253314,
           362.76999262173973,
           721.0387221063886,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           749.4433670725141,
           829.2559848785401,
           714.0382732244639,
-          544.9894917170207
+          544.9894917170207,
+          554.4360686815702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          997.8122164862497,
           1515.7170279576228,
           667.2920645305088,
           1442.2711138044085,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1297.098721577571,
           1309.3434693654378,
           1434.0298520406088,
-          983.8789087023054
+          983.8789087023054,
+          1002.6239196232387
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1008.276535306658,
           1289.309011186872,
           739.9473722321646,
           1123.9316042491369,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1343.062260945638,
           1288.6159763336182,
           1100.4487668446131,
-          1013.7464510599772
+          1013.7464510599772,
+          1018.8244909922282
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          595.3485330854144,
           927.696897983551,
           378.8111919403076,
           906.7983738581339,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           748.5500675201416,
           736.6271330515543,
           868.3132740901067,
-          594.7628682000296
+          594.7628682000296,
+          606.3236208279927
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
