@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
-      {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          356.8894415537516,
           338.6182895024618,
           484.90661873136247,
           210.19834791819255,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           453.4543751648494,
           458.60972391764324,
           466.7571269353231,
-          434.3489905993144
+          434.3489905993144,
+          340.6776588303702
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -431,7 +431,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          727.4845709433922,
           753.665256245931,
           1116.3289230891637,
           473.9439888636271,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           1168.6285456339517,
           993.30059521993,
           965.4913920084635,
-          1073.1471761067708
+          1073.1471761067708,
+          767.6268122012799
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
-      {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          168.97363936106365,
           171.00144333839415,
           256.36533662251065,
           112.66835227012635,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           264.8047750336783,
           241.08178014755248,
           240.5167721748352,
-          259.97015771865847
+          259.97015771865847,
+          171.12653133074443
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          201.51027666727703,
           205.6811504840851,
           302.12337834494457,
           120.81080665038182,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           316.94255889256794,
           258.20712718963625,
           251.1662084375109,
-          293.6182666142782
+          293.6182666142782,
+          202.8525614420573
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
-      {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          664.6222269351666,
           683.8553036371867,
           1059.555549621582,
           462.1221591063908,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           981.2943676539829,
           983.7499443934514,
           1094.8744735717773,
-          952.2472215379987
+          952.2472215379987,
+          699.5326673801129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          710.4350616455079,
           731.360378742218,
           1092.98411996024,
           440.83453092575076,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1128.3411755195032,
           965.939442316691,
           965.1590598179744,
-          1057.3841901143392
+          1057.3841901143392,
+          714.7849926948547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
-      {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1455.0910160882133,
           1465.0292893818446,
           1922.4851902553014,
           1022.25754737854,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1737.601314417521,
           1966.1342274983724,
           1939.4889640808105,
-          1609.8612560544695
+          1609.8612560544695,
+          1469.2371085030693
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2255,7 +2255,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13784.341008867535,
           14078.629677405725,
           21090.994164603097,
           8826.081477238582,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           17439.08848063151,
           22006.783131917316,
           21346.01322501046,
-          16290.501041666666
+          16290.501041666666,
+          13619.140379685621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           34713,
-          34713,
           34712,
           34713,
           34712,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34712,
           34713,
           34713,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
       {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          537.1974818365915,
           555.4904356002808,
           787.1205213253314,
           362.76999262173973,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           741.706606388092,
           749.4433670725141,
           829.2559848785401,
-          714.0382732244639
+          714.0382732244639,
+          544.9894917170207
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          975.8025608062744,
           997.8122164862497,
           1515.7170279576228,
           667.2920645305088,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1499.7908333369664,
           1297.098721577571,
           1309.3434693654378,
-          1434.0298520406088
+          1434.0298520406088,
+          983.8789087023054
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "564b7a263ecdca70045b52eedf30968ecef92dba",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:11:55 2026 \u002B0000",
-        "message": "chore: Bump SharpCompress from 0.50.7 to 0.50.8 (#2199)"
-      },
-      {
         "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 21 18:26:57 2026 \u002B0100",
         "message": "docs: drop the Negated column from overview tables without any negation (#2267)"
+      },
+      {
+        "sha": "8cde33dd9cd63712bf7e316bfd024bf242d2cf81",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
+        "message": "chore: Bump the tunit group with 4 updates (#2268)"
       }
     ],
     "labels": [
-      "564b7a26",
       "4ca5e961",
       "d8a0d145",
       "b438547b",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "35823ecc",
       "ede25433",
       "0b9ee433",
-      "f19c642c"
+      "f19c642c",
+      "8cde33dd"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          970.6570403235299,
           1008.276535306658,
           1289.309011186872,
           739.9473722321646,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1157.9673514732947,
           1343.062260945638,
           1288.6159763336182,
-          1100.4487668446131
+          1100.4487668446131,
+          1013.7464510599772
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          594.755026953561,
           595.3485330854144,
           927.696897983551,
           378.8111919403076,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           930.8885487828936,
           748.5500675201416,
           736.6271330515543,
-          868.3132740901067
+          868.3132740901067,
+          594.7628682000296
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
