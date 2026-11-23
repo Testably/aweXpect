@@ -1806,6 +1806,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -2109,7 +2115,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -2416,7 +2423,8 @@ window.BENCHMARK_DATA = {
           1519.3496657151443,
           1599.0052149846003,
           1597.8787354060582,
-          1182.7081081390381
+          1182.7081081390381,
+          1206.0725348336357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2562,6 +2570,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1136,
           1136,
           1136,
           1136,
@@ -3043,7 +3052,8 @@ window.BENCHMARK_DATA = {
           10394.767622375488,
           11268.639283316475,
           11545.13998819987,
-          7109.236940656389
+          7109.236940656389,
+          7351.1590657915385
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3055,6 +3065,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          26144,
           26144,
           26144,
           26144,
@@ -5175,6 +5186,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -5478,7 +5495,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -5785,7 +5803,8 @@ window.BENCHMARK_DATA = {
           1209.0523559252422,
           1242.6998300552368,
           1268.4390630086264,
-          994.331334177653
+          994.331334177653,
+          936.7473272910485
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5931,6 +5950,7 @@ window.BENCHMARK_DATA = {
           1240,
           1240,
           1240,
+          1112,
           1112,
           1112,
           1112,
@@ -6412,7 +6432,8 @@ window.BENCHMARK_DATA = {
           9605.022980826241,
           10459.313957722981,
           10086.670856221517,
-          7179.341733660017
+          7179.341733660017,
+          6755.2389079502655
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6424,6 +6445,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25312,
           25312,
           25312,
           25312,
@@ -8484,6 +8506,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -8777,7 +8805,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -9074,7 +9103,8 @@ window.BENCHMARK_DATA = {
           3966.670503234863,
           4036.207266671317,
           4044.5133402897764,
-          3000.34482421875
+          3000.34482421875,
+          3161.0905559246357
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9257,6 +9287,7 @@ window.BENCHMARK_DATA = {
           3720,
           3720,
           3720,
+          3704,
           3704,
           3704,
           3704,
@@ -9681,7 +9712,8 @@ window.BENCHMARK_DATA = {
           29079.408826555526,
           31076.51490196815,
           31194.522596086776,
-          20774.05467936198
+          20774.05467936198,
+          20475.801798502605
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9983,7 +10015,8 @@ window.BENCHMARK_DATA = {
           61926,
           61926,
           61926,
-          61925
+          61925,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -11743,6 +11776,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -12036,7 +12075,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -12333,7 +12373,8 @@ window.BENCHMARK_DATA = {
           7343.025005634015,
           7636.899537306565,
           7576.774521891276,
-          5074.755996159145
+          5074.755996159145,
+          5299.838041687011
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12469,6 +12510,7 @@ window.BENCHMARK_DATA = {
           7064,
           7064,
           7064,
+          6936,
           6936,
           6936,
           6936,
@@ -12940,7 +12982,8 @@ window.BENCHMARK_DATA = {
           207786.3542198768,
           227315.6701171875,
           222243.36601911273,
-          136190.29114583333
+          136190.29114583333,
+          147655.6016764323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13238,6 +13281,7 @@ window.BENCHMARK_DATA = {
           521542,
           521541,
           521542,
+          521594,
           521594,
           521594,
           521594,
@@ -15002,6 +15046,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -15295,7 +15345,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -15592,7 +15643,8 @@ window.BENCHMARK_DATA = {
           2198.7520629337855,
           2241.098029817854,
           2265.317137145996,
-          1636.1331279754638
+          1636.1331279754638,
+          1771.3282418932233
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15778,6 +15830,7 @@ window.BENCHMARK_DATA = {
           1288,
           1288,
           1288,
+          1296,
           1296,
           1296,
           1296,
@@ -16199,7 +16252,8 @@ window.BENCHMARK_DATA = {
           1527.9025027411324,
           1590.6337235314506,
           1528.3461111068725,
-          1042.811890738351
+          1042.811890738351,
+          1172.1403601328532
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16211,6 +16265,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2624,
           2624,
           2624,
           2624,
@@ -18261,6 +18316,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -18554,7 +18615,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -18851,7 +18913,8 @@ window.BENCHMARK_DATA = {
           2247.5045483907065,
           2299.6866171700613,
           2361.2217732943022,
-          1531.4106174468993
+          1531.4106174468993,
+          1611.6543810708183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19034,6 +19097,7 @@ window.BENCHMARK_DATA = {
           2856,
           2856,
           2856,
+          2904,
           2904,
           2904,
           2904,
@@ -19458,7 +19522,8 @@ window.BENCHMARK_DATA = {
           1356.9550848007202,
           1506.2159973780315,
           1564.4674452463785,
-          962.8774899164836
+          962.8774899164836,
+          953.3199267069499
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19470,6 +19535,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          6224,
           6224,
           6224,
           6224,
@@ -20818,6 +20884,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -20994,7 +21066,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -21174,7 +21247,8 @@ window.BENCHMARK_DATA = {
           1800.4617674691337,
           1841.608616511027,
           1898.394625600179,
-          1355.21195119222
+          1355.21195119222,
+          1360.6183586120605
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21240,6 +21314,7 @@ window.BENCHMARK_DATA = {
           3024,
           3024,
           3024,
+          3072,
           3072,
           3072,
           3072,
@@ -21547,7 +21622,8 @@ window.BENCHMARK_DATA = {
           927.6368819645473,
           966.7529465357462,
           1018.2671904246013,
-          603.5676898222703
+          603.5676898222703,
+          605.5158799716404
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -21559,6 +21635,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5152,
           5152,
           5152,
           5152,
@@ -22790,6 +22867,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -22966,7 +23049,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -23146,7 +23230,8 @@ window.BENCHMARK_DATA = {
           2335.0148714701336,
           2438.179992167155,
           2454.2071091788157,
-          1620.164117940267
+          1620.164117940267,
+          1699.0220155715942
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23196,6 +23281,7 @@ window.BENCHMARK_DATA = {
           3744,
           3744,
           3744,
+          3872,
           3872,
           3872,
           3872,
@@ -23519,7 +23605,8 @@ window.BENCHMARK_DATA = {
           1053.6323952356975,
           1072.286313565572,
           1161.3125164031983,
-          684.4012661298116
+          684.4012661298116,
+          705.0718547380887
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23531,6 +23618,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          5960,
           5960,
           5960,
           5960,
@@ -24420,6 +24508,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -24539,7 +24633,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -24662,7 +24757,8 @@ window.BENCHMARK_DATA = {
           126628.33053152902,
           128215.75261579241,
           129474.15956333706,
-          96913.21584848258
+          96913.21584848258,
+          102471.59274727957
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -24674,6 +24770,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          67664,
           67664,
           67664,
           67664,
@@ -24921,7 +25018,8 @@ window.BENCHMARK_DATA = {
           145648.05988420759,
           154680.46571858725,
           154891.18291015626,
-          120047.22276893028
+          120047.22276893028,
+          110157.16813964843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -25049,6 +25147,7 @@ window.BENCHMARK_DATA = {
           266950,
           266950,
           266950,
+          266936,
           266936
         ],
         "borderColor": "#FF671B",
@@ -25765,6 +25864,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 22:56:14 2026 \u002B0000",
         "message": "chore: Bump the tunit group with 4 updates (#2268)"
+      },
+      {
+        "sha": "201297a5fcc074b74529992cc1e7832574caaf1c",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:08:07 2026 \u002B0000",
+        "message": "chore: Bump SharpCompress from 0.50.8 to 0.50.11 (#2269)"
       }
     ],
     "labels": [
@@ -25884,7 +25989,8 @@ window.BENCHMARK_DATA = {
       "ede25433",
       "0b9ee433",
       "f19c642c",
-      "8cde33dd"
+      "8cde33dd",
+      "201297a5"
     ],
     "datasets": [
       {
@@ -26007,7 +26113,8 @@ window.BENCHMARK_DATA = {
           2101.3125588553294,
           2147.1824078877767,
           2190.3332397460936,
-          1627.699471537272
+          1627.699471537272,
+          1492.0361937114171
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -26019,6 +26126,7 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
+          2400,
           2400,
           2400,
           2400,
@@ -26266,7 +26374,8 @@ window.BENCHMARK_DATA = {
           1397.7811295645577,
           1476.5446764628093,
           1469.2983749389648,
-          1189.7003119150797
+          1189.7003119150797,
+          1069.9735036577497
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -26278,6 +26387,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          4656,
           4656,
           4656,
           4656,
