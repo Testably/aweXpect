@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          516.7821545283,
           885.9557149251302,
           663.7383292516073,
           927.1998291696821,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           887.46142578125,
           882.5089879353841,
           559.3479491747343,
-          960.0444643656413
+          960.0444643656413,
+          557.0526250430515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          397.81393111546834,
           632.833589553833,
           539.3796554974148,
           696.2858406702677,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           720.4396955490113,
           758.1409485499064,
           560.4217990466526,
-          730.0708828653608
+          730.0708828653608,
+          541.9728625842503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2897.288352203369,
           4162.350963047573,
           3160.4795273372106,
           4200.61108194987,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4683.2002680851865,
           4563.790449523925,
           3464.2857238224574,
-          4586.508476257324
+          4586.508476257324,
+          3292.2580879211428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24172,
           24172,
           24178,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24179,
-          24178
+          24178,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3211.4535771687824,
           4758.509466552734,
           4029.0340701511927,
           5050.63349609375,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5429.064460245768,
           5346.145489501953,
           4269.074400765555,
-          5491.571279907226
+          5491.571279907226,
+          4105.509384155273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1601.9269877115885,
           2379.655566151937,
           1833.029231584989,
           2590.313037599836,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2641.5854586283367,
           2757.5911001841228,
           1875.5512229919434,
-          2661.803095372518
+          2661.803095372518,
+          1895.4391925811767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1640,7 +1640,6 @@ window.BENCHMARK_DATA = {
           12654,
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1674,6 +1673,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2086.230089187622,
           3259.6560043921836,
           2726.2065898350306,
           3607.7651390075685,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3468.976943206787,
           3660.3521614074707,
           2545.337177004133,
-          3563.982377733503
+          3563.982377733503,
+          2536.6348477681477
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "4ca5e9615014db2198ebf3984413010f2c3ca6ab",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:33 2026 \u002B0000",
-        "message": "chore: Bump softprops/action-gh-release from 3.0.3 to 3.0.4 (#2193)"
-      },
-      {
         "sha": "d8a0d145f291af9d5ad184fbeeed3eb490175fbe",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:43 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "4ca5e961",
       "d8a0d145",
       "b438547b",
       "1ccacb5f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          8383.189709981283,
           13349.113824462891,
           10144.061152140299,
           13851.899473063151,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           13732.425194295247,
           15221.33319418771,
           10542.080079142253,
-          14081.302276102702
+          14081.302276102702,
+          10447.756560262043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2248,7 +2248,6 @@ window.BENCHMARK_DATA = {
           25367,
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2282,6 +2281,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          188405.78095354352,
           334733.4513811384,
           242822.37312825522,
           343361.5473257211,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           349849.7654296875,
           355106.7499674479,
           220916.649609375,
-          358990.8096028646
+          358990.8096028646,
+          203601.16408284506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           546633,
           546620,
           546549,
-          546622
+          546622,
+          546549
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
