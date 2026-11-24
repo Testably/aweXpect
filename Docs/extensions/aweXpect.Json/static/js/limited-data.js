@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1140.3008514404296,
           1972.1327214922223,
           1183.2427139282227,
           2154.1546721825234,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1597.8787354060582,
           1182.7081081390381,
           1206.0725348336357,
-          1224.120545578003
+          1224.120545578003,
+          2132.4509847005206
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          6750.2724136352535,
           15563.101790364582,
           8017.65335904635,
           16377.55571492513,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           11545.13998819987,
           7109.236940656389,
           7351.1590657915385,
-          8032.923600416917
+          8032.923600416917,
+          15389.584438069662
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          871.3681794484456,
           1606.0217206319173,
           982.8551705678304,
           1741.4593957265217,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           1268.4390630086264,
           994.331334177653,
           936.7473272910485,
-          936.0186909993489
+          936.0186909993489,
+          1735.7054389953614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          6183.913349405924,
           14458.01047668457,
           7342.289443969727,
           14741.066159929547,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           10086.670856221517,
           7179.341733660017,
           6755.2389079502655,
-          7289.777861277263
+          7289.777861277263,
+          14032.297865647535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3036.934961446126,
           5415.6979420979815,
           3253.6454385610728,
           5542.729449971517,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           4044.5133402897764,
           3000.34482421875,
           3161.0905559246357,
-          2849.018610318502
+          2849.018610318502,
+          5694.892656962077
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          20213.44189046224,
           45683.573567708336,
           22083.93601074219,
           49480.39392089844,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           31194.522596086776,
           20774.05467936198,
           20475.801798502605,
-          22496.354845319474
+          22496.354845319474,
+          46673.46327427455
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61926,
           61926,
           61925,
@@ -1810,7 +1809,8 @@ window.BENCHMARK_DATA = {
           61926,
           61925,
           61926,
-          61921
+          61921,
+          61926
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
       {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4998.037128741925,
           9204.362469264439,
           5534.431563786098,
           9806.958200307992,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           7576.774521891276,
           5074.755996159145,
           5299.838041687011,
-          5693.430565970285
+          5693.430565970285,
+          9591.775247192383
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          144980.48174176898,
           293874.3419270833,
           164001.1685267857,
           311161.4287272135,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           222243.36601911273,
           136190.29114583333,
           147655.6016764323,
-          152197.0366734096
+          152197.0366734096,
+          290431.757421875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521594,
           521594,
-          521542
+          521542,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
       {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1586.439702351888,
           2820.426012185904,
           1721.6348050435383,
           2965.158234187535,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           2265.317137145996,
           1636.1331279754638,
           1771.3282418932233,
-          1944.7218119303386
+          1944.7218119303386,
+          2995.9608426411946
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1128.5250615340012,
           1929.2136393955775,
           1157.2739714304605,
           2010.7806000342737,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1528.3461111068725,
           1042.811890738351,
           1172.1403601328532,
-          1306.4713987986247
+          1306.4713987986247,
+          2008.0618924458822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1561.4393478121076,
           2754.947356087821,
           1668.8920480183192,
           3056.4616775512695,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2361.2217732943022,
           1531.4106174468993,
           1611.6543810708183,
-          1567.9885970524379
+          1567.9885970524379,
+          2878.988459777832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          991.497759215037,
           1764.1727305192214,
           1011.9261238391583,
           2011.169911956787,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1564.4674452463785,
           962.8774899164836,
           953.3199267069499,
-          1151.5293085915703
+          1151.5293085915703,
+          1760.8005294799805
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1304.6790632520404,
           2249.3473172505696,
           1470.9796900431315,
           2441.5671944251426,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1898.394625600179,
           1355.21195119222,
           1360.6183586120605,
-          1221.1107698168073
+          1221.1107698168073,
+          2327.1433658599854
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          586.286518796285,
           1126.0239278157553,
           632.0781650543213,
           1220.9235303243001,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           1018.2671904246013,
           603.5676898222703,
           605.5158799716404,
-          807.4822468076434
+          807.4822468076434,
+          1094.8408949715752
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1548.7482321602959,
           2942.5403480529785,
           1803.962487734281,
           3074.9674949645996,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           2454.2071091788157,
           1620.164117940267,
           1699.0220155715942,
-          1872.8279245816743
+          1872.8279245816743,
+          3038.520410977877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          645.9341051737467,
           1270.6794090270996,
           749.8240190233503,
           1356.8191380818685,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           1161.3125164031983,
           684.4012661298116,
           705.0718547380887,
-          925.4414141337077
+          925.4414141337077,
+          1227.113446935018
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          91226.74255371094,
           165896.29754638672,
           97559.29846191406,
           172459.15346679688,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           129474.15956333706,
           96913.21584848258,
           102471.59274727957,
-          102065.2062093099
+          102065.2062093099,
+          175140.3299734933
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          103854.21428034856,
           188700.35750325522,
           121579.36063058036,
           198237.6940166767,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           154891.18291015626,
           120047.22276893028,
           110157.16813964843,
-          114555.31547851562
+          114555.31547851562,
+          194722.4630126953
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266951,
           266936,
           266951,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266950,
           266936,
           266936,
-          266882
+          266882,
+          266951
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
       {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1412.6118176778157,
           2763.722824369158,
           1551.7483517964681,
           2792.935019429525,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           2190.3332397460936,
           1627.699471537272,
           1492.0361937114171,
-          1479.7021995544433
+          1479.7021995544433,
+          2765.849211011614
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          956.6296964009603,
           1866.1492294311524,
           1131.9903043111165,
           1948.7650199890136,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1469.2983749389648,
           1189.7003119150797,
           1069.9735036577497,
-          1254.1443121773857
+          1254.1443121773857,
+          1891.6336334228515
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
