@@ -1800,6 +1800,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
@@ -2102,7 +2108,8 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
@@ -2408,7 +2415,8 @@ window.BENCHMARK_DATA = {
           887.46142578125,
           882.5089879353841,
           559.3479491747343,
-          960.0444643656413
+          960.0444643656413,
+          557.0526250430515
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2589,6 +2597,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -3033,7 +3042,8 @@ window.BENCHMARK_DATA = {
           720.4396955490113,
           758.1409485499064,
           560.4217990466526,
-          730.0708828653608
+          730.0708828653608,
+          541.9728625842503
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3045,6 +3055,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -5158,6 +5169,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
@@ -5460,7 +5477,8 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
@@ -5766,7 +5784,8 @@ window.BENCHMARK_DATA = {
           4683.2002680851865,
           4563.790449523925,
           3464.2857238224574,
-          4586.508476257324
+          4586.508476257324,
+          3292.2580879211428
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6077,7 +6096,8 @@ window.BENCHMARK_DATA = {
           24178,
           24178,
           24179,
-          24178
+          24178,
+          24179
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6391,7 +6411,8 @@ window.BENCHMARK_DATA = {
           5429.064460245768,
           5346.145489501953,
           4269.074400765555,
-          5491.571279907226
+          5491.571279907226,
+          4105.509384155273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6403,6 +6424,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -8456,6 +8478,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
@@ -8748,7 +8776,8 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
@@ -9044,7 +9073,8 @@ window.BENCHMARK_DATA = {
           2641.5854586283367,
           2757.5911001841228,
           1875.5512229919434,
-          2661.803095372518
+          2661.803095372518,
+          1895.4391925811767
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9334,6 +9364,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -9649,7 +9680,8 @@ window.BENCHMARK_DATA = {
           3468.976943206787,
           3660.3521614074707,
           2545.337177004133,
-          3563.982377733503
+          3563.982377733503,
+          2536.6348477681477
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9661,6 +9693,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -11704,6 +11737,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:17:40 2026 \u002B0000",
         "message": "chore: Bump System.Text.Json from 10.0.14 to 11.0.0 (#2271)"
+      },
+      {
+        "sha": "cc5d33fb679c149fff20cae07039aa8ad0b7414f",
+        "author": "dependabot[bot]",
+        "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
+        "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
       }
     ],
     "labels": [
@@ -11996,7 +12035,8 @@ window.BENCHMARK_DATA = {
       "f19c642c",
       "8cde33dd",
       "201297a5",
-      "00d5f90c"
+      "00d5f90c",
+      "cc5d33fb"
     ],
     "datasets": [
       {
@@ -12292,7 +12332,8 @@ window.BENCHMARK_DATA = {
           13732.425194295247,
           15221.33319418771,
           10542.080079142253,
-          14081.302276102702
+          14081.302276102702,
+          10447.756560262043
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12582,6 +12623,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -12897,7 +12939,8 @@ window.BENCHMARK_DATA = {
           349849.7654296875,
           355106.7499674479,
           220916.649609375,
-          358990.8096028646
+          358990.8096028646,
+          203601.16408284506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13198,7 +13241,8 @@ window.BENCHMARK_DATA = {
           546633,
           546620,
           546549,
-          546622
+          546622,
+          546549
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
