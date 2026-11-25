@@ -176,7 +176,7 @@ public static class EvaluationContextExtensions
 	///     <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />.<br />
 	///     Like with <see cref="CancellationTokenSource.CancelAfter(TimeSpan)" />, <see cref="Timeout.InfiniteTimeSpan" />
 	///     never cancels, nor does a delay longer than a timer accepts, and a source that is disposed before is not
-	///     canceled.
+	///     canceled. The timeout belongs to the evaluation: it no longer cancels the source after the evaluation ended.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">
 	///     The <paramref name="cancellationTokenSource" /> is <see langword="null" />.
@@ -189,8 +189,12 @@ public static class EvaluationContextExtensions
 	{
 		cancellationTokenSource.ThrowIfNull();
 		ThrowHelper.ThrowIfTimeoutIsNegative(delay);
-		_ = EvaluationContext.GetTimeProvider(evaluationContext)
+		ITimer? timer = EvaluationContext.GetTimeProvider(evaluationContext)
 			.CancelAfter(cancellationTokenSource, delay.ToTimerTimeout());
+		if (timer is not null && evaluationContext is EvaluationContext context)
+		{
+			context.ReleaseWithEvaluation(timer.Dispose);
+		}
 	}
 
 	/// <summary>
