@@ -189,7 +189,7 @@ public static class EvaluationContextExtensions
 	{
 		cancellationTokenSource.ThrowIfNull();
 		ThrowHelper.ThrowIfTimeoutIsNegative(delay);
-		EvaluationContext.GetTimeProvider(evaluationContext)
+		_ = EvaluationContext.GetTimeProvider(evaluationContext)
 			.CancelAfter(cancellationTokenSource, delay.ToTimerTimeout());
 	}
 

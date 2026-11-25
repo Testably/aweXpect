@@ -26,6 +26,18 @@ public sealed class TimeProviderExtensionsTests
 	}
 
 	[Test]
+	public async Task CancelAfter_OnAnotherProvider_ShouldReturnTheTimer()
+	{
+		ManualTimeProvider timeProvider = new();
+		using CancellationTokenSource cts = new();
+
+		ITimer? result = timeProvider.CancelAfter(cts, 10.Seconds());
+
+		await That(result).IsSameAs(timeProvider.Timer)
+			.Because("disposing the source does not release the timer, so the caller has to");
+	}
+
+	[Test]
 	public async Task CancelAfter_OnAnotherProvider_WhenTheSourceIsCanceledBefore_ShouldReleaseTheTimer()
 	{
 		ManualTimeProvider timeProvider = new();

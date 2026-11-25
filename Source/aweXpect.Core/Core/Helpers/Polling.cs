@@ -193,6 +193,6 @@ internal sealed class Polling : IDisposable
 	public TimeSpan GetElapsedTime(long startTimestamp) => _timeProvider.GetElapsedTime(startTimestamp);
 
 	/// <inheritdoc cref="TimeProviderExtensions.CancelAfter(TimeProvider, CancellationTokenSource, TimeSpan)" />
-	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+	public ITimer? CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
 		=> _timeProvider.CancelAfter(cancellationTokenSource, delay);
 }

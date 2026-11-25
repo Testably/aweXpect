@@ -922,6 +922,21 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task WhenSubjectBecomesValid_OnTheVirtualClock_ShouldReleaseAllTimers()
+		{
+			Counter counter = new(2);
+			TimerTrackingTimeProvider timeProvider = new(new MockTimeSystem().ToTimeProvider());
+
+			async Task Act()
+				=> await That(() => counter.Value).Eventually().OnVirtualTime(timeProvider).Within(1.Hours())
+					.IsGreaterThan(3);
+
+			await That(Act).DoesNotThrow();
+			await That(timeProvider.ActiveTimers).IsEqualTo(0)
+				.Because("disposing a source does not release its timer on the virtual clock, which would otherwise keep one timer per attempt until the hour elapsed");
+		}
+
+		[Test]
 		public async Task WhenSubjectBecomesValid_ShouldSucceed()
 		{
 			Counter counter = new(2);

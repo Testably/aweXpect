@@ -64,24 +64,28 @@ internal static class TimeProviderExtensions
 	///     On another provider than <see cref="TimeProvider.System" />, a delay of zero or less cancels at once, and the
 	///     timer gets the source as its state and is released when the source is canceled.
 	/// </remarks>
-	public static void CancelAfter(this TimeProvider timeProvider, CancellationTokenSource cancellationTokenSource,
+	/// <returns>
+	///     The timer on another provider than <see cref="TimeProvider.System" />, which disposing the source does not
+	///     release, so that the caller releases it together with the source; otherwise <see langword="null" />.
+	/// </returns>
+	public static ITimer? CancelAfter(this TimeProvider timeProvider, CancellationTokenSource cancellationTokenSource,
 		TimeSpan delay)
 	{
 		if (ReferenceEquals(timeProvider, TimeProvider.System))
 		{
 			cancellationTokenSource.CancelAfter(delay);
-			return;
+			return null;
 		}
 
 		if (delay == Timeout.InfiniteTimeSpan)
 		{
-			return;
+			return null;
 		}
 
 		if (delay <= TimeSpan.Zero)
 		{
 			cancellationTokenSource.Cancel();
-			return;
+			return null;
 		}
 
 		ITimer timer = timeProvider.CreateTimer(CancelCallback, cancellationTokenSource, delay,
@@ -89,6 +93,7 @@ internal static class TimeProviderExtensions
 		// The registration keeps the timer referenced as long as the source, and runs at once when the timer already
 		// canceled it.
 		cancellationTokenSource.Token.Register(DisposeTimerCallback, timer);
+		return timer;
 	}
 
 	private sealed class DelayPromise : TaskCompletionSource<bool>

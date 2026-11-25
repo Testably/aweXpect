@@ -35,6 +35,7 @@ public sealed class EvaluationCancellation
 	private readonly TimeSpan? _outerTimeout;
 	private readonly long _startTimestamp;
 	private readonly CancellationTokenSource? _timeoutCts;
+	private readonly ITimer? _timeoutTimer;
 	private readonly TimeProvider _timeProvider;
 
 	/// <param name="timeout">The timeout that cancels the evaluation.</param>
@@ -64,7 +65,7 @@ public sealed class EvaluationCancellation
 		if (timeout is not null)
 		{
 			_timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(callerToken);
-			_timeProvider.CancelAfter(_timeoutCts, timeout.Value.ToTimerTimeout());
+			_timeoutTimer = _timeProvider.CancelAfter(_timeoutCts, timeout.Value.ToTimerTimeout());
 			Token = _timeoutCts.Token;
 		}
 	}
@@ -162,7 +163,11 @@ public sealed class EvaluationCancellation
 	/// <remarks>
 	///     Only the evaluation that created the cancellation releases it, so it is not part of the public API.
 	/// </remarks>
-	internal void Release() => _timeoutCts?.Dispose();
+	internal void Release()
+	{
+		_timeoutTimer?.Dispose();
+		_timeoutCts?.Dispose();
+	}
 
 	/// <summary>
 	///     Returns the cancellation for what is still awaited after the evaluation released the timer of the
