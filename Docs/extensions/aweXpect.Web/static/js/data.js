@@ -1830,6 +1830,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -2137,7 +2143,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -2448,7 +2455,8 @@ window.BENCHMARK_DATA = {
           340.6776588303702,
           334.8751019331125,
           435.71233386993407,
-          339.66907490216767
+          339.66907490216767,
+          355.317738703319
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2723,6 +2731,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -3083,7 +3092,8 @@ window.BENCHMARK_DATA = {
           767.6268122012799,
           751.5597145080567,
           1120.3909515967737,
-          908.1083393732707
+          908.1083393732707,
+          729.612003326416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3095,6 +3105,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5243,6 +5254,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -5550,7 +5567,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -5861,7 +5879,8 @@ window.BENCHMARK_DATA = {
           171.12653133074443,
           171.4389183154473,
           259.04756539208546,
-          190.36872893113357
+          190.36872893113357,
+          190.6596733411153
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6008,6 +6027,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6496,7 +6516,8 @@ window.BENCHMARK_DATA = {
           202.8525614420573,
           203.70362772260393,
           311.4375744547163,
-          235.3581465403239
+          235.3581465403239,
+          203.3273291905721
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6508,6 +6529,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8596,6 +8618,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -8893,7 +8921,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -9194,7 +9223,8 @@ window.BENCHMARK_DATA = {
           699.5326673801129,
           701.5369965689523,
           973.9536442075457,
-          742.35867284139
+          742.35867284139,
+          724.7686275482178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9386,6 +9416,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9809,7 +9840,8 @@ window.BENCHMARK_DATA = {
           714.7849926948547,
           736.1331580025809,
           1081.5859232682449,
-          822.3949920654297
+          822.3949920654297,
+          716.9322703225272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9821,6 +9853,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -11899,6 +11932,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -12196,7 +12235,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -12497,7 +12537,8 @@ window.BENCHMARK_DATA = {
           1469.2371085030693,
           1480.820371500651,
           1691.2259623663765,
-          1315.094036992391
+          1315.094036992391,
+          1510.6199540456137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12762,6 +12803,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -13112,7 +13154,8 @@ window.BENCHMARK_DATA = {
           13619.140379685621,
           13935.118415323894,
           17068.661305018835,
-          12892.146486409505
+          12892.146486409505,
+          14146.797452654157
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13418,7 +13461,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15202,6 +15246,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -15499,7 +15549,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -15800,7 +15851,8 @@ window.BENCHMARK_DATA = {
           544.9894917170207,
           554.4360686815702,
           741.4682446993314,
-          542.3040562311809
+          542.3040562311809,
+          558.9415452321371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15939,6 +15991,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -16415,7 +16468,8 @@ window.BENCHMARK_DATA = {
           983.8789087023054,
           1002.6239196232387,
           1441.751336924235,
-          1006.3674125671387
+          1006.3674125671387,
+          997.6938205718994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16427,6 +16481,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -18505,6 +18560,12 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
@@ -18802,7 +18863,8 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
@@ -19103,7 +19165,8 @@ window.BENCHMARK_DATA = {
           1013.7464510599772,
           1018.8244909922282,
           1131.95153263637,
-          833.9057540257771
+          833.9057540257771,
+          1005.9924212137859
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19273,6 +19336,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -19718,7 +19782,8 @@ window.BENCHMARK_DATA = {
           594.7628682000296,
           606.3236208279927,
           901.7446565628052,
-          669.5006096703665
+          669.5006096703665,
+          591.4515504837036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19730,6 +19795,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
