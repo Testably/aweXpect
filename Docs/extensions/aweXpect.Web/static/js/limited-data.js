@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Content": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          442.5257850646973,
           436.852131430308,
           343.02445414861046,
           483.85827364240373,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           340.6776588303702,
           334.8751019331125,
           435.71233386993407,
-          339.66907490216767
+          339.66907490216767,
+          355.317738703319
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -427,7 +427,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
-          640,
+          648,
           648,
           648,
           648,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1134.9262437184652,
           1103.3880207061768,
           763.0067173004151,
           1071.9689613069806,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           767.6268122012799,
           751.5597145080567,
           1120.3909515967737,
-          908.1083393732707
+          908.1083393732707,
+          729.612003326416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "SuccessStatusCode": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          256.0678748130798,
           257.732376905588,
           177.8838815689087,
           248.18091259002685,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           171.12653133074443,
           171.4389183154473,
           259.04756539208546,
-          190.36872893113357
+          190.36872893113357,
+          190.6596733411153
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          314.0624558766683,
           310.2401569570814,
           211.3728620495115,
           286.2094169684819,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           202.8525614420573,
           203.70362772260393,
           311.4375744547163,
-          235.3581465403239
+          235.3581465403239,
+          203.3273291905721
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "Header": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          935.1418494542439,
           951.5646562576294,
           682.8906833648682,
           1079.1108530589513,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           699.5326673801129,
           701.5369965689523,
           973.9536442075457,
-          742.35867284139
+          742.35867284139,
+          724.7686275482178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1071.2368014653523,
           1064.5267233167376,
           725.2326985041301,
           1050.7095422108969,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           714.7849926948547,
           736.1331580025809,
           1081.5859232682449,
-          822.3949920654297
+          822.3949920654297,
+          716.9322703225272
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ProblemDetails": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1634.6663829803467,
           1652.214302607945,
           1455.5519714355469,
           1883.578617640904,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           1469.2371085030693,
           1480.820371500651,
           1691.2259623663765,
-          1315.094036992391
+          1315.094036992391,
+          1510.6199540456137
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2251,7 +2251,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
+          1600,
           1600,
           1600,
           1600,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          16729.777658315805,
           16681.902353922527,
           14327.289330546062,
           20420.72761317662,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           13619.140379685621,
           13935.118415323894,
           17068.661305018835,
-          12892.146486409505
+          12892.146486409505,
+          14146.797452654157
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2370,7 +2370,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           34712,
-          34712,
           34713,
           34712,
           34713,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           34713,
           34713,
           34712,
-          34712
+          34712,
+          34713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "QueryParameter": {
     "commits": [
-      {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
       {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          721.0387221063886,
           737.0449135120099,
           574.5179826100667,
           819.0532059351603,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           544.9894917170207,
           554.4360686815702,
           741.4682446993314,
-          542.3040562311809
+          542.3040562311809,
+          558.9415452321371
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1442.2711138044085,
           1451.8885999043782,
           1042.7289300282796,
           1498.5604817708333,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           983.8789087023054,
           1002.6239196232387,
           1441.751336924235,
-          1006.3674125671387
+          1006.3674125671387,
+          997.6938205718994
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "RequestMessage": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "dependabot[bot]",
         "date": "Mon Nov 23 23:34:24 2026 \u002B0000",
         "message": "chore: Bump Testably.Abstractions.Testing from 8.0.0-pre.3 to 8.1.1 (#2272)"
+      },
+      {
+        "sha": "2a7c0359ea1eb95fb5798e3347e890fb2fc5d9f0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
+        "message": "fix: release the timeout timers on a custom time provider (#2273)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "8cde33dd",
       "201297a5",
       "00d5f90c",
-      "cc5d33fb"
+      "cc5d33fb",
+      "2a7c0359"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1123.9316042491369,
           1118.0964415413994,
           1006.4451038360596,
           1288.2942237854004,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1013.7464510599772,
           1018.8244909922282,
           1131.95153263637,
-          833.9057540257771
+          833.9057540257771,
+          1005.9924212137859
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          906.7983738581339,
           899.7772154808044,
           629.877363204956,
           879.895429166158,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           594.7628682000296,
           606.3236208279927,
           901.7446565628052,
-          669.5006096703665
+          669.5006096703665,
+          591.4515504837036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
