@@ -349,6 +349,20 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
+	public async Task Release_ShouldReleaseTheTimerOfTheTimeoutOnTheTimeProvider()
+	{
+		TimerTrackingTimeProvider timeProvider = new(new MockTimeSystem().ToTimeProvider());
+		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeProvider);
+		int activeTimersBefore = timeProvider.ActiveTimers;
+
+		sut.Release();
+
+		await That(activeTimersBefore).IsEqualTo(1);
+		await That(timeProvider.ActiveTimers).IsEqualTo(0)
+			.Because("disposing the source does not release its timer on another provider than the system clock");
+	}
+
+	[Test]
 	public async Task Timeout_WhenItCutsShortTheWaitOfALaterConstraint_ShouldBeReported()
 	{
 		Signaler<int> signaler = new();

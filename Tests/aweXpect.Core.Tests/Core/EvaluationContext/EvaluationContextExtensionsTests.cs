@@ -73,6 +73,29 @@ public class EvaluationContextExtensionsTests
 	}
 
 	[Test]
+	public async Task CancelAfter_WhenTheEvaluationEnds_ShouldReleaseTheTimer()
+	{
+		MockTimeSystem timeSystem = new();
+		TimerTrackingTimeProvider timeProvider = new(timeSystem.ToTimeProvider());
+		Context context = new()
+		{
+			TimeProvider = timeProvider,
+		};
+		using CancellationTokenSource cts = new();
+		context.CancelAfter(cts, 30.Seconds());
+		int activeTimersBefore = timeProvider.ActiveTimers;
+
+		await context.ReleaseMaterializations();
+		timeSystem.TimeProvider.AdvanceBy(1.Minutes());
+
+		await That(activeTimersBefore).IsEqualTo(1);
+		await That(timeProvider.ActiveTimers).IsEqualTo(0)
+			.Because("disposing the source of the caller does not release the timer on the virtual clock");
+		await That(cts.IsCancellationRequested).IsFalse()
+			.Because("the delay belongs to the evaluation, which already ended");
+	}
+
+	[Test]
 	public async Task CancelAfter_WithDelayBeyondTheLimitOfATimer_ShouldNotCancel()
 	{
 		using CancellationTokenSource cts = new();
