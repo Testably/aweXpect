@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          870.5031931740897,
           633.1980058670044,
           481.2269781112671,
           764.6049524715969,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           557.0526250430515,
           752.4722277777536,
           536.8819125493368,
-          558.8564916338239
+          558.8564916338239,
+          664.4252347264971
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          661.6432409286499,
           560.2568008422852,
           378.32481404713224,
           803.909969329834,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           541.9728625842503,
           811.3986137253897,
           524.2416368212018,
-          605.9409382502238
+          605.9409382502238,
+          596.763072681427
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4166.357889447893,
           3554.4842018714317,
           2552.696700032552,
           5092.236778767904,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3292.2580879211428,
           4901.500752258301,
           3108.777607727051,
-          3292.3825149536133
+          3292.3825149536133,
+          3858.2628686087473
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24178,
           24179,
           24178,
           24179,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           24179,
           24179,
           24179,
-          24179
+          24179,
+          24178
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          4883.908458455404,
           4000.1306404700645,
           2822.3510540553502,
           5916.536860148112,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4105.509384155273,
           5760.601616923014,
           3532.75093460083,
-          3862.064024244036
+          3862.064024244036,
+          4375.707962036133
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2377.205401284354,
           1981.5784276326497,
           1441.5393086751303,
           2864.1385495322093,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1895.4391925811767,
           2724.63130569458,
           1672.5701503753662,
-          1957.7221804300943
+          1957.7221804300943,
+          2206.329744720459
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          12654,
           12728,
           12654,
           12654,
@@ -1670,6 +1669,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3305.5031720674956,
           2767.322171020508,
           2089.9985433306015,
           3856.7706827016978,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2536.6348477681477,
           3727.258329518636,
           2297.2674514770506,
-          2647.369384765625
+          2647.369384765625,
+          3057.4676793416343
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13081.795353190104,
           10178.156646728516,
           7572.3518483088565,
           13901.336149088542,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10447.756560262043,
           13713.356285682092,
           9736.457535298665,
-          10740.552571977887
+          10740.552571977887,
+          10892.944393920898
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          25367,
           25440,
           25367,
           25367,
@@ -2278,6 +2277,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          348114.1427734375,
           252240.18254743304,
           180046.09258161273,
           283104.5428466797,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           203601.16408284506,
           277571.9225260417,
           201464.25559895832,
-          211568.46484375
+          211568.46484375,
+          264986.2021135603
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544246,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           546549,
           546550,
           546549,
-          546549
+          546549,
+          546621
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
