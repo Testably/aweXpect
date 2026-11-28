@@ -1848,6 +1848,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -2158,7 +2164,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -2472,7 +2479,8 @@ window.BENCHMARK_DATA = {
           339.66907490216767,
           355.317738703319,
           372.33261489868164,
-          483.93814992904663
+          483.93814992904663,
+          211.25503295262655
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2747,6 +2755,7 @@ window.BENCHMARK_DATA = {
           640,
           640,
           640,
+          648,
           648,
           648,
           648,
@@ -3113,7 +3122,8 @@ window.BENCHMARK_DATA = {
           908.1083393732707,
           729.612003326416,
           743.678636487325,
-          943.8073582967122
+          943.8073582967122,
+          477.1167476654053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3125,6 +3135,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -5294,6 +5305,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -5604,7 +5621,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -5918,7 +5936,8 @@ window.BENCHMARK_DATA = {
           190.36872893113357,
           190.6596733411153,
           201.57258578447195,
-          245.31949337323508
+          245.31949337323508,
+          122.7729455947876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6065,6 +6084,7 @@ window.BENCHMARK_DATA = {
           440,
           456,
           456,
+          528,
           528,
           528,
           528,
@@ -6559,7 +6579,8 @@ window.BENCHMARK_DATA = {
           235.3581465403239,
           203.3273291905721,
           208.7683234532674,
-          247.48990392684937
+          247.48990392684937,
+          132.8889903863271
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6571,6 +6592,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          952,
           952,
           952,
           952,
@@ -8680,6 +8702,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -8980,7 +9008,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -9284,7 +9313,8 @@ window.BENCHMARK_DATA = {
           742.35867284139,
           724.7686275482178,
           771.9467404910496,
-          1079.0333363669258
+          1079.0333363669258,
+          497.49729292733326
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9476,6 +9506,7 @@ window.BENCHMARK_DATA = {
           1032,
           1032,
           1032,
+          1192,
           1192,
           1192,
           1192,
@@ -9905,7 +9936,8 @@ window.BENCHMARK_DATA = {
           822.3949920654297,
           716.9322703225272,
           740.5402545928955,
-          988.9120839436849
+          988.9120839436849,
+          472.90232978548323
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9917,6 +9949,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3088,
           3088,
           3088,
           3088,
@@ -12016,6 +12049,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -12316,7 +12355,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -12620,7 +12660,8 @@ window.BENCHMARK_DATA = {
           1315.094036992391,
           1510.6199540456137,
           1560.1127467836652,
-          2046.8520802089147
+          2046.8520802089147,
+          1091.1745087759834
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12885,6 +12926,7 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
+          1600,
           1600,
           1600,
           1600,
@@ -13241,7 +13283,8 @@ window.BENCHMARK_DATA = {
           12892.146486409505,
           14146.797452654157,
           14051.404098002116,
-          21218.44401245117
+          21218.44401245117,
+          9381.606202189128
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13548,6 +13591,7 @@ window.BENCHMARK_DATA = {
           34713,
           34712,
           34712,
+          34713,
           34713,
           34713,
           34713
@@ -15352,6 +15396,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -15652,7 +15702,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -15956,7 +16007,8 @@ window.BENCHMARK_DATA = {
           542.3040562311809,
           558.9415452321371,
           554.288461957659,
-          745.6565479914348
+          745.6565479914348,
+          405.8509188652039
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16095,6 +16147,7 @@ window.BENCHMARK_DATA = {
           1120,
           1096,
           1096,
+          1040,
           1040,
           1040,
           1040,
@@ -16577,7 +16630,8 @@ window.BENCHMARK_DATA = {
           1006.3674125671387,
           997.6938205718994,
           997.1150388081868,
-          1343.9662251790364
+          1343.9662251790364,
+          644.4464266459147
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16589,6 +16643,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3968,
           3968,
           3968,
           3968,
@@ -18688,6 +18743,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
@@ -18988,7 +19049,8 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
@@ -19292,7 +19354,8 @@ window.BENCHMARK_DATA = {
           833.9057540257771,
           1005.9924212137859,
           1022.3301651818412,
-          1347.9802399953207
+          1347.9802399953207,
+          736.8582258958083
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19462,6 +19525,7 @@ window.BENCHMARK_DATA = {
           1464,
           1464,
           1464,
+          1440,
           1440,
           1440,
           1440,
@@ -19913,7 +19977,8 @@ window.BENCHMARK_DATA = {
           669.5006096703665,
           591.4515504837036,
           618.6879109655108,
-          713.477583694458
+          713.477583694458,
+          385.6859006881714
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -19925,6 +19990,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2768,
           2768,
           2768,
           2768,
