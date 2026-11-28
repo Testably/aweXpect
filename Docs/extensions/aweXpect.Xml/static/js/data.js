@@ -1818,6 +1818,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
@@ -2123,7 +2129,8 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
@@ -2432,7 +2439,8 @@ window.BENCHMARK_DATA = {
           960.0444643656413,
           557.0526250430515,
           752.4722277777536,
-          536.8819125493368
+          536.8819125493368,
+          558.8564916338239
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2613,6 +2621,7 @@ window.BENCHMARK_DATA = {
           992,
           992,
           992,
+          1000,
           1000,
           1000,
           1000,
@@ -3063,7 +3072,8 @@ window.BENCHMARK_DATA = {
           730.0708828653608,
           541.9728625842503,
           811.3986137253897,
-          524.2416368212018
+          524.2416368212018,
+          605.9409382502238
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3075,6 +3085,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          2776,
           2776,
           2776,
           2776,
@@ -5209,6 +5220,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
@@ -5514,7 +5531,8 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
@@ -5823,7 +5841,8 @@ window.BENCHMARK_DATA = {
           4586.508476257324,
           3292.2580879211428,
           4901.500752258301,
-          3108.777607727051
+          3108.777607727051,
+          3292.3825149536133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6135,6 +6154,7 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
+          24179,
           24179,
           24179,
           24179
@@ -6454,7 +6474,8 @@ window.BENCHMARK_DATA = {
           5491.571279907226,
           4105.509384155273,
           5760.601616923014,
-          3532.75093460083
+          3532.75093460083,
+          3862.064024244036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6466,6 +6487,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          25758,
           25758,
           25758,
           25758,
@@ -8540,6 +8562,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
@@ -8835,7 +8863,8 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
@@ -9134,7 +9163,8 @@ window.BENCHMARK_DATA = {
           2661.803095372518,
           1895.4391925811767,
           2724.63130569458,
-          1672.5701503753662
+          1672.5701503753662,
+          1957.7221804300943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9424,6 +9454,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -9745,7 +9776,8 @@ window.BENCHMARK_DATA = {
           3563.982377733503,
           2536.6348477681477,
           3727.258329518636,
-          2297.2674514770506
+          2297.2674514770506,
+          2647.369384765625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -9757,6 +9789,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          14443,
           14443,
           14443,
           14443,
@@ -11821,6 +11854,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
@@ -12116,7 +12155,8 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
@@ -12415,7 +12455,8 @@ window.BENCHMARK_DATA = {
           14081.302276102702,
           10447.756560262043,
           13713.356285682092,
-          9736.457535298665
+          9736.457535298665,
+          10740.552571977887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12705,6 +12746,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -13026,7 +13068,8 @@ window.BENCHMARK_DATA = {
           358990.8096028646,
           203601.16408284506,
           277571.9225260417,
-          201464.25559895832
+          201464.25559895832,
+          211568.46484375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13330,6 +13373,7 @@ window.BENCHMARK_DATA = {
           546622,
           546549,
           546550,
+          546549,
           546549
         ],
         "borderColor": "#FF671B",
