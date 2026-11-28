@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          663.7383292516073,
           927.1998291696821,
           870.5031931740897,
           633.1980058670044,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           559.3479491747343,
           960.0444643656413,
           557.0526250430515,
-          752.4722277777536
+          752.4722277777536,
+          536.8819125493368
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          539.3796554974148,
           696.2858406702677,
           661.6432409286499,
           560.2568008422852,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           560.4217990466526,
           730.0708828653608,
           541.9728625842503,
-          811.3986137253897
+          811.3986137253897,
+          524.2416368212018
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3160.4795273372106,
           4200.61108194987,
           4166.357889447893,
           3554.4842018714317,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           3464.2857238224574,
           4586.508476257324,
           3292.2580879211428,
-          4901.500752258301
+          4901.500752258301,
+          3108.777607727051
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          24172,
           24178,
           24178,
           24179,
@@ -1076,6 +1075,7 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
+          24179,
           24179,
           24179
         ],
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          4029.0340701511927,
           5050.63349609375,
           4883.908458455404,
           4000.1306404700645,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           4269.074400765555,
           5491.571279907226,
           4105.509384155273,
-          5760.601616923014
+          5760.601616923014,
+          3532.75093460083
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1833.029231584989,
           2590.313037599836,
           2377.205401284354,
           1981.5784276326497,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1875.5512229919434,
           2661.803095372518,
           1895.4391925811767,
-          2724.63130569458
+          2724.63130569458,
+          1672.5701503753662
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1638,7 +1638,6 @@ window.BENCHMARK_DATA = {
         "data": [
           12654,
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1672,6 +1671,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2726.2065898350306,
           3607.7651390075685,
           3305.5031720674956,
           2767.322171020508,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           2545.337177004133,
           3563.982377733503,
           2536.6348477681477,
-          3727.258329518636
+          3727.258329518636,
+          2297.2674514770506
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "b438547b4889709854b82ec79a6a268644c6f5a1",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:50 2026 \u002B0000",
-        "message": "chore: Bump actions/setup-dotnet from 6.0.0 to 6.1.0 (#2195)"
-      },
-      {
         "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "b438547b",
       "1ccacb5f",
       "688a3ba2",
       "991a946f",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          10144.061152140299,
           13851.899473063151,
           13081.795353190104,
           10178.156646728516,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           10542.080079142253,
           14081.302276102702,
           10447.756560262043,
-          13713.356285682092
+          13713.356285682092,
+          9736.457535298665
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2246,7 +2246,6 @@ window.BENCHMARK_DATA = {
         "data": [
           25367,
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2280,6 +2279,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          242822.37312825522,
           343361.5473257211,
           348114.1427734375,
           252240.18254743304,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           220916.649609375,
           358990.8096028646,
           203601.16408284506,
-          277571.9225260417
+          277571.9225260417,
+          201464.25559895832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           546549,
           546622,
           546549,
-          546550
+          546550,
+          546549
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
