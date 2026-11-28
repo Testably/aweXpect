@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Attribute": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          927.1998291696821,
           870.5031931740897,
           633.1980058670044,
           481.2269781112671,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           960.0444643656413,
           557.0526250430515,
           752.4722277777536,
-          536.8819125493368
+          536.8819125493368,
+          558.8564916338239
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          696.2858406702677,
           661.6432409286499,
           560.2568008422852,
           378.32481404713224,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           730.0708828653608,
           541.9728625842503,
           811.3986137253897,
-          524.2416368212018
+          524.2416368212018,
+          605.9409382502238
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "XmlString": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          4200.61108194987,
           4166.357889447893,
           3554.4842018714317,
           2552.696700032552,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           4586.508476257324,
           3292.2580879211428,
           4901.500752258301,
-          3108.777607727051
+          3108.777607727051,
+          3292.3825149536133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1029,7 +1029,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           24178,
-          24178,
           24179,
           24178,
           24179,
@@ -1075,6 +1074,7 @@ window.BENCHMARK_DATA = {
           24178,
           24179,
           24178,
+          24179,
           24179,
           24179,
           24179
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          5050.63349609375,
           4883.908458455404,
           4000.1306404700645,
           2822.3510540553502,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           5491.571279907226,
           4105.509384155273,
           5760.601616923014,
-          3532.75093460083
+          3532.75093460083,
+          3862.064024244036
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "ElementMatches": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2590.313037599836,
           2377.205401284354,
           1981.5784276326497,
           1441.5393086751303,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           2661.803095372518,
           1895.4391925811767,
           2724.63130569458,
-          1672.5701503753662
+          1672.5701503753662,
+          1957.7221804300943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1637,7 +1637,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           12654,
-          12654,
           12728,
           12654,
           12654,
@@ -1671,6 +1670,7 @@ window.BENCHMARK_DATA = {
           12654,
           12728,
           12728,
+          12654,
           12654,
           12654,
           12654,
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3607.7651390075685,
           3305.5031720674956,
           2767.322171020508,
           2089.9985433306015,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           3563.982377733503,
           2536.6348477681477,
           3727.258329518636,
-          2297.2674514770506
+          2297.2674514770506,
+          2647.369384765625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "ElementOrder": {
     "commits": [
       {
-        "sha": "1ccacb5f1e6ff53bbdabb52f99139bbbd6379b06",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:12:59 2026 \u002B0000",
-        "message": "chore: Bump the fallout group with 2 updates (#2196)"
-      },
-      {
         "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
         "message": "ci: cancel superseded CI runs of a pull request (#2274)"
+      },
+      {
+        "sha": "0edd81b90bf94b840b106424deb690af68adb65d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
+        "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
       }
     ],
     "labels": [
-      "1ccacb5f",
       "688a3ba2",
       "991a946f",
       "3d57c42d",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "00d5f90c",
       "cc5d33fb",
       "2a7c0359",
-      "ee7a4769"
+      "ee7a4769",
+      "0edd81b9"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          13851.899473063151,
           13081.795353190104,
           10178.156646728516,
           7572.3518483088565,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           14081.302276102702,
           10447.756560262043,
           13713.356285682092,
-          9736.457535298665
+          9736.457535298665,
+          10740.552571977887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2245,7 +2245,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           25367,
-          25367,
           25440,
           25367,
           25367,
@@ -2279,6 +2278,7 @@ window.BENCHMARK_DATA = {
           25367,
           25440,
           25440,
+          25367,
           25367,
           25367,
           25367,
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          343361.5473257211,
           348114.1427734375,
           252240.18254743304,
           180046.09258161273,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           358990.8096028646,
           203601.16408284506,
           277571.9225260417,
-          201464.25559895832
+          201464.25559895832,
+          211568.46484375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          544335,
           544335,
           544335,
           544335,
@@ -2418,6 +2417,7 @@ window.BENCHMARK_DATA = {
           546622,
           546549,
           546550,
+          546549,
           546549
         ],
         "borderColor": "#FF671B",
