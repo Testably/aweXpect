@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "JsonString": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1183.2427139282227,
           2154.1546721825234,
           1555.7556939442952,
           1122.134832127889,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           1206.0725348336357,
           1224.120545578003,
           2132.4509847005206,
-          1342.7058574676514
+          1342.7058574676514,
+          1656.9376032511393
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          8017.65335904635,
           16377.55571492513,
           10601.067241123745,
           7173.4124471028645,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           7351.1590657915385,
           8032.923600416917,
           15389.584438069662,
-          8767.191013590495
+          8767.191013590495,
+          10519.71647644043
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "ParsedJson": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          982.8551705678304,
           1741.4593957265217,
           1243.3131493886312,
           878.1239028930664,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           936.7473272910485,
           936.0186909993489,
           1735.7054389953614,
-          1028.179572423299
+          1028.179572423299,
+          1299.6212160746256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          7342.289443969727,
           14741.066159929547,
           9816.613361903599,
           6617.894493647984,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           6755.2389079502655,
           7289.777861277263,
           14032.297865647535,
-          7971.796372633714
+          7971.796372633714,
+          9427.71943605863
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "JsonArrayElements": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3253.6454385610728,
           5542.729449971517,
           4108.597372327532,
           3071.313995906285,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           3161.0905559246357,
           2849.018610318502,
           5694.892656962077,
-          3137.0992632548014
+          3137.0992632548014,
+          4201.895569356283
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          22083.93601074219,
           49480.39392089844,
           31139.485691615515,
           19744.361493791854,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           20475.801798502605,
           22496.354845319474,
           46673.46327427455,
-          26536.70242745536
+          26536.70242745536,
+          28995.122861422024
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          61926,
           61925,
           61926,
           61926,
@@ -1810,6 +1809,7 @@ window.BENCHMARK_DATA = {
           61926,
           61921,
           61926,
+          61925,
           61925
         ],
         "borderColor": "#FF671B",
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
       {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          5534.431563786098,
           9806.958200307992,
           7429.202974955241,
           4969.385693359375,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           5299.838041687011,
           5693.430565970285,
           9591.775247192383,
-          6158.4121017456055
+          6158.4121017456055,
+          7669.052086385092
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          164001.1685267857,
           311161.4287272135,
           202408.3840519832,
           141389.75288085936,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           147655.6016764323,
           152197.0366734096,
           290431.757421875,
-          170781.9533935547
+          170781.9533935547,
+          203780.17626953125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          521594,
           521594,
           521594,
           521594,
@@ -2418,7 +2417,8 @@ window.BENCHMARK_DATA = {
           521594,
           521542,
           521594,
-          521542
+          521542,
+          521594
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonEquality": {
     "commits": [
-      {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
       {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1721.6348050435383,
           2965.158234187535,
           2224.7624304635183,
           1646.06242574056,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           1771.3282418932233,
           1944.7218119303386,
           2995.9608426411946,
-          2075.432066697341
+          2075.432066697341,
+          2331.4152240753174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1157.2739714304605,
           2010.7806000342737,
           1502.250731394841,
           1074.9519627434868,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1172.1403601328532,
           1306.4713987986247,
           2008.0618924458822,
-          1471.813031133016
+          1471.813031133016,
+          1564.1452752431235
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "JsonProperty": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1668.8920480183192,
           3056.4616775512695,
           2258.5412943522138,
           1620.6348752339682,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1611.6543810708183,
           1567.9885970524379,
           2878.988459777832,
-          1611.8517100016277
+          1611.8517100016277,
+          2211.7894823891775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1011.9261238391583,
           2011.169911956787,
           1388.2219842764048,
           914.7035287857055,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           953.3199267069499,
           1151.5293085915703,
           1760.8005294799805,
-          1289.7223158616287
+          1289.7223158616287,
+          1377.803852589925
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "JsonNestedPropertyChain": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1470.9796900431315,
           2441.5671944251426,
           1788.4365718841552,
           1304.600120984591,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           1360.6183586120605,
           1221.1107698168073,
           2327.1433658599854,
-          1360.2938381195067
+          1360.2938381195067,
+          1809.7651023864746
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          632.0781650543213,
           1220.9235303243001,
           923.9403583526612,
           627.0541207313538,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           605.5158799716404,
           807.4822468076434,
           1094.8408949715752,
-          907.0738960266114
+          907.0738960266114,
+          915.172317759196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4258,12 +4258,6 @@ window.BENCHMARK_DATA = {
   "JsonPropertyChain": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -4556,10 +4550,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -4608,14 +4607,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1803.962487734281,
           3074.9674949645996,
           2367.13958307902,
           1677.7937746047974,
@@ -4664,7 +4663,8 @@ window.BENCHMARK_DATA = {
           1699.0220155715942,
           1872.8279245816743,
           3038.520410977877,
-          1960.4715695699056
+          1960.4715695699056,
+          2401.365825653076
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4740,7 +4740,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          749.8240190233503,
           1356.8191380818685,
           1063.2495271046957,
           685.2547423680624,
@@ -4789,7 +4788,8 @@ window.BENCHMARK_DATA = {
           705.0718547380887,
           925.4414141337077,
           1227.113446935018,
-          1018.7063591820853
+          1018.7063591820853,
+          1036.0912337984357
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4866,12 +4866,6 @@ window.BENCHMARK_DATA = {
   "JsonStringCollection": {
     "commits": [
       {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
-      {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
         "date": "Tue Nov 10 07:13:18 2026 \u002B0000",
@@ -5164,10 +5158,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -5216,14 +5215,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          97559.29846191406,
           172459.15346679688,
           128733.12009840745,
           95100.83173828125,
@@ -5272,7 +5271,8 @@ window.BENCHMARK_DATA = {
           102471.59274727957,
           102065.2062093099,
           175140.3299734933,
-          113311.74852701822
+          113311.74852701822,
+          133832.35854867788
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5348,7 +5348,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          121579.36063058036,
           198237.6940166767,
           149924.23378208705,
           104372.73000662668,
@@ -5397,7 +5396,8 @@ window.BENCHMARK_DATA = {
           110157.16813964843,
           114555.31547851562,
           194722.4630126953,
-          128555.50052083333
+          128555.50052083333,
+          155743.45193684896
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5409,7 +5409,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          266936,
           266951,
           266951,
           266936,
@@ -5458,7 +5457,8 @@ window.BENCHMARK_DATA = {
           266936,
           266882,
           266951,
-          266882
+          266882,
+          266950
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5473,12 +5473,6 @@ window.BENCHMARK_DATA = {
   },
   "JsonStringExpectations": {
     "commits": [
-      {
-        "sha": "688a3ba203065dc0fa7825d2277e9ef4e8e8031d",
-        "author": "dependabot[bot]",
-        "date": "Tue Nov 10 07:13:08 2026 \u002B0000",
-        "message": "chore: Bump the tunit group with 4 updates (#2197)"
-      },
       {
         "sha": "991a946f64d846f93dad21fed2e0c8c8e801a7da",
         "author": "dependabot[bot]",
@@ -5772,10 +5766,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
-      "688a3ba2",
       "991a946f",
       "3d57c42d",
       "d12a9246",
@@ -5824,14 +5823,14 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1551.7483517964681,
           2792.935019429525,
           2109.0196612221853,
           1438.5879107883998,
@@ -5880,7 +5879,8 @@ window.BENCHMARK_DATA = {
           1492.0361937114171,
           1479.7021995544433,
           2765.849211011614,
-          1539.2710076649985
+          1539.2710076649985,
+          2133.0446853637695
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5956,7 +5956,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1131.9903043111165,
           1948.7650199890136,
           1433.480707168579,
           993.8161130632673,
@@ -6005,7 +6004,8 @@ window.BENCHMARK_DATA = {
           1069.9735036577497,
           1254.1443121773857,
           1891.6336334228515,
-          1296.33494237264
+          1296.33494237264,
+          1479.2200805119105
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
