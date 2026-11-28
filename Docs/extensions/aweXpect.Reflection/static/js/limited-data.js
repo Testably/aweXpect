@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "TypeHasAttribute": {
     "commits": [
       {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
-      {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          819.0581947735378,
           550.5445833887372,
           409.71494477589926,
           785.1829909006755,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           788.385623105367,
           770.0738476435344,
           650.2384127934773,
-          751.827643614549
+          751.827643614549,
+          556.464292271932
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          913.4978887240092,
           709.9797716821943,
           546.544777170817,
           932.860238483974,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           823.1895024959857,
           938.9670823415121,
           857.5822130203247,
-          888.5158681233723
+          888.5158681233723,
+          702.7675633430481
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "TypeIsNotStatic": {
     "commits": [
       {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
-      {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          107.02324020011085,
           78.1756711880366,
           55.564276742083685,
           100.5363085780825,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           122.89154113256015,
           105.08638279438019,
           91.9875595331192,
-          101.36474227110544
+          101.36474227110544,
+          76.95346940415246
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.6465947151184,
           170.78239413408133,
           131.59346287591117,
           220.8172145623427,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           276.0043495496114,
           213.5857616265615,
           206.74673132896424,
-          198.12439556121825
+          198.12439556121825,
+          167.82220005989075
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,12 +1218,6 @@ window.BENCHMARK_DATA = {
   "TypesAreSealed": {
     "commits": [
       {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
-      {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1761.7159704844157,
           1460.953926595052,
           1023.691126982371,
           1953.8863189697265,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           1496.9973164967128,
           1881.7043216705322,
           1704.2840708414712,
-          1814.118459701538
+          1814.118459701538,
+          1430.7455674580165
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1468.0308181762696,
           1133.4429847717286,
           823.9295163154602,
           1881.8725575764975,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           1416.2669120516096,
           1521.2832701365153,
           1366.101533481053,
-          1524.4782670338948
+          1524.4782670338948,
+          1129.4516849517822
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1761,7 +1761,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          1864,
           1953,
           1864,
           1864,
@@ -1808,6 +1807,7 @@ window.BENCHMARK_DATA = {
           1952,
           1953,
           1952,
+          1953,
           1953,
           1953,
           1953
@@ -1825,12 +1825,6 @@ window.BENCHMARK_DATA = {
   },
   "MethodsAreAsync": {
     "commits": [
-      {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
       {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2578.5432428213267,
           2168.4898564474925,
           1508.2059240976969,
           2744.8656253814697,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           2283.524979909261,
           2891.203906719501,
           2576.0618347754844,
-          2680.3232266562327
+          2680.3232266562327,
+          2126.399556986491
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          3866.8988602956138,
           3024.026349581205,
           2366.7342526572093,
           4641.003640238444,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           3519.6322357177733,
           3876.608521143595,
           3600.786769358317,
-          3804.9526929855347
+          3804.9526929855347,
+          2999.4490010579425
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2369,7 +2369,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          3978,
           3981,
           3981,
           3980,
@@ -2417,6 +2416,7 @@ window.BENCHMARK_DATA = {
           3981,
           3977,
           3980,
+          3981,
           3981,
           3981
         ],
@@ -2433,12 +2433,6 @@ window.BENCHMARK_DATA = {
   },
   "TypeNullability": {
     "commits": [
-      {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
       {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          397.3490235964457,
           293.21854066848755,
           198.53265962600707,
           487.19959417978924,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           373.01855341593426,
           394.5867390973227,
           330.1466324488322,
-          397.66253350575766
+          397.66253350575766,
+          295.05206189836775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2400.4618334089005,
           1768.6964252471923,
           1359.945612970988,
           2274.655546315511,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           2097.5386368887766,
           2341.245023345947,
           2086.039089747838,
-          2266.3762752826397
+          2266.3762752826397,
+          1789.1058739980062
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "TypesDoNotDependOn": {
     "commits": [
       {
-        "sha": "3d57c42d17ae7009186012f0a641dd1276c23cce",
-        "author": "Valentin Breu\u00DF",
-        "date": "Tue Nov 10 23:00:49 2026 \u002B0100",
-        "message": "docs: describe aweXpect v4 as the stable release (#2200)"
-      },
-      {
         "sha": "d12a92463db0afd048fedcc1aa04d91ed131301a",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Nov 13 14:40:31 2026 \u002B0100",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Nov 28 13:54:48 2026 \u002B0100",
         "message": "docs: list migration, benchmarks and changelog last in the sidebar (#2275)"
+      },
+      {
+        "sha": "ecafb28da504a5a95b5912bb0c77f0fe44dc137f",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 18:06:29 2026 \u002B0100",
+        "message": "test: move the benchmarks docs scaffold along with its page (#2276)"
       }
     ],
     "labels": [
-      "3d57c42d",
       "d12a9246",
       "ba5b9124",
       "70cb5ecf",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "cc5d33fb",
       "2a7c0359",
       "ee7a4769",
-      "0edd81b9"
+      "0edd81b9",
+      "ecafb28d"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2659.704170481364,
           2207.8197675069173,
           1581.9114220937092,
           2832.789035797119,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2275.6359323774063,
           2864.8490772247314,
           2690.0978989234336,
-          2694.7779432024277
+          2694.7779432024277,
+          2249.660068511963
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3480,7 +3480,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
-          2752,
+          2760,
           2760,
           2760,
           2760,
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          278199.04509626114,
           237704.42313058037,
           167131.06827799478,
           276633.17096354166,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           268989.0789513221,
           283528.81635742186,
           292260.8798828125,
-          279627.90309495194
+          279627.90309495194,
+          241570.97051532453
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3585,7 +3585,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          17558,
           17577,
           17576,
           17577,
@@ -3632,6 +3631,7 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17528,
+          17577,
           17577,
           17577,
           17577
