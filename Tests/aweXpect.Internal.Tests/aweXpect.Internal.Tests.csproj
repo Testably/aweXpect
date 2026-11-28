@@ -10,6 +10,7 @@
 		<PackageReference Remove="Nullable"/>
 		<PackageReference Include="aweXpect.Chronology"/>
 		<PackageReference Include="FluentAssertions"/>
+		<PackageReference Include="System.Collections.Immutable" />
 		<ProjectReference Include="..\..\Source\aweXpect.Analyzers\aweXpect.Analyzers.csproj"
 						  PrivateAssets="all"
 						  ReferenceOutputAssembly="false"

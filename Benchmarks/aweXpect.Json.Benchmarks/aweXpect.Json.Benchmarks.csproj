@@ -12,6 +12,7 @@
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet"/>
 		<PackageReference Include="FluentAssertions"/>
+		<PackageReference Include="System.Collections.Immutable" />
 		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
 

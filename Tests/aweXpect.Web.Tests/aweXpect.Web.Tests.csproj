@@ -15,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Collections.Immutable" />
 		<PackageReference Include="System.Net.Http" />
 	</ItemGroup>
 

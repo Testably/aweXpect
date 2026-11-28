@@ -20,6 +20,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="System.Collections.Immutable" />
 	</ItemGroup>
 
 	<!-- A project reference does not import the build targets of the package, so they are imported here. -->
