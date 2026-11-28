@@ -1836,6 +1836,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -2144,7 +2150,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -2456,7 +2463,8 @@ window.BENCHMARK_DATA = {
           591.2708390780857,
           754.3911013921102,
           788.385623105367,
-          770.0738476435344
+          770.0738476435344,
+          650.2384127934773
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2680,6 +2688,7 @@ window.BENCHMARK_DATA = {
           368,
           368,
           368,
+          544,
           544,
           544,
           544,
@@ -3093,7 +3102,8 @@ window.BENCHMARK_DATA = {
           619.3190777460734,
           917.6364669799805,
           823.1895024959857,
-          938.9670823415121
+          938.9670823415121,
+          857.5822130203247
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3105,6 +3115,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1248,
           1248,
           1248,
           1248,
@@ -5260,6 +5271,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -5568,7 +5585,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -5880,7 +5898,8 @@ window.BENCHMARK_DATA = {
           82.49913721879324,
           106.10721497352307,
           122.89154113256015,
-          105.08638279438019
+          105.08638279438019,
+          91.9875595331192
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6027,6 +6046,7 @@ window.BENCHMARK_DATA = {
           296,
           296,
           296,
+          168,
           168,
           168,
           168,
@@ -6517,7 +6537,8 @@ window.BENCHMARK_DATA = {
           186.1888572069315,
           195.01565804481507,
           276.0043495496114,
-          213.5857616265615
+          213.5857616265615,
+          206.74673132896424
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -6529,6 +6550,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          1032,
           1032,
           1032,
           1032,
@@ -8684,6 +8706,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -8992,7 +9020,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -9304,7 +9333,8 @@ window.BENCHMARK_DATA = {
           1123.0679646900721,
           1896.3979621887206,
           1496.9973164967128,
-          1881.7043216705322
+          1881.7043216705322,
+          1704.2840708414712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -9499,6 +9529,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1856,
           1856,
           1856,
           1856,
@@ -9941,7 +9972,8 @@ window.BENCHMARK_DATA = {
           1036.4346754891533,
           1512.1444982801165,
           1416.2669120516096,
-          1521.2832701365153
+          1521.2832701365153,
+          1366.101533481053
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -10258,6 +10290,7 @@ window.BENCHMARK_DATA = {
           1952,
           1953,
           1952,
+          1953,
           1953
         ],
         "borderColor": "#FF671B",
@@ -12048,6 +12081,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -12346,7 +12385,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -12648,7 +12688,8 @@ window.BENCHMARK_DATA = {
           1684.717693601336,
           2737.6842079162598,
           2283.524979909261,
-          2891.203906719501
+          2891.203906719501,
+          2576.0618347754844
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -12833,6 +12874,7 @@ window.BENCHMARK_DATA = {
           3104,
           3104,
           3104,
+          3152,
           3152,
           3152,
           3152,
@@ -13265,7 +13307,8 @@ window.BENCHMARK_DATA = {
           2622.7030431111652,
           3785.228858947754,
           3519.6322357177733,
-          3876.608521143595
+          3876.608521143595,
+          3600.786769358317
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -13572,7 +13615,8 @@ window.BENCHMARK_DATA = {
           3977,
           3981,
           3977,
-          3980
+          3980,
+          3981
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15362,6 +15406,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -15660,7 +15710,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -15962,7 +16013,8 @@ window.BENCHMARK_DATA = {
           271.5652503967285,
           384.36090955734255,
           373.01855341593426,
-          394.5867390973227
+          394.5867390973227,
+          330.1466324488322
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -16099,6 +16151,7 @@ window.BENCHMARK_DATA = {
           696,
           696,
           696,
+          568,
           568,
           568,
           568,
@@ -16579,7 +16632,8 @@ window.BENCHMARK_DATA = {
           1560.2990115029472,
           2231.140878530649,
           2097.5386368887766,
-          2341.245023345947
+          2341.245023345947,
+          2086.039089747838
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -16591,6 +16645,7 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
+          3288,
           3288,
           3288,
           3288,
@@ -18676,6 +18731,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Nov 26 16:39:58 2026 \u002B0100",
         "message": "fix: release the timeout timers on a custom time provider (#2273)"
+      },
+      {
+        "sha": "ee7a4769479c507e749bc350c73c25ea7a22a95c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sat Nov 28 10:45:15 2026 \u002B0100",
+        "message": "ci: cancel superseded CI runs of a pull request (#2274)"
       }
     ],
     "labels": [
@@ -18974,7 +19035,8 @@ window.BENCHMARK_DATA = {
       "201297a5",
       "00d5f90c",
       "cc5d33fb",
-      "2a7c0359"
+      "2a7c0359",
+      "ee7a4769"
     ],
     "datasets": [
       {
@@ -19276,7 +19338,8 @@ window.BENCHMARK_DATA = {
           1701.828971862793,
           2882.580226080758,
           2275.6359323774063,
-          2864.8490772247314
+          2864.8490772247314,
+          2690.0978989234336
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -19557,6 +19620,7 @@ window.BENCHMARK_DATA = {
           2752,
           2752,
           2752,
+          2760,
           2760,
           2760,
           2760,
@@ -19893,7 +19957,8 @@ window.BENCHMARK_DATA = {
           189695.44345703124,
           278228.6000325521,
           268989.0789513221,
-          283528.81635742186
+          283528.81635742186,
+          292260.8798828125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -20200,6 +20265,7 @@ window.BENCHMARK_DATA = {
           17528,
           17577,
           17528,
+          17577,
           17577
         ],
         "borderColor": "#FF671B",
